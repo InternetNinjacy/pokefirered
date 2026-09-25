@@ -2675,9 +2675,9 @@
                 "species": "SPECIES_ONIX"
               },
               {
-                "min_level": 15,
-                "max_level": 15,
-                "species": "SPECIES_GEODUDE"
+                "min_level": 24,
+                "max_level": 26,
+                "species": "SPECIES_NOSEPASS"
               },
               {
                 "min_level": 15,
