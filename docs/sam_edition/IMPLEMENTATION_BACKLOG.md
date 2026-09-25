@@ -161,8 +161,8 @@ GitHub Issues are disabled for this repository, so Sam Edition uses **stable Tas
 
 ## P7 Integration / Release
 
-- [ ] **SPEC-011** · P3 · SYS-SPEC · **DEFERRED** — Assign final sequential Sam Edition Pokédex display numbering after roster closure  
-  Depends on / blocked by: Final roster closure
+- [x] **SPEC-011** · P3 · SYS-SPEC · **COMPLETE** — Assign final sequential Sam Edition Pokédex display numbering after roster closure  
+  Depends on / blocked by: None — roster closed at 205 species. Final authority: Pokemon_Sam_Edition_Pokedex_Final_Numbering_Authority_v1.0; Mew = #205.
 - [ ] **QA-ALL-001** · P0 · SYS-CORE · **READY** — Run clean build and focused regression after each merged feature branch  
   Depends on / blocked by: ENV-001
 - [ ] **QA-ALL-002** · P1 · SYS-CORE · **DEFERRED** — Execute full QA Matrix before release candidate  
