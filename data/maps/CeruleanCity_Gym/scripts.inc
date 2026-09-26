@@ -39,9 +39,8 @@ CeruleanCity_Gym_EventScript_ApplyFlameState3::
 	setmetatile 13,  6, METATILE_CeruleanGym_Floor, 0
 	return
 
-@ Step 1: replace the surviving vanilla Cerulean trainer/leader/guide script layer.
-@ Flame-state runtime, full Satoshi battle flow, TM39 handoff, and rematch routing
-@ are intentionally completed in later Gym 2 implementation steps.
+@ Cerulean Gym runtime: flame-state puzzle, trainer/Leader flow, TM39,
+@ Satoshi state routing, and postgame rematches.
 
 CeruleanCity_Gym_EventScript_Leilani::
 	goto_if_set FLAG_SYS_GAME_CLEAR, CeruleanCity_Gym_EventScript_LeilaniPostgame
