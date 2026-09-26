@@ -859,14 +859,8 @@ static const struct TrainerMonNoItemCustomMoves sParty_CamperLiam[] = {
     {
         .iv = 0,
         .lvl = 10,
-        .species = SPECIES_GEODUDE,
-        .moves = {MOVE_TACKLE, MOVE_DEFENSE_CURL, MOVE_NONE, MOVE_NONE},
-    },
-    {
-        .iv = 0,
-        .lvl = 11,
-        .species = SPECIES_SANDSHREW,
-        .moves = {MOVE_SCRATCH, MOVE_DEFENSE_CURL, MOVE_SAND_ATTACK, MOVE_NONE},
+        .species = SPECIES_MARILL,
+        .moves = {MOVE_WATER_GUN, MOVE_TACKLE, MOVE_DEFENSE_CURL, MOVE_TAIL_WHIP},
     },
 };
 
@@ -5604,15 +5598,21 @@ static const struct TrainerMonItemCustomMoves sParty_EliteFourLance[] = {
 static const struct TrainerMonNoItemCustomMoves sParty_LeaderBrock[] = {
     {
         .iv = 0,
+        .lvl = 11,
+        .species = SPECIES_HORSEA,
+        .moves = {MOVE_BUBBLE, MOVE_SMOKESCREEN, MOVE_LEER, MOVE_TACKLE},
+    },
+    {
+        .iv = 0,
         .lvl = 12,
-        .species = SPECIES_GEODUDE,
-        .moves = {MOVE_TACKLE, MOVE_DEFENSE_CURL, MOVE_NONE, MOVE_NONE},
+        .species = SPECIES_MAREEP,
+        .moves = {MOVE_THUNDER_SHOCK, MOVE_THUNDER_WAVE, MOVE_TACKLE, MOVE_GROWL},
     },
     {
         .iv = 0,
         .lvl = 14,
-        .species = SPECIES_ONIX,
-        .moves = {MOVE_TACKLE, MOVE_BIND, MOVE_ROCK_TOMB, MOVE_NONE},
+        .species = SPECIES_CHINCHOU,
+        .moves = {MOVE_WATER_GUN, MOVE_THUNDER_SHOCK, MOVE_SUPERSONIC, MOVE_THUNDER_WAVE},
     },
 };
 
@@ -10863,8 +10863,13 @@ static const struct TrainerMonNoItemDefaultMoves sParty_CueBallPaxton[] = {
 
 // Pokémon: Weather — reserved Cloudburst trainer-party slots.
 // These placeholders keep NUM_TRAINERS source-safe until the battle-data pass populates them.
-static const struct TrainerMonNoItemDefaultMoves sParty_StormChaserSkye[] = {
-    DUMMY_TRAINER_MON,
+static const struct TrainerMonNoItemCustomMoves sParty_StormChaserSkye[] = {
+    {
+        .iv = 0,
+        .lvl = 10,
+        .species = SPECIES_PICHU,
+        .moves = {MOVE_THUNDER_SHOCK, MOVE_CHARM, MOVE_TAIL_WHIP, MOVE_SWEET_KISS},
+    },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_LeaderRainaRematch[] = {

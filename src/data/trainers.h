@@ -7432,7 +7432,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_StormChaserSkye),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_StormChaserSkye),
     },
     [TRAINER_LEADER_RAINA_REMATCH] = {
         .trainerClass = TRAINER_CLASS_LEADER,

@@ -9,6 +9,7 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
+#include "constants/opponents.h"
 
 static bool8 HasSuperEffectiveMoveAgainstOpponents(bool8 noRng);
 static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent);
@@ -361,7 +362,9 @@ void AI_TrySwitchOrUseItem(void)
 
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
-        if (ShouldSwitch())
+        // Pokémon: Weather — Raina's first Gym challenge does not voluntarily switch.
+        // Forced switching effects still resolve through normal battle mechanics.
+        if (gTrainerBattleOpponent_A != TRAINER_LEADER_RAINA && ShouldSwitch())
         {
             if (*(gBattleStruct->AI_monToSwitchIntoId + (GetBattlerPosition(gActiveBattler) >> 1)) == 6)
             {

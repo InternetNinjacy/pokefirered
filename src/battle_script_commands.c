@@ -1063,6 +1063,15 @@ static void Cmd_accuracycheck(void)
         if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_SUN && gBattleMoves[move].effect == EFFECT_THUNDER)
             moveAcc = 50;
 
+        // Pokémon: Weather — Rain improves the base accuracy of Electric moves that
+        // perform a normal accuracy check. Native Rain-Thunder and always-hit effects
+        // are handled above by AccuracyCalcHelper and are intentionally unchanged.
+        if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_RAIN && type == TYPE_ELECTRIC)
+        {
+            u16 rainAccuracy = (moveAcc * 120) / 100;
+            moveAcc = (rainAccuracy > 100) ? 100 : rainAccuracy;
+        }
+
         calc = sAccuracyStageRatios[buff].dividend * moveAcc;
         calc /= sAccuracyStageRatios[buff].divisor;
 
