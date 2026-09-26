@@ -2286,11 +2286,12 @@ static void BattleStartClearSetData(void)
     gBattlerTarget = 0;
     gBattleWeather = 0;
 
-    // Pokémon: Weather — Cloudburst Gym's first Raina battle begins in
+    // Pokémon: Weather — both Cloudburst Raina battles begin in
     // environmental Rain with no turn limit. Normal weather replacement and
     // Cloud Nine / Air Lock suppression continue to use the standard engine.
     if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER)
-     && gTrainerBattleOpponent_A == TRAINER_LEADER_RAINA)
+     && (gTrainerBattleOpponent_A == TRAINER_LEADER_RAINA
+      || gTrainerBattleOpponent_A == TRAINER_LEADER_RAINA_REMATCH))
         gBattleWeather = B_WEATHER_RAIN_PERMANENT;
 
     dataPtr = (u8 *)&gWishFutureKnock;
