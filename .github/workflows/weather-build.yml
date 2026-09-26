@@ -33,5 +33,8 @@ jobs:
       - name: Validate Cloudburst character assets
         run: python3 tools/validate_cloudburst_character_assets.py
 
+      - name: Validate Cloudburst badge and Weather Ball reward paths
+        run: python3 tools/validate_cloudburst_reward_paths.py
+
       - name: Build Pokémon Weather
         run: make -j$(nproc) all
