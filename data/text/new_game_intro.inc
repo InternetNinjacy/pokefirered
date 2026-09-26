@@ -271,13 +271,16 @@ gOakSpeech_Text_SoYourNameIsPlayer::
     .string "So your name is {PLAYER}.$"
 
 gOakSpeech_Text_WhatWasHisName::
-    .string "This is my grandson.\p"
-    .string "He's been your rival since you both\n"
-    .string "were babies.\p"
-    .string "…Erm, what was his name now?$"
+    .string "There are two more people\n"
+    .string "you should meet before we begin.\p"
+    .string "This young Trainer lives in the\n"
+    .string "world you are about to enter.\p"
+    .string "Your paths will cross more\n"
+    .string "than once.\p"
+    .string "What shall we call him?$"
 
 gOakSpeech_Text_YourRivalsNameWhatWasIt::
-    .string "Your rival's name, what was it now?$"
+    .string "What shall we call him?$"
 
 gOakSpeech_Text_ConfirmRivalName::
     .string "…Er, was it {RIVAL}?$"
