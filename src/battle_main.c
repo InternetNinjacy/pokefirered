@@ -554,6 +554,9 @@ const struct TrainerMoney gTrainerMoneyTable[] =
     {TRAINER_CLASS_AQUA_ADMIN, 10},
     {TRAINER_CLASS_AQUA_LEADER, 20},
     {TRAINER_CLASS_BOSS, 25},
+    // Pokémon: Weather early-Gym custom classes use the standard low-tier payout factor.
+    {TRAINER_CLASS_HYDROLOGIST, 5},
+    {TRAINER_CLASS_STORM_CHASER, 5},
     { 0xFF, 5},
 };
 

@@ -156,6 +156,11 @@
 #define OBJ_EVENT_GFX_DEOXYS_N 150
 #define OBJ_EVENT_GFX_SS_ANNE 151
 
+// Pokémon: Weather semantic aliases. Custom art will replace these temporary source graphics in the asset pass.
+#define OBJ_EVENT_GFX_RAINA         OBJ_EVENT_GFX_BROCK
+#define OBJ_EVENT_GFX_HYDROLOGIST   OBJ_EVENT_GFX_SCIENTIST
+#define OBJ_EVENT_GFX_STORM_CHASER  OBJ_EVENT_GFX_PICNICKER
+
 #define NUM_OBJ_EVENT_GFX     152
 
 // These are dynamic object gfx ids.

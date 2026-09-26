@@ -619,6 +619,7 @@
 #define FLAG_GOT_ITEMFINDER                              0x252
 #define FLAG_WOKE_UP_ROUTE_12_SNORLAX                    0x253
 #define FLAG_GOT_TM39_FROM_BROCK                         0x254
+#define FLAG_GOT_TM12_FROM_RAINA                         FLAG_GOT_TM39_FROM_BROCK // Pokémon: Weather semantic alias
 #define FLAG_GOT_SUPER_ROD                               0x255
 #define FLAG_GOT_EXP_SHARE_FROM_OAKS_AIDE                0x256
 #define FLAG_DID_MARC_TRADE                              0x257
@@ -1234,6 +1235,7 @@
 
 // Boss clear flags, 1200
 #define FLAG_DEFEATED_BROCK           0x4B0
+#define FLAG_DEFEATED_RAINA           FLAG_DEFEATED_BROCK // Pokémon: Weather semantic alias
 #define FLAG_DEFEATED_MISTY           0x4B1
 #define FLAG_DEFEATED_LT_SURGE        0x4B2
 #define FLAG_DEFEATED_ERIKA           0x4B3
@@ -1362,6 +1364,7 @@
 #define PERMA_SYS_FLAGS_START                                       (FLAG_0x81F + 1)
 
 #define FLAG_BADGE01_GET                                            (SYS_FLAGS + 0x20)
+#define FLAG_BADGE01_SQUALL                                         FLAG_BADGE01_GET // Pokémon: Weather semantic alias
 #define FLAG_BADGE02_GET                                            (SYS_FLAGS + 0x21)
 #define FLAG_BADGE03_GET                                            (SYS_FLAGS + 0x22)
 #define FLAG_BADGE04_GET                                            (SYS_FLAGS + 0x23)
