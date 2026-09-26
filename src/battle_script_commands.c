@@ -1089,6 +1089,15 @@ static void Cmd_accuracycheck(void)
         if (holdEffect == HOLD_EFFECT_EVASION_UP)
             calc = (calc * (100 - param)) / 100;
 
+        // Pokémon: Weather: Rain boosts the accuracy of Electric moves by 20%.
+        // Native always-hit handling, including Thunder in Rain, occurs earlier.
+        if (WEATHER_HAS_EFFECT && (gBattleWeather & B_WEATHER_RAIN) && type == TYPE_ELECTRIC)
+        {
+            calc = (calc * 120) / 100;
+            if (calc > 100)
+                calc = 100;
+        }
+
         // final calculation
         if ((Random() % 100 + 1) > calc)
         {

@@ -8,6 +8,7 @@
 #include "constants/item_effects.h"
 #include "constants/items.h"
 #include "constants/moves.h"
+#include "constants/opponents.h"
 #include "constants/pokemon.h"
 
 static bool8 HasSuperEffectiveMoveAgainstOpponents(bool8 noRng);
@@ -361,7 +362,7 @@ void AI_TrySwitchOrUseItem(void)
 
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
-        if (ShouldSwitch())
+        if (gTrainerBattleOpponent_A != TRAINER_LEADER_RAINA && ShouldSwitch())
         {
             if (*(gBattleStruct->AI_monToSwitchIntoId + (GetBattlerPosition(gActiveBattler) >> 1)) == 6)
             {

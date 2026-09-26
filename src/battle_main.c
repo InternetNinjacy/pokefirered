@@ -39,6 +39,7 @@
 #include "constants/hold_effects.h"
 #include "constants/items.h"
 #include "constants/moves.h"
+#include "constants/opponents.h"
 #include "constants/pokemon.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
@@ -492,6 +493,8 @@ const struct TrainerMoney gTrainerMoneyTable[] =
     {TRAINER_CLASS_RUIN_MANIAC, 12},
     {TRAINER_CLASS_LADY, 50},
     {TRAINER_CLASS_PAINTER, 4},
+    {TRAINER_CLASS_HYDROLOGIST, 12},
+    {TRAINER_CLASS_STORM_CHASER, 8},
     {TRAINER_CLASS_TWINS, 3},
     {TRAINER_CLASS_YOUNG_COUPLE, 7},
     {TRAINER_CLASS_SIS_AND_BRO, 1},
@@ -2249,6 +2252,13 @@ static void BattleStartClearSetData(void)
     gBattlerAttacker = 0;
     gBattlerTarget = 0;
     gBattleWeather = 0;
+
+    // Cloudburst Gym battles begin in permanent environmental Rain.
+    // Normal weather moves may replace it; the Gym does not reassert it.
+    if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+     && (gTrainerBattleOpponent_A == TRAINER_LEADER_RAINA
+      || gTrainerBattleOpponent_A == TRAINER_LEADER_RAINA_REMATCH))
+        gBattleWeather = B_WEATHER_RAIN_PERMANENT;
 
     dataPtr = (u8 *)&gWishFutureKnock;
     for (i = 0; i < sizeof(struct WishFutureKnock); i++)
