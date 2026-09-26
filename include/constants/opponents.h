@@ -746,12 +746,17 @@
 #define TRAINER_CHAMPION_REMATCH_BULBASAUR       740
 #define TRAINER_CHAMPION_REMATCH_CHARMANDER      741
 #define TRAINER_CUE_BALL_PAXTON                  742
+#define TRAINER_FIRE_DANCER_LEHUA                 743
+#define TRAINER_FIRE_DANCER_KEAHI                 744
+#define TRAINER_LEADER_LEILANI                    745
+#define TRAINER_SATOSHI_CERULEAN_PRACTICE        746
+#define TRAINER_SATOSHI_CERULEAN_REMATCH         747
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is 
 //       only space for 25 additional trainers before trainer flag space overflows.
 //       MAX_TRAINERS_COUNT can be increased but will take up additional saveblock space
 
-#define NUM_TRAINERS                             743
+#define NUM_TRAINERS                             748
 #define MAX_TRAINERS_COUNT                       768
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
