@@ -605,19 +605,17 @@ static const u8 *const sFemaleNameChoices[] =
     sNameChoice_Raff,
 };
 
+static const u8 sNameChoice_Blue[] = _("BLUE");
+static const u8 sNameChoice_Derek[] = _("DEREK");
+static const u8 sNameChoice_Pj[] = _("PJ");
+static const u8 sNameChoice_Dillon[] = _("DILLON");
+
 static const u8 *const sRivalNameChoices[] =
 {
-#if defined(FIRERED)
-    gNameChoice_Green,
-    gNameChoice_Gary,
-    gNameChoice_Kaz,
-    gNameChoice_Toru
-#elif defined(LEAFGREEN)
-    gNameChoice_Red,
-    gNameChoice_Ash,
-    gNameChoice_Kene,
-    gNameChoice_Geki
-#endif
+    sNameChoice_Blue,
+    sNameChoice_Derek,
+    sNameChoice_Pj,
+    sNameChoice_Dillon,
 };
 
 enum
