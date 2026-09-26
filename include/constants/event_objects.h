@@ -156,12 +156,12 @@
 #define OBJ_EVENT_GFX_DEOXYS_N 150
 #define OBJ_EVENT_GFX_SS_ANNE 151
 
-// Pokémon: Weather semantic aliases. Custom art will replace these temporary source graphics in the asset pass.
-#define OBJ_EVENT_GFX_RAINA         OBJ_EVENT_GFX_BROCK
-#define OBJ_EVENT_GFX_HYDROLOGIST   OBJ_EVENT_GFX_SCIENTIST
-#define OBJ_EVENT_GFX_STORM_CHASER  OBJ_EVENT_GFX_PICNICKER
+// Pokémon: Weather Cloudburst Gym custom object graphics.
+#define OBJ_EVENT_GFX_RAINA         152
+#define OBJ_EVENT_GFX_HYDROLOGIST   153
+#define OBJ_EVENT_GFX_STORM_CHASER  154
 
-#define NUM_OBJ_EVENT_GFX     152
+#define NUM_OBJ_EVENT_GFX     155
 
 // These are dynamic object gfx ids.
 // They correspond with the values of the VAR_OBJ_GFX_ID_X vars.
