@@ -30,5 +30,8 @@ jobs:
       - name: Validate TM12 Weather Ball compatibility
         run: python3 tools/validate_weather_ball_compat.py
 
+      - name: Validate Cloudburst character assets
+        run: python3 tools/validate_cloudburst_character_assets.py
+
       - name: Build Pokémon Weather
         run: make -j$(nproc) all
