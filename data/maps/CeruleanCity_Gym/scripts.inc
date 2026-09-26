@@ -6,27 +6,37 @@ CeruleanCity_Gym_OnLoad::
 	call CeruleanCity_Gym_EventScript_ApplyFlameState
 	end
 
-@ Steps 2-3 implemented.
-@ 0 = Gate A/B lit; 1 = Gate A open; 2 = Gate B open and Gate A relit.
-@ Gate C remains untouched until Switch 3 is implemented.
+@ Flame-gate state machine.
+@ 0 = A/B/C lit; 1 = A open; 2 = B open with A relit;
+@ 3 = A/B/C open permanently.
 CeruleanCity_Gym_EventScript_ApplyFlameState::
 	goto_if_eq VAR_SAM_CERULEAN_GYM_FLAME_STATE, 1, CeruleanCity_Gym_EventScript_ApplyFlameState1
 	goto_if_eq VAR_SAM_CERULEAN_GYM_FLAME_STATE, 2, CeruleanCity_Gym_EventScript_ApplyFlameState2
+	goto_if_eq VAR_SAM_CERULEAN_GYM_FLAME_STATE, 3, CeruleanCity_Gym_EventScript_ApplyFlameState3
 	goto CeruleanCity_Gym_EventScript_ApplyFlameState0
 
 CeruleanCity_Gym_EventScript_ApplyFlameState0::
 	setmetatile 13, 14, METATILE_CeruleanGym_FlameGate_Lit, 1
 	setmetatile 13, 11, METATILE_CeruleanGym_FlameGate_Lit, 1
+	setmetatile 13,  6, METATILE_CeruleanGym_FlameGate_Lit, 1
 	return
 
 CeruleanCity_Gym_EventScript_ApplyFlameState1::
 	setmetatile 13, 14, METATILE_CeruleanGym_Floor, 0
 	setmetatile 13, 11, METATILE_CeruleanGym_FlameGate_Lit, 1
+	setmetatile 13,  6, METATILE_CeruleanGym_FlameGate_Lit, 1
 	return
 
 CeruleanCity_Gym_EventScript_ApplyFlameState2::
 	setmetatile 13, 14, METATILE_CeruleanGym_FlameGate_Lit, 1
 	setmetatile 13, 11, METATILE_CeruleanGym_Floor, 0
+	setmetatile 13,  6, METATILE_CeruleanGym_FlameGate_Lit, 1
+	return
+
+CeruleanCity_Gym_EventScript_ApplyFlameState3::
+	setmetatile 13, 14, METATILE_CeruleanGym_Floor, 0
+	setmetatile 13, 11, METATILE_CeruleanGym_Floor, 0
+	setmetatile 13,  6, METATILE_CeruleanGym_Floor, 0
 	return
 
 @ Step 1: replace the surviving vanilla Cerulean trainer/leader/guide script layer.
@@ -142,4 +152,14 @@ CeruleanCity_Gym_EventScript_Switch2Activate::
 	end
 
 CeruleanCity_Gym_EventScript_Switch3::
+	lockall
+	goto_if_eq VAR_SAM_CERULEAN_GYM_FLAME_STATE, 2, CeruleanCity_Gym_EventScript_Switch3Activate
+	releaseall
+	end
+
+CeruleanCity_Gym_EventScript_Switch3Activate::
+	setvar VAR_SAM_CERULEAN_GYM_FLAME_STATE, 3
+	call CeruleanCity_Gym_EventScript_ApplyFlameState
+	special DrawWholeMapView
+	releaseall
 	end
