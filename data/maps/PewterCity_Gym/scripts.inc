@@ -4,7 +4,7 @@ PewterCity_Gym_MapScripts::
 PewterCity_Gym_EventScript_Brock::
 	famechecker FAMECHECKER_BROCK, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_BROCK, PewterCity_Gym_Text_BrockIntro, PewterCity_Gym_Text_BrockDefeat, PewterCity_Gym_EventScript_DefeatedBrock, NO_MUSIC
-	goto_if_unset FLAG_GOT_TM39_FROM_BROCK, PewterCity_Gym_EventScript_GiveTM39
+	goto_if_unset FLAG_GOT_TM12_FROM_RAINA, PewterCity_Gym_EventScript_GiveTM12
 	msgbox PewterCity_Gym_Text_BrockPostBattle
 	release
 	end
@@ -12,25 +12,25 @@ PewterCity_Gym_EventScript_Brock::
 PewterCity_Gym_EventScript_DefeatedBrock::
 	famechecker FAMECHECKER_BROCK, 1
 	setflag FLAG_DEFEATED_BROCK
-	setflag FLAG_BADGE01_GET
+	setflag FLAG_BADGE01_SQUALL
 	setvar VAR_MAP_SCENE_PEWTER_CITY, 1
 	setflag FLAG_HIDE_PEWTER_CITY_GYM_GUIDE
 	clearflag FLAG_HIDE_PEWTER_CITY_RUNNING_SHOES_GUY
 	set_gym_trainers 1
-	goto PewterCity_Gym_EventScript_GiveTM39
+	goto PewterCity_Gym_EventScript_GiveTM12
 	end
 
-PewterCity_Gym_EventScript_GiveTM39::
+PewterCity_Gym_EventScript_GiveTM12::
 	msgbox PewterCity_Gym_Text_TakeThisWithYou
-	checkitemspace ITEM_TM39
-	goto_if_eq VAR_RESULT, FALSE, PewterCity_Gym_EventScript_NoRoomForTM39
-	giveitem_msg PewterCity_Gym_Text_ReceivedTM39FromBrock, ITEM_TM39
-	setflag FLAG_GOT_TM39_FROM_BROCK
+	checkitemspace ITEM_TM12_WEATHER_BALL
+	goto_if_eq VAR_RESULT, FALSE, PewterCity_Gym_EventScript_NoRoomForTM12
+	giveitem_msg PewterCity_Gym_Text_ReceivedTM39FromBrock, ITEM_TM12_WEATHER_BALL
+	setflag FLAG_GOT_TM12_FROM_RAINA
 	msgbox PewterCity_Gym_Text_ExplainTM39
 	release
 	end
 
-PewterCity_Gym_EventScript_NoRoomForTM39::
+PewterCity_Gym_EventScript_NoRoomForTM12::
 	msgbox PewterCity_Gym_Text_DontHaveRoomForThis
 	release
 	end
@@ -71,7 +71,7 @@ PewterCity_Gym_EventScript_GymGuyAdvice::
 
 PewterCity_Gym_EventScript_GymStatue::
 	lockall
-	goto_if_set FLAG_BADGE01_GET, PewterCity_Gym_EventScript_GymStatuePostVictory
+	goto_if_set FLAG_BADGE01_SQUALL, PewterCity_Gym_EventScript_GymStatuePostVictory
 	msgbox PewterCity_Gym_Text_GymStatue
 	releaseall
 	end
