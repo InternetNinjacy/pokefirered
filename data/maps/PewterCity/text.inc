@@ -69,7 +69,7 @@ PewterCity_Text_BrocksLookingForChallengersFollowMe::
 
 PewterCity_Text_GoTakeOnBrock::
     .string "If you have the right stuff,\n"
-    .string "go take on BROCK!$"
+    .string "go take on RAINA!$"
 
 PewterCity_Text_TrainerTipsEarningEXP::
     .string "TRAINER TIPS\p"
