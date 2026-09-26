@@ -311,4 +311,7 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_LEHUA]                    = &gObjectEventGraphicsInfo_Lehua,
     [OBJ_EVENT_GFX_KEAHI]                    = &gObjectEventGraphicsInfo_Keahi,
     [OBJ_EVENT_GFX_LEILANI]                  = &gObjectEventGraphicsInfo_Leilani,
+    // Satoshi overworld art is still open by authority. Keep the reserved ID
+    // runtime-safe with the original Gym Guide presentation until it exists.
+    [OBJ_EVENT_GFX_SATOSHI]                  = &gObjectEventGraphicsInfo_GymGuy,
 };
