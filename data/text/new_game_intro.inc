@@ -283,7 +283,8 @@ gOakSpeech_Text_YourRivalsNameWhatWasIt::
     .string "What shall we call him?$"
 
 gOakSpeech_Text_ConfirmRivalName::
-    .string "…Er, was it {RIVAL}?$"
+    .string "We'll call him {RIVAL},\n"
+    .string "correct?$"
 
 gOakSpeech_Text_RememberRivalsName::
     .string "Very well.\n"
