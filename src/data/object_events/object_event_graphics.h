@@ -230,3 +230,12 @@ const u16 gFieldEffectObjectPic_Bubbles[] = INCBIN_U16("graphics/field_effects/p
 const u16 gFieldEffectObjectPic_SmallSparkle[] = INCBIN_U16("graphics/field_effects/pics/small_sparkle.4bpp");
 const u16 gFieldEffectPal_SmallSparkle[] = INCBIN_U16("graphics/field_effects/palettes/small_sparkle.gbapal");
 const u16 gFieldEffectObjectPic_Bird[] = INCBIN_U16("graphics/field_effects/pics/bird.4bpp");
+
+const u16 gObjectEventPal_Lehua[] = INCBIN_U16("graphics/object_events/palettes/lehua.gbapal");
+const u16 gObjectEventPic_Lehua[] = INCBIN_U16("graphics/object_events/pics/people/lehua.4bpp");
+
+const u16 gObjectEventPal_Keahi[] = INCBIN_U16("graphics/object_events/palettes/keahi.gbapal");
+const u16 gObjectEventPic_Keahi[] = INCBIN_U16("graphics/object_events/pics/people/keahi.4bpp");
+
+const u16 gObjectEventPal_Leilani[] = INCBIN_U16("graphics/object_events/palettes/leilani.gbapal");
+const u16 gObjectEventPic_Leilani[] = INCBIN_U16("graphics/object_events/pics/people/leilani.4bpp");

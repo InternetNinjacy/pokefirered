@@ -19,6 +19,10 @@
 // gTileset_CeruleanCity
 #define METATILE_CeruleanCity_Door  0x298
 
+// gTileset_CeruleanGym
+#define METATILE_CeruleanGym_Floor          0x281
+#define METATILE_CeruleanGym_FlameGate_Lit  0x2D4
+
 // gTileset_CinnabarGym
 #define METATILE_CinnabarGym_Floor                  0x281
 #define METATILE_CinnabarGym_Floor_ShadeDiagonal    0x282
