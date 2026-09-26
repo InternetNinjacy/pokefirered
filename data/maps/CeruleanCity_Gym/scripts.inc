@@ -45,6 +45,7 @@ CeruleanCity_Gym_EventScript_ApplyFlameState3::
 
 CeruleanCity_Gym_EventScript_Leilani::
 	trainerbattle_single TRAINER_LEADER_LEILANI, CeruleanCity_Gym_Text_LeilaniIntro, CeruleanCity_Gym_Text_LeilaniDefeat, CeruleanCity_Gym_EventScript_LeilaniDefeated, NO_MUSIC
+	goto_if_unset FLAG_GOT_TM39_FROM_LEILANI, CeruleanCity_Gym_EventScript_GiveTM39
 	msgbox CeruleanCity_Gym_Text_LeilaniBadge
 	release
 	end
@@ -58,6 +59,21 @@ CeruleanCity_Gym_EventScript_LeilaniDefeated::
 	call CeruleanCity_Gym_EventScript_ApplyFlameState
 	special DrawWholeMapView
 	msgbox CeruleanCity_Gym_Text_LeilaniBadge
+	goto CeruleanCity_Gym_EventScript_GiveTM39
+	end
+
+CeruleanCity_Gym_EventScript_GiveTM39::
+	msgbox CeruleanCity_Gym_Text_LeilaniTM39
+	checkitemspace ITEM_TM39
+	goto_if_eq VAR_RESULT, FALSE, CeruleanCity_Gym_EventScript_NoRoomForTM39
+	giveitem ITEM_TM39
+	goto_if_eq VAR_RESULT, FALSE, CeruleanCity_Gym_EventScript_NoRoomForTM39
+	setflag FLAG_GOT_TM39_FROM_LEILANI
+	release
+	end
+
+CeruleanCity_Gym_EventScript_NoRoomForTM39::
+	msgbox CeruleanCity_Gym_Text_LeilaniNoRoomForTM39
 	release
 	end
 
@@ -91,13 +107,52 @@ CeruleanCity_Gym_EventScript_Satoshi::
 	lock
 	faceplayer
 	goto_if_set FLAG_BADGE02_GET, CeruleanCity_Gym_EventScript_SatoshiPostBadge
-	goto_if_set FLAG_SATOSHI_CERULEAN_PRACTICE_WON, CeruleanCity_Gym_EventScript_SatoshiBeforeLeilani
-	msgbox CeruleanCity_Gym_Text_SatoshiRepeatHint
+	goto_if_set FLAG_SATOSHI_CERULEAN_PRACTICE_WON, CeruleanCity_Gym_EventScript_SatoshiRepeatHint
+	checktrainerflag TRAINER_SATOSHI_CERULEAN_PRACTICE
+	goto_if_eq VAR_RESULT, TRUE, CeruleanCity_Gym_EventScript_SatoshiRetryOffer
+	msgbox CeruleanCity_Gym_Text_SatoshiFirstApproach, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, CeruleanCity_Gym_EventScript_SatoshiAccept
+	goto CeruleanCity_Gym_EventScript_SatoshiDecline
+	end
+
+CeruleanCity_Gym_EventScript_SatoshiAccept::
+	msgbox CeruleanCity_Gym_Text_SatoshiAccept
+	cleartrainerflag TRAINER_SATOSHI_CERULEAN_PRACTICE
+	trainerbattle_earlyrival TRAINER_SATOSHI_CERULEAN_PRACTICE, RIVAL_BATTLE_HEAL_AFTER, CeruleanCity_Gym_Text_SatoshiWin, CeruleanCity_Gym_Text_SatoshiLoss
+	goto_if_eq VAR_RESULT, TRUE, CeruleanCity_Gym_EventScript_SatoshiRetryOffer
+	setflag FLAG_SATOSHI_CERULEAN_PRACTICE_WON
+	msgbox CeruleanCity_Gym_Text_SatoshiBeforeLeilani
 	release
 	end
 
-CeruleanCity_Gym_EventScript_SatoshiBeforeLeilani::
+CeruleanCity_Gym_EventScript_SatoshiRetryOffer::
+	msgbox CeruleanCity_Gym_Text_SatoshiRetryOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, CeruleanCity_Gym_EventScript_SatoshiRetryYes
+	goto CeruleanCity_Gym_EventScript_SatoshiRetryNo
+	end
+
+CeruleanCity_Gym_EventScript_SatoshiRetryYes::
+	msgbox CeruleanCity_Gym_Text_SatoshiRetryYes
+	cleartrainerflag TRAINER_SATOSHI_CERULEAN_PRACTICE
+	trainerbattle_earlyrival TRAINER_SATOSHI_CERULEAN_PRACTICE, RIVAL_BATTLE_HEAL_AFTER, CeruleanCity_Gym_Text_SatoshiWin, CeruleanCity_Gym_Text_SatoshiLoss
+	goto_if_eq VAR_RESULT, TRUE, CeruleanCity_Gym_EventScript_SatoshiRetryOffer
+	setflag FLAG_SATOSHI_CERULEAN_PRACTICE_WON
 	msgbox CeruleanCity_Gym_Text_SatoshiBeforeLeilani
+	release
+	end
+
+CeruleanCity_Gym_EventScript_SatoshiRetryNo::
+	msgbox CeruleanCity_Gym_Text_SatoshiRetryNo
+	release
+	end
+
+CeruleanCity_Gym_EventScript_SatoshiDecline::
+	msgbox CeruleanCity_Gym_Text_SatoshiDecline
+	release
+	end
+
+CeruleanCity_Gym_EventScript_SatoshiRepeatHint::
+	msgbox CeruleanCity_Gym_Text_SatoshiRepeatHint
 	release
 	end
 
