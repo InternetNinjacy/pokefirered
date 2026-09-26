@@ -1412,11 +1412,13 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_SailorDwayne),
     },
-    [TRAINER_CAMPER_LIAM] = {
-        .trainerClass = TRAINER_CLASS_CAMPER,
+    // Cloudburst Gym slot reuse: original Camper Liam trainer ID (142).
+    // Party data is replaced in Part 2; this commit establishes identity/source routing only.
+    [TRAINER_HYDROLOGIST_WADE] = {
+        .trainerClass = TRAINER_CLASS_HYDROLOGIST,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_CAMPER,
-        .trainerName = _("LIAM"),
+        .trainerPic = TRAINER_PIC_HYDROLOGIST,
+        .trainerName = _("WADE"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
@@ -4132,11 +4134,13 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
         .party = ITEM_CUSTOM_MOVES(sParty_EliteFourLance),
     },
-    [TRAINER_LEADER_BROCK] = {
+    // Cloudburst Gym slot reuse: original Leader Brock trainer ID (414).
+    // Party data is replaced in Part 2; this commit establishes identity/source routing only.
+    [TRAINER_LEADER_RAINA] = {
         .trainerClass = TRAINER_CLASS_LEADER,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_LEADER_BROCK,
-        .trainerName = _("BROCK"),
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_FEMALE | F_TRAINER_FEMALE,
+        .trainerPic = TRAINER_PIC_RAINA,
+        .trainerName = _("RAINA"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
@@ -7421,5 +7425,29 @@ const struct Trainer gTrainers[] = {
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_CueBallPaxton),
+    },
+
+    // Pokémon: Weather trainer allocations.
+    // sParty_Camper2 is a compile-safe dummy placeholder until Part 2 supplies
+    // the locked Cloudburst battle parties.
+    [TRAINER_STORM_CHASER_SKYE] = {
+        .trainerClass = TRAINER_CLASS_STORM_CHASER,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_FEMALE | F_TRAINER_FEMALE,
+        .trainerPic = TRAINER_PIC_STORM_CHASER,
+        .trainerName = _("SKYE"),
+        .items = {},
+        .doubleBattle = FALSE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_Camper2),
+    },
+    [TRAINER_LEADER_RAINA_REMATCH] = {
+        .trainerClass = TRAINER_CLASS_LEADER,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_FEMALE | F_TRAINER_FEMALE,
+        .trainerPic = TRAINER_PIC_RAINA,
+        .trainerName = _("RAINA"),
+        .items = {},
+        .doubleBattle = FALSE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_Camper2),
     },
 };
