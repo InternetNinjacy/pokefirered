@@ -442,6 +442,13 @@ const u32 gTrainerPalette_Lady[] = INCBIN_U32("graphics/trainers/palettes/lady.g
 const u32 gTrainerFrontPic_Painter[] = INCBIN_U32("graphics/trainers/front_pics/painter_front_pic.4bpp.lz");
 const u32 gTrainerPalette_Painter[] = INCBIN_U32("graphics/trainers/palettes/painter.gbapal.lz");
 
+const u32 gTrainerFrontPic_LeaderRaina[] = INCBIN_U32("graphics/trainers/front_pics/leader_raina_front_pic.4bpp.lz");
+const u32 gTrainerPalette_LeaderRaina[] = INCBIN_U32("graphics/trainers/palettes/leader_raina.gbapal.lz");
+const u32 gTrainerFrontPic_Hydrologist[] = INCBIN_U32("graphics/trainers/front_pics/hydrologist_front_pic.4bpp.lz");
+const u32 gTrainerPalette_Hydrologist[] = INCBIN_U32("graphics/trainers/palettes/hydrologist.gbapal.lz");
+const u32 gTrainerFrontPic_StormChaser[] = INCBIN_U32("graphics/trainers/front_pics/storm_chaser_front_pic.4bpp.lz");
+const u32 gTrainerPalette_StormChaser[] = INCBIN_U32("graphics/trainers/palettes/storm_chaser.gbapal.lz");
+
 const u8 gTrainerBackPic_Red[] = INCBIN_U8("graphics/trainers/back_pics/red_back_pic.4bpp");
 const u8 gTrainerBackPic_Leaf[] = INCBIN_U8("graphics/trainers/back_pics/leaf_back_pic.4bpp");
 const u8 gTrainerBackPic_Pokedude[] = INCBIN_U8("graphics/trainers/back_pics/pokedude_back_pic.4bpp");

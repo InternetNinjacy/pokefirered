@@ -167,11 +167,10 @@
 #define TRAINER_PIC_LADY                  146
 #define TRAINER_PIC_PAINTER               147
 
-// Pokémon: Weather semantic aliases. Raina replaces Brock directly.
-// Wade and Skye use temporary existing graphics until approved assets land.
-#define TRAINER_PIC_LEADER_RAINA           TRAINER_PIC_LEADER_BROCK
-#define TRAINER_PIC_HYDROLOGIST            TRAINER_PIC_SCIENTIST
-#define TRAINER_PIC_STORM_CHASER           TRAINER_PIC_PICNICKER
+// Pokémon: Weather Cloudburst Gym custom trainer graphics.
+#define TRAINER_PIC_LEADER_RAINA           148
+#define TRAINER_PIC_HYDROLOGIST            149
+#define TRAINER_PIC_STORM_CHASER           150
 
 // The player back pics are assumed to alternate according to the gender values (MALE/FEMALE)
 #define TRAINER_BACK_PIC_RED                    0
