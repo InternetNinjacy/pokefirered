@@ -10860,3 +10860,20 @@ static const struct TrainerMonNoItemDefaultMoves sParty_CueBallPaxton[] = {
         .species = SPECIES_MUK,
     },
 };
+static const struct TrainerMonNoItemCustomMoves sParty_FireDancerLehua[] = {
+    {.iv = 0, .lvl = 18, .species = SPECIES_GROWLITHE, .moves = {MOVE_EMBER, MOVE_BITE, MOVE_LEER, MOVE_ROAR}},
+    {.iv = 0, .lvl = 19, .species = SPECIES_PONYTA, .moves = {MOVE_EMBER, MOVE_STOMP, MOVE_TAIL_WHIP, MOVE_AGILITY}},
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_FireDancerKeahi[] = {
+    {.iv = 0, .lvl = 19, .species = SPECIES_VULPIX, .moves = {MOVE_EMBER, MOVE_CONFUSE_RAY, MOVE_TAIL_WHIP, MOVE_QUICK_ATTACK}},
+    {.iv = 0, .lvl = 20, .species = SPECIES_CHARMELEON, .moves = {MOVE_EMBER, MOVE_METAL_CLAW, MOVE_SMOKESCREEN, MOVE_SCRATCH}},
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_LeaderLeilani[] = {
+    {.iv = 0, .lvl = 20, .species = SPECIES_FLAREON, .moves = {MOVE_EMBER, MOVE_QUICK_ATTACK, MOVE_SAND_ATTACK, MOVE_TAIL_WHIP}},
+    {.iv = 0, .lvl = 21, .species = SPECIES_MAGMAR, .moves = {MOVE_EMBER, MOVE_SMOKESCREEN, MOVE_LEER, MOVE_KARATE_CHOP}},
+    {.iv = 0, .lvl = 22, .species = SPECIES_NINETALES, .moves = {MOVE_EMBER, MOVE_CONFUSE_RAY, MOVE_QUICK_ATTACK, MOVE_WILL_O_WISP}},
+};
+
+
