@@ -1280,10 +1280,10 @@ static void Task_OakSpeech_HandleGenderInput(u8 taskId)
     s8 input = Menu_ProcessInputNoWrapAround();
     switch (input)
     {
-    case 0: // BOY
+    case 0: // Male alternate-Kanto counterpart
         gSaveBlock2Ptr->playerGender = MALE;
         break;
-    case 1: // GIRL
+    case 1: // Female alternate-Kanto counterpart
         gSaveBlock2Ptr->playerGender = FEMALE;
         break;
     case MENU_B_PRESSED:
