@@ -350,6 +350,7 @@ gSpecials::
 	def_special DoesPartyHaveEnigmaBerry
 	def_special NullFieldSpecial
 	def_special SetPostgameFlags
+	def_special SamHasEnteredHallOfFame
 	def_special StartMarowakBattle
 	def_special ForcePlayerOntoBike
 	def_special ListMenu
