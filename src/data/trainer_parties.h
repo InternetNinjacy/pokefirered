@@ -10937,28 +10937,3 @@ static const struct TrainerMonItemCustomMoves sParty_LeaderLeilaniRematch[] = {
     {.iv = 255, .lvl = 63, .species = SPECIES_BLAZIKEN,  .heldItem = ITEM_BLACK_BELT,  .moves = {MOVE_BLAZE_KICK, MOVE_SKY_UPPERCUT, MOVE_ROCK_SLIDE, MOVE_BULK_UP}},
     {.iv = 255, .lvl = 64, .species = SPECIES_NINETALES, .heldItem = ITEM_LEFTOVERS,   .moves = {MOVE_FLAMETHROWER, MOVE_WILL_O_WISP, MOVE_CONFUSE_RAY, MOVE_SUNNY_DAY}},
 };
-
-
-static const struct TrainerMonNoItemCustomMoves sParty_SatoshiCeruleanPractice[] = {
-    {.iv = 0, .lvl = 17, .species = SPECIES_CHARMANDER, .moves = {MOVE_EMBER, MOVE_METAL_CLAW, MOVE_SCRATCH, MOVE_GROWL}},
-};
-
-static const struct TrainerMonItemCustomMoves sParty_SatoshiCeruleanRematch[] = {
-    {.iv = 250, .lvl = 56, .species = SPECIES_ARCANINE, .heldItem = ITEM_CHARCOAL, .moves = {MOVE_FLAMETHROWER, MOVE_EXTREME_SPEED, MOVE_CRUNCH, MOVE_WILL_O_WISP}},
-    {.iv = 250, .lvl = 57, .species = SPECIES_RAPIDASH, .heldItem = ITEM_SCOPE_LENS, .moves = {MOVE_FLAMETHROWER, MOVE_MEGAHORN, MOVE_BODY_SLAM, MOVE_AGILITY}},
-    {.iv = 250, .lvl = 58, .species = SPECIES_STARMIE, .heldItem = ITEM_MYSTIC_WATER, .moves = {MOVE_SURF, MOVE_PSYCHIC, MOVE_THUNDERBOLT, MOVE_RECOVER}},
-    {.iv = 250, .lvl = 58, .species = SPECIES_BELLOSSOM, .heldItem = ITEM_MIRACLE_SEED, .moves = {MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER, MOVE_SUNNY_DAY, MOVE_MOONLIGHT}},
-    {.iv = 250, .lvl = 59, .species = SPECIES_MACHAMP, .heldItem = ITEM_BLACK_BELT, .moves = {MOVE_BRICK_BREAK, MOVE_ROCK_SLIDE, MOVE_EARTHQUAKE, MOVE_MACH_PUNCH}},
-    {.iv = 250, .lvl = 61, .species = SPECIES_SALAMENCE, .heldItem = ITEM_LUM_BERRY, .moves = {MOVE_DRAGON_CLAW, MOVE_AERIAL_ACE, MOVE_FLAMETHROWER, MOVE_CRUNCH}},
-};
-
-static const struct TrainerMonItemCustomMoves sParty_LeaderLeilaniRematch[] = {
-    {.iv = 250, .lvl = 59, .species = SPECIES_FLAREON, .heldItem = ITEM_CHARCOAL, .moves = {MOVE_FLAMETHROWER, MOVE_SHADOW_BALL, MOVE_QUICK_ATTACK, MOVE_WILL_O_WISP}},
-    {.iv = 250, .lvl = 60, .species = SPECIES_MAGMAR, .heldItem = ITEM_MAGNET, .moves = {MOVE_FLAMETHROWER, MOVE_THUNDER_PUNCH, MOVE_PSYCHIC, MOVE_CONFUSE_RAY}},
-    {.iv = 250, .lvl = 61, .species = SPECIES_CAMERUPT, .heldItem = ITEM_QUICK_CLAW, .moves = {MOVE_ERUPTION, MOVE_EARTHQUAKE, MOVE_ROCK_SLIDE, MOVE_FLAMETHROWER}},
-    {.iv = 250, .lvl = 62, .species = SPECIES_CHARIZARD, .heldItem = ITEM_SHARP_BEAK, .moves = {MOVE_FLAMETHROWER, MOVE_AERIAL_ACE, MOVE_BRICK_BREAK, MOVE_DRAGON_CLAW}},
-    {.iv = 250, .lvl = 63, .species = SPECIES_BLAZIKEN, .heldItem = ITEM_BLACK_BELT, .moves = {MOVE_BLAZE_KICK, MOVE_SKY_UPPERCUT, MOVE_ROCK_SLIDE, MOVE_BULK_UP}},
-    {.iv = 250, .lvl = 64, .species = SPECIES_NINETALES, .heldItem = ITEM_LEFTOVERS, .moves = {MOVE_FLAMETHROWER, MOVE_WILL_O_WISP, MOVE_CONFUSE_RAY, MOVE_SUNNY_DAY}},
-};
-
-
