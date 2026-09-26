@@ -770,9 +770,8 @@ static void Task_NewGameScene(u8 taskId)
         CopyBgTilemapBufferToVram(1);
         break;
     case 7:
-        // Sam Edition: skip the stock Controls Guide, but keep the shared
-        // top-bar setup needed by the following Pikachu intro.
-        CreateTopBarWindowLoadPalette(0, 30, 0, 13, 0x1C4);
+        // Sam Edition: the stock Controls Guide and Pikachu intro are skipped.
+        // Keep the screen black until Oak's scene performs its own fade-in.
         gPaletteFade.bufferTransferDisabled = FALSE;
         BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
         break;
@@ -781,7 +780,7 @@ static void Task_NewGameScene(u8 taskId)
         ShowBg(0);
         ShowBg(1);
         SetVBlankCallback(VBlankCB_NewGameScene);
-        gTasks[taskId].func = Task_PikachuIntro_LoadPage1;
+        gTasks[taskId].func = Task_OakSpeech_Init;
         gMain.state = 0;
         return;
     }
