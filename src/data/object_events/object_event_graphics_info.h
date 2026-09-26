@@ -2938,7 +2938,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lehua = {
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_16x32,
     .subspriteTables = gObjectEventSpriteOamTables_16x32,
-    .anims = sAnimTable_Standard,
+    .anims = sAnimTable_Stationary4Facing,
     .images = sPicTable_Lehua,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
