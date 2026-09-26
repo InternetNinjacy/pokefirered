@@ -504,6 +504,28 @@ const u16 gTilesetPalettes_PewterGym[][16] =
 	INCBIN_U16("data/tilesets/secondary/pewter_gym/palettes/15.gbapal"),
 };
 
+const u32 gTilesetTiles_CloudburstGym[] = INCBIN_U32("data/tilesets/secondary/cloudburst_gym/tiles.4bpp.lz");
+
+const u16 gTilesetPalettes_CloudburstGym[][16] =
+{
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/00.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/01.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/02.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/03.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/04.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/05.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/06.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/07.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/08.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/09.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/10.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/11.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/12.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/13.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/14.gbapal"),
+	INCBIN_U16("data/tilesets/secondary/cloudburst_gym/palettes/15.gbapal"),
+};
+
 const u32 gTilesetTiles_CeruleanGym[] = INCBIN_U32("data/tilesets/secondary/cerulean_gym/tiles.4bpp.lz");
 
 const u16 gTilesetPalettes_CeruleanGym[][16] =

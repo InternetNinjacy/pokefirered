@@ -37,6 +37,9 @@ const u32 gMetatileAttributes_SaffronCity[] = INCBIN_U32("data/tilesets/secondar
 const u16 gMetatiles_PewterGym[] = INCBIN_U16("data/tilesets/secondary/pewter_gym/metatiles.bin");
 const u32 gMetatileAttributes_PewterGym[] = INCBIN_U32("data/tilesets/secondary/pewter_gym/metatile_attributes.bin");
 
+const u16 gMetatiles_CloudburstGym[] = INCBIN_U16("data/tilesets/secondary/cloudburst_gym/metatiles.bin");
+const u32 gMetatileAttributes_CloudburstGym[] = INCBIN_U32("data/tilesets/secondary/cloudburst_gym/metatile_attributes.bin");
+
 const u16 gMetatiles_CeruleanGym[] = INCBIN_U16("data/tilesets/secondary/cerulean_gym/metatiles.bin");
 const u32 gMetatileAttributes_CeruleanGym[] = INCBIN_U32("data/tilesets/secondary/cerulean_gym/metatile_attributes.bin");
 

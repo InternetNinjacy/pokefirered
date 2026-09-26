@@ -554,6 +554,9 @@ const struct TrainerMoney gTrainerMoneyTable[] =
     {TRAINER_CLASS_AQUA_ADMIN, 10},
     {TRAINER_CLASS_AQUA_LEADER, 20},
     {TRAINER_CLASS_BOSS, 25},
+    // Pokémon: Weather early-Gym custom classes use the standard low-tier payout factor.
+    {TRAINER_CLASS_HYDROLOGIST, 5},
+    {TRAINER_CLASS_STORM_CHASER, 5},
     { 0xFF, 5},
 };
 
@@ -1536,6 +1539,37 @@ static void SpriteCB_UnusedDebugSprite_Step(struct Sprite *sprite)
     }
 }
 
+static void ApplyWeatherGymTrainerAbilityOverride(struct Pokemon *mon, u16 trainerNum, u16 species)
+{
+    u8 abilityNum;
+
+    if (trainerNum == TRAINER_HYDROLOGIST_WADE && species == SPECIES_MARILL)
+    {
+        abilityNum = 0; // Thick Fat
+        SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNum);
+    }
+    else if (trainerNum == TRAINER_LEADER_RAINA && species == SPECIES_CHINCHOU)
+    {
+        abilityNum = 0; // Volt Absorb
+        SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNum);
+    }
+    else if (trainerNum == TRAINER_LEADER_RAINA_REMATCH)
+    {
+        switch (species)
+        {
+        case SPECIES_STARMIE:
+            abilityNum = 1; // Natural Cure
+            SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNum);
+            break;
+        case SPECIES_MANECTRIC:
+        case SPECIES_LANTURN:
+            abilityNum = 0; // Static / Volt Absorb
+            SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNum);
+            break;
+        }
+    }
+}
+
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 {
     u32 nameHash = 0;
@@ -1629,6 +1663,8 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 break;
             }
             }
+
+            ApplyWeatherGymTrainerAbilityOverride(&party[i], trainerNum, GetMonData(&party[i], MON_DATA_SPECIES));
         }
 
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
@@ -2249,6 +2285,16 @@ static void BattleStartClearSetData(void)
     gBattlerAttacker = 0;
     gBattlerTarget = 0;
     gBattleWeather = 0;
+
+    // Pokémon: Weather — every Cloudburst Gym battle demonstrates the
+    // Gym's environmental Rain with no turn limit. Normal weather replacement
+    // and Cloud Nine / Air Lock suppression continue to use the standard engine.
+    if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+     && (gTrainerBattleOpponent_A == TRAINER_HYDROLOGIST_WADE
+      || gTrainerBattleOpponent_A == TRAINER_STORM_CHASER_SKYE
+      || gTrainerBattleOpponent_A == TRAINER_LEADER_RAINA
+      || gTrainerBattleOpponent_A == TRAINER_LEADER_RAINA_REMATCH))
+        gBattleWeather = B_WEATHER_RAIN_PERMANENT;
 
     dataPtr = (u8 *)&gWishFutureKnock;
     for (i = 0; i < sizeof(struct WishFutureKnock); i++)

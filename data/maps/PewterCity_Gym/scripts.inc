@@ -1,82 +1,152 @@
+.equ LOCALID_CLOUDBURST_RAINA,     1
+.equ LOCALID_CLOUDBURST_WADE,      2
+.equ LOCALID_CLOUDBURST_SKYE,      3
+.equ LOCALID_CLOUDBURST_GYM_GUIDE, 4
+
 PewterCity_Gym_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, PewterCity_Gym_OnLoad
 	.byte 0
 
-PewterCity_Gym_EventScript_Brock::
-	famechecker FAMECHECKER_BROCK, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
-	trainerbattle_single TRAINER_LEADER_BROCK, PewterCity_Gym_Text_BrockIntro, PewterCity_Gym_Text_BrockDefeat, PewterCity_Gym_EventScript_DefeatedBrock, NO_MUSIC
-	goto_if_unset FLAG_GOT_TM39_FROM_BROCK, PewterCity_Gym_EventScript_GiveTM39
-	msgbox PewterCity_Gym_Text_BrockPostBattle
-	release
+PewterCity_Gym_OnLoad::
+	checktrainerflag TRAINER_HYDROLOGIST_WADE
+	call_if_eq TRUE, PewterCity_Gym_EventScript_SetWadeDefeatedPosition
+	checktrainerflag TRAINER_STORM_CHASER_SKYE
+	call_if_eq TRUE, PewterCity_Gym_EventScript_SetSkyeDefeatedPosition
 	end
 
-PewterCity_Gym_EventScript_DefeatedBrock::
-	famechecker FAMECHECKER_BROCK, 1
-	setflag FLAG_DEFEATED_BROCK
-	setflag FLAG_BADGE01_GET
+PewterCity_Gym_EventScript_SetWadeDefeatedPosition::
+	setobjectxyperm LOCALID_CLOUDBURST_WADE, 5, 11
+	return
+
+PewterCity_Gym_EventScript_SetSkyeDefeatedPosition::
+	setobjectxyperm LOCALID_CLOUDBURST_SKYE, 7, 8
+	return
+
+@ Legacy map label retained for source compatibility.
+PewterCity_Gym_EventScript_Brock::
+PewterCity_Gym_EventScript_Raina::
+	trainerbattle_single TRAINER_LEADER_RAINA, PewterCity_Gym_Text_RainaIntro, PewterCity_Gym_Text_RainaDefeat, PewterCity_Gym_EventScript_DefeatedRaina, NO_MUSIC
+	goto_if_unset FLAG_GOT_TM12_FROM_RAINA, PewterCity_Gym_EventScript_GivePendingTM12
+	goto PewterCity_Gym_EventScript_RainaPostClear
+	end
+
+PewterCity_Gym_EventScript_DefeatedRaina::
+	setflag FLAG_DEFEATED_RAINA
 	setvar VAR_MAP_SCENE_PEWTER_CITY, 1
 	setflag FLAG_HIDE_PEWTER_CITY_GYM_GUIDE
 	clearflag FLAG_HIDE_PEWTER_CITY_RUNNING_SHOES_GUY
 	set_gym_trainers 1
-	goto PewterCity_Gym_EventScript_GiveTM39
+	msgbox PewterCity_Gym_Text_RainaPostDefeat
+	setflag FLAG_BADGE01_SQUALL
+	playfanfare MUS_OBTAIN_BADGE
+	waitfanfare
+	msgbox PewterCity_Gym_Text_RainaSquallBadgeExplain
+	goto PewterCity_Gym_EventScript_GiveTM12FirstClear
 	end
 
-PewterCity_Gym_EventScript_GiveTM39::
-	msgbox PewterCity_Gym_Text_TakeThisWithYou
-	checkitemspace ITEM_TM39
-	goto_if_eq VAR_RESULT, FALSE, PewterCity_Gym_EventScript_NoRoomForTM39
-	giveitem_msg PewterCity_Gym_Text_ReceivedTM39FromBrock, ITEM_TM39
-	setflag FLAG_GOT_TM39_FROM_BROCK
-	msgbox PewterCity_Gym_Text_ExplainTM39
+PewterCity_Gym_EventScript_GiveTM12FirstClear::
+	checkitemspace ITEM_TM12_WEATHER_BALL
+	goto_if_eq VAR_RESULT, FALSE, PewterCity_Gym_EventScript_NoRoomForTM12
+	additem ITEM_TM12_WEATHER_BALL
+	setflag FLAG_GOT_TM12_FROM_RAINA
+	playfanfare MUS_LEVEL_UP
+	waitfanfare
+	msgbox PewterCity_Gym_Text_RainaWeatherBallReward
+	msgbox PewterCity_Gym_Text_RainaFirstClearFinal
 	release
 	end
 
-PewterCity_Gym_EventScript_NoRoomForTM39::
+PewterCity_Gym_EventScript_GivePendingTM12::
+	checkitemspace ITEM_TM12_WEATHER_BALL
+	goto_if_eq VAR_RESULT, FALSE, PewterCity_Gym_EventScript_NoRoomForTM12
+	additem ITEM_TM12_WEATHER_BALL
+	setflag FLAG_GOT_TM12_FROM_RAINA
+	playfanfare MUS_LEVEL_UP
+	waitfanfare
+	msgbox PewterCity_Gym_Text_RainaWeatherBallReward
+	msgbox PewterCity_Gym_Text_RainaFirstClearFinal
+	release
+	end
+
+PewterCity_Gym_EventScript_NoRoomForTM12::
 	msgbox PewterCity_Gym_Text_DontHaveRoomForThis
 	release
 	end
 
-PewterCity_Gym_EventScript_Liam::
-	trainerbattle_single TRAINER_CAMPER_LIAM, PewterCity_Gym_Text_LiamIntro, PewterCity_Gym_Text_LiamDefeat
-	msgbox PewterCity_Gym_Text_LiamPostBattle, MSGBOX_AUTOCLOSE
+PewterCity_Gym_EventScript_RainaPostClear::
+	goto_if_unset FLAG_SYS_GAME_CLEAR, PewterCity_Gym_EventScript_RainaPostClearRepeat
+	checktrainerflag TRAINER_LEADER_RAINA_REMATCH
+	goto_if_eq TRUE, PewterCity_Gym_EventScript_RainaRematchSpent
+	msgbox PewterCity_Gym_Text_RainaRematchPrompt, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_Gym_EventScript_RainaRematchNo
+	trainerbattle_single TRAINER_LEADER_RAINA_REMATCH, PewterCity_Gym_Text_RainaRematchYes, PewterCity_Gym_Text_RainaDefeat, PewterCity_Gym_EventScript_RainaRematchWon, NO_MUSIC
+	goto PewterCity_Gym_EventScript_RainaRematchSpent
 	end
+
+PewterCity_Gym_EventScript_RainaRematchNo::
+	msgbox PewterCity_Gym_Text_RainaRematchNo
+	release
+	end
+
+PewterCity_Gym_EventScript_RainaRematchWon::
+	msgbox PewterCity_Gym_Text_RainaRematchWin
+	release
+	end
+
+PewterCity_Gym_EventScript_RainaRematchSpent::
+	msgbox PewterCity_Gym_Text_RainaRematchSpent
+	release
+	end
+
+PewterCity_Gym_EventScript_RainaPostClearRepeat::
+	msgbox PewterCity_Gym_Text_RainaPostClearRepeat
+	release
+	end
+
+@ Legacy map label retained for source compatibility.
+PewterCity_Gym_EventScript_Liam::
+PewterCity_Gym_EventScript_Wade::
+	trainerbattle_single TRAINER_HYDROLOGIST_WADE, PewterCity_Gym_Text_WadeIntro, PewterCity_Gym_Text_WadeDefeat, PewterCity_Gym_EventScript_DefeatedWade
+	msgbox PewterCity_Gym_Text_WadePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+PewterCity_Gym_EventScript_DefeatedWade::
+	applymovement LOCALID_CLOUDBURST_WADE, PewterCity_Gym_Movement_WadeStepAside
+	waitmovement 0
+	copyobjectxytoperm LOCALID_CLOUDBURST_WADE
+	msgbox PewterCity_Gym_Text_WadePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+PewterCity_Gym_Movement_WadeStepAside::
+	walk_left
+	step_end
+
+PewterCity_Gym_EventScript_Skye::
+	trainerbattle_single TRAINER_STORM_CHASER_SKYE, PewterCity_Gym_Text_SkyeIntro, PewterCity_Gym_Text_SkyeDefeat, PewterCity_Gym_EventScript_DefeatedSkye
+	msgbox PewterCity_Gym_Text_SkyePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+PewterCity_Gym_EventScript_DefeatedSkye::
+	applymovement LOCALID_CLOUDBURST_SKYE, PewterCity_Gym_Movement_SkyeStepAside
+	waitmovement 0
+	copyobjectxytoperm LOCALID_CLOUDBURST_SKYE
+	msgbox PewterCity_Gym_Text_SkyePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+PewterCity_Gym_Movement_SkyeStepAside::
+	walk_right
+	step_end
 
 PewterCity_Gym_EventScript_GymGuy::
 	lock
 	faceplayer
-	goto_if_set FLAG_DEFEATED_BROCK, PewterCity_Gym_EventScript_GymGuyPostVictory
-	msgbox PewterCity_Gym_Text_LetMeTakeYouToTheTop, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, YES, PewterCity_Gym_EventScript_GymGuyTakeMeToTop
-	goto_if_eq VAR_RESULT, NO, PewterCity_Gym_EventScript_GymGuyDontTakeMeToTop
-	end
-
-PewterCity_Gym_EventScript_GymGuyPostVictory::
-	msgbox PewterCity_Gym_Text_YoureChampMaterial
-	release
-	end
-
-PewterCity_Gym_EventScript_GymGuyTakeMeToTop::
-	msgbox PewterCity_Gym_Text_LetsGetHappening
-	goto PewterCity_Gym_EventScript_GymGuyAdvice
-	end
-
-PewterCity_Gym_EventScript_GymGuyDontTakeMeToTop::
-	msgbox PewterCity_Gym_Text_ItsFreeLetsGetHappening
-	goto PewterCity_Gym_EventScript_GymGuyAdvice
-	end
-
-PewterCity_Gym_EventScript_GymGuyAdvice::
-	msgbox PewterCity_Gym_Text_TryDifferentPartyOrders
+	msgbox PewterCity_Gym_Text_GymGuide
 	release
 	end
 
 PewterCity_Gym_EventScript_GymStatue::
+PewterCity_Gym_EventScript_GymSign::
 	lockall
-	goto_if_set FLAG_BADGE01_GET, PewterCity_Gym_EventScript_GymStatuePostVictory
-	msgbox PewterCity_Gym_Text_GymStatue
-	releaseall
-	end
-
-PewterCity_Gym_EventScript_GymStatuePostVictory::
-	msgbox PewterCity_Gym_Text_GymStatuePlayerWon
+	msgbox PewterCity_Gym_Text_GymSign
 	releaseall
 	end
