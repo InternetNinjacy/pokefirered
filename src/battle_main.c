@@ -1539,6 +1539,37 @@ static void SpriteCB_UnusedDebugSprite_Step(struct Sprite *sprite)
     }
 }
 
+static void ApplyWeatherGymTrainerAbilityOverride(struct Pokemon *mon, u16 trainerNum, u16 species)
+{
+    u8 abilityNum;
+
+    if (trainerNum == TRAINER_HYDROLOGIST_WADE && species == SPECIES_MARILL)
+    {
+        abilityNum = 0; // Thick Fat
+        SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNum);
+    }
+    else if (trainerNum == TRAINER_LEADER_RAINA && species == SPECIES_CHINCHOU)
+    {
+        abilityNum = 0; // Volt Absorb
+        SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNum);
+    }
+    else if (trainerNum == TRAINER_LEADER_RAINA_REMATCH)
+    {
+        switch (species)
+        {
+        case SPECIES_STARMIE:
+            abilityNum = 1; // Natural Cure
+            SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNum);
+            break;
+        case SPECIES_MANECTRIC:
+        case SPECIES_LANTURN:
+            abilityNum = 0; // Static / Volt Absorb
+            SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNum);
+            break;
+        }
+    }
+}
+
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 {
     u32 nameHash = 0;
@@ -1632,6 +1663,8 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 break;
             }
             }
+
+            ApplyWeatherGymTrainerAbilityOverride(&party[i], trainerNum, GetMonData(&party[i], MON_DATA_SPECIES));
         }
 
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
