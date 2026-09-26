@@ -53,6 +53,10 @@ CeruleanCity_Gym_EventScript_LeilaniDefeated::
 	setflag FLAG_DEFEATED_LEILANI
 	setflag FLAG_BADGE02_GET
 	setrespawn HEAL_LOCATION_CERULEAN_CITY
+	set_gym_trainers 2
+	setvar VAR_SAM_CERULEAN_GYM_FLAME_STATE, 3
+	call CeruleanCity_Gym_EventScript_ApplyFlameState
+	special DrawWholeMapView
 	msgbox CeruleanCity_Gym_Text_LeilaniBadge
 	release
 	end
