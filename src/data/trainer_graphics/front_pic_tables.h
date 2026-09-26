@@ -147,7 +147,11 @@ const struct MonCoords gTrainerFrontPicCoords[] =
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},    {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+
 };
 
 const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
@@ -300,6 +304,12 @@ const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
     TRAINER_SPRITE(RUIN_MANIAC, gTrainerFrontPic_RuinManiac, 0x800),
     TRAINER_SPRITE(LADY, gTrainerFrontPic_Lady, 0x800),
     TRAINER_SPRITE(PAINTER, gTrainerFrontPic_Painter, 0x800),
+    TRAINER_SPRITE(LEILANI, gTrainerFrontPic_Leilani, 0x800),
+    TRAINER_SPRITE(LEHUA, gTrainerFrontPic_Lehua, 0x800),
+    TRAINER_SPRITE(KEAHI, gTrainerFrontPic_Keahi, 0x800),
+    // Satoshi's own FireRed conversion is still open by authority.
+    // Keep his reserved ID runtime-safe until that approved derivative exists.
+    TRAINER_SPRITE(SATOSHI, gTrainerFrontPic_ProfessorOak, 0x800),
 };
 
 const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
@@ -452,4 +462,9 @@ const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
     TRAINER_PAL(RUIN_MANIAC, gTrainerPalette_RuinManiac),
     TRAINER_PAL(LADY, gTrainerPalette_Lady),
     TRAINER_PAL(PAINTER, gTrainerPalette_Painter),
+    TRAINER_PAL(LEILANI, gTrainerPalette_Leilani),
+    TRAINER_PAL(LEHUA, gTrainerPalette_Lehua),
+    TRAINER_PAL(KEAHI, gTrainerPalette_Keahi),
+    // Temporary runtime-safe fallback paired with the Satoshi sprite entry above.
+    TRAINER_PAL(SATOSHI, gTrainerPalette_ProfessorOak),
 };
