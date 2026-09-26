@@ -1757,12 +1757,7 @@ static const struct SpriteFrameImage sPicTable_Lehua[] = {
     overworld_frame(gObjectEventPic_Lehua, 2, 4, 0),
     overworld_frame(gObjectEventPic_Lehua, 2, 4, 1),
     overworld_frame(gObjectEventPic_Lehua, 2, 4, 2),
-    overworld_frame(gObjectEventPic_Lehua, 2, 4, 0),
-    overworld_frame(gObjectEventPic_Lehua, 2, 4, 0),
-    overworld_frame(gObjectEventPic_Lehua, 2, 4, 1),
-    overworld_frame(gObjectEventPic_Lehua, 2, 4, 1),
-    overworld_frame(gObjectEventPic_Lehua, 2, 4, 2),
-    overworld_frame(gObjectEventPic_Lehua, 2, 4, 2),
+    overworld_frame(gObjectEventPic_Lehua, 2, 4, 3),
 };
 
 static const struct SpriteFrameImage sPicTable_Keahi[] = {
