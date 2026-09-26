@@ -10,7 +10,7 @@ PewterCity_Gym_Text_GymGuide::
     .string "Rain makes WATER moves stronger and\n"
     .string "FIRE moves weaker.\p"
     .string "Around here, it does something else\n"
-    .string "too—ELECTRIC moves become more\l"
+    .string "too-ELECTRIC moves become more\l"
     .string "accurate!\p"
     .string "That's why you'll see both WATER and\n"
     .string "ELECTRIC Pokémon in this Gym.\p"
@@ -35,7 +35,7 @@ PewterCity_Gym_Text_LiamDefeat::
 PewterCity_Gym_Text_WadePostBattle::
 PewterCity_Gym_Text_LiamPostBattle::
     .string "Water hits harder in Rain.\p"
-    .string "That's simple enough—but Raina will\n"
+    .string "That's simple enough-but Raina will\n"
     .string "expect you to understand more than\l"
     .string "that.$"
 
@@ -93,7 +93,7 @@ PewterCity_Gym_Text_RainaSquallBadgeExplain::
     .string "of battle.$"
 
 PewterCity_Gym_Text_RainaWeatherBallReward::
-    .string "And take this—TM12, Weather Ball.\p"
+    .string "And take this-TM12, Weather Ball.\p"
     .string "Weather Ball changes with the\n"
     .string "weather around it.\p"
     .string "Rain makes it Water-type, but that's\n"
@@ -130,7 +130,7 @@ PewterCity_Gym_Text_RainaRematchNo::
 PewterCity_Gym_Text_RainaRematchWin::
     .string "There it is. You saw the storm for\n"
     .string "what it was.\p"
-    .string "You didn't fight the conditions—you\n"
+    .string "You didn't fight the conditions-you\n"
     .string "read them and used them.\p"
     .string "That's what separates a good Trainer\n"
     .string "from a great one.$"
