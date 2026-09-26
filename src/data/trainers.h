@@ -7422,7 +7422,26 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_CueBallPaxton),
     },
-};
+    [TRAINER_SATOSHI_CERULEAN_PRACTICE] = {
+        .trainerClass = TRAINER_CLASS_PKMN_TRAINER,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
+        .trainerPic = TRAINER_PIC_SATOSHI,
+        .trainerName = _("SATOSHI"),
+        .items = {},
+        .doubleBattle = FALSE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_SatoshiCeruleanPractice),
+    },
+    [TRAINER_SATOSHI_CERULEAN_REMATCH] = {
+        .trainerClass = TRAINER_CLASS_PKMN_TRAINER,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
+        .trainerPic = TRAINER_PIC_SATOSHI,
+        .trainerName = _("SATOSHI"),
+        .items = {ITEM_FULL_RESTORE},
+        .doubleBattle = FALSE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+        .party = ITEM_CUSTOM_MOVES(sParty_SatoshiCeruleanRematch),
+    },
     [TRAINER_FIRE_DANCER_LEHUA] = {
         .trainerClass = TRAINER_CLASS_FIRE_DANCER,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_FEMALE | F_TRAINER_FEMALE,
@@ -7430,7 +7449,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("LEHUA"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_CUSTOM_MOVES(sParty_FireDancerLehua),
     },
     [TRAINER_FIRE_DANCER_KEAHI] = {
@@ -7440,7 +7459,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("KEAHI"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_CUSTOM_MOVES(sParty_FireDancerKeahi),
     },
     [TRAINER_LEADER_LEILANI] = {
@@ -7453,4 +7472,15 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
         .party = NO_ITEM_CUSTOM_MOVES(sParty_LeaderLeilani),
     },
+    [TRAINER_LEADER_LEILANI_REMATCH] = {
+        .trainerClass = TRAINER_CLASS_LEADER,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_FEMALE | F_TRAINER_FEMALE,
+        .trainerPic = TRAINER_PIC_LEILANI,
+        .trainerName = _("LEILANI"),
+        .items = {ITEM_FULL_RESTORE, ITEM_FULL_RESTORE},
+        .doubleBattle = FALSE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+        .party = ITEM_CUSTOM_MOVES(sParty_LeaderLeilaniRematch),
+    },
 
+};

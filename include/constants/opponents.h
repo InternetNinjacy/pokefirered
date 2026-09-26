@@ -746,17 +746,31 @@
 #define TRAINER_CHAMPION_REMATCH_BULBASAUR       740
 #define TRAINER_CHAMPION_REMATCH_CHARMANDER      741
 #define TRAINER_CUE_BALL_PAXTON                  742
-#define TRAINER_FIRE_DANCER_LEHUA                 743
-#define TRAINER_FIRE_DANCER_KEAHI                 744
-#define TRAINER_LEADER_LEILANI                    745
-#define TRAINER_SATOSHI_CERULEAN_PRACTICE        746
-#define TRAINER_SATOSHI_CERULEAN_REMATCH         747
+#define TRAINER_SATOSHI_PEWTER_PRACTICE          743
+#define TRAINER_SATOSHI_CERULEAN_PRACTICE        744
+#define TRAINER_SATOSHI_VERMILION_PRACTICE       745
+#define TRAINER_SATOSHI_CELADON_PRACTICE         746
+#define TRAINER_SATOSHI_FUCHSIA_PRACTICE         747
+#define TRAINER_SATOSHI_SAFFRON_PRACTICE         748
+#define TRAINER_SATOSHI_CINNABAR_PRACTICE        749
+#define TRAINER_SATOSHI_VIRIDIAN_PRACTICE        750
+#define TRAINER_SATOSHI_PEWTER_REMATCH           751
+#define TRAINER_SATOSHI_CERULEAN_REMATCH         752
+#define TRAINER_SATOSHI_VERMILION_REMATCH        753
+#define TRAINER_SATOSHI_CELADON_REMATCH          754
+#define TRAINER_SATOSHI_FUCHSIA_REMATCH          755
+#define TRAINER_SATOSHI_SAFFRON_REMATCH          756
+#define TRAINER_SATOSHI_CINNABAR_REMATCH         757
+#define TRAINER_SATOSHI_VIRIDIAN_REMATCH         758
+#define TRAINER_FIRE_DANCER_LEHUA                 759
+#define TRAINER_FIRE_DANCER_KEAHI                 760
+#define TRAINER_LEADER_LEILANI                    761
+#define TRAINER_LEADER_LEILANI_REMATCH            762
 
-// NOTE: Because each Trainer uses a flag to determine when they are defeated, there is 
-//       only space for 25 additional trainers before trainer flag space overflows.
-//       MAX_TRAINERS_COUNT can be increased but will take up additional saveblock space
+// NOTE: Because each Trainer uses a flag to determine when they are defeated, there is
+//       only space through trainer ID 767 before trainer flag space overflows.
 
-#define NUM_TRAINERS                             748
+#define NUM_TRAINERS                             763
 #define MAX_TRAINERS_COUNT                       768
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H

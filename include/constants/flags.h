@@ -686,6 +686,7 @@
 #define FLAG_GOT_TM20_FROM_THIRSTY_GIRL                  0x295
 #define FLAG_GOT_TM16_FROM_THIRSTY_GIRL                  0x296
 #define FLAG_GOT_TM03_FROM_MISTY                         0x297
+#define FLAG_GOT_TM39_FROM_LEILANI                       FLAG_GOT_TM03_FROM_MISTY
 #define FLAG_GOT_TM26_FROM_GIOVANNI                      0x298
 #define FLAG_0x299                                       0x299
 #define FLAG_GOT_TM04_FROM_SABRINA                       0x29A
@@ -810,14 +811,14 @@
 #define FLAG_0x30D               0x30D
 #define FLAG_0x30E               0x30E
 #define FLAG_0x30F               0x30F
-#define FLAG_0x310               0x310
-#define FLAG_0x311               0x311
-#define FLAG_0x312               0x312
-#define FLAG_0x313               0x313
-#define FLAG_0x314               0x314
-#define FLAG_0x315               0x315
-#define FLAG_0x316               0x316
-#define FLAG_0x317               0x317
+#define FLAG_SATOSHI_PEWTER_PRACTICE_WON    0x310
+#define FLAG_SATOSHI_CERULEAN_PRACTICE_WON  0x311
+#define FLAG_SATOSHI_VERMILION_PRACTICE_WON 0x312
+#define FLAG_SATOSHI_CELADON_PRACTICE_WON   0x313
+#define FLAG_SATOSHI_FUCHSIA_PRACTICE_WON   0x314
+#define FLAG_SATOSHI_SAFFRON_PRACTICE_WON   0x315
+#define FLAG_SATOSHI_CINNABAR_PRACTICE_WON  0x316
+#define FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON  0x317
 #define FLAG_0x318               0x318
 #define FLAG_0x319               0x319
 #define FLAG_0x31A               0x31A
@@ -1235,6 +1236,7 @@
 // Boss clear flags, 1200
 #define FLAG_DEFEATED_BROCK           0x4B0
 #define FLAG_DEFEATED_MISTY           0x4B1
+#define FLAG_DEFEATED_LEILANI         FLAG_DEFEATED_MISTY
 #define FLAG_DEFEATED_LT_SURGE        0x4B2
 #define FLAG_DEFEATED_ERIKA           0x4B3
 #define FLAG_DEFEATED_KOGA            0x4B4
