@@ -10860,3 +10860,13 @@ static const struct TrainerMonNoItemDefaultMoves sParty_CueBallPaxton[] = {
         .species = SPECIES_MUK,
     },
 };
+
+// Pokémon: Weather — reserved Cloudburst trainer-party slots.
+// These placeholders keep NUM_TRAINERS source-safe until the battle-data pass populates them.
+static const struct TrainerMonNoItemDefaultMoves sParty_StormChaserSkye[] = {
+    DUMMY_TRAINER_MON,
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_LeaderRainaRematch[] = {
+    DUMMY_TRAINER_MON,
+};
