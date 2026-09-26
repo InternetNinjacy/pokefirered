@@ -585,63 +585,24 @@ static const u8 *const sControlsGuide_Pages2And3_Strings[CONTROLS_GUIDE_STRINGS_
     gControlsGuide_Text_LRButtons
 };
 
+static const u8 sNameChoice_Sam[] = _("SAM");
+static const u8 sNameChoice_Riff[] = _("RIFF");
+static const u8 sNameChoice_Raff[] = _("RAFF");
+
 static const u8 *const sMaleNameChoices[] =
 {
-#if defined(FIRERED)
     gNameChoice_Red,
-    gNameChoice_Fire,
-    gNameChoice_Ash,
-    gNameChoice_Kene,
-    gNameChoice_Geki,
-#elif defined(LEAFGREEN)
-    gNameChoice_Green,
-    gNameChoice_Leaf,
-    gNameChoice_Gary,
-    gNameChoice_Kaz,
-    gNameChoice_Toru,
-#endif
-    gNameChoice_Jak,
-    gNameChoice_Janne,
-    gNameChoice_Jonn,
-    gNameChoice_Kamon,
-    gNameChoice_Karl,
-    gNameChoice_Taylor,
-    gNameChoice_Oscar,
-    gNameChoice_Hiro,
-    gNameChoice_Max,
-    gNameChoice_Jon,
-    gNameChoice_Ralph,
-    gNameChoice_Kay,
-    gNameChoice_Tosh,
-    gNameChoice_Roak
+    sNameChoice_Sam,
+    sNameChoice_Riff,
+    sNameChoice_Raff,
 };
 
 static const u8 *const sFemaleNameChoices[] =
 {
-#if defined(FIRERED)
     gNameChoice_Red,
-    gNameChoice_Fire,
-#elif defined(LEAFGREEN)
-    gNameChoice_Green,
-    gNameChoice_Leaf,
-#endif
-    gNameChoice_Omi,
-    gNameChoice_Jodi,
-    gNameChoice_Amanda,
-    gNameChoice_Hillary,
-    gNameChoice_Makey,
-    gNameChoice_Michi,
-    gNameChoice_Paula,
-    gNameChoice_June,
-    gNameChoice_Cassie,
-    gNameChoice_Rey,
-    gNameChoice_Seda,
-    gNameChoice_Kiko,
-    gNameChoice_Mina,
-    gNameChoice_Norie,
-    gNameChoice_Sai,
-    gNameChoice_Momo,
-    gNameChoice_Suzi
+    sNameChoice_Sam,
+    sNameChoice_Riff,
+    sNameChoice_Raff,
 };
 
 static const u8 *const sRivalNameChoices[] =
