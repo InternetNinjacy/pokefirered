@@ -44,6 +44,7 @@ CeruleanCity_Gym_EventScript_ApplyFlameState3::
 @ are intentionally completed in later Gym 2 implementation steps.
 
 CeruleanCity_Gym_EventScript_Leilani::
+	goto_if_set FLAG_SYS_GAME_CLEAR, CeruleanCity_Gym_EventScript_LeilaniPostgame
 	trainerbattle_single TRAINER_LEADER_LEILANI, CeruleanCity_Gym_Text_LeilaniIntro, CeruleanCity_Gym_Text_LeilaniDefeat, CeruleanCity_Gym_EventScript_LeilaniDefeated, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM39_FROM_LEILANI, CeruleanCity_Gym_EventScript_GiveTM39
 	msgbox CeruleanCity_Gym_Text_LeilaniBadge
@@ -60,6 +61,19 @@ CeruleanCity_Gym_EventScript_LeilaniDefeated::
 	special DrawWholeMapView
 	msgbox CeruleanCity_Gym_Text_LeilaniBadge
 	goto CeruleanCity_Gym_EventScript_GiveTM39
+	end
+
+CeruleanCity_Gym_EventScript_LeilaniPostgame::
+	goto_if_unset FLAG_GOT_TM39_FROM_LEILANI, CeruleanCity_Gym_EventScript_GiveTM39
+	@ Dedicated rematch dialogue is not yet locked; reuse approved battle lines
+	@ rather than inventing new player-facing canon.
+	cleartrainerflag TRAINER_LEADER_LEILANI_REMATCH
+	trainerbattle_single TRAINER_LEADER_LEILANI_REMATCH, CeruleanCity_Gym_Text_LeilaniIntro, CeruleanCity_Gym_Text_LeilaniDefeat, CeruleanCity_Gym_EventScript_LeilaniRematchDefeated, NO_MUSIC
+	release
+	end
+
+CeruleanCity_Gym_EventScript_LeilaniRematchDefeated::
+	release
 	end
 
 CeruleanCity_Gym_EventScript_GiveTM39::
@@ -106,6 +120,7 @@ CeruleanCity_Gym_EventScript_KeahiCheckpointDone::
 CeruleanCity_Gym_EventScript_Satoshi::
 	lock
 	faceplayer
+	goto_if_set FLAG_SYS_GAME_CLEAR, CeruleanCity_Gym_EventScript_SatoshiPostgameRematch
 	goto_if_set FLAG_BADGE02_GET, CeruleanCity_Gym_EventScript_SatoshiPostBadge
 	goto_if_set FLAG_SATOSHI_CERULEAN_PRACTICE_WON, CeruleanCity_Gym_EventScript_SatoshiRepeatHint
 	checktrainerflag TRAINER_SATOSHI_CERULEAN_PRACTICE
@@ -153,6 +168,15 @@ CeruleanCity_Gym_EventScript_SatoshiDecline::
 
 CeruleanCity_Gym_EventScript_SatoshiRepeatHint::
 	msgbox CeruleanCity_Gym_Text_SatoshiRepeatHint
+	release
+	end
+
+CeruleanCity_Gym_EventScript_SatoshiPostgameRematch::
+	@ Hall of Fame routing supersedes the original practice state.
+	@ Dedicated rematch dialogue is not yet locked, so reuse approved Cerulean
+	@ battle lines rather than inventing new dialogue.
+	cleartrainerflag TRAINER_SATOSHI_CERULEAN_REMATCH
+	trainerbattle_single TRAINER_SATOSHI_CERULEAN_REMATCH, CeruleanCity_Gym_Text_SatoshiAccept, CeruleanCity_Gym_Text_SatoshiWin
 	release
 	end
 
