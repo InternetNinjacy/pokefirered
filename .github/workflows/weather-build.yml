@@ -27,5 +27,8 @@ jobs:
           sudo apt update
           sudo apt install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
 
+      - name: Validate TM12 Weather Ball compatibility
+        run: python3 tools/validate_weather_ball_compat.py
+
       - name: Build Pokémon Weather
         run: make -j$(nproc) all
