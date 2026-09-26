@@ -112,7 +112,7 @@ for weather, type_name in required_mappings:
     require(wb, f"gBattleWeather & {weather}", "Weather Ball weather mapping")
     require(wb, f"= {type_name} | F_DYNAMIC_TYPE_2;", "Weather Ball weather mapping")
 
-items = json.loads(text("src/data/items.json"))
+items = json.loads(text("src/data/items.json"))["items"]
 tm12 = next((item for item in items if item.get("itemId") == "ITEM_TM12"), None)
 if tm12 is None or tm12.get("moveId") != "WeatherBall":
     fail("TM12 item does not resolve to WeatherBall")
