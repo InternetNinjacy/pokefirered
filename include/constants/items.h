@@ -369,6 +369,9 @@
 #define ITEM_TM09_BULLET_SEED ITEM_TM09
 #define ITEM_TM10_HIDDEN_POWER ITEM_TM10
 #define ITEM_TM11_SUNNY_DAY ITEM_TM11
+#define ITEM_TM12_WEATHER_BALL ITEM_TM12
+// Legacy source alias retained temporarily so the existing TM12 learnset bit table
+// remains buildable until Pokémon: Weather's TM12 species compatibility is finalized.
 #define ITEM_TM12_TAUNT ITEM_TM12
 #define ITEM_TM13_ICE_BEAM ITEM_TM13
 #define ITEM_TM14_BLIZZARD ITEM_TM14
