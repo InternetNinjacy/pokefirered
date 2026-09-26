@@ -3,6 +3,7 @@
 #include "random.h"
 #include "overworld.h"
 #include "constants/maps.h"
+#include "constants/vars.h"
 #include "load_save.h"
 #include "item_menu.h"
 #include "tm_case.h"
@@ -108,6 +109,7 @@ void NewGameInitData(void)
 {
     u8 rivalName[PLAYER_NAME_LENGTH + 1];
     u8 greenName[PLAYER_NAME_LENGTH + 1];
+    u16 samGameMode = gSaveBlock1Ptr->vars[VAR_SAM_GAME_MODE - VARS_START];
 
     StringCopy(rivalName, gSaveBlock1Ptr->rivalName);
     StringCopy(greenName, gSaveBlock1Ptr->samEdition.greenName);
@@ -151,6 +153,7 @@ void NewGameInitData(void)
     RunScriptImmediately(EventScript_ResetAllMapFlags);
     StringCopy(gSaveBlock1Ptr->rivalName, rivalName);
     StringCopy(gSaveBlock1Ptr->samEdition.greenName, greenName);
+    gSaveBlock1Ptr->vars[VAR_SAM_GAME_MODE - VARS_START] = samGameMode;
     ResetTrainerTowerResults();
 }
 
