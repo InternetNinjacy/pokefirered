@@ -141,6 +141,10 @@ static const u16 sOakSpeech_Oak_Pal[] = INCBIN_U16("graphics/oak_speech/oak/pal.
 static const u32 sOakSpeech_Oak_Tiles[] = INCBIN_U32("graphics/oak_speech/oak/pic.8bpp.lz");
 static const u16 sOakSpeech_Rival_Pal[] = INCBIN_U16("graphics/oak_speech/rival/pal.gbapal");
 static const u32 sOakSpeech_Rival_Tiles[] = INCBIN_U32("graphics/oak_speech/rival/pic.8bpp.lz");
+static const u16 sOakSpeech_Blue_Pal[] = INCBIN_U16("graphics/oak_speech/blue/pal.gbapal");
+static const u32 sOakSpeech_Blue_Tiles[] = INCBIN_U32("graphics/oak_speech/blue/pic.8bpp.lz");
+static const u16 sOakSpeech_Green_Pal[] = INCBIN_U16("graphics/oak_speech/green/pal.gbapal");
+static const u32 sOakSpeech_Green_Tiles[] = INCBIN_U32("graphics/oak_speech/green/pic.8bpp.lz");
 static const u16 sOakSpeech_Platform_Pal[] = INCBIN_U16("graphics/oak_speech/platform.gbapal");
 static const u16 sPikachuIntro_Pikachu_Pal[] = INCBIN_U16("graphics/oak_speech/pikachu_intro/pikachu.gbapal");
 static const u32 sOakSpeech_Platform_Gfx[] = INCBIN_U32("graphics/oak_speech/platform.4bpp.lz");
@@ -646,7 +650,9 @@ enum
     MALE_PLAYER_PIC,
     FEMALE_PLAYER_PIC,
     RIVAL_PIC,
-    OAK_PIC
+    OAK_PIC,
+    BLUE_PIC,
+    GREEN_PIC
 };
 
 static void VBlankCB_NewGameScene(void)
@@ -1529,7 +1535,7 @@ static void Task_OakSpeech_FadeInRivalPic(u8 taskId)
     ChangeBgX(2, 0, BG_COORD_SET);
     gTasks[taskId].tTrainerPicPosX = 0;
     gSpriteCoordOffsetX = 0;
-    LoadTrainerPic(RIVAL_PIC, 0);
+    LoadTrainerPic(BLUE_PIC, 0);
     CreateFadeOutTask(taskId, 2);
     gTasks[taskId].func = Task_OakSpeech_AskRivalsName;
 }
@@ -1553,7 +1559,7 @@ static void Task_OakSpeech_FadeInGreenPic(u8 taskId)
     if (tTrainerPicFadeState != 0)
     {
         ClearTrainerPic();
-        LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
+        LoadTrainerPic(GREEN_PIC, 0);
         tTrainerPicPosX = 0;
         gSpriteCoordOffsetX = 0;
         ChangeBgX(2, 0, BG_COORD_SET);
@@ -1875,10 +1881,10 @@ static void CB2_ReturnFromNamingScreen(void)
                 LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
             break;
         case NAME_TARGET_BLUE:
-            LoadTrainerPic(RIVAL_PIC, 0);
+            LoadTrainerPic(BLUE_PIC, 0);
             break;
         case NAME_TARGET_GREEN:
-            LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
+            LoadTrainerPic(GREEN_PIC, 0);
             break;
         }
         gTasks[taskId].tTrainerPicPosX = -60;
@@ -2007,6 +2013,14 @@ static void LoadTrainerPic(u16 whichPic, u16 tileOffset)
     case OAK_PIC:
         LoadPalette(sOakSpeech_Oak_Pal, BG_PLTT_ID(6), sizeof(sOakSpeech_Oak_Pal));
         LZ77UnCompVram(sOakSpeech_Oak_Tiles, (void *)VRAM + 0x600 + tileOffset);
+        break;
+    case BLUE_PIC:
+        LoadPalette(sOakSpeech_Blue_Pal, BG_PLTT_ID(6), sizeof(sOakSpeech_Blue_Pal));
+        LZ77UnCompVram(sOakSpeech_Blue_Tiles, (void *)VRAM + 0x600 + tileOffset);
+        break;
+    case GREEN_PIC:
+        LoadPalette(sOakSpeech_Green_Pal, BG_PLTT_ID(6), sizeof(sOakSpeech_Green_Pal));
+        LZ77UnCompVram(sOakSpeech_Green_Tiles, (void *)VRAM + 0x600 + tileOffset);
         break;
     default:
         return;
