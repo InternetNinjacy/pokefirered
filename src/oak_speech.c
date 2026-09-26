@@ -1104,7 +1104,6 @@ static void Task_OakSpeech_Init(u8 taskId)
         LoadBgTiles(1, sOakSpeechResources->oakSpeechBackgroundTiles, size, 0);
         CopyToBgTilemapBuffer(1, sOakSpeech_Background_Tilemap, 0, 0);
         CopyBgTilemapBufferToVram(1);
-        CreateNidoranFSprite(taskId);
         LoadTrainerPic(OAK_PIC, 0);
         CreatePikachuOrPlatformSprites(taskId, SPRITE_TYPE_PLATFORM);
         PlayBGM(MUS_ROUTE24);
@@ -1141,7 +1140,8 @@ static void Task_OakSpeech_WelcomeToTheWorld(u8 taskId)
         else
         {
             OakSpeechPrintMessage(gOakSpeech_Text_WelcomeToTheWorld, sOakSpeechResources->textSpeed);
-            gTasks[taskId].func = Task_OakSpeech_ThisWorld;
+            // Sam Edition: skip the stock Nidoran/Pokémon-basics demonstration.
+            gTasks[taskId].func = Task_OakSpeech_TellMeALittleAboutYourself;
         }
     }
 }
@@ -1212,35 +1212,15 @@ static void Task_OakSpeech_ReturnNidoranFToPokeBall(u8 taskId)
         gTasks[taskId].tPokeBallSpriteId = CreateTradePokeballSprite(spriteId, gSprites[spriteId].oam.paletteNum, 100, 66, 0, 0, 32, 0xFFFF1F3F);
         gTasks[taskId].tTimer = 48;
         gTasks[taskId].tSpriteTimer = 64;
-        gTasks[taskId].func = Task_OakSpeech_TellMeALittleAboutYourself;
+        gTasks[taskId]static void Task_OakSpeech_TellMeALittleAboutYourself(u8 taskId)
+{
+    if (!IsTextPrinterActive(WIN_INTRO_TEXTBOX))
+    {
+        OakSpeechPrintMessage(gOakSpeech_Text_TellMeALittleAboutYourself, sOakSpeechResources->textSpeed);
+        gTasks[taskId].func = Task_OakSpeech_FadeOutOak;
     }
 }
-
-static void Task_OakSpeech_TellMeALittleAboutYourself(u8 taskId)
-{
-    s16 *data = gTasks[taskId].data;
-
-    if (tSpriteTimer != 0)
-    {
-        if (tSpriteTimer < 24)
-            gSprites[tNidoranFSpriteId].y--;
-        tSpriteTimer--;
-    }
-    else
-    {
-        if (tTimer == 48)
-        {
-            DestroySprite(&gSprites[tNidoranFSpriteId]);
-            DestroySprite(&gSprites[tPokeBallSpriteId]);
-        }
-        if (tTimer != 0)
-        {
-            tTimer--;
-        }
-        else
-        {
-            OakSpeechPrintMessage(gOakSpeech_Text_TellMeALittleAboutYourself, sOakSpeechResources->textSpeed);
-            gTasks[taskId].func = Task_OakSpeech_FadeOutOak;
+taskId].func = Task_OakSpeech_FadeOutOak;
         }
     }
 }
