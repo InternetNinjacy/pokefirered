@@ -155,8 +155,9 @@ gControlsGuide_Text_LRButtons::
     .string "press the L or R Button.$"
 
 gOakSpeech_Text_AskPlayerGender::
-    .string "Now tell me. Are you a boy?\n"
-    .string "Or are you a girl?$"
+    .string "First...\p"
+    .string "Which Trainer will you exchange\n"
+    .string "places with?$"
 
 gPikachuIntro_Text_Page1::
     .string "In the world which you are about to\n"
