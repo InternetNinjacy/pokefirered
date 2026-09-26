@@ -236,3 +236,6 @@ const u16 gObjectEventPic_Lehua[] = INCBIN_U16("graphics/object_events/pics/peop
 
 const u16 gObjectEventPal_Keahi[] = INCBIN_U16("graphics/object_events/palettes/keahi.gbapal");
 const u16 gObjectEventPic_Keahi[] = INCBIN_U16("graphics/object_events/pics/people/keahi.4bpp");
+
+const u16 gObjectEventPal_Leilani[] = INCBIN_U16("graphics/object_events/palettes/leilani.gbapal");
+const u16 gObjectEventPic_Leilani[] = INCBIN_U16("graphics/object_events/pics/people/leilani.4bpp");
