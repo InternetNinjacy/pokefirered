@@ -2553,3 +2553,9 @@ static void Task_WingFlapSound(u8 taskId)
     if (data[0] == gSpecialVar_0x8004 - 1)
         DestroyTask(taskId);
 }
+// Sam Edition: expose existing Hall-of-Fame state to map scripts without allocating a redundant flag.
+u16 SamHasEnteredHallOfFame(void)
+{
+    return GetGameStat(GAME_STAT_ENTERED_HOF) != 0;
+}
+
