@@ -10872,6 +10872,47 @@ static const struct TrainerMonNoItemCustomMoves sParty_StormChaserSkye[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_LeaderRainaRematch[] = {
-    DUMMY_TRAINER_MON,
+static const struct TrainerMonItemCustomMoves sParty_LeaderRainaRematch[] = {
+    {
+        .iv = 255,
+        .lvl = 60,
+        .species = SPECIES_PELIPPER,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_SURF, MOVE_ICE_BEAM, MOVE_TOXIC, MOVE_PROTECT},
+    },
+    {
+        .iv = 255,
+        .lvl = 61,
+        .species = SPECIES_AMPHAROS,
+        .heldItem = ITEM_MAGNET,
+        .moves = {MOVE_THUNDER, MOVE_THUNDER_WAVE, MOVE_LIGHT_SCREEN, MOVE_PROTECT},
+    },
+    {
+        .iv = 255,
+        .lvl = 61,
+        .species = SPECIES_STARMIE,
+        .heldItem = ITEM_LUM_BERRY,
+        .moves = {MOVE_SURF, MOVE_PSYCHIC, MOVE_ICE_BEAM, MOVE_RECOVER},
+    },
+    {
+        .iv = 255,
+        .lvl = 62,
+        .species = SPECIES_MANECTRIC,
+        .heldItem = ITEM_PETAYA_BERRY,
+        .moves = {MOVE_THUNDER, MOVE_CRUNCH, MOVE_ROAR, MOVE_PROTECT},
+    },
+    {
+        .iv = 255,
+        .lvl = 63,
+        .species = SPECIES_KINGDRA,
+        .heldItem = ITEM_MYSTIC_WATER,
+        .moves = {MOVE_HYDRO_PUMP, MOVE_ICE_BEAM, MOVE_DRAGON_BREATH, MOVE_SMOKESCREEN},
+    },
+    {
+        .iv = 255,
+        .lvl = 64,
+        .species = SPECIES_LANTURN,
+        .heldItem = ITEM_SHELL_BELL,
+        .moves = {MOVE_SURF, MOVE_THUNDER, MOVE_ICE_BEAM, MOVE_CONFUSE_RAY},
+    },
 };
