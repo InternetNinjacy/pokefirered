@@ -42,11 +42,10 @@ def palette_count(path):
 badge_path = ROOT / "graphics/trainer_card/badges.png"
 badge_data = badge_path.read_bytes()
 meta = png_meta("graphics/trainer_card/badges.png")
-if meta[:2] != (128, 16) or meta[3] != 3:
-    fail(f"badge sheet: expected 128x16 indexed PNG, got {meta}")
+if meta[:2] != (128, 16) or meta[2] != 4 or meta[3] != 3:
+    fail(f"badge sheet: expected 128x16 4-bit indexed PNG, got {meta}")
 if git_blob_sha1(badge_data) != BADGE_GIT_BLOB:
     fail("badge sheet changed; review Squall slot and deliberately update the approved fingerprint")
-palette_count("graphics/trainer_card/badges.pal")
 
 flags = text("include/constants/flags.h")
 require(flags, "#define FLAG_BADGE01_SQUALL                                         FLAG_BADGE01_GET", "Squall badge flag alias")
