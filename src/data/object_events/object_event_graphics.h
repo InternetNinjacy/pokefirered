@@ -233,3 +233,6 @@ const u16 gFieldEffectObjectPic_Bird[] = INCBIN_U16("graphics/field_effects/pics
 
 const u16 gObjectEventPal_Lehua[] = INCBIN_U16("graphics/object_events/palettes/lehua.gbapal");
 const u16 gObjectEventPic_Lehua[] = INCBIN_U16("graphics/object_events/pics/people/lehua.4bpp");
+
+const u16 gObjectEventPal_Keahi[] = INCBIN_U16("graphics/object_events/palettes/keahi.gbapal");
+const u16 gObjectEventPic_Keahi[] = INCBIN_U16("graphics/object_events/pics/people/keahi.4bpp");
