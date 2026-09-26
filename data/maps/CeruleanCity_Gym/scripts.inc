@@ -1,5 +1,22 @@
 CeruleanCity_Gym_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, CeruleanCity_Gym_OnLoad
 	.byte 0
+
+CeruleanCity_Gym_OnLoad::
+	call CeruleanCity_Gym_EventScript_ApplyGateAState
+	end
+
+@ Step 2 / S1 only.
+@ Until later puzzle steps are implemented, state 0 means Gate A lit/blocked
+@ and state 1 means Gate A extinguished/passable.
+CeruleanCity_Gym_EventScript_ApplyGateAState::
+	goto_if_eq VAR_SAM_CERULEAN_GYM_FLAME_STATE, 1, CeruleanCity_Gym_EventScript_GateAOpen
+	setmetatile 13, 14, METATILE_CeruleanGym_FlameGate_Lit, 1
+	return
+
+CeruleanCity_Gym_EventScript_GateAOpen::
+	setmetatile 13, 14, METATILE_CeruleanGym_Floor, 0
+	return
 
 @ Step 1: replace the surviving vanilla Cerulean trainer/leader/guide script layer.
 @ Flame-state runtime, full Satoshi battle flow, TM39 handoff, and rematch routing
@@ -85,7 +102,21 @@ CeruleanCity_Gym_EventScript_GymStatuePostVictory::
 @ Temporary no-op entry points so the already-authored map can resolve its puzzle
 @ event labels before the flame-state implementation steps are completed.
 CeruleanCity_Gym_EventScript_Reset::
+	end
+
 CeruleanCity_Gym_EventScript_Switch1::
+	lockall
+	goto_if_eq VAR_SAM_CERULEAN_GYM_FLAME_STATE, 0, CeruleanCity_Gym_EventScript_Switch1Activate
+	releaseall
+	end
+
+CeruleanCity_Gym_EventScript_Switch1Activate::
+	setvar VAR_SAM_CERULEAN_GYM_FLAME_STATE, 1
+	call CeruleanCity_Gym_EventScript_ApplyGateAState
+	special DrawWholeMapView
+	releaseall
+	end
+
 CeruleanCity_Gym_EventScript_Switch2::
 CeruleanCity_Gym_EventScript_Switch3::
 	end
