@@ -295,6 +295,17 @@ const struct Tileset gTileset_PewterGym =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_CloudburstGym =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_CloudburstGym,
+    .palettes = gTilesetPalettes_CloudburstGym,
+    .metatiles = gMetatiles_CloudburstGym,
+    .metatileAttributes = gMetatileAttributes_CloudburstGym,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_CeruleanGym =
 {
     .isCompressed = TRUE,
