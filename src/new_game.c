@@ -107,8 +107,10 @@ void ResetMenuAndMonGlobals(void)
 void NewGameInitData(void)
 {
     u8 rivalName[PLAYER_NAME_LENGTH + 1];
+    u8 greenName[PLAYER_NAME_LENGTH + 1];
 
     StringCopy(rivalName, gSaveBlock1Ptr->rivalName);
+    StringCopy(greenName, gSaveBlock1Ptr->samEdition.greenName);
     gDifferentSaveFile = TRUE;
     gSaveBlock2Ptr->encryptionKey = 0;
     ZeroPlayerPartyMons();
@@ -148,6 +150,7 @@ void NewGameInitData(void)
     WarpToPlayersRoom();
     RunScriptImmediately(EventScript_ResetAllMapFlags);
     StringCopy(gSaveBlock1Ptr->rivalName, rivalName);
+    StringCopy(gSaveBlock1Ptr->samEdition.greenName, greenName);
     ResetTrainerTowerResults();
 }
 
