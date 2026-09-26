@@ -35,6 +35,8 @@ PokemonLeague_HallOfFame_EventScript_EnterRoom::
 	delay 40
 	setvar VAR_TEMP_1, 1
 	call EventScript_SetDefeatedEliteFourFlagsVars
+	@ Pokémon: Weather — each Hall of Fame entry opens a fresh Gym Leader rematch cycle.
+	cleartrainerflag TRAINER_LEADER_RAINA_REMATCH
 	setrespawn HEAL_LOCATION_PALLET_TOWN
 	fadescreenspeed FADE_TO_BLACK, 24
 	special EnterHallOfFame
