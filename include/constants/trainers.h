@@ -167,6 +167,13 @@
 #define TRAINER_PIC_LADY                  146
 #define TRAINER_PIC_PAINTER               147
 
+// Pokémon: Weather semantic trainer-picture aliases.
+// These intentionally point at existing FireRed art until Part 7 replaces them with
+// the approved Cloudburst production assets.
+#define TRAINER_PIC_RAINA                 TRAINER_PIC_LEADER_BROCK
+#define TRAINER_PIC_HYDROLOGIST           TRAINER_PIC_CAMPER
+#define TRAINER_PIC_STORM_CHASER          TRAINER_PIC_PICNICKER
+
 // Pokémon: Weather semantic aliases. Raina replaces Brock directly.
 // Wade and Skye use temporary existing graphics until approved assets land.
 #define TRAINER_PIC_LEADER_RAINA           TRAINER_PIC_LEADER_BROCK
