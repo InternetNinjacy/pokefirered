@@ -756,6 +756,21 @@ struct ExternalEventFlags
 
 } __attribute__((packed));/*size = 0x15*/
 
+struct SamEditionSaveData
+{
+    /*0x00*/ u8 reservedHeaderCore[0x10];
+    /*0x10*/ u8 reservedGlobalMechanics[0x40];
+
+    // Rival / Team Rocket auxiliary state (0x50-0x8F).
+    /*0x50*/ u8 greenName[PLAYER_NAME_LENGTH + 1];
+    /*0x58*/ u8 reservedRivalRocket[0x38];
+
+    /*0x90*/ u8 reservedGymSatoshiPostgame[0x30];
+    /*0xC0*/ u8 reservedFuture[0x30];
+}; // size: 0xF0
+
+STATIC_ASSERT(sizeof(struct SamEditionSaveData) == 0xF0, SamEditionSaveDataSize);
+
 struct SaveBlock1
 {
     /*0x0000*/ struct Coords16 pos;
@@ -806,7 +821,10 @@ struct SaveBlock1
     /*0x30D0*/ struct Roamer roamer;
     /*0x30EC*/ struct EnigmaBerry enigmaBerry;
     /*0x3120*/ struct MysteryGiftSave mysteryGift;
-    /*0x348C*/ u8 unused_348C[400];
+    /*0x348C*/ struct SamEditionSaveData samEdition;
+    // Transitional padding: when the planned +0xA0 trainer/Quest Log flag
+    // expansion lands, remove this tail so ramScript remains at 0x361C.
+    /*0x357C*/ u8 unused_357C[160];
     /*0x361C*/ struct RamScript ramScript;
     /*0x3A08*/ struct RecordMixingGift recordMixingGift; // unused
     /*0x3A18*/ u8 seen2[DEX_FLAGS_NO];
