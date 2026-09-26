@@ -59,6 +59,11 @@ CeruleanCity_Gym_Text_LeilaniTM39::
     .string "Control the battle, and the\n"
     .string "pressure stays yours.$"
 
+CeruleanCity_Gym_Text_LeilaniNoRoomForTM39::
+    .string "Your Bag is full.\p"
+    .string "Make some room and come back\n"
+    .string "for TM39.$"
+
 CeruleanCity_Gym_Text_SatoshiFirstApproach::
     .string "So, this is Leilani's Gym.\n"
     .string "Fire this time.\p"
