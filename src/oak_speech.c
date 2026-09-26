@@ -1220,11 +1220,6 @@ static void Task_OakSpeech_ReturnNidoranFToPokeBall(u8 taskId)
         gTasks[taskId].func = Task_OakSpeech_FadeOutOak;
     }
 }
-taskId].func = Task_OakSpeech_FadeOutOak;
-        }
-    }
-}
-
 static void Task_OakSpeech_FadeOutOak(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
