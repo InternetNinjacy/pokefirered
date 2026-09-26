@@ -120,9 +120,17 @@ CeruleanCity_Gym_EventScript_GymStatuePostVictory::
 	releaseall
 	end
 
-@ Temporary no-op entry points so the already-authored map can resolve its puzzle
-@ event labels before the flame-state implementation steps are completed.
 CeruleanCity_Gym_EventScript_Reset::
+	lockall
+	goto_if_eq VAR_SAM_CERULEAN_GYM_FLAME_STATE, 3, CeruleanCity_Gym_EventScript_ResetInert
+	setvar VAR_SAM_CERULEAN_GYM_FLAME_STATE, 0
+	call CeruleanCity_Gym_EventScript_ApplyFlameState
+	special DrawWholeMapView
+	releaseall
+	end
+
+CeruleanCity_Gym_EventScript_ResetInert::
+	releaseall
 	end
 
 CeruleanCity_Gym_EventScript_Switch1::
