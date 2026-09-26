@@ -214,10 +214,10 @@ for pos, gfx in expected_objs.items():
 scripts = text("data/maps/PewterCity_Gym/scripts.inc")
 for needle in (
     "applymovement LOCALID_CLOUDBURST_WADE, PewterCity_Gym_Movement_WadeStepAside",
-    "PewterCity_Gym_Movement_WadeStepAside:\n\twalk_left",
+    "PewterCity_Gym_Movement_WadeStepAside::\n\twalk_left",
     "setobjectxyperm LOCALID_CLOUDBURST_WADE, 5, 11",
     "applymovement LOCALID_CLOUDBURST_SKYE, PewterCity_Gym_Movement_SkyeStepAside",
-    "PewterCity_Gym_Movement_SkyeStepAside:\n\twalk_right",
+    "PewterCity_Gym_Movement_SkyeStepAside::\n\twalk_right",
     "setobjectxyperm LOCALID_CLOUDBURST_SKYE, 7, 8",
 ):
     require(scripts, needle, "Cloudburst movement scripts")
