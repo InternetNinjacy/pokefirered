@@ -1,0 +1,31 @@
+name: Pokémon Weather Build
+
+on:
+  push:
+    branches:
+      - weather-gym1-cloudburst
+  pull_request:
+    branches:
+      - weather-dev
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GAME_VERSION: FIRERED
+      GAME_LANGUAGE: ENGLISH
+      GAME_REVISION: 0
+      MODERN: 1
+      COMPARE: 0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
+
+      - name: Build Pokémon Weather
+        run: make -j$(nproc) all
