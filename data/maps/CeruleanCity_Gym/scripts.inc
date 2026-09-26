@@ -3,19 +3,30 @@ CeruleanCity_Gym_MapScripts::
 	.byte 0
 
 CeruleanCity_Gym_OnLoad::
-	call CeruleanCity_Gym_EventScript_ApplyGateAState
+	call CeruleanCity_Gym_EventScript_ApplyFlameState
 	end
 
-@ Step 2 / S1 only.
-@ Until later puzzle steps are implemented, state 0 means Gate A lit/blocked
-@ and state 1 means Gate A extinguished/passable.
-CeruleanCity_Gym_EventScript_ApplyGateAState::
-	goto_if_eq VAR_SAM_CERULEAN_GYM_FLAME_STATE, 1, CeruleanCity_Gym_EventScript_GateAOpen
+@ Steps 2-3 implemented.
+@ 0 = Gate A/B lit; 1 = Gate A open; 2 = Gate B open and Gate A relit.
+@ Gate C remains untouched until Switch 3 is implemented.
+CeruleanCity_Gym_EventScript_ApplyFlameState::
+	goto_if_eq VAR_SAM_CERULEAN_GYM_FLAME_STATE, 1, CeruleanCity_Gym_EventScript_ApplyFlameState1
+	goto_if_eq VAR_SAM_CERULEAN_GYM_FLAME_STATE, 2, CeruleanCity_Gym_EventScript_ApplyFlameState2
+	goto CeruleanCity_Gym_EventScript_ApplyFlameState0
+
+CeruleanCity_Gym_EventScript_ApplyFlameState0::
 	setmetatile 13, 14, METATILE_CeruleanGym_FlameGate_Lit, 1
+	setmetatile 13, 11, METATILE_CeruleanGym_FlameGate_Lit, 1
 	return
 
-CeruleanCity_Gym_EventScript_GateAOpen::
+CeruleanCity_Gym_EventScript_ApplyFlameState1::
 	setmetatile 13, 14, METATILE_CeruleanGym_Floor, 0
+	setmetatile 13, 11, METATILE_CeruleanGym_FlameGate_Lit, 1
+	return
+
+CeruleanCity_Gym_EventScript_ApplyFlameState2::
+	setmetatile 13, 14, METATILE_CeruleanGym_FlameGate_Lit, 1
+	setmetatile 13, 11, METATILE_CeruleanGym_Floor, 0
 	return
 
 @ Step 1: replace the surviving vanilla Cerulean trainer/leader/guide script layer.
@@ -112,11 +123,23 @@ CeruleanCity_Gym_EventScript_Switch1::
 
 CeruleanCity_Gym_EventScript_Switch1Activate::
 	setvar VAR_SAM_CERULEAN_GYM_FLAME_STATE, 1
-	call CeruleanCity_Gym_EventScript_ApplyGateAState
+	call CeruleanCity_Gym_EventScript_ApplyFlameState
 	special DrawWholeMapView
 	releaseall
 	end
 
 CeruleanCity_Gym_EventScript_Switch2::
+	lockall
+	goto_if_eq VAR_SAM_CERULEAN_GYM_FLAME_STATE, 1, CeruleanCity_Gym_EventScript_Switch2Activate
+	releaseall
+	end
+
+CeruleanCity_Gym_EventScript_Switch2Activate::
+	setvar VAR_SAM_CERULEAN_GYM_FLAME_STATE, 2
+	call CeruleanCity_Gym_EventScript_ApplyFlameState
+	special DrawWholeMapView
+	releaseall
+	end
+
 CeruleanCity_Gym_EventScript_Switch3::
 	end
