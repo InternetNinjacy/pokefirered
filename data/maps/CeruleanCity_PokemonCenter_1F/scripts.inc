@@ -189,7 +189,7 @@ CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedColor::
 	goto_if_eq VAR_RESULT, 0, CeruleanCity_PokemonCenter_1F_BallMaster_ReportReturn
 	buffernumberstring STR_VAR_1, VAR_RESULT
 	copyvar VAR_0x8004, VAR_0x8006
-	specialvar VAR_RESULT, BallMaster_GetOutputItemForColor
+	specialvar VAR_RESULT, BallMaster_GetApricornItemForColor
 	bufferitemname STR_VAR_2, VAR_RESULT
 	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterInventoryLine
 CeruleanCity_PokemonCenter_1F_BallMaster_ReportReturn::
