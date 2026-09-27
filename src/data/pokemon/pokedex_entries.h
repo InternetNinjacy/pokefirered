@@ -5030,4 +5030,30 @@ const struct PokedexEntry gPokedexEntries[] =
         .trainerScale = 337,
         .trainerOffset = 2,
     },
+    [NATIONAL_DEX_TALICE] =
+    {
+        .categoryName = _("FROSTSHARD"),
+        .height = 9,
+        .weight = 1380,
+        .description = gTalicePokedexText,
+        .unusedDescription = gTalicePokedexTextUnused,
+        .pokemonScale = 300,
+        .pokemonOffset = 8,
+        .trainerScale = 256,
+        .trainerOffset = -2,
+    },
+
+    [NATIONAL_DEX_FELSENMEER] =
+    {
+        .categoryName = _("BLOCKFIELD"),
+        .height = 14,
+        .weight = 3100,
+        .description = gFelsenmeerPokedexText,
+        .unusedDescription = gFelsenmeerPokedexTextUnused,
+        .pokemonScale = 256,
+        .pokemonOffset = 4,
+        .trainerScale = 300,
+        .trainerOffset = 2,
+    },
+
 };
