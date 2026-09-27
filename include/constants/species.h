@@ -418,7 +418,17 @@
 #define SPECIES_JIRACHI 409
 #define SPECIES_DEOXYS 410
 #define SPECIES_CHIMECHO 411
-#define SPECIES_EGG 412
+
+// Pokémon: Weather shared custom-species block.
+// These IDs are reserved across the paired-version species universe and must remain stable.
+#define SPECIES_LEAFEON 412
+#define SPECIES_GLACEON 413
+#define SPECIES_ECTOCEON 414
+#define SPECIES_TALICE 415
+#define SPECIES_FELSENMEER 416
+#define SPECIES_PYROLANTE 417
+
+#define SPECIES_EGG 418
 
 #define NUM_SPECIES SPECIES_EGG
 
