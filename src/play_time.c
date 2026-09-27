@@ -34,12 +34,14 @@ void PlayTimeCounter_Stop(void)
 
 void PlayTimeCounter_Update(void)
 {
-    if (sPlayTimeCounterState == RUNNING)
-    {
-        // TOM-SYS-003 uses the same global active-play heartbeat as the
-        // vanilla play-time counter, but it does not inherit the 999-hour cap.
+    // TOM-SYS-003 uses the same global active-play heartbeat as the vanilla
+    // play-time counter, but it must keep advancing after vanilla caps at
+    // 999:59:59. STOPPED still pauses both clocks.
+    if (sPlayTimeCounterState != STOPPED)
         WeatherTime_Update();
 
+    if (sPlayTimeCounterState == RUNNING)
+    {
         gSaveBlock2Ptr->playTimeVBlanks++;
         if (gSaveBlock2Ptr->playTimeVBlanks > 59)
         {
