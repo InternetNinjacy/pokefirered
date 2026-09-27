@@ -38,5 +38,6 @@ u16 BallMaster_ConvertSingle(void);
 u16 BallMaster_CollectOrder(void);
 u16 BallMaster_GetScriptOrderQuantity(void);
 u16 BallMaster_GetOutputItemForColor(void);
+u16 BallMaster_GetApricornItemForColor(void);
 
 #endif // GUARD_APRICORN_H
