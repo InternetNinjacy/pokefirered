@@ -2714,13 +2714,15 @@ const u8 gDeoxysPokedexTextUnused[] = _("");
 const u8 gTalicePokedexText[] = _(
     "After exposure to an ICE STONE, its body\n"
     "fractures into several slabs. Living ice\n"
-    "binds the pieces and supports new limbs.");
+    "binds the pieces together and supports\n"
+    "the new limbs that emerge as it grows.");
 
 const u8 gTalicePokedexTextUnused[] = _("");
 
 const u8 gFelsenmeerPokedexText[] = _(
     "Its body was split into jagged slabs by\n"
     "relentless freezing. Veins of living ice\n"
-    "bind the fragments together.");
+    "bind the fragments together, so an entire\n"
+    "rockfall may rise and begin to move.");
 
 const u8 gFelsenmeerPokedexTextUnused[] = _("");
