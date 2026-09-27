@@ -1,4 +1,5 @@
 #include "global.h"
+#include "apricorn.h"
 #include "gflib.h"
 #include "event_data.h"
 #include "event_object_movement.h"
@@ -1618,6 +1619,7 @@ static u8 TrySpawnObjectEventTemplate(const struct ObjectEventTemplate *objectEv
     if (subspriteTables)
         SetSubspriteTables(&gSprites[gObjectEvents[objectEventId].spriteId], subspriteTables);
 
+    ApricornTree_OnObjectSpawn(&gObjectEvents[objectEventId]);
     return objectEventId;
 }
 
