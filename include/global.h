@@ -367,7 +367,10 @@ struct SaveBlock2
     /*0xB60*/ u16 ballMasterOrderQty[8];
     /*0xB70*/ u32 ballMasterCompletionMinute;
 
-    /*0xB74*/ u8 filler_B74[0x3AC];
+    // TOM-SYS-003 canonical active-play clock.
+    /*0xB74*/ u32 weatherTimeMinuteIndex;
+    /*0xB78*/ u16 weatherTimeFramePhase;
+    /*0xB7A*/ u8 filler_B7A[0x3A6];
     /*0xF20*/ u32 encryptionKey;
 }; // size: 0xF24
 
