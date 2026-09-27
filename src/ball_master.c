@@ -1,5 +1,6 @@
 #include "global.h"
 #include "apricorn.h"
+#include "event_data.h"
 #include "item.h"
 #include "script.h"
 #include "constants/apricorn.h"
