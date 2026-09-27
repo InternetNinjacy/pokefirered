@@ -455,4 +455,11 @@ gSpecials::
 	def_special ApricornTree_PrepareInteraction
 	def_special ApricornTree_Harvest
 	def_special ApricornTrees_ReconcileCurrentMap
+	def_special BallMaster_PrepareInteraction
+	def_special BallMaster_HasMetPlayer
+	def_special BallMaster_SetMetPlayer
+	def_special BallMaster_GetBagApricornQuantity
+	def_special BallMaster_GetBagApricornTotal
+	def_special BallMaster_StartBatch
+	def_special BallMaster_GetWorkingTimeBranch
 gSpecialsEnd::
