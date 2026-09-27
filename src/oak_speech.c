@@ -15,7 +15,9 @@
 #include "overworld.h"
 #include "random.h"
 #include "data.h"
+#include "event_data.h"
 #include "constants/songs.h"
+#include "constants/vars.h"
 
 #define INTRO_SPECIES SPECIES_NIDORAN_F
 
@@ -850,6 +852,7 @@ static void Task_SamModeSelect_HandleInput(u8 taskId)
     else if (JOY_NEW(A_BUTTON) && tSamModeChoice >= 0)
     {
         PlaySE(SE_SELECT);
+        VarSet(VAR_SAM_GAME_MODE, tSamModeChoice);
         ClearStdWindowAndFrameToTransparent(tSamModeWindowId, TRUE);
         RemoveWindow(tSamModeWindowId);
         FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 30, 20);
