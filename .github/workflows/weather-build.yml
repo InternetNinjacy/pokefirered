@@ -36,5 +36,8 @@ jobs:
       - name: Validate Squall Badge source/display path
         run: python3 tools/validate_squall_badge.py
 
+      - name: Validate Weather Ball runtime source paths
+        run: python3 tools/validate_weather_ball_runtime.py
+
       - name: Build Pokémon Weather
         run: make -j$(nproc) all

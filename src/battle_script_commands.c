@@ -9355,8 +9355,9 @@ static void Cmd_setweatherballtype(void)
 {
     if (WEATHER_HAS_EFFECT)
     {
-        if (gBattleWeather & B_WEATHER_ANY)
+        if (gBattleWeather & B_WEATHER_ALL)
             gBattleScripting.dmgMultiplier = 2;
+
         if (gBattleWeather & B_WEATHER_RAIN)
             *(&gBattleStruct->dynamicMoveType) = TYPE_WATER | F_DYNAMIC_TYPE_2;
         else if (gBattleWeather & B_WEATHER_SANDSTORM)
@@ -9365,6 +9366,14 @@ static void Cmd_setweatherballtype(void)
             *(&gBattleStruct->dynamicMoveType) = TYPE_FIRE | F_DYNAMIC_TYPE_2;
         else if (gBattleWeather & B_WEATHER_HAIL)
             *(&gBattleStruct->dynamicMoveType) = TYPE_ICE | F_DYNAMIC_TYPE_2;
+        else if (gBattleWeather & B_WEATHER_FOG)
+            *(&gBattleStruct->dynamicMoveType) = TYPE_GHOST | F_DYNAMIC_TYPE_2;
+        else if (gBattleWeather & B_WEATHER_TOXIC_SMOG)
+            *(&gBattleStruct->dynamicMoveType) = TYPE_POISON | F_DYNAMIC_TYPE_2;
+        else if (gBattleWeather & B_WEATHER_POLLEN)
+            *(&gBattleStruct->dynamicMoveType) = TYPE_BUG | F_DYNAMIC_TYPE_2;
+        else if (gBattleWeather & B_WEATHER_GALE)
+            *(&gBattleStruct->dynamicMoveType) = TYPE_FLYING | F_DYNAMIC_TYPE_2;
         else
             *(&gBattleStruct->dynamicMoveType) = TYPE_NORMAL | F_DYNAMIC_TYPE_2;
     }

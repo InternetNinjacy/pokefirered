@@ -30,6 +30,7 @@ PewterCity_Mart_Items::
 	.2byte ITEM_BURN_HEAL
 	.2byte ITEM_ESCAPE_ROPE
 	.2byte ITEM_REPEL
+	.2byte ITEM_TM12_WEATHER_BALL
 	.2byte ITEM_NONE
 	release
 	end

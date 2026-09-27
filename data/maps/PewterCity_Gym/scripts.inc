@@ -26,7 +26,6 @@ PewterCity_Gym_EventScript_SetSkyeDefeatedPosition::
 PewterCity_Gym_EventScript_Brock::
 PewterCity_Gym_EventScript_Raina::
 	trainerbattle_single TRAINER_LEADER_RAINA, PewterCity_Gym_Text_RainaIntro, PewterCity_Gym_Text_RainaDefeat, PewterCity_Gym_EventScript_DefeatedRaina, NO_MUSIC
-	goto_if_unset FLAG_GOT_TM12_FROM_RAINA, PewterCity_Gym_EventScript_GivePendingTM12
 	goto PewterCity_Gym_EventScript_RainaPostClear
 	end
 
@@ -41,35 +40,7 @@ PewterCity_Gym_EventScript_DefeatedRaina::
 	playfanfare MUS_OBTAIN_BADGE
 	waitfanfare
 	msgbox PewterCity_Gym_Text_RainaSquallBadgeExplain
-	goto PewterCity_Gym_EventScript_GiveTM12FirstClear
-	end
-
-PewterCity_Gym_EventScript_GiveTM12FirstClear::
-	checkitemspace ITEM_TM12_WEATHER_BALL
-	goto_if_eq VAR_RESULT, FALSE, PewterCity_Gym_EventScript_NoRoomForTM12
-	additem ITEM_TM12_WEATHER_BALL
-	setflag FLAG_GOT_TM12_FROM_RAINA
-	playfanfare MUS_LEVEL_UP
-	waitfanfare
-	msgbox PewterCity_Gym_Text_RainaWeatherBallReward
 	msgbox PewterCity_Gym_Text_RainaFirstClearFinal
-	release
-	end
-
-PewterCity_Gym_EventScript_GivePendingTM12::
-	checkitemspace ITEM_TM12_WEATHER_BALL
-	goto_if_eq VAR_RESULT, FALSE, PewterCity_Gym_EventScript_NoRoomForTM12
-	additem ITEM_TM12_WEATHER_BALL
-	setflag FLAG_GOT_TM12_FROM_RAINA
-	playfanfare MUS_LEVEL_UP
-	waitfanfare
-	msgbox PewterCity_Gym_Text_RainaWeatherBallReward
-	msgbox PewterCity_Gym_Text_RainaFirstClearFinal
-	release
-	end
-
-PewterCity_Gym_EventScript_NoRoomForTM12::
-	msgbox PewterCity_Gym_Text_DontHaveRoomForThis
 	release
 	end
 

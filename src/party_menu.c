@@ -4804,13 +4804,12 @@ static void Task_LearnedMove(u8 taskId)
 {
     struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
     s16 *data = gPartyMenu.data;
-    u16 item = gSpecialVar_ItemId;
 
     if (learnMoveMethod == LEARN_VIA_TMHM)
     {
         AdjustFriendship(mon, FRIENDSHIP_EVENT_LEARN_TMHM);
-        if (item < ITEM_HM01)
-            RemoveBagItem(item, 1);
+        // Pokémon: Weather — TMs and HMs are permanently reusable.
+        // This ordinary empty-move-slot learning path must not consume the machine.
     }
     GetMonNickname(mon, gStringVar1);
     StringCopy(gStringVar2, gMoveNames[learnMoveId]);
