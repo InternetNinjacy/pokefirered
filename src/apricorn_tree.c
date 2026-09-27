@@ -128,6 +128,25 @@ void ApricornTrees_OnMinuteTick(void)
     ApricornTrees_ReconcileCurrentMap();
 }
 
+void ApricornTree_OnToxicSmogResolved(void)
+{
+    u32 now;
+
+    // DEP-016 calls this immediately after setting the canonical resolved flag.
+    // That makes White's first 12-hour growth start at event resolution even
+    // if the player leaves Route 11 before returning to the tree.
+    if (!IsWhiteTreeUnlocked() || ApricornTree_HasWhiteFirstHarvested())
+        return;
+
+    if (ApricornTree_GetNextReadyMinute(APRICORN_TREE_ROUTE11_WHITE) == 0)
+    {
+        now = WeatherTime_GetMinuteIndex();
+        ApricornTree_SetNextReadyMinute(APRICORN_TREE_ROUTE11_WHITE, now + APRICORN_TREE_REGROWTH_MINUTES);
+    }
+
+    ApricornTrees_ReconcileCurrentMap();
+}
+
 u16 ApricornTree_PrepareInteraction(void)
 {
     struct ObjectEvent *objectEvent;
