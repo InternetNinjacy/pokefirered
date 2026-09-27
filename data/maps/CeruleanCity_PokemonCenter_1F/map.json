@@ -115,7 +115,7 @@
       "flag": "FLAG_HIDE_POSTGAME_GOSSIPERS"
     },
     {
-      "local_id": "8",
+      "local_id": "LOCALID_FROSTFALL_POKEMON_CENTER_BALL_MASTER",
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_OLD_MAN_1",
       "x": 10,
