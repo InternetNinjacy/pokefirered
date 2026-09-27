@@ -407,6 +407,8 @@ static const u32 *const sItemIconTable[ITEMS_COUNT + 1][2] =
     [ITEM_BLUE_APRICORN]   = {gItemIcon_BlueApricorn,   gItemIconPalette_BlueApricorn},
     [ITEM_VIOLET_APRICORN] = {gItemIcon_VioletApricorn, gItemIconPalette_VioletApricorn},
     [ITEM_BLACK_APRICORN]  = {gItemIcon_BlackApricorn,  gItemIconPalette_BlackApricorn},
+    [ITEM_ICE_STONE]       = {gItemIcon_WaterStone, gItemIconPalette_IceHeal},
+    [ITEM_BRICK]           = {gItemIcon_HardStone, gItemIconPalette_HardStone},
     // SHARED-002 new Ball items. Reuse stock Ball art until dedicated shared
     // Ball graphics are separately approved; gameplay identity is item-driven.
     [ITEM_FAST_BALL]       = {gItemIcon_UltraBall,   gItemIconPalette_UltraBall},
