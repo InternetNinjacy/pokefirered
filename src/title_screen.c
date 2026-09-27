@@ -78,7 +78,8 @@ static const u16 sSamTitleScreen_Pal[] = INCBIN_U16("graphics/title_screen/sam/t
 static const u32 sSamTitleScreen_Tiles0[] = INCBIN_U32("graphics/title_screen/sam/title_screen_part0.4bpp");
 static const u32 sSamTitleScreen_Tiles1[] = INCBIN_U32("graphics/title_screen/sam/title_screen_part1.4bpp");
 static const u32 sSamTitleScreen_Tiles2[] = INCBIN_U32("graphics/title_screen/sam/title_screen_part2.4bpp");
-static const u32 sSamTitleScreen_Tiles3[] = INCBIN_U32("graphics/title_screen/sam/title_screen_part3.4bpp");
+static const u8 sSamTitleScreen_Tiles3[] = INCBIN_U8("graphics/title_screen/sam/title_screen_part3.4bpp");
+static const u8 sSamTitleScreen_TilesTail[] = { 0xDE, 0xDD };
 
 static const u8 sBorderBgTiles[] = INCBIN_U8("graphics/title_screen/border_bg.4bpp.lz");
 
@@ -399,6 +400,7 @@ static void LoadSamTitleScreen(void)
     CpuCopy16(sSamTitleScreen_Tiles1, (void *)(VRAM + 0x12C0), sizeof(sSamTitleScreen_Tiles1));
     CpuCopy16(sSamTitleScreen_Tiles2, (void *)(VRAM + 0x2580), sizeof(sSamTitleScreen_Tiles2));
     CpuCopy16(sSamTitleScreen_Tiles3, (void *)(VRAM + 0x3840), sizeof(sSamTitleScreen_Tiles3));
+    CpuCopy16(sSamTitleScreen_TilesTail, (void *)(VRAM + 0x4AFE), sizeof(sSamTitleScreen_TilesTail));
 
     for (y = 0; y < 32; y++)
     {
