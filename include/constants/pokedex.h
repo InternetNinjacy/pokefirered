@@ -393,6 +393,9 @@ enum {
     NATIONAL_DEX_RAYQUAZA,
     NATIONAL_DEX_JIRACHI,
     NATIONAL_DEX_DEOXYS,
+    // Pokémon: Weather custom species currently integrated into the National Dex.
+    NATIONAL_DEX_TALICE,
+    NATIONAL_DEX_FELSENMEER,
     // Old Unown
     NATIONAL_DEX_OLD_UNOWN_B,
     NATIONAL_DEX_OLD_UNOWN_C,
@@ -423,7 +426,7 @@ enum {
 
 #define KANTO_DEX_COUNT     NATIONAL_DEX_MEW
 #define JOHTO_DEX_COUNT     NATIONAL_DEX_CELEBI
-#define NATIONAL_DEX_COUNT  NATIONAL_DEX_DEOXYS
+#define NATIONAL_DEX_COUNT  NATIONAL_DEX_FELSENMEER
 
 // Hoenn Pokedex order
 enum {
