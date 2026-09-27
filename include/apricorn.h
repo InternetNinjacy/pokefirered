@@ -34,5 +34,9 @@ u16 BallMaster_GetBagApricornQuantity(void);
 u16 BallMaster_GetBagApricornTotal(void);
 u16 BallMaster_StartBatch(void);
 u16 BallMaster_GetWorkingTimeBranch(void);
+u16 BallMaster_ConvertSingle(void);
+u16 BallMaster_CollectOrder(void);
+u16 BallMaster_GetScriptOrderQuantity(void);
+u16 BallMaster_GetOutputItemForColor(void);
 
 #endif // GUARD_APRICORN_H
