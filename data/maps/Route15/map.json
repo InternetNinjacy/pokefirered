@@ -222,7 +222,7 @@
       "graphics_id": "0",
       "x": 18,
       "y": 9,
-      "elevation": 0,
+      "elevation": 15,
       "movement_type": "MOVEMENT_TYPE_INVISIBLE",
       "movement_range_x": 0,
       "movement_range_y": 0,
