@@ -2288,9 +2288,9 @@ static void GetDefaultName(u8 namingTarget, u8 nameChoice)
     {
     case NAME_TARGET_PLAYER:
         if (gSaveBlock2Ptr->playerGender == MALE)
-            src = sMaleNameChoices[Random() % ARRAY_COUNT(sMaleNameChoices)];
+            src = sMaleNameChoices[nameChoice];
         else
-            src = sFemaleNameChoices[Random() % ARRAY_COUNT(sFemaleNameChoices)];
+            src = sFemaleNameChoices[nameChoice];
         dest = gSaveBlock2Ptr->playerName;
         break;
     case NAME_TARGET_BLUE:
