@@ -29,4 +29,11 @@ void BallMaster_ClearOrder(void);
 u32 BallMaster_GetCompletionMinute(void);
 void BallMaster_SetCompletionMinute(u32 minute);
 
+u16 BallMaster_PrepareInteraction(void);
+u16 BallMaster_GetBagApricornQuantity(void);
+u16 BallMaster_GetBagApricornTotal(void);
+u16 BallMaster_StartBatch(void);
+u16 BallMaster_GetWorkingTimeBranch(void);
+void BallMaster_SetCompletionMinute(u32 minute);
+
 #endif // GUARD_APRICORN_H
