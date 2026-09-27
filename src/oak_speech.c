@@ -1775,6 +1775,7 @@ static void Task_OakSpeech_ShrinkPlayerPic(u8 taskId)
     if (sOakSpeechResources->shrinkTimer % 20 == 0)
     {
         if (sOakSpeechResources->shrinkTimer == 40)
+            // Sam Edition transfer cue: reuse FireRed's native warp-in sound.
             PlaySE(SE_WARP_IN);
         oldScaleDelta = tScaleDelta;
         tScaleDelta -= 32;
