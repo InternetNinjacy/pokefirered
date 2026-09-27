@@ -92,8 +92,9 @@ PewterCity_Gym_Text_RainaSquallBadgeExplain::
     .string "It also lets you use Flash outside\n"
     .string "of battle.$"
 
-PewterCity_Gym_Text_RainaWeatherBallReward::
-    .string "And take this-TM12, Weather Ball.\p"
+PewterCity_Gym_Text_RainaWeatherBallInfo::
+    .string "TM12, Weather Ball, is sold at the\n"
+    .string "POKé MART here in CLOUDBURST.\p"
     .string "Weather Ball changes with the\n"
     .string "weather around it.\p"
     .string "Rain makes it Water-type, but that's\n"

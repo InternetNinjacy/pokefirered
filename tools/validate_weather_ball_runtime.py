@@ -80,7 +80,18 @@ for forbidden in (
     if forbidden in gym:
         fail(f"legacy Gym TM12 reward path remains: {forbidden}")
 require(gym, "setflag FLAG_BADGE01_SQUALL", "Raina Squall Badge award")
+require(gym, "msgbox PewterCity_Gym_Text_RainaWeatherBallInfo", "Raina Weather Ball Mart information")
 require(gym, "msgbox PewterCity_Gym_Text_RainaFirstClearFinal", "Raina first-clear completion")
+
+gym_text = text("data/maps/PewterCity_Gym/text.inc")
+for needle in (
+    "PewterCity_Gym_Text_RainaWeatherBallInfo::",
+    'TM12, Weather Ball, is sold at the',
+    'POKé MART here in CLOUDBURST.',
+):
+    require(gym_text, needle, "Raina Weather Ball Mart dialogue")
+if "PewterCity_Gym_Text_RainaWeatherBallReward::" in gym_text:
+    fail("superseded Raina Weather Ball reward dialogue label remains")
 
 # TM12 item still resolves to Weather Ball and remains reusable.
 items = json.loads(text("src/data/items.json"))

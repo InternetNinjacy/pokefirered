@@ -40,6 +40,7 @@ PewterCity_Gym_EventScript_DefeatedRaina::
 	playfanfare MUS_OBTAIN_BADGE
 	waitfanfare
 	msgbox PewterCity_Gym_Text_RainaSquallBadgeExplain
+	msgbox PewterCity_Gym_Text_RainaWeatherBallInfo
 	msgbox PewterCity_Gym_Text_RainaFirstClearFinal
 	release
 	end
