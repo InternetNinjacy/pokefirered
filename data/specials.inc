@@ -462,4 +462,8 @@ gSpecials::
 	def_special BallMaster_GetBagApricornTotal
 	def_special BallMaster_StartBatch
 	def_special BallMaster_GetWorkingTimeBranch
+	def_special BallMaster_ConvertSingle
+	def_special BallMaster_CollectOrder
+	def_special BallMaster_GetScriptOrderQuantity
+	def_special BallMaster_GetOutputItemForColor
 gSpecialsEnd::
