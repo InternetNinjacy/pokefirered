@@ -113,7 +113,7 @@ if "RemoveBagItem" in learn_block:
 require(learn_block, "TMs and HMs are permanently reusable", "ordinary reusable-TM path")
 
 for func in ("static void CB2_UseItem(void)", "static void CB2_UseTMHMAfterForgettingMove(void)"):
-    start = party.find(func)
+    start = party.rfind(func)
     if start < 0:
         fail(f"{func} missing")
     end = party.find("\n}\n", start)
