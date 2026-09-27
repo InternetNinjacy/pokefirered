@@ -399,3 +399,13 @@ u16 BallMaster_GetOutputItemForColor(void)
 
     return sBallMasterOutputItemIds[color];
 }
+
+u16 BallMaster_GetApricornItemForColor(void)
+{
+    u16 color = gSpecialVar_0x8004;
+
+    if (color >= APRICORN_COLOR_COUNT)
+        return ITEM_NONE;
+
+    return sApricornItemIds[color];
+}
