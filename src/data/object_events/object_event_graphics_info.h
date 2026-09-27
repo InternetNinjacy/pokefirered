@@ -1191,7 +1191,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApricornTreeReadyW
     .tracks = TRACKS_NONE,
     .oam = &gObjectEventBaseOam_16x16,
     .subspriteTables = gObjectEventSpriteOamTables_16x16,
-    .anims = sAnimTable_Inanimate,
+    .anims = sAnimTable_ApricornTree,
     .images = sPicTable_ApricornTreeReadyWhite,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
@@ -1209,7 +1209,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApricornTreeReadyR
     .tracks = TRACKS_NONE,
     .oam = &gObjectEventBaseOam_16x16,
     .subspriteTables = gObjectEventSpriteOamTables_16x16,
-    .anims = sAnimTable_Inanimate,
+    .anims = sAnimTable_ApricornTree,
     .images = sPicTable_ApricornTreeReadyRed,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
@@ -1227,7 +1227,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApricornTreeReadyO
     .tracks = TRACKS_NONE,
     .oam = &gObjectEventBaseOam_16x16,
     .subspriteTables = gObjectEventSpriteOamTables_16x16,
-    .anims = sAnimTable_Inanimate,
+    .anims = sAnimTable_ApricornTree,
     .images = sPicTable_ApricornTreeReadyOrange,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
@@ -1245,7 +1245,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApricornTreeReadyY
     .tracks = TRACKS_NONE,
     .oam = &gObjectEventBaseOam_16x16,
     .subspriteTables = gObjectEventSpriteOamTables_16x16,
-    .anims = sAnimTable_Inanimate,
+    .anims = sAnimTable_ApricornTree,
     .images = sPicTable_ApricornTreeReadyYellow,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
@@ -1263,7 +1263,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApricornTreeReadyG
     .tracks = TRACKS_NONE,
     .oam = &gObjectEventBaseOam_16x16,
     .subspriteTables = gObjectEventSpriteOamTables_16x16,
-    .anims = sAnimTable_Inanimate,
+    .anims = sAnimTable_ApricornTree,
     .images = sPicTable_ApricornTreeReadyGreen,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
@@ -1281,7 +1281,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApricornTreeReadyB
     .tracks = TRACKS_NONE,
     .oam = &gObjectEventBaseOam_16x16,
     .subspriteTables = gObjectEventSpriteOamTables_16x16,
-    .anims = sAnimTable_Inanimate,
+    .anims = sAnimTable_ApricornTree,
     .images = sPicTable_ApricornTreeReadyBlue,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
@@ -1299,7 +1299,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApricornTreeReadyV
     .tracks = TRACKS_NONE,
     .oam = &gObjectEventBaseOam_16x16,
     .subspriteTables = gObjectEventSpriteOamTables_16x16,
-    .anims = sAnimTable_Inanimate,
+    .anims = sAnimTable_ApricornTree,
     .images = sPicTable_ApricornTreeReadyViolet,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
@@ -1317,7 +1317,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApricornTreeReadyB
     .tracks = TRACKS_NONE,
     .oam = &gObjectEventBaseOam_16x16,
     .subspriteTables = gObjectEventSpriteOamTables_16x16,
-    .anims = sAnimTable_Inanimate,
+    .anims = sAnimTable_ApricornTree,
     .images = sPicTable_ApricornTreeReadyBlack,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
@@ -1335,7 +1335,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ApricornTreeEmpty 
     .tracks = TRACKS_NONE,
     .oam = &gObjectEventBaseOam_16x16,
     .subspriteTables = gObjectEventSpriteOamTables_16x16,
-    .anims = sAnimTable_Inanimate,
+    .anims = sAnimTable_ApricornTree,
     .images = sPicTable_ApricornTreeEmpty,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
