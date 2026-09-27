@@ -929,6 +929,12 @@ static const u16 sSpeciesToNationalPokedexNum[NUM_SPECIES - 1] =
     SPECIES_TO_NATIONAL(JIRACHI),
     SPECIES_TO_NATIONAL(DEOXYS),
     SPECIES_TO_NATIONAL(CHIMECHO),
+    0, // SPECIES_LEAFEON — reserved, not integrated in this branch
+    0, // SPECIES_GLACEON — reserved, not integrated in this branch
+    0, // SPECIES_ECTOCEON — reserved, not integrated in this branch
+    SPECIES_TO_NATIONAL(TALICE),
+    SPECIES_TO_NATIONAL(FELSENMEER),
+    0, // SPECIES_PYROLANTE — reserved, not integrated in this branch
 };
 
 // Assigns all Hoenn Dex Indexes to a National Dex Index
