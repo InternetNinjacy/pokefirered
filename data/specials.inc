@@ -452,4 +452,7 @@ gSpecials::
 	def_special UpdateLoreleiDollCollection
 	def_special LoopWingFlapSound
 	def_special CreateEnemyEventMon
+	def_special ApricornTree_PrepareInteraction
+	def_special ApricornTree_Harvest
+	def_special ApricornTrees_ReconcileCurrentMap
 gSpecialsEnd::
