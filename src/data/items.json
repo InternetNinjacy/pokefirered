@@ -6205,7 +6205,7 @@
     {
       "english": "BRICK",
       "itemId": "ITEM_BRICK",
-      "price": 2100,
+      "price": 0,
       "holdEffect": "HOLD_EFFECT_NONE",
       "holdEffectParam": 0,
       "description_english": "A strange heavy brick that makes\na certain POKéMON evolve.",
