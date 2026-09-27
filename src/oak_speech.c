@@ -25,6 +25,7 @@ enum
     WIN_INTRO_BOYGIRL,
     WIN_INTRO_YESNO,
     WIN_INTRO_NAMES,
+    WIN_INTRO_MODE,
     NUM_INTRO_WINDOWS,
 };
 
@@ -54,6 +55,10 @@ struct OakSpeechResources
 static EWRAM_DATA struct OakSpeechResources *sOakSpeechResources = NULL;
 
 static void Task_NewGameScene(u8);
+static void Task_SamModeSelect_Show(u8);
+static void Task_SamModeSelect_HandleInput(u8);
+static void Task_SamModeSelect_FadeToOak(u8);
+static void DrawSamModeSelector(u8);
 
 static void ControlsGuide_LoadPage1(void);
 static void Task_ControlsGuide_HandleInput(u8);
@@ -339,11 +344,26 @@ static const struct WindowTemplate sIntro_WindowTemplates[NUM_INTRO_WINDOWS + 1]
         .paletteNum = 15,
         .baseBlock = 1
     },
+    [WIN_INTRO_MODE] =
+    {
+        .bg = 0,
+        .tilemapLeft = 7,
+        .tilemapTop = 7,
+        .width = 16,
+        .height = 6,
+        .paletteNum = 15,
+        .baseBlock = 1
+    },
     DUMMY_WIN_TEMPLATE
 };
 
 static const u8 sTextColor_White[] = { 0, 1, 2, 0 };
 static const u8 sTextColor_DarkGray[] = { 0, 2, 3, 0 };
+
+static const u8 sSamModeText_Standard[] = _("STANDARD");
+static const u8 sSamModeText_Permanent[] = _("PERMANENT");
+static const u8 sSamModeText_StandardSelected[] = _("> STANDARD");
+static const u8 sSamModeText_PermanentSelected[] = _("> PERMANENT");
 
 enum
 {
@@ -689,6 +709,8 @@ void StartNewGameScene(void)
 #define tPikachuPlatformSpriteId(i) data[7 + i] // Pikachu and the platform are built of three sprites,
                                  // data[8]     // so these are used to hold their sprite IDs
                                  // data[9]     //
+#define tSamModeChoice              data[11]
+#define tSamModeWindowId            data[12]
 #define tMenuWindowId               data[13]
 #define tTextboxWindowId            data[14]
 #define tDelta                      data[15]
@@ -768,12 +790,79 @@ static void Task_NewGameScene(u8 taskId)
         ShowBg(0);
         ShowBg(1);
         SetVBlankCallback(VBlankCB_NewGameScene);
-        gTasks[taskId].func = Task_OakSpeech_Init;
+        gTasks[taskId].func = Task_SamModeSelect_Show;
         gMain.state = 0;
         return;
     }
 
     gMain.state++;
+}
+
+static void DrawSamModeSelector(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+    const u8 *standardText = sSamModeText_Standard;
+    const u8 *permanentText = sSamModeText_Permanent;
+
+    if (tSamModeChoice == 0)
+        standardText = sSamModeText_StandardSelected;
+    else if (tSamModeChoice == 1)
+        permanentText = sSamModeText_PermanentSelected;
+
+    FillWindowPixelBuffer(tSamModeWindowId, PIXEL_FILL(1));
+    AddTextPrinterParameterized(tSamModeWindowId, FONT_NORMAL, standardText, 8, 9, 0, NULL);
+    AddTextPrinterParameterized(tSamModeWindowId, FONT_NORMAL, permanentText, 8, 29, 0, NULL);
+    CopyWindowToVram(tSamModeWindowId, COPYWIN_FULL);
+}
+
+static void Task_SamModeSelect_Show(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+
+    tSamModeChoice = -1;
+    tSamModeWindowId = AddWindow(&sIntro_WindowTemplates[WIN_INTRO_MODE]);
+    PutWindowTilemap(tSamModeWindowId);
+    DrawStdFrameWithCustomTileAndPalette(tSamModeWindowId, TRUE, GetStdWindowBaseTileNum(), 14);
+    DrawSamModeSelector(taskId);
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+    gTasks[taskId].func = Task_SamModeSelect_HandleInput;
+}
+
+static void Task_SamModeSelect_HandleInput(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+
+    if (gPaletteFade.active)
+        return;
+
+    if (JOY_NEW(DPAD_UP))
+    {
+        PlaySE(SE_SELECT);
+        tSamModeChoice = 0;
+        DrawSamModeSelector(taskId);
+    }
+    else if (JOY_NEW(DPAD_DOWN))
+    {
+        PlaySE(SE_SELECT);
+        tSamModeChoice = 1;
+        DrawSamModeSelector(taskId);
+    }
+    else if (JOY_NEW(A_BUTTON) && tSamModeChoice >= 0)
+    {
+        PlaySE(SE_SELECT);
+        ClearStdWindowAndFrameToTransparent(tSamModeWindowId, TRUE);
+        RemoveWindow(tSamModeWindowId);
+        FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 30, 20);
+        CopyBgTilemapBufferToVram(0);
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        gTasks[taskId].func = Task_SamModeSelect_FadeToOak;
+    }
+}
+
+static void Task_SamModeSelect_FadeToOak(u8 taskId)
+{
+    if (!gPaletteFade.active)
+        gTasks[taskId].func = Task_OakSpeech_Init;
 }
 
 static void ControlsGuide_LoadPage1(void)
@@ -2220,6 +2309,8 @@ static void GetDefaultName(u8 namingTarget, u8 nameChoice)
 #undef tNidoranFSpriteId
 #undef tTextCursorSpriteId
 #undef tPokeBallSpriteId
+#undef tSamModeChoice
+#undef tSamModeWindowId
 #undef tMenuWindowId
 #undef tTextboxWindowId
 #undef tDelta
