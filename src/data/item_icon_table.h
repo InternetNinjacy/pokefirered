@@ -398,6 +398,15 @@ static const u32 *const sItemIconTable[ITEMS_COUNT + 1][2] =
     [ITEM_POWDER_JAR]     = {gItemIcon_PowderJar, gItemIconPalette_PowderJar},
     [ITEM_RUBY]           = {gItemIcon_Gem, gItemIconPalette_Ruby},
     [ITEM_SAPPHIRE]       = {gItemIcon_Gem, gItemIconPalette_Sapphire},
+    // SHARED-001 Apricorn crafting materials
+    [ITEM_WHITE_APRICORN]  = {gItemIcon_WhiteApricorn,  gItemIconPalette_WhiteApricorn},
+    [ITEM_RED_APRICORN]    = {gItemIcon_RedApricorn,    gItemIconPalette_RedApricorn},
+    [ITEM_ORANGE_APRICORN] = {gItemIcon_OrangeApricorn, gItemIconPalette_OrangeApricorn},
+    [ITEM_YELLOW_APRICORN] = {gItemIcon_YellowApricorn, gItemIconPalette_YellowApricorn},
+    [ITEM_GREEN_APRICORN]  = {gItemIcon_GreenApricorn,  gItemIconPalette_GreenApricorn},
+    [ITEM_BLUE_APRICORN]   = {gItemIcon_BlueApricorn,   gItemIconPalette_BlueApricorn},
+    [ITEM_VIOLET_APRICORN] = {gItemIcon_VioletApricorn, gItemIconPalette_VioletApricorn},
+    [ITEM_BLACK_APRICORN]  = {gItemIcon_BlackApricorn,  gItemIconPalette_BlackApricorn},
     // Return to field arrow
     [ITEMS_COUNT]         = {gItemIcon_ReturnToFieldArrow, gItemIconPalette_ReturnToFieldArrow},
 };

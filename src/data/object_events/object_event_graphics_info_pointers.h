@@ -305,4 +305,13 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_DEOXYS_A]                 = &gObjectEventGraphicsInfo_DeoxysA,
     [OBJ_EVENT_GFX_DEOXYS_N]                 = &gObjectEventGraphicsInfo_DeoxysN,
     [OBJ_EVENT_GFX_SS_ANNE]                  = &gObjectEventGraphicsInfo_SSAnne,
+    [OBJ_EVENT_GFX_APRICORN_TREE_READY_WHITE]  = &gObjectEventGraphicsInfo_ApricornTreeReadyWhite,
+    [OBJ_EVENT_GFX_APRICORN_TREE_READY_RED]    = &gObjectEventGraphicsInfo_ApricornTreeReadyRed,
+    [OBJ_EVENT_GFX_APRICORN_TREE_READY_ORANGE] = &gObjectEventGraphicsInfo_ApricornTreeReadyOrange,
+    [OBJ_EVENT_GFX_APRICORN_TREE_READY_YELLOW] = &gObjectEventGraphicsInfo_ApricornTreeReadyYellow,
+    [OBJ_EVENT_GFX_APRICORN_TREE_READY_GREEN]  = &gObjectEventGraphicsInfo_ApricornTreeReadyGreen,
+    [OBJ_EVENT_GFX_APRICORN_TREE_READY_BLUE]   = &gObjectEventGraphicsInfo_ApricornTreeReadyBlue,
+    [OBJ_EVENT_GFX_APRICORN_TREE_READY_VIOLET] = &gObjectEventGraphicsInfo_ApricornTreeReadyViolet,
+    [OBJ_EVENT_GFX_APRICORN_TREE_READY_BLACK]  = &gObjectEventGraphicsInfo_ApricornTreeReadyBlack,
+    [OBJ_EVENT_GFX_APRICORN_TREE_EMPTY]        = &gObjectEventGraphicsInfo_ApricornTreeEmpty,
 };
