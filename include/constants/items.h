@@ -462,15 +462,17 @@
 
 // SHARED-002 new Ball items. IDs 1-12 retain the vanilla-compatible
 // base/replacement Ball block; these seven require new shared identities.
-#define ITEM_FAST_BALL 383
-#define ITEM_LEVEL_BALL 384
-#define ITEM_HEAVY_BALL 385
-#define ITEM_EGG_BALL 386
-#define ITEM_FRIEND_BALL 387
-#define ITEM_GENDER_BALL 388
-#define ITEM_CRITICAL_BALL 389
+#define ITEM_ICE_STONE 383
+#define ITEM_BRICK 384
+#define ITEM_FAST_BALL 385
+#define ITEM_LEVEL_BALL 386
+#define ITEM_HEAVY_BALL 387
+#define ITEM_EGG_BALL 388
+#define ITEM_FRIEND_BALL 389
+#define ITEM_GENDER_BALL 390
+#define ITEM_CRITICAL_BALL 391
 
-#define ITEMS_COUNT 390
+#define ITEMS_COUNT 392
 
 #define ITEM_TO_BERRY(itemId)(((itemId - FIRST_BERRY_INDEX) + 1))
 #define MAIL_NONE 0xFF
