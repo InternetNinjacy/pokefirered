@@ -13,6 +13,7 @@ u16 ApricornTree_Harvest(void);
 void ApricornTree_OnObjectSpawn(struct ObjectEvent *objectEvent);
 void ApricornTrees_ReconcileCurrentMap(void);
 void ApricornTrees_OnMinuteTick(void);
+void ApricornTree_OnToxicSmogResolved(void);
 
 u8 BallMaster_GetState(void);
 void BallMaster_SetState(u8 state);
