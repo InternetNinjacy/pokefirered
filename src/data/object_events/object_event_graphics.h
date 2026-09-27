@@ -165,6 +165,18 @@ const u16 gObjectEventPic_Jigglypuff[] = INCBIN_U16("graphics/object_events/pics
 const u16 gObjectEventPic_Pidgey[] = INCBIN_U16("graphics/object_events/pics/pokemon/pidgey.4bpp");
 const u16 gObjectEventPic_Clefairy[] = INCBIN_U16("graphics/object_events/pics/pokemon/clefairy.4bpp");
 const u16 gObjectEventPic_CutTree[] = INCBIN_U16("graphics/object_events/pics/misc/cut_tree.4bpp");
+
+// SHARED-001 Apricorn trees
+const u16 gObjectEventPic_ApricornTreeReadyWhite[] = INCBIN_U16("graphics/object_events/pics/misc/apricorn_tree_ready_white.4bpp");
+const u16 gObjectEventPic_ApricornTreeReadyRed[] = INCBIN_U16("graphics/object_events/pics/misc/apricorn_tree_ready_red.4bpp");
+const u16 gObjectEventPic_ApricornTreeReadyOrange[] = INCBIN_U16("graphics/object_events/pics/misc/apricorn_tree_ready_orange.4bpp");
+const u16 gObjectEventPic_ApricornTreeReadyYellow[] = INCBIN_U16("graphics/object_events/pics/misc/apricorn_tree_ready_yellow.4bpp");
+const u16 gObjectEventPic_ApricornTreeReadyGreen[] = INCBIN_U16("graphics/object_events/pics/misc/apricorn_tree_ready_green.4bpp");
+const u16 gObjectEventPic_ApricornTreeReadyBlue[] = INCBIN_U16("graphics/object_events/pics/misc/apricorn_tree_ready_blue.4bpp");
+const u16 gObjectEventPic_ApricornTreeReadyViolet[] = INCBIN_U16("graphics/object_events/pics/misc/apricorn_tree_ready_violet.4bpp");
+const u16 gObjectEventPic_ApricornTreeReadyBlack[] = INCBIN_U16("graphics/object_events/pics/misc/apricorn_tree_ready_black.4bpp");
+const u16 gObjectEventPic_ApricornTreeEmpty[] = INCBIN_U16("graphics/object_events/pics/misc/apricorn_tree_empty.4bpp");
+const u16 gObjectEventPal_ApricornTree[] = INCBIN_U16("graphics/object_events/palettes/apricorn_tree_shared.gbapal");
 const u16 gObjectEventPic_RockSmashRock[] = INCBIN_U16("graphics/object_events/pics/misc/rock_smash_rock.4bpp");
 const u16 gObjectEventPic_StrengthBoulder[] = INCBIN_U16("graphics/object_events/pics/misc/strength_boulder.4bpp");
 const u16 gObjectEventPic_Fossil[] = INCBIN_U16("graphics/object_events/pics/misc/fossil.4bpp");

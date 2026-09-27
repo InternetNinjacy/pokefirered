@@ -995,6 +995,20 @@ static const union AnimCmd *const sAnimTable_Inanimate[] = {
     [ANIM_STAY_STILL] = sAnim_StayStill
 };
 
+// SHARED-001 trees have one image frame. Populate the directional walk slots
+// with the same still frame so the harvest jump/bounce can safely use the
+// standard jump movement helpers without indexing beyond the animation table.
+static const union AnimCmd *const sAnimTable_ApricornTree[] = {
+    [ANIM_STD_FACE_SOUTH] = sAnim_StayStill,
+    [ANIM_STD_FACE_NORTH] = sAnim_StayStill,
+    [ANIM_STD_FACE_WEST] = sAnim_StayStill,
+    [ANIM_STD_FACE_EAST] = sAnim_StayStill,
+    [ANIM_STD_GO_SOUTH] = sAnim_StayStill,
+    [ANIM_STD_GO_NORTH] = sAnim_StayStill,
+    [ANIM_STD_GO_WEST] = sAnim_StayStill,
+    [ANIM_STD_GO_EAST] = sAnim_StayStill,
+};
+
 // Leftover from Ruby/Sapphire
 static const union AnimCmd *const sAnimTable_QuintyPlump[] = {
     [ANIM_STD_FACE_SOUTH] = sAnim_QuintyPlumpFaceSouth,

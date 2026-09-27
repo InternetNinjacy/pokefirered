@@ -1077,6 +1077,7 @@ Common_ShowEasyChatScreen::
 	.include "data/scripts/surf.inc"
 	.include "data/scripts/set_gym_trainers.inc"
 	.include "data/scripts/bag_full.inc"
+	.include "data/scripts/apricorn.inc"
 
 @ Unused
 EventScript_GymBadgeFanfare::

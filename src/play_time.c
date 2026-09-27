@@ -1,4 +1,5 @@
 #include "play_time.h"
+#include "weather_time.h"
 
 static u8 sPlayTimeCounterState;
 
@@ -16,6 +17,7 @@ void PlayTimeCounter_Reset(void)
     gSaveBlock2Ptr->playTimeMinutes = 0;
     gSaveBlock2Ptr->playTimeSeconds = 0;
     gSaveBlock2Ptr->playTimeVBlanks = 0;
+    WeatherTime_Reset();
 }
 
 void PlayTimeCounter_Start(void)
@@ -32,6 +34,12 @@ void PlayTimeCounter_Stop(void)
 
 void PlayTimeCounter_Update(void)
 {
+    // TOM-SYS-003 uses the same global active-play heartbeat as the vanilla
+    // play-time counter, but it must keep advancing after vanilla caps at
+    // 999:59:59. STOPPED still pauses both clocks.
+    if (sPlayTimeCounterState != STOPPED)
+        WeatherTime_Update();
+
     if (sPlayTimeCounterState == RUNNING)
     {
         gSaveBlock2Ptr->playTimeVBlanks++;

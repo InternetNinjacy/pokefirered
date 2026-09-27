@@ -9,11 +9,15 @@
 #define ITEM_SAFARI_BALL 5
 #define ITEM_NET_BALL 6
 #define ITEM_DIVE_BALL 7
+#define ITEM_CLIMATE_BALL ITEM_DIVE_BALL
 #define ITEM_NEST_BALL 8
+#define ITEM_AFFLICTION_BALL ITEM_NEST_BALL
 #define ITEM_REPEAT_BALL 9
 #define ITEM_TIMER_BALL 10
+#define ITEM_PROTOTYPE_BALL ITEM_TIMER_BALL
 #define ITEM_LUXURY_BALL 11
 #define ITEM_PREMIER_BALL 12
+#define ITEM_DISCOVERY_BALL ITEM_PREMIER_BALL
 #define ITEM_POTION 13
 #define ITEM_ANTIDOTE 14
 #define ITEM_BURN_HEAL 15
@@ -445,7 +449,30 @@
 #define ITEM_RUBY 373
 #define ITEM_SAPPHIRE 374
 
-#define ITEMS_COUNT 375
+// SHARED-001 Apricorn crafting materials.
+// These numeric IDs are shared with Pokémon: Sam Edition.
+#define ITEM_WHITE_APRICORN 375
+#define ITEM_RED_APRICORN 376
+#define ITEM_ORANGE_APRICORN 377
+#define ITEM_YELLOW_APRICORN 378
+#define ITEM_GREEN_APRICORN 379
+#define ITEM_BLUE_APRICORN 380
+#define ITEM_VIOLET_APRICORN 381
+#define ITEM_BLACK_APRICORN 382
+
+// SHARED-002 new Ball items. IDs 1-12 retain the vanilla-compatible
+// base/replacement Ball block; these seven require new shared identities.
+#define ITEM_ICE_STONE 383
+#define ITEM_BRICK 384
+#define ITEM_FAST_BALL 385
+#define ITEM_LEVEL_BALL 386
+#define ITEM_HEAVY_BALL 387
+#define ITEM_EGG_BALL 388
+#define ITEM_FRIEND_BALL 389
+#define ITEM_GENDER_BALL 390
+#define ITEM_CRITICAL_BALL 391
+
+#define ITEMS_COUNT 392
 
 #define ITEM_TO_BERRY(itemId)(((itemId - FIRST_BERRY_INDEX) + 1))
 #define MAIL_NONE 0xFF

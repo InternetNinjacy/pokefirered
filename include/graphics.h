@@ -2834,6 +2834,24 @@ extern const u32 gItemIcon_TimerBall[];
 extern const u32 gItemIcon_LuxuryBall[];
 extern const u32 gItemIconPalette_LuxuryBall[];
 extern const u32 gItemIcon_PremierBall[];
+
+// SHARED-001 Apricorn crafting materials
+extern const u32 gItemIcon_WhiteApricorn[];
+extern const u32 gItemIconPalette_WhiteApricorn[];
+extern const u32 gItemIcon_RedApricorn[];
+extern const u32 gItemIconPalette_RedApricorn[];
+extern const u32 gItemIcon_OrangeApricorn[];
+extern const u32 gItemIconPalette_OrangeApricorn[];
+extern const u32 gItemIcon_YellowApricorn[];
+extern const u32 gItemIconPalette_YellowApricorn[];
+extern const u32 gItemIcon_GreenApricorn[];
+extern const u32 gItemIconPalette_GreenApricorn[];
+extern const u32 gItemIcon_BlueApricorn[];
+extern const u32 gItemIconPalette_BlueApricorn[];
+extern const u32 gItemIcon_VioletApricorn[];
+extern const u32 gItemIconPalette_VioletApricorn[];
+extern const u32 gItemIcon_BlackApricorn[];
+extern const u32 gItemIconPalette_BlackApricorn[];
 extern const u32 gItemIcon_Potion[];
 extern const u32 gItemIconPalette_Potion[];
 extern const u32 gItemIcon_Antidote[];

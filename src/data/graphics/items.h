@@ -711,3 +711,22 @@ const u32 gItemIconPalette_PowderJar[] = INCBIN_U32("graphics/items/icon_palette
 const u32 gItemIconPalette_Ruby[] = INCBIN_U32("graphics/items/icon_palettes/ruby.gbapal.lz");
 const u32 gItemIcon_Gem[] = INCBIN_U32("graphics/items/icons/gem.4bpp.lz");
 const u32 gItemIconPalette_Sapphire[] = INCBIN_U32("graphics/items/icon_palettes/sapphire.gbapal.lz");
+
+
+// SHARED-001 Apricorn crafting materials
+const u32 gItemIcon_WhiteApricorn[] = INCBIN_U32("graphics/items/icons/apricorn_white.4bpp.lz");
+const u32 gItemIconPalette_WhiteApricorn[] = INCBIN_U32("graphics/items/icon_palettes/apricorn_white.gbapal.lz");
+const u32 gItemIcon_RedApricorn[] = INCBIN_U32("graphics/items/icons/apricorn_red.4bpp.lz");
+const u32 gItemIconPalette_RedApricorn[] = INCBIN_U32("graphics/items/icon_palettes/apricorn_red.gbapal.lz");
+const u32 gItemIcon_OrangeApricorn[] = INCBIN_U32("graphics/items/icons/apricorn_orange.4bpp.lz");
+const u32 gItemIconPalette_OrangeApricorn[] = INCBIN_U32("graphics/items/icon_palettes/apricorn_orange.gbapal.lz");
+const u32 gItemIcon_YellowApricorn[] = INCBIN_U32("graphics/items/icons/apricorn_yellow.4bpp.lz");
+const u32 gItemIconPalette_YellowApricorn[] = INCBIN_U32("graphics/items/icon_palettes/apricorn_yellow.gbapal.lz");
+const u32 gItemIcon_GreenApricorn[] = INCBIN_U32("graphics/items/icons/apricorn_green.4bpp.lz");
+const u32 gItemIconPalette_GreenApricorn[] = INCBIN_U32("graphics/items/icon_palettes/apricorn_green.gbapal.lz");
+const u32 gItemIcon_BlueApricorn[] = INCBIN_U32("graphics/items/icons/apricorn_blue.4bpp.lz");
+const u32 gItemIconPalette_BlueApricorn[] = INCBIN_U32("graphics/items/icon_palettes/apricorn_blue.gbapal.lz");
+const u32 gItemIcon_VioletApricorn[] = INCBIN_U32("graphics/items/icons/apricorn_violet.4bpp.lz");
+const u32 gItemIconPalette_VioletApricorn[] = INCBIN_U32("graphics/items/icon_palettes/apricorn_violet.gbapal.lz");
+const u32 gItemIcon_BlackApricorn[] = INCBIN_U32("graphics/items/icons/apricorn_black.4bpp.lz");
+const u32 gItemIconPalette_BlackApricorn[] = INCBIN_U32("graphics/items/icon_palettes/apricorn_black.gbapal.lz");

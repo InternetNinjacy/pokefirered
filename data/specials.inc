@@ -452,4 +452,19 @@ gSpecials::
 	def_special UpdateLoreleiDollCollection
 	def_special LoopWingFlapSound
 	def_special CreateEnemyEventMon
+	def_special ApricornTree_PrepareInteraction
+	def_special ApricornTree_Harvest
+	def_special ApricornTrees_ReconcileCurrentMap
+	def_special BallMaster_PrepareInteraction
+	def_special BallMaster_HasMetPlayer
+	def_special BallMaster_SetMetPlayer
+	def_special BallMaster_GetBagApricornQuantity
+	def_special BallMaster_GetBagApricornTotal
+	def_special BallMaster_StartBatch
+	def_special BallMaster_GetWorkingTimeBranch
+	def_special BallMaster_ConvertSingle
+	def_special BallMaster_CollectOrder
+	def_special BallMaster_GetScriptOrderQuantity
+	def_special BallMaster_GetOutputItemForColor
+	def_special BallMaster_GetApricornItemForColor
 gSpecialsEnd::

@@ -5,6 +5,7 @@ CeruleanCity_PokemonCenter_1F_MapScripts::
 
 CeruleanCity_PokemonCenter_1F_OnTransition::
 	setrespawn HEAL_LOCATION_CERULEAN_CITY
+	special BallMaster_PrepareInteraction
 	end
 
 CeruleanCity_PokemonCenter_1F_EventScript_Nurse::
@@ -33,3 +34,194 @@ CeruleanCity_PokemonCenter_1F_EventScript_Youngster::
 CeruleanCity_PokemonCenter_1F_EventScript_Lass::
 	msgbox CeruleanCity_PokemonCenter_1F_Text_TryTradingUpstairs, MSGBOX_NPC
 	end
+
+@ SHARED-001 Ball Master
+.set BALL_MASTER_STATE_AVAILABLE, 0
+.set BALL_MASTER_STATE_WORKING, 1
+.set BALL_MASTER_STATE_COMPLETE, 2
+
+.set BALL_MASTER_TIME_ABOUT_3_DAYS, 1
+.set BALL_MASTER_TIME_ABOUT_2_DAYS, 2
+.set BALL_MASTER_TIME_ABOUT_1_DAY, 3
+.set BALL_MASTER_TIME_HOURS, 4
+.set BALL_MASTER_TIME_COMPLETE, 5
+
+.set BALL_MASTER_DELIVERY_FAILED, 0
+.set BALL_MASTER_DELIVERY_BAG_ONLY, 1
+.set BALL_MASTER_DELIVERY_PC_OVERFLOW, 2
+
+.set APRICORN_COLOR_WHITE, 0
+.set APRICORN_COLOR_RED, 1
+.set APRICORN_COLOR_ORANGE, 2
+.set APRICORN_COLOR_YELLOW, 3
+.set APRICORN_COLOR_GREEN, 4
+.set APRICORN_COLOR_BLUE, 5
+.set APRICORN_COLOR_VIOLET, 6
+.set APRICORN_COLOR_BLACK, 7
+
+CeruleanCity_PokemonCenter_1F_EventScript_BallMaster::
+	lock
+	faceplayer
+	specialvar VAR_RESULT, BallMaster_PrepareInteraction
+	goto_if_eq VAR_RESULT, BALL_MASTER_STATE_WORKING, CeruleanCity_PokemonCenter_1F_BallMaster_Working
+	goto_if_eq VAR_RESULT, BALL_MASTER_STATE_COMPLETE, CeruleanCity_PokemonCenter_1F_BallMaster_Complete
+	specialvar VAR_RESULT, BallMaster_HasMetPlayer
+	goto_if_eq VAR_RESULT, FALSE, CeruleanCity_PokemonCenter_1F_BallMaster_FirstMeeting
+	goto CeruleanCity_PokemonCenter_1F_BallMaster_RepeatAvailable
+
+CeruleanCity_PokemonCenter_1F_BallMaster_FirstMeeting::
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterFirstMeeting
+	special BallMaster_SetMetPlayer
+	yesnobox 20, 8
+	goto_if_eq VAR_RESULT, NO, CeruleanCity_PokemonCenter_1F_BallMaster_No
+	goto CeruleanCity_PokemonCenter_1F_BallMaster_AcceptApricorns
+
+CeruleanCity_PokemonCenter_1F_BallMaster_RepeatAvailable::
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterRepeat
+	yesnobox 20, 8
+	goto_if_eq VAR_RESULT, NO, CeruleanCity_PokemonCenter_1F_BallMaster_No
+	goto CeruleanCity_PokemonCenter_1F_BallMaster_AcceptApricorns
+
+CeruleanCity_PokemonCenter_1F_BallMaster_No::
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterNo
+	release
+	end
+
+CeruleanCity_PokemonCenter_1F_BallMaster_AcceptApricorns::
+	specialvar VAR_RESULT, BallMaster_GetBagApricornTotal
+	goto_if_eq VAR_RESULT, 0, CeruleanCity_PokemonCenter_1F_BallMaster_Empty
+	copyvar VAR_0x8005, VAR_RESULT
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterInventoryIntro
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedApricorns
+	buffernumberstring STR_VAR_1, VAR_0x8005
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterInventoryTotal
+	compare VAR_0x8005, 1
+	goto_if_eq CeruleanCity_PokemonCenter_1F_BallMaster_Single
+	specialvar VAR_RESULT, BallMaster_StartBatch
+	goto_if_eq VAR_RESULT, FALSE, CeruleanCity_PokemonCenter_1F_BallMaster_StorageFailure
+	buffernumberstring STR_VAR_1, VAR_0x8005
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterBatchAccepted
+	release
+	end
+
+CeruleanCity_PokemonCenter_1F_BallMaster_Empty::
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterEmpty
+	release
+	end
+
+CeruleanCity_PokemonCenter_1F_BallMaster_Single::
+	specialvar VAR_RESULT, BallMaster_ConvertSingle
+	goto_if_eq VAR_RESULT, BALL_MASTER_DELIVERY_FAILED, CeruleanCity_PokemonCenter_1F_BallMaster_StorageFailure
+	bufferitemname STR_VAR_1, VAR_0x8004
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterSingle
+	release
+	end
+
+CeruleanCity_PokemonCenter_1F_BallMaster_Working::
+	specialvar VAR_RESULT, BallMaster_GetWorkingTimeBranch
+	goto_if_eq VAR_RESULT, BALL_MASTER_TIME_COMPLETE, CeruleanCity_PokemonCenter_1F_BallMaster_Complete
+	goto_if_eq VAR_RESULT, BALL_MASTER_TIME_ABOUT_3_DAYS, CeruleanCity_PokemonCenter_1F_BallMaster_Working3Days
+	goto_if_eq VAR_RESULT, BALL_MASTER_TIME_ABOUT_2_DAYS, CeruleanCity_PokemonCenter_1F_BallMaster_Working2Days
+	goto_if_eq VAR_RESULT, BALL_MASTER_TIME_ABOUT_1_DAY, CeruleanCity_PokemonCenter_1F_BallMaster_Working1Day
+	buffernumberstring STR_VAR_1, VAR_0x8004
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterWorkingHours
+	release
+	end
+
+CeruleanCity_PokemonCenter_1F_BallMaster_Working3Days::
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterWorking3Days
+	release
+	end
+
+CeruleanCity_PokemonCenter_1F_BallMaster_Working2Days::
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterWorking2Days
+	release
+	end
+
+CeruleanCity_PokemonCenter_1F_BallMaster_Working1Day::
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterWorking1Day
+	release
+	end
+
+CeruleanCity_PokemonCenter_1F_BallMaster_Complete::
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterCompleteIntro
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedBalls
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterCompleteOutro
+	specialvar VAR_RESULT, BallMaster_CollectOrder
+	goto_if_eq VAR_RESULT, BALL_MASTER_DELIVERY_FAILED, CeruleanCity_PokemonCenter_1F_BallMaster_StorageFailure
+	goto_if_eq VAR_RESULT, BALL_MASTER_DELIVERY_PC_OVERFLOW, CeruleanCity_PokemonCenter_1F_BallMaster_PCOverflow
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterBagOnly
+	release
+	end
+
+CeruleanCity_PokemonCenter_1F_BallMaster_PCOverflow::
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterPCOverflow
+	release
+	end
+
+CeruleanCity_PokemonCenter_1F_BallMaster_StorageFailure::
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterStorageFailure
+	release
+	end
+
+CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedApricorns::
+	setvar VAR_0x8004, APRICORN_COLOR_WHITE
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedColor
+	setvar VAR_0x8004, APRICORN_COLOR_RED
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedColor
+	setvar VAR_0x8004, APRICORN_COLOR_ORANGE
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedColor
+	setvar VAR_0x8004, APRICORN_COLOR_YELLOW
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedColor
+	setvar VAR_0x8004, APRICORN_COLOR_GREEN
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedColor
+	setvar VAR_0x8004, APRICORN_COLOR_BLUE
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedColor
+	setvar VAR_0x8004, APRICORN_COLOR_VIOLET
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedColor
+	setvar VAR_0x8004, APRICORN_COLOR_BLACK
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedColor
+	return
+
+CeruleanCity_PokemonCenter_1F_BallMaster_ReportCarriedColor::
+	copyvar VAR_0x8006, VAR_0x8004
+	specialvar VAR_RESULT, BallMaster_GetBagApricornQuantity
+	goto_if_eq VAR_RESULT, 0, CeruleanCity_PokemonCenter_1F_BallMaster_ReportReturn
+	buffernumberstring STR_VAR_1, VAR_RESULT
+	copyvar VAR_0x8004, VAR_0x8006
+	specialvar VAR_RESULT, BallMaster_GetApricornItemForColor
+	bufferitemname STR_VAR_2, VAR_RESULT
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterInventoryLine
+CeruleanCity_PokemonCenter_1F_BallMaster_ReportReturn::
+	return
+
+CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedBalls::
+	setvar VAR_0x8004, APRICORN_COLOR_WHITE
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedColor
+	setvar VAR_0x8004, APRICORN_COLOR_RED
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedColor
+	setvar VAR_0x8004, APRICORN_COLOR_ORANGE
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedColor
+	setvar VAR_0x8004, APRICORN_COLOR_YELLOW
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedColor
+	setvar VAR_0x8004, APRICORN_COLOR_GREEN
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedColor
+	setvar VAR_0x8004, APRICORN_COLOR_BLUE
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedColor
+	setvar VAR_0x8004, APRICORN_COLOR_VIOLET
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedColor
+	setvar VAR_0x8004, APRICORN_COLOR_BLACK
+	call CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedColor
+	return
+
+CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedColor::
+	copyvar VAR_0x8006, VAR_0x8004
+	specialvar VAR_RESULT, BallMaster_GetScriptOrderQuantity
+	goto_if_eq VAR_RESULT, 0, CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedReturn
+	buffernumberstring STR_VAR_1, VAR_RESULT
+	copyvar VAR_0x8004, VAR_0x8006
+	specialvar VAR_RESULT, BallMaster_GetOutputItemForColor
+	bufferitemname STR_VAR_2, VAR_RESULT
+	msgbox CeruleanCity_PokemonCenter_1F_Text_BallMasterFinishedLine
+CeruleanCity_PokemonCenter_1F_BallMaster_ReportFinishedReturn::
+	return

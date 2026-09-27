@@ -860,6 +860,35 @@ static const struct SpriteFrameImage sPicTable_CutTree[] = {
     overworld_frame(gObjectEventPic_CutTree, 2, 2, 3),
 };
 
+// SHARED-001 Apricorn trees are single-frame 16x16 inanimate objects.
+static const struct SpriteFrameImage sPicTable_ApricornTreeReadyWhite[] = {
+    overworld_frame(gObjectEventPic_ApricornTreeReadyWhite, 2, 2, 0),
+};
+static const struct SpriteFrameImage sPicTable_ApricornTreeReadyRed[] = {
+    overworld_frame(gObjectEventPic_ApricornTreeReadyRed, 2, 2, 0),
+};
+static const struct SpriteFrameImage sPicTable_ApricornTreeReadyOrange[] = {
+    overworld_frame(gObjectEventPic_ApricornTreeReadyOrange, 2, 2, 0),
+};
+static const struct SpriteFrameImage sPicTable_ApricornTreeReadyYellow[] = {
+    overworld_frame(gObjectEventPic_ApricornTreeReadyYellow, 2, 2, 0),
+};
+static const struct SpriteFrameImage sPicTable_ApricornTreeReadyGreen[] = {
+    overworld_frame(gObjectEventPic_ApricornTreeReadyGreen, 2, 2, 0),
+};
+static const struct SpriteFrameImage sPicTable_ApricornTreeReadyBlue[] = {
+    overworld_frame(gObjectEventPic_ApricornTreeReadyBlue, 2, 2, 0),
+};
+static const struct SpriteFrameImage sPicTable_ApricornTreeReadyViolet[] = {
+    overworld_frame(gObjectEventPic_ApricornTreeReadyViolet, 2, 2, 0),
+};
+static const struct SpriteFrameImage sPicTable_ApricornTreeReadyBlack[] = {
+    overworld_frame(gObjectEventPic_ApricornTreeReadyBlack, 2, 2, 0),
+};
+static const struct SpriteFrameImage sPicTable_ApricornTreeEmpty[] = {
+    overworld_frame(gObjectEventPic_ApricornTreeEmpty, 2, 2, 0),
+};
+
 static const struct SpriteFrameImage sPicTable_Clerk[] = {
     overworld_frame(gObjectEventPic_Clerk, 2, 4, 0),
     overworld_frame(gObjectEventPic_Clerk, 2, 4, 1),

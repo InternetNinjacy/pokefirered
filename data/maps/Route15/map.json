@@ -215,6 +215,36 @@
       "y": 7,
       "target_local_id": "LOCALID_ROUTE14_BORDER_TREE",
       "target_map": "MAP_ROUTE14"
+    },
+    {
+      "local_id": "LOCALID_ROUTE15_PECHA_BERRY_TREE",
+      "type": "object",
+      "graphics_id": "0",
+      "x": 18,
+      "y": 9,
+      "elevation": 15,
+      "movement_type": "MOVEMENT_TYPE_INVISIBLE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_ROUTE15_VIOLET_APRICORN_TREE",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_APRICORN_TREE_READY_VIOLET",
+      "x": 18,
+      "y": 14,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "10",
+      "script": "EventScript_ApricornTree",
+      "flag": "0"
     }
   ],
   "warp_events": [
