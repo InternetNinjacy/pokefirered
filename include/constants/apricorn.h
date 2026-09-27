@@ -57,6 +57,13 @@ enum BallMasterTimeBranch
     BALL_MASTER_TIME_COMPLETE,
 };
 
+enum BallMasterDeliveryResult
+{
+    BALL_MASTER_DELIVERY_FAILED,
+    BALL_MASTER_DELIVERY_BAG_ONLY,
+    BALL_MASTER_DELIVERY_PC_OVERFLOW,
+};
+
 enum ApricornTreeInteractionState
 {
     APRICORN_TREE_INTERACT_EMPTY,
