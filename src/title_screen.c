@@ -36,6 +36,7 @@ enum TitleScreenScene
 static EWRAM_DATA u8 sTitleScreenTimerTaskId = 0;
 
 static void ResetGpuRegs(void);
+static void LoadSamTitleScreen(void);
 static void CB2_TitleScreenRun(void);
 static void VBlankCB(void);
 static void Task_TitleScreenTimer(u8 taskId);
@@ -72,6 +73,12 @@ static u8 CreateSlashSprite(void);
 static void DeactivateSlashSprite(u8 spriteId);
 static bool32 IsSlashSpriteDeactivated(u8 spriteId);
 static void SpriteCallback_Slash(struct Sprite *sprite);
+
+static const u16 sSamTitleScreen_Pal[] = INCBIN_U16("graphics/title_screen/sam/title_screen.gbapal");
+static const u32 sSamTitleScreen_Tiles0[] = INCBIN_U32("graphics/title_screen/sam/title_screen_part0.4bpp");
+static const u32 sSamTitleScreen_Tiles1[] = INCBIN_U32("graphics/title_screen/sam/title_screen_part1.4bpp");
+static const u32 sSamTitleScreen_Tiles2[] = INCBIN_U32("graphics/title_screen/sam/title_screen_part2.4bpp");
+static const u32 sSamTitleScreen_Tiles3[] = INCBIN_U32("graphics/title_screen/sam/title_screen_part3.4bpp");
 
 static const u8 sBorderBgTiles[] = INCBIN_U8("graphics/title_screen/border_bg.4bpp.lz");
 
@@ -247,7 +254,7 @@ static const struct BgTemplate sBgTemplates[] = {
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = 0,
-        .paletteMode = 1, // 8bpp
+        .paletteMode = 0, // 4bpp
         .priority = 0,
         .baseTile = 0
     }, {
@@ -364,19 +371,7 @@ void CB2_InitTitleScreen(void)
         sTitleScreenTimerTaskId = TASK_NONE;
         break;
     case 1:
-        LoadPalette(gGraphics_TitleScreen_GameTitleLogoPals, BG_PLTT_ID(0), 13 * PLTT_SIZE_4BPP);
-        DecompressAndCopyTileDataToVram(0, gGraphics_TitleScreen_GameTitleLogoTiles, 0, 0, 0);
-        DecompressAndCopyTileDataToVram(0, gGraphics_TitleScreen_GameTitleLogoMap, 0, 0, 1);
-        LoadPalette(gGraphics_TitleScreen_BoxArtMonPals, BG_PLTT_ID(13), PLTT_SIZE_4BPP);
-        DecompressAndCopyTileDataToVram(1, gGraphics_TitleScreen_BoxArtMonTiles, 0, 0, 0);
-        DecompressAndCopyTileDataToVram(1, gGraphics_TitleScreen_BoxArtMonMap, 0, 0, 1);
-        LoadPalette(gGraphics_TitleScreen_BackgroundPals, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-        DecompressAndCopyTileDataToVram(2, gGraphics_TitleScreen_CopyrightPressStartTiles, 0, 0, 0);
-        DecompressAndCopyTileDataToVram(2, gGraphics_TitleScreen_CopyrightPressStartMap, 0, 0, 1);
-        LoadPalette(gGraphics_TitleScreen_BackgroundPals, BG_PLTT_ID(14), PLTT_SIZE_4BPP);
-        DecompressAndCopyTileDataToVram(3, sBorderBgTiles, 0, 0, 0);
-        DecompressAndCopyTileDataToVram(3, sBorderBgMap, 0, 0, 1);
-        LoadSpriteGfxAndPals();
+        LoadSamTitleScreen();
         break;
     case 2:
         if (!FreeTempTileDataBuffersIfPossible())
@@ -391,6 +386,35 @@ void CB2_InitTitleScreen(void)
         return;
     }
     gMain.state++;
+}
+
+static void LoadSamTitleScreen(void)
+{
+    u16 *tilemap = (u16 *)(VRAM + 0xF800);
+    u16 x;
+    u16 y;
+
+    LoadPalette(sSamTitleScreen_Pal, BG_PLTT_ID(0), sizeof(sSamTitleScreen_Pal));
+    CpuCopy16(sSamTitleScreen_Tiles0, (void *)(VRAM + 0x0000), sizeof(sSamTitleScreen_Tiles0));
+    CpuCopy16(sSamTitleScreen_Tiles1, (void *)(VRAM + 0x12C0), sizeof(sSamTitleScreen_Tiles1));
+    CpuCopy16(sSamTitleScreen_Tiles2, (void *)(VRAM + 0x2580), sizeof(sSamTitleScreen_Tiles2));
+    CpuCopy16(sSamTitleScreen_Tiles3, (void *)(VRAM + 0x3840), sizeof(sSamTitleScreen_Tiles3));
+
+    for (y = 0; y < 32; y++)
+    {
+        for (x = 0; x < 32; x++)
+        {
+            if (x < 30 && y < 20)
+                tilemap[y * 32 + x] = y * 30 + x;
+            else
+                tilemap[y * 32 + x] = 0;
+        }
+    }
+
+    HideBg(1);
+    HideBg(2);
+    HideBg(3);
+    ShowBg(0);
 }
 
 static void ResetGpuRegs(void)
@@ -422,8 +446,6 @@ static void VBlankCB(void)
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
-    ScanlineEffect_InitHBlankDmaTransfer();
-
     if (sTitleScreenTimerTaskId != TASK_NONE)
         gTasks[sTitleScreenTimerTaskId].data[0]++;
 }
@@ -448,19 +470,7 @@ static void Task_TitleScreenTimer(u8 taskId)
 static void Task_TitleScreenMain(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
-
-    if (JOY_NEW(A_BUTTON | B_BUTTON | START_BUTTON)
-        && tSceneNum != TITLESCREENSCENE_RUN
-        && tSceneNum != TITLESCREENSCENE_RESTART
-        && tSceneNum != TITLESCREENSCENE_CRY)
-    {
-        ScheduleStopScanlineEffect();
-        LoadMainTitleScreenPalsAndResetBgs();
-        SetPalOnOrCreateBlankSprite(tHasCreatedBlankSprite);
-        SetTitleScreenScene(data, TITLESCREENSCENE_RUN);
-    }
-    else
-        sSceneFuncs[tSceneNum](data);
+    sSceneFuncs[tSceneNum](data);
 }
 
 static void SetTitleScreenScene(s16 *data, u8 sceneNum)
@@ -471,24 +481,13 @@ static void SetTitleScreenScene(s16 *data, u8 sceneNum)
 
 static void SetTitleScreenScene_Init(s16 *data)
 {
-    struct ScanlineEffectParams params;
-
-    HideBg(0);
-    ShowBg(1);
-    ShowBg(2);
-    ShowBg(3);
-
-    params.dmaDest = (volatile void *)REG_ADDR_BLDY;
-    params.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
-    params.initState = 1;
-    params.unused9 = 0;
-
-    CpuFill16(0, gScanlineEffectRegBuffers[0], 0x140);
-    CpuFill16(0, gScanlineEffectRegBuffers[1], 0x140);
-
-    ScanlineEffect_SetParams(params);
-
-    SetTitleScreenScene(data, TITLESCREENSCENE_FLASHSPRITE);
+    HideBg(1);
+    HideBg(2);
+    HideBg(3);
+    ShowBg(0);
+    BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+    SetTitleScreenScene(data, TITLESCREENSCENE_RUN);
 }
 
 static void SetTitleScreenScene_FlashSprite(s16 *data)
@@ -616,21 +615,18 @@ static void SetTitleScreenScene_Run(s16 *data)
     {
     case 0:
         SetHelpContext(HELPCONTEXT_TITLE_SCREEN);
-        CreateTask(Task_TitleScreen_BlinkPressStart, 0);
-#if defined(FIRERED)
-        CreateTask(Task_FlameSpawner, 5);
-#elif defined(LEAFGREEN)
-        CreateTask(Task_LeafSpawner, 5);
-#endif
         SetGpuRegsForTitleScreenRun();
-        tSlashSpriteId = CreateSlashSprite();
         HelpSystem_Enable();
         tState++;
-        // fallthrough
+        break;
     case 1:
+        if (gPaletteFade.active)
+            break;
+
         if (JOY_HELD(KEYSTROKE_DELSAVE) == KEYSTROKE_DELSAVE)
         {
-            DeactivateSlashSprite(tSlashSpriteId);
+            BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+            FadeOutBGM(4);
             DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
             SetMainCallback2(CB2_FadeOutTransitionToSaveClearScreen);
         }
@@ -639,7 +635,8 @@ static void SetTitleScreenScene_Run(s16 *data)
 #else
         else if (JOY_HELD(KEYSTROKE_BERRY_FIX) == KEYSTROKE_BERRY_FIX)
         {
-            DeactivateSlashSprite(tSlashSpriteId);
+            BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+            FadeOutBGM(4);
             DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
             SetMainCallback2(CB2_FadeOutTransitionToBerryFix);
         }
@@ -658,10 +655,9 @@ static void SetTitleScreenScene_Run(s16 *data)
 
 static void SetGpuRegsForTitleScreenRun(void)
 {
-    SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_OBJWIN_ON);
-    SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WINOBJ_ALL);
-    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_LIGHTEN);
-    SetGpuReg(REG_OFFSET_BLDY, 13);
+    ClearGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON | DISPCNT_WIN1_ON | DISPCNT_OBJWIN_ON);
+    SetGpuReg(REG_OFFSET_BLDCNT, 0);
+    SetGpuReg(REG_OFFSET_BLDY, 0);
 }
 
 static void SetTitleScreenScene_Restart(s16 *data)
@@ -669,38 +665,17 @@ static void SetTitleScreenScene_Restart(s16 *data)
     switch (tState)
     {
     case 0:
-        DeactivateSlashSprite(tSlashSpriteId);
+        FadeOutMapMusic(10);
+        BeginNormalPaletteFade(PALETTES_ALL, 3, 0, 16, RGB_BLACK);
         tState++;
         break;
     case 1:
-        if (!gPaletteFade.active && !IsSlashSpriteDeactivated(tSlashSpriteId))
-        {
-            FadeOutMapMusic(10);
-            BeginNormalPaletteFade(PALETTES_ALL, 3, 0, 0x10, RGB_BLACK);
-            SignalEndTitleScreenPaletteSomethingTask();
-            data[1]++;
-        }
-        break;
-    case 2:
         if (IsNotWaitingForBGMStop() && !gPaletteFade.active)
         {
-            DestroyTask(FindTaskIdByFunc(Task_TitleScreen_BlinkPressStart));
-            data[2] = 0;
-            tState++;
+            HelpSystem_Disable();
+            DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
+            SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);
         }
-        break;
-    case 3:
-        data[2]++;
-        if (data[2] >= 20)
-        {
-            DestroyTask(FindTaskIdByFunc(Task_TitleScreen_BlinkPressStart));
-            tState++;
-        }
-        break;
-    case 4:
-        HelpSystem_Disable();
-        DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
-        SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);
         break;
     }
 }
@@ -710,27 +685,12 @@ static void SetTitleScreenScene_Cry(s16 *data)
     switch (tState)
     {
     case 0:
-        if (!gPaletteFade.active)
-        {
-            PlayCry_Normal(TITLE_SPECIES, 0);
-            DeactivateSlashSprite(tSlashSpriteId);
-            data[2] = 0;
-            tState++;
-        }
+        FadeOutBGM(4);
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        tState++;
         break;
     case 1:
-        if (data[2] < 90)
-            data[2]++;
-        else if (!IsSlashSpriteDeactivated(tSlashSpriteId))
-        {
-            BeginNormalPaletteFade((PALETTES_ALL & ~(1 << 0x1C) & ~(1 << 0x1D) & ~(1 << 0x1E) & ~(1 << 0x1F)), 0, 0, 16, RGB_WHITE);
-            SignalEndTitleScreenPaletteSomethingTask();
-            FadeOutBGM(4);
-            tState++;
-        }
-        break;
-    case 2:
-        if (!gPaletteFade.active)
+        if (IsNotWaitingForBGMStop() && !gPaletteFade.active)
         {
             SeedRngAndSetTrainerId();
             SetSaveBlocksPointers();
@@ -741,6 +701,7 @@ static void SetTitleScreenScene_Cry(s16 *data)
                 Sav2_ClearSetDefault();
             SetPokemonCryStereo(gSaveBlock2Ptr->optionsSound);
             InitHeap(gHeap, HEAP_SIZE);
+            HelpSystem_Disable();
             SetMainCallback2(CB2_InitMainMenu);
             DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
         }
