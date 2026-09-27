@@ -5,6 +5,7 @@
 #include "event_object_movement.h"
 #include "item.h"
 #include "script.h"
+#include "weather_anomaly.h"
 #include "constants/apricorn.h"
 #include "constants/event_objects.h"
 #include "constants/flags.h"
@@ -51,7 +52,7 @@ static bool8 IsWhiteTree(u8 treeId)
 
 static bool8 IsWhiteTreeUnlocked(void)
 {
-    return FlagGet(FLAG_WEATHER_ANOMALY_TOXIC_SMOG_RESOLVED);
+    return IsToxicSmogWeezingResolved();
 }
 
 static bool8 EnsureWhiteInitialGrowthStarted(u8 treeId, u32 now)
