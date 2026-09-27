@@ -554,6 +554,8 @@ static const u16 sDexCategory_MountainPkmn_Page1[] = {
     SPECIES_GEODUDE,
     SPECIES_GRAVELER,
     SPECIES_GOLEM,
+    SPECIES_TALICE,
+    SPECIES_FELSENMEER,
 };
 
 static const u16 sDexCategory_MountainPkmn_Page2[] = {

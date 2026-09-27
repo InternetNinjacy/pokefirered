@@ -929,6 +929,12 @@ static const u16 sSpeciesToNationalPokedexNum[NUM_SPECIES - 1] =
     SPECIES_TO_NATIONAL(JIRACHI),
     SPECIES_TO_NATIONAL(DEOXYS),
     SPECIES_TO_NATIONAL(CHIMECHO),
+    0, // SPECIES_LEAFEON — reserved, not integrated in this branch
+    0, // SPECIES_GLACEON — reserved, not integrated in this branch
+    0, // SPECIES_ECTOCEON — reserved, not integrated in this branch
+    SPECIES_TO_NATIONAL(TALICE),
+    SPECIES_TO_NATIONAL(FELSENMEER),
+    0, // SPECIES_PYROLANTE — reserved, not integrated in this branch
 };
 
 // Assigns all Hoenn Dex Indexes to a National Dex Index
@@ -5233,6 +5239,14 @@ u16 HoennToNationalOrder(u16 hoennNum)
 
 u16 SpeciesToCryId(u16 species)
 {
+    // Custom Weather species reuse established cries until/unless a species authority supplies a custom cry.
+    if (species == SPECIES_TALICE)
+        return SPECIES_GRAVELER - 1;
+    if (species == SPECIES_FELSENMEER)
+        return SPECIES_GOLEM - 1;
+    if (species == SPECIES_LEAFEON || species == SPECIES_GLACEON || species == SPECIES_ECTOCEON)
+        return SPECIES_EEVEE - 1;
+
     if (species < SPECIES_OLD_UNOWN_B - 1)
         return species;
 

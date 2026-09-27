@@ -398,6 +398,18 @@ static const u32 *const sItemIconTable[ITEMS_COUNT + 1][2] =
     [ITEM_POWDER_JAR]     = {gItemIcon_PowderJar, gItemIconPalette_PowderJar},
     [ITEM_RUBY]           = {gItemIcon_Gem, gItemIconPalette_Ruby},
     [ITEM_SAPPHIRE]       = {gItemIcon_Gem, gItemIconPalette_Sapphire},
+    // Shared Weather custom items. Apricorn visuals are temporary foundation aliases;
+    // the SHARED-001 Apricorn implementation branch owns their final graphics.
+    [ITEM_WHITE_APRICORN]  = {gItemIcon_WhiteFlute, gItemIconPalette_WhiteFlute},
+    [ITEM_RED_APRICORN]    = {gItemIcon_RedFlute, gItemIconPalette_RedFlute},
+    [ITEM_ORANGE_APRICORN] = {gItemIcon_OrangeMail, gItemIconPalette_OrangeMail},
+    [ITEM_YELLOW_APRICORN] = {gItemIcon_YellowFlute, gItemIconPalette_YellowFlute},
+    [ITEM_GREEN_APRICORN]  = {gItemIcon_GreenShard, gItemIconPalette_GreenShard},
+    [ITEM_BLUE_APRICORN]   = {gItemIcon_BlueFlute, gItemIconPalette_BlueFlute},
+    [ITEM_VIOLET_APRICORN] = {gItemIcon_PinkScarf, gItemIconPalette_PinkScarf},
+    [ITEM_BLACK_APRICORN]  = {gItemIcon_BlackFlute, gItemIconPalette_BlackFlute},
+    [ITEM_ICE_STONE]       = {gItemIcon_WaterStone, gItemIconPalette_IceHeal},
+    [ITEM_BRICK]           = {gItemIcon_HardStone, gItemIconPalette_HardStone},
     // Return to field arrow
     [ITEMS_COUNT]         = {gItemIcon_ReturnToFieldArrow, gItemIconPalette_ReturnToFieldArrow},
 };
