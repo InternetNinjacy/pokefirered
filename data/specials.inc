@@ -466,4 +466,5 @@ gSpecials::
 	def_special BallMaster_CollectOrder
 	def_special BallMaster_GetScriptOrderQuantity
 	def_special BallMaster_GetOutputItemForColor
+	def_special BallMaster_GetApricornItemForColor
 gSpecialsEnd::
