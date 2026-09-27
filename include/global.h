@@ -362,7 +362,8 @@ struct SaveBlock2
     /*0xB2C*/ u32 apricornTreeNextReadyMinute[12];
     /*0xB5C*/ u8 ballMasterState;
     /*0xB5D*/ u8 ballMasterFlags;
-    /*0xB5E*/ u8 filler_B5E[0x2];
+    /*0xB5E*/ u8 apricornFlags;
+    /*0xB5F*/ u8 filler_B5F;
     /*0xB60*/ u16 ballMasterOrderQty[8];
     /*0xB70*/ u32 ballMasterCompletionMinute;
 
