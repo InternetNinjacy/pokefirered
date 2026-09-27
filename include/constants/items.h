@@ -445,7 +445,19 @@
 #define ITEM_RUBY 373
 #define ITEM_SAPPHIRE 374
 
-#define ITEMS_COUNT 375
+// Shared Weather/Sam item block. Keep these numeric IDs synchronized across paired projects.
+#define ITEM_WHITE_APRICORN 375
+#define ITEM_RED_APRICORN 376
+#define ITEM_ORANGE_APRICORN 377
+#define ITEM_YELLOW_APRICORN 378
+#define ITEM_GREEN_APRICORN 379
+#define ITEM_BLUE_APRICORN 380
+#define ITEM_VIOLET_APRICORN 381
+#define ITEM_BLACK_APRICORN 382
+#define ITEM_ICE_STONE 383
+#define ITEM_BRICK 384
+
+#define ITEMS_COUNT 385
 
 #define ITEM_TO_BERRY(itemId)(((itemId - FIRST_BERRY_INDEX) + 1))
 #define MAIL_NONE 0xFF
