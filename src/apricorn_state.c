@@ -23,6 +23,16 @@ void ApricornTree_SetNextReadyMinute(u8 treeId, u32 minute)
     gSaveBlock2Ptr->apricornTreeNextReadyMinute[treeId - 1] = minute;
 }
 
+bool8 ApricornTree_HasWhiteFirstHarvested(void)
+{
+    return (gSaveBlock2Ptr->apricornFlags & APRICORN_FLAG_WHITE_FIRST_HARVESTED) != 0;
+}
+
+void ApricornTree_SetWhiteFirstHarvested(void)
+{
+    gSaveBlock2Ptr->apricornFlags |= APRICORN_FLAG_WHITE_FIRST_HARVESTED;
+}
+
 u8 BallMaster_GetState(void)
 {
     return gSaveBlock2Ptr->ballMasterState;
