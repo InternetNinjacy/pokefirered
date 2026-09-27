@@ -101,7 +101,7 @@ static void Task_OakSpeech_FadeOutGreenPic(u8);
 static void Task_OakSpeech_ReshowPlayersPic(u8);
 static void Task_OakSpeech_LetsGo(u8);
 static void Task_OakSpeech_FadeOutBGM(u8);
-static void Task_OakSpeech_SetUpExitAnimation(u8);
+static void Task_OakSpeech_SetUpTransferAnimation(u8);
 static void Task_OakSpeech_SetUpShrinkPlayerPic(u8);
 static void Task_OakSpeech_ShrinkPlayerPic(u8);
 static void Task_OakSpeech_SetUpDestroyPlatformSprites(u8);
@@ -1731,7 +1731,7 @@ static void Task_OakSpeech_FadeOutBGM(u8 taskId)
         else
         {
             FadeOutBGM(4);
-            gTasks[taskId].func = Task_OakSpeech_SetUpExitAnimation;
+            gTasks[taskId].func = Task_OakSpeech_SetUpTransferAnimation;
         }
     }
 }
@@ -1739,8 +1739,11 @@ static void Task_OakSpeech_FadeOutBGM(u8 taskId)
 // The sOakSpeechResources struct's currentPage field is reused below as a timer for shrinking the player pic
 #define shrinkTimer currentPage
 
-static void Task_OakSpeech_SetUpExitAnimation(u8 taskId)
+static void Task_OakSpeech_SetUpTransferAnimation(u8 taskId)
 {
+    // Sam Edition: reinterpret FireRed's stock player shrink/white fade as the
+    // dimensional transfer into alternate Kanto. Preserve the native timing,
+    // warp sound, palette fades, and final fade to black.
     sOakSpeechResources->shrinkTimer = 0;
     Task_OakSpeech_SetUpDestroyPlatformSprites(taskId);
     Task_OakSpeech_SetUpFadePlayerPicWhite(taskId);
