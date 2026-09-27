@@ -45,7 +45,7 @@ CeruleanCity_PokemonCenter_1F_Text_BallMasterFirstMeeting::
     .string "And once I've got my hands full of\n"
     .string "BALLS, I can't take any more\n"
     .string "APRICORNS until I'm finished.\p"
-    .string "So remember—when you say YES, I'm\n"
+    .string "So remember-when you say YES, I'm\n"
     .string "taking every APRICORN you're\n"
     .string "carrying.\p"
     .string "No picking and choosing after that!\p"
