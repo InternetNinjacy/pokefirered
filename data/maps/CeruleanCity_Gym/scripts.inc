@@ -40,7 +40,7 @@ CeruleanCity_Gym_EventScript_KukikDefeated::
     setflag FLAG_DEFEATED_KUKIK
     setflag FLAG_BADGE02_ENDURANCE
     setrespawn HEAL_LOCATION_CERULEAN_CITY
-    set_gym_trainers 3
+    set_gym_trainers 2
     msgbox CeruleanCity_Gym_Text_KukikBadgeReward
     playfanfare MUS_OBTAIN_BADGE
     waitfanfare
