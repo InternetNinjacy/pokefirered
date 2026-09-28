@@ -686,6 +686,7 @@
 #define FLAG_GOT_TM20_FROM_THIRSTY_GIRL                  0x295
 #define FLAG_GOT_TM16_FROM_THIRSTY_GIRL                  0x296
 #define FLAG_GOT_TM03_FROM_MISTY                         0x297
+#define FLAG_GOT_TM26_FROM_KUKIK                         FLAG_GOT_TM03_FROM_MISTY
 #define FLAG_GOT_TM26_FROM_GIOVANNI                      0x298
 #define FLAG_0x299                                       0x299
 #define FLAG_GOT_TM04_FROM_SABRINA                       0x29A
@@ -1235,6 +1236,7 @@
 // Boss clear flags, 1200
 #define FLAG_DEFEATED_BROCK           0x4B0
 #define FLAG_DEFEATED_MISTY           0x4B1
+#define FLAG_DEFEATED_KUKIK           FLAG_DEFEATED_MISTY
 #define FLAG_DEFEATED_LT_SURGE        0x4B2
 #define FLAG_DEFEATED_ERIKA           0x4B3
 #define FLAG_DEFEATED_KOGA            0x4B4
@@ -1363,6 +1365,7 @@
 
 #define FLAG_BADGE01_GET                                            (SYS_FLAGS + 0x20)
 #define FLAG_BADGE02_GET                                            (SYS_FLAGS + 0x21)
+#define FLAG_BADGE02_ENDURANCE                                      FLAG_BADGE02_GET
 #define FLAG_BADGE03_GET                                            (SYS_FLAGS + 0x22)
 #define FLAG_BADGE04_GET                                            (SYS_FLAGS + 0x23)
 #define FLAG_BADGE05_GET                                            (SYS_FLAGS + 0x24)
