@@ -155,6 +155,7 @@ static const u8 sText_PkmnHitWithRecoil[] = _("{B_ATK_NAME_WITH_PREFIX} is hit\n
 static const u8 sText_PkmnProtectedItself2[] = _("{B_ATK_NAME_WITH_PREFIX} protected\nitself!");
 static const u8 sText_PkmnBuffetedBySandstorm[] = _("{B_ATK_NAME_WITH_PREFIX} is buffeted\nby the sandstorm!");
 static const u8 sText_PkmnPeltedByHail[] = _("{B_ATK_NAME_WITH_PREFIX} is pelted\nby HAIL!");
+static const u8 sText_PkmnsHeatMeltedIce[] = _("{B_ATK_NAME_WITH_PREFIX}'s heat\nmelted the ice!");
 static const u8 sText_PkmnsXWoreOff[] = _("{B_ATK_PREFIX1}'s {B_BUFF1}\nwore off!");
 static const u8 sText_PkmnSeeded[] = _("{B_DEF_NAME_WITH_PREFIX} was seeded!");
 static const u8 sText_PkmnEvadedAttack[] = _("{B_DEF_NAME_WITH_PREFIX} evaded\nthe attack!");
@@ -927,8 +928,9 @@ const u16 gSandstormHailContinuesStringIds[] =
 
 const u16 gSandstormHailDmgStringIds[] =
 {
-    [B_MSG_SANDSTORM] = STRINGID_PKMNBUFFETEDBYSANDSTORM,
-    [B_MSG_HAIL]      = STRINGID_PKMNPELTEDBYHAIL
+    [B_MSG_SANDSTORM]        = STRINGID_PKMNBUFFETEDBYSANDSTORM,
+    [B_MSG_HAIL]             = STRINGID_PKMNPELTEDBYHAIL,
+    [B_MSG_HAIL_FIRE_IMMUNE] = STRINGID_PKMNSHEATMELTEDICE
 };
 
 const u16 gSandstormHailEndStringIds[] =
