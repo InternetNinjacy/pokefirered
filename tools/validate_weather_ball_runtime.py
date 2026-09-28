@@ -66,32 +66,48 @@ for weather, type_name in (
     require(wb, f"= {type_name} | F_DYNAMIC_TYPE_2;", "Weather Ball weather mapping")
 require(wb, "= TYPE_NORMAL | F_DYNAMIC_TYPE_2;", "Weather Ball no-matched-weather fallback")
 
-# Current acquisition authority: Cloudburst Mart sale, never a Gym reward.
+# Current acquisition authority: Raina awards TM12 exactly once on first clear.
+# Cloudburst's ordinary Mart must not sell TM12.
 mart = text("data/maps/PewterCity_Mart/scripts.inc")
-require(mart, ".2byte ITEM_TM12_WEATHER_BALL", "Cloudburst Mart stock")
+if ".2byte ITEM_TM12_WEATHER_BALL" in mart:
+    fail("Cloudburst ordinary Mart still sells TM12")
 
 gym = text("data/maps/PewterCity_Gym/scripts.inc")
-for forbidden in (
+for needle in (
+    "setflag FLAG_BADGE01_SQUALL",
+    "goto_if_unset FLAG_GOT_TM12_FROM_RAINA, PewterCity_Gym_EventScript_GivePendingTM12",
+    "PewterCity_Gym_EventScript_GiveTM12FirstClear::",
+    "PewterCity_Gym_EventScript_GivePendingTM12::",
     "additem ITEM_TM12_WEATHER_BALL",
-    "PewterCity_Gym_EventScript_GiveTM12FirstClear",
-    "PewterCity_Gym_EventScript_GivePendingTM12",
-    "goto_if_unset FLAG_GOT_TM12_FROM_RAINA",
+    "setflag FLAG_GOT_TM12_FROM_RAINA",
+    "msgbox PewterCity_Gym_Text_RainaWeatherBallReward",
+    "msgbox PewterCity_Gym_Text_RainaFirstClearFinal",
 ):
-    if forbidden in gym:
-        fail(f"legacy Gym TM12 reward path remains: {forbidden}")
-require(gym, "setflag FLAG_BADGE01_SQUALL", "Raina Squall Badge award")
-require(gym, "msgbox PewterCity_Gym_Text_RainaWeatherBallInfo", "Raina Weather Ball Mart information")
-require(gym, "msgbox PewterCity_Gym_Text_RainaFirstClearFinal", "Raina first-clear completion")
+    require(gym, needle, "Cloudburst first-clear TM12 reward")
+
+# CHG-0098: preserve post-victory Gym Guide acknowledgement and append the
+# informational-only local sidequest hint after the Gym is cleared.
+for needle in (
+    "goto_if_set FLAG_DEFEATED_RAINA, PewterCity_Gym_EventScript_GymGuyPostVictory",
+    "msgbox PewterCity_Gym_Text_YoureChampMaterial",
+    "msgbox PewterCity_Gym_Text_GymGuidePostSidequestHint",
+):
+    require(gym, needle, "Cloudburst Gym Guide post-victory flow")
 
 gym_text = text("data/maps/PewterCity_Gym/text.inc")
 for needle in (
-    "PewterCity_Gym_Text_RainaWeatherBallInfo::",
-    'TM12, Weather Ball, is sold at the',
-    'POKé MART here in CLOUDBURST.',
+    "PewterCity_Gym_Text_RainaWeatherBallReward::",
+    'And take this-TM12, Weather Ball.',
+    "PewterCity_Gym_Text_YoureChampMaterial::",
+    "You're POKéMON champ material!",
+    "PewterCity_Gym_Text_GymGuidePostSidequestHint::",
+    "Before you head for Mt. Moon, you",
+    "bragging about something he left",
+    "behind on the road ahead. Didn't sit",
 ):
-    require(gym_text, needle, "Raina Weather Ball Mart dialogue")
-if "PewterCity_Gym_Text_RainaWeatherBallReward::" in gym_text:
-    fail("superseded Raina Weather Ball reward dialogue label remains")
+    require(gym_text, needle, "Cloudburst reward / Guide dialogue")
+if "PewterCity_Gym_Text_RainaWeatherBallInfo::" in gym_text:
+    fail("superseded Cloudburst Mart TM12 dialogue remains")
 
 # TM12 item still resolves to Weather Ball and remains reusable.
 items = json.loads(text("src/data/items.json"))
@@ -122,4 +138,4 @@ for func in ("static void CB2_UseItem(void)", "static void CB2_UseTMHMAfterForge
         fail(f"{func} still consumes a TM")
     require(fblock, "TMs and HMs are permanently reusable", func)
 
-print("Weather Ball source paths OK: 9-state mapping, Cloudburst Mart acquisition, and reusable TM learning validated.")
+print("Weather Ball source paths OK: 9-state mapping, Raina TM12 reward, Cloudburst Guide hint, and reusable TM learning validated.")
