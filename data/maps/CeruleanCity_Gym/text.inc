@@ -9,7 +9,7 @@ CeruleanCity_Gym_Text_GymGuidePre::
     .string "ICE POKéMON don't take damage\n"
     .string "from it.\p"
     .string "And around here, FIRE POKéMON\n"
-    .string "don't either—their heat melts the\n"
+    .string "don't either-their heat melts the\n"
     .string "ice before it can hurt them.\p"
     .string "Sounds like Fire has it easy, right?\p"
     .string "That's exactly what these TRAINERS\n"
