@@ -950,11 +950,18 @@ static const struct TrainerMonNoItemDefaultMoves sParty_CamperDrew[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerDiana[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_CooltrainerMara[] = {
     {
         .iv = 0,
-        .lvl = 19,
-        .species = SPECIES_GOLDEEN,
+        .lvl = 15,
+        .species = SPECIES_DELIBIRD,
+        .moves = {MOVE_ICY_WIND, MOVE_POWDER_SNOW, MOVE_PECK, MOVE_PRESENT},
+    },
+    {
+        .iv = 0,
+        .lvl = 15,
+        .species = SPECIES_MARILL,
+        .moves = {MOVE_WATER_GUN, MOVE_ROLLOUT, MOVE_DEFENSE_CURL, MOVE_TAIL_WHIP},
     },
 };
 
@@ -2277,16 +2284,18 @@ static const struct TrainerMonNoItemDefaultMoves sParty_FishermanAndrew[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_SwimmerMaleLuis[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_HikerHolt[] = {
     {
         .iv = 0,
         .lvl = 16,
-        .species = SPECIES_HORSEA,
+        .species = SPECIES_VOLBEAT,
+        .moves = {MOVE_POWDER_SNOW, MOVE_CONFUSE_RAY, MOVE_MOONLIGHT, MOVE_TACKLE},
     },
     {
         .iv = 0,
         .lvl = 16,
-        .species = SPECIES_SHELLDER,
+        .species = SPECIES_GEODUDE,
+        .moves = {MOVE_MAGNITUDE, MOVE_ROCK_THROW, MOVE_DEFENSE_CURL, MOVE_MUD_SPORT},
     },
 };
 
@@ -5616,18 +5625,30 @@ static const struct TrainerMonNoItemCustomMoves sParty_LeaderBrock[] = {
     },
 };
 
-static const struct TrainerMonNoItemCustomMoves sParty_LeaderMisty[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_LeaderKukik[] = {
     {
         .iv = 0,
         .lvl = 18,
-        .species = SPECIES_STARYU,
-        .moves = {MOVE_TACKLE, MOVE_HARDEN, MOVE_RECOVER, MOVE_WATER_PULSE},
+        .species = SPECIES_DELIBIRD,
+        .moves = {MOVE_AURORA_BEAM, MOVE_ICY_WIND, MOVE_PECK, MOVE_QUICK_ATTACK},
+    },
+    {
+        .iv = 0,
+        .lvl = 18,
+        .species = SPECIES_SPHEAL,
+        .moves = {MOVE_ICE_BALL, MOVE_WATER_GUN, MOVE_ENCORE, MOVE_DEFENSE_CURL},
+    },
+    {
+        .iv = 0,
+        .lvl = 19,
+        .species = SPECIES_SWINUB,
+        .moves = {MOVE_POWDER_SNOW, MOVE_MUD_SLAP, MOVE_ENDURE, MOVE_TACKLE},
     },
     {
         .iv = 0,
         .lvl = 21,
-        .species = SPECIES_STARMIE,
-        .moves = {MOVE_SWIFT, MOVE_RECOVER, MOVE_RAPID_SPIN, MOVE_WATER_PULSE},
+        .species = SPECIES_SNEASEL,
+        .moves = {MOVE_ICY_WIND, MOVE_QUICK_ATTACK, MOVE_DIG, MOVE_SCREECH},
     },
 };
 
@@ -10845,6 +10866,21 @@ static const struct TrainerMonItemCustomMoves sParty_ChampionRematchCharmander[]
         .species = SPECIES_CHARIZARD,
         .heldItem = ITEM_SITRUS_BERRY,
         .moves = {MOVE_FIRE_BLAST, MOVE_DRAGON_CLAW, MOVE_AERIAL_ACE, MOVE_EARTHQUAKE},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_SnowboarderTavi[] = {
+    {
+        .iv = 0,
+        .lvl = 17,
+        .species = SPECIES_SPHEAL,
+        .moves = {MOVE_ICE_BALL, MOVE_WATER_GUN, MOVE_POWDER_SNOW, MOVE_ENCORE},
+    },
+    {
+        .iv = 0,
+        .lvl = 17,
+        .species = SPECIES_SANDSHREW,
+        .moves = {MOVE_POISON_STING, MOVE_SAND_ATTACK, MOVE_DEFENSE_CURL, MOVE_SCRATCH},
     },
 };
 

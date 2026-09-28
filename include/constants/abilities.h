@@ -80,6 +80,11 @@
 #define ABILITY_CACOPHONY 76
 #define ABILITY_AIR_LOCK 77
 
-#define ABILITIES_COUNT 78
+// Pokémon: Weather — Hail ability block.
+#define ABILITY_SNOW_WARNING 78
+#define ABILITY_ICE_BODY 79
+#define ABILITY_SNOW_CLOAK 80
+
+#define ABILITIES_COUNT 81
 
 #endif  // GUARD_CONSTANTS_ABILITIES_H

@@ -167,6 +167,12 @@
 #define TRAINER_PIC_LADY                  146
 #define TRAINER_PIC_PAINTER               147
 
+// Pokémon: Weather Frostfall reserved trainer front-picture IDs.
+// Final graphics/table registration lands with the native asset package.
+#define TRAINER_PIC_LEADER_KUKIK           151
+#define TRAINER_PIC_SNOWBOARDER_M          152
+#define TRAINER_PIC_SNOWBOARDER_F          153
+
 // The player back pics are assumed to alternate according to the gender values (MALE/FEMALE)
 #define TRAINER_BACK_PIC_RED                    0
 #define TRAINER_BACK_PIC_LEAF                   1
@@ -223,6 +229,7 @@
 #define TRAINER_CLASS_RS_TWINS            40
 #define TRAINER_CLASS_RS_SAILOR           41
 #define TRAINER_CLASS_BOARDER             42
+#define TRAINER_CLASS_SNOWBOARDER         TRAINER_CLASS_BOARDER
 #define TRAINER_CLASS_COLLECTOR           43
 #define TRAINER_CLASS_PKMN_TRAINER        44
 #define TRAINER_CLASS_RS_PKMN_BREEDER     45

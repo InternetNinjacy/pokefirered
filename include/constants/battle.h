@@ -214,7 +214,10 @@
 #define B_WEATHER_SUN_PERMANENT       (1 << 6)
 #define B_WEATHER_SUN                 (B_WEATHER_SUN_TEMPORARY | B_WEATHER_SUN_PERMANENT)
 #define B_WEATHER_HAIL_TEMPORARY      (1 << 7)
-#define B_WEATHER_HAIL                (B_WEATHER_HAIL_TEMPORARY)
+// Pokémon: Weather — bit 12 is reserved for no-countdown Hail from
+// environmental arenas and permanent Hail-setting abilities.
+#define B_WEATHER_HAIL_PERMANENT      (1 << 12)
+#define B_WEATHER_HAIL                (B_WEATHER_HAIL_TEMPORARY | B_WEATHER_HAIL_PERMANENT)
 #define B_WEATHER_ANY                 (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_SUN | B_WEATHER_HAIL)
 
 // Move Effects

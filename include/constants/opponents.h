@@ -747,11 +747,21 @@
 #define TRAINER_CHAMPION_REMATCH_CHARMANDER      741
 #define TRAINER_CUE_BALL_PAXTON                  742
 
+// Pokémon: Weather Frostfall Gym semantic trainer identities.
+// Slots 743-744 are reserved by the Cloudburst integration contract.
+#define TRAINER_SNOWBOARDER_TAVI                 745
+#define TRAINER_LEADER_KUKIK_REMATCH             746
+
+// Frostfall reuses the legacy Cerulean Gym trainer slots.
+#define TRAINER_COOLTRAINER_MARA                 TRAINER_PICNICKER_DIANA
+#define TRAINER_HIKER_HOLT                       TRAINER_SWIMMER_MALE_LUIS
+#define TRAINER_LEADER_KUKIK                     TRAINER_LEADER_MISTY
+
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is 
 //       only space for 25 additional trainers before trainer flag space overflows.
 //       MAX_TRAINERS_COUNT can be increased but will take up additional saveblock space
 
-#define NUM_TRAINERS                             743
+#define NUM_TRAINERS                             747
 #define MAX_TRAINERS_COUNT                       768
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
