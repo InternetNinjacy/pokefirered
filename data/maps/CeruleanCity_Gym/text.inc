@@ -1,92 +1,126 @@
-CeruleanCity_Gym_Text_MistyIntro::
-    .string "Hi, you're a new face!\p"
-    .string "Only those TRAINERS who have a\n"
-    .string "policy about POKéMON can turn pro.\p"
-    .string "What is your approach when you\n"
-    .string "catch and train POKéMON?\p"
-    .string "My policy is an all-out offensive\n"
-    .string "with WATER-type POKéMON!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
+CeruleanCity_Gym_Text_GymSign::
+    .string "FROSTFALL CITY POKéMON GYM\n"
+    .string "LEADER: KUKIK\p"
+    .string "THE UNSHAKEN SURVIVOR!$"
 
-CeruleanCity_Gym_Text_ExplainTM03::
-    .string "TM03 teaches WATER PULSE.\p"
-    .string "Use it on an aquatic POKéMON!$"
+CeruleanCity_Gym_Text_GymGuidePre::
+    .string "Yo! Champ in the making!\p"
+    .string "This Gym battles under heavy HAIL!\p"
+    .string "ICE POKéMON don't take damage\n"
+    .string "from it.\p"
+    .string "And around here, FIRE POKéMON\n"
+    .string "don't either—their heat melts the\n"
+    .string "ice before it can hurt them.\p"
+    .string "Sounds like Fire has it easy, right?\p"
+    .string "That's exactly what these TRAINERS\n"
+    .string "expect you to think.\p"
+    .string "You'll see WATER, ROCK, and GROUND\n"
+    .string "POKéMON protecting their Ice\n"
+    .string "partners.\p"
+    .string "Don't just bring the right type.\p"
+    .string "Bring a plan that lasts.$"
 
-CeruleanCity_Gym_Text_ExplainCascadeBadge::
-    .string "The CASCADEBADGE makes all\n"
-    .string "POKéMON up to Lv. 30 obey.\p"
-    .string "That includes even outsiders you\n"
-    .string "got in trades.\p"
-    .string "There's more. You can now use CUT\n"
-    .string "anytime, even out of battle.\p"
-    .string "You can CUT down small trees to\n"
-    .string "open new pathways.\p"
-    .string "You can also have my favorite TM.$"
+CeruleanCity_Gym_Text_GymGuidePost::
+    .string "You did it!\p"
+    .string "KUKIK's battles aren't about\n"
+    .string "winning fast.\p"
+    .string "They're about staying calm while\n"
+    .string "the weather keeps wearing\n"
+    .string "everything down.\p"
+    .string "You proved you could endure it.\p"
+    .string "By the way... someone over at the\n"
+    .string "POKéMON CENTER has been asking\n"
+    .string "around about a POKéMON that went\n"
+    .string "missing in the Hail.\p"
+    .string "Bad weather can make a search\n"
+    .string "tougher than a battle.$"
 
-CeruleanCity_Gym_Text_ReceivedTM03FromMisty::
-    .string "{PLAYER} received TM03\n"
-    .string "from MISTY.$"
+CeruleanCity_Gym_Text_MaraIntro::
+    .string "Everyone brings Fire POKéMON here.\p"
+    .string "Makes sense.\p"
+    .string "But if that were all it took, this\n"
+    .string "wouldn't be much of a Gym.\p"
+    .string "Come on. I'll show you the first\n"
+    .string "problem.$"
 
-CeruleanCity_Gym_Text_BetterMakeRoomForThis::
-    .string "You better make room for this!$"
+CeruleanCity_Gym_Text_MaraDefeat::
+    .string "Right idea.\p"
+    .string "Just don't depend on it too much.$"
 
-CeruleanCity_Gym_Text_MistyDefeat::
-    .string "Wow!\n"
-    .string "You're too much!\p"
-    .string "All right!\p"
-    .string "You can have the CASCADEBADGE to\n"
-    .string "show you beat me.$"
+CeruleanCity_Gym_Text_MaraPost::
+    .string "Fire ignores the Hail and hits Ice\n"
+    .string "hard.\p"
+    .string "That's why we prepare for Fire.$"
 
-CeruleanCity_Gym_Text_DianaIntro::
-    .string "What? You?\n"
-    .string "I'm more than good enough for you!\p"
-    .string "MISTY won't have to be bothered.$"
+CeruleanCity_Gym_Text_HoltIntro::
+    .string "Cold isn't the only danger on a\n"
+    .string "mountain.\p"
+    .string "Loose stone.\n"
+    .string "Bad footing.\n"
+    .string "The ground shifting beneath you.\p"
+    .string "Watch where you step.$"
 
-CeruleanCity_Gym_Text_DianaDefeat::
-    .string "You overwhelmed me!$"
+CeruleanCity_Gym_Text_HoltDefeat::
+    .string "Ha! Still standing!$"
 
-CeruleanCity_Gym_Text_DianaPostBattle::
-    .string "You have to face other TRAINERS\n"
-    .string "to see how good you really are.$"
+CeruleanCity_Gym_Text_HoltPost::
+    .string "A Fire POKéMON can handle the cold.\p"
+    .string "Rock and Ground don't care.$"
 
-CeruleanCity_Gym_Text_LuisIntro::
-    .string "Splash!\p"
-    .string "I'm first up!\n"
-    .string "Let's do it!$"
+CeruleanCity_Gym_Text_TaviIntro::
+    .string "Up here, rescue teams learn one\n"
+    .string "rule fast:\p"
+    .string "Panic wastes energy.\p"
+    .string "Energy keeps you alive.\p"
+    .string "Let's see how patient you are.$"
 
-CeruleanCity_Gym_Text_LuisDefeat::
-    .string "That can't be!$"
+CeruleanCity_Gym_Text_TaviDefeat::
+    .string "Good.\p"
+    .string "You didn't let the storm rush you.$"
 
-CeruleanCity_Gym_Text_LuisPostBattle::
-    .string "MISTY is a TRAINER who's going to\n"
-    .string "keep improving.\p"
-    .string "She won't lose to someone like you!$"
+CeruleanCity_Gym_Text_TaviPost::
+    .string "KUKIK won't hurry.\p"
+    .string "She never does.\p"
+    .string "If you start making mistakes because\n"
+    .string "you want the battle over...\p"
+    .string "she's already won.$"
 
-CeruleanCity_Gym_Text_GymGuyAdvice::
-    .string "Yo!\n"
-    .string "Champ in the making!\p"
-    .string "Let me give you some advice!\p"
-    .string "The LEADER, MISTY, is a pro who\n"
-    .string "uses WATER-type POKéMON.\p"
-    .string "You can drain all their water with\n"
-    .string "GRASS-type POKéMON.\p"
-    .string "Or, you might use ELECTRIC-type\n"
-    .string "POKéMON and zap them!$"
+CeruleanCity_Gym_Text_KukikIntro::
+    .string "You made it through the storm.\p"
+    .string "Good.\p"
+    .string "Most TRAINERS come here thinking\n"
+    .string "the cold is the enemy.\p"
+    .string "It isn't.\p"
+    .string "The cold simply stays.\p"
+    .string "Fire burns hot.\n"
+    .string "Rock hits hard.\n"
+    .string "Steel stands firm.\p"
+    .string "But the storm does not need to beat\n"
+    .string "them.\p"
+    .string "It only needs to last longer.\p"
+    .string "Show me how long you can stand in it.{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
 
-CeruleanCity_Gym_Text_WeMakePrettyGoodTeam::
-    .string "You beat MISTY!\n"
-    .string "See, what'd I tell ya?\p"
-    .string "You and me, kid, we make a pretty\n"
-    .string "darn-good team!$"
+CeruleanCity_Gym_Text_KukikDefeat::
+    .string "You endured it.\p"
+    .string "Not by fighting the storm.\p"
+    .string "By learning how to stand inside it.\p"
+    .string "Good.$"
 
-CeruleanCity_Gym_Text_GymStatue::
-    .string "CERULEAN POKéMON GYM\n"
-    .string "LEADER: MISTY\p"
-    .string "WINNING TRAINERS:\n"
-    .string "{RIVAL}$"
+CeruleanCity_Gym_Text_KukikBadgeReward::
+    .string "You endured the storm.\p"
+    .string "Take this.\p"
+    .string "The ENDURANCE BADGE.\p"
+    .string "It means you kept moving when the\n"
+    .string "cold told you to stop.\p"
+    .string "With it, you may use CUT outside\n"
+    .string "of battle.$"
 
-CeruleanCity_Gym_Text_GymStatuePlayerWon::
-    .string "CERULEAN POKéMON GYM\n"
-    .string "LEADER: MISTY\p"
-    .string "WINNING TRAINERS:\n"
-    .string "{RIVAL}, {PLAYER}$"
+CeruleanCity_Gym_Text_KukikFirstClearFinal::
+    .string "The storm will not always move for\n"
+    .string "you.\p"
+    .string "Sometimes you must keep moving\n"
+    .string "through it.$"
 
+CeruleanCity_Gym_Text_KukikPostClear::
+    .string "The storm hasn't changed.\p"
+    .string "You have.$"
