@@ -92,9 +92,8 @@ PewterCity_Gym_Text_RainaSquallBadgeExplain::
     .string "It also lets you use Flash outside\n"
     .string "of battle.$"
 
-PewterCity_Gym_Text_RainaWeatherBallInfo::
-    .string "TM12, Weather Ball, is sold at the\n"
-    .string "POKé MART here in CLOUDBURST.\p"
+PewterCity_Gym_Text_RainaWeatherBallReward::
+    .string "And take this-TM12, Weather Ball.\p"
     .string "Weather Ball changes with the\n"
     .string "weather around it.\p"
     .string "Rain makes it Water-type, but that's\n"
@@ -144,3 +143,16 @@ PewterCity_Gym_Text_RainaRematchSpent::
 
 PewterCity_Gym_Text_DontHaveRoomForThis::
     .string "You don't have room for this.$"
+
+PewterCity_Gym_Text_YoureChampMaterial::
+    .string "Just as I thought!\n"
+    .string "You're POKéMON champ material!$"
+
+PewterCity_Gym_Text_GymGuidePostSidequestHint::
+    .string "Before you head for Mt. Moon, you\n"
+    .string "might want to stop by the Pokémon\l"
+    .string "Center.\p"
+    .string "One of the Trainers there has been\n"
+    .string "bragging about something he left\l"
+    .string "behind on the road ahead. Didn't sit\l"
+    .string "right with me.$"
