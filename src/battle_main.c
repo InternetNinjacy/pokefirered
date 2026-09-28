@@ -2250,6 +2250,17 @@ static void BattleStartClearSetData(void)
     gBattlerTarget = 0;
     gBattleWeather = 0;
 
+    // Pokémon: Weather — every Frostfall Gym battle begins in environmental
+    // Hail with no normal five-turn countdown. Ordinary weather replacement
+    // and suppression still use the normal battle-weather engine.
+    if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+     && (gTrainerBattleOpponent_A == TRAINER_COOLTRAINER_MARA
+      || gTrainerBattleOpponent_A == TRAINER_HIKER_HOLT
+      || gTrainerBattleOpponent_A == TRAINER_SNOWBOARDER_TAVI
+      || gTrainerBattleOpponent_A == TRAINER_LEADER_KUKIK
+      || gTrainerBattleOpponent_A == TRAINER_LEADER_KUKIK_REMATCH))
+        gBattleWeather = B_WEATHER_HAIL_PERMANENT;
+
     dataPtr = (u8 *)&gWishFutureKnock;
     for (i = 0; i < sizeof(struct WishFutureKnock); i++)
         dataPtr[i] = 0;
