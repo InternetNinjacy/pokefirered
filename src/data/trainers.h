@@ -1492,15 +1492,15 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_CamperDrew),
     },
-    [TRAINER_PICNICKER_DIANA] = {
-        .trainerClass = TRAINER_CLASS_PICNICKER,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_GIRL | F_TRAINER_FEMALE,
-        .trainerPic = TRAINER_PIC_PICNICKER,
-        .trainerName = _("DIANA"),
+    [TRAINER_COOLTRAINER_MARA] = {
+        .trainerClass = TRAINER_CLASS_COOLTRAINER,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_COOL | F_TRAINER_FEMALE,
+        .trainerPic = TRAINER_PIC_COOLTRAINER_F,
+        .trainerName = _("MARA"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_PicnickerDiana),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_CooltrainerMara),
     },
     [TRAINER_PICNICKER_NANCY] = {
         .trainerClass = TRAINER_CLASS_PICNICKER,
@@ -2332,15 +2332,15 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_FishermanAndrew),
     },
-    [TRAINER_SWIMMER_MALE_LUIS] = {
-        .trainerClass = TRAINER_CLASS_SWIMMER_M,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SWIMMER,
-        .trainerPic = TRAINER_PIC_SWIMMER_M,
-        .trainerName = _("LUIS"),
+    [TRAINER_HIKER_HOLT] = {
+        .trainerClass = TRAINER_CLASS_HIKER,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_HIKER,
+        .trainerPic = TRAINER_PIC_HIKER,
+        .trainerName = _("HOLT"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_SwimmerMaleLuis),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_HikerHolt),
     },
     [TRAINER_SWIMMER_MALE_RICHARD] = {
         .trainerClass = TRAINER_CLASS_SWIMMER_M,
@@ -4142,15 +4142,16 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
         .party = NO_ITEM_CUSTOM_MOVES(sParty_LeaderBrock),
     },
-    [TRAINER_LEADER_MISTY] = {
+    [TRAINER_LEADER_KUKIK] = {
         .trainerClass = TRAINER_CLASS_LEADER,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_FEMALE | F_TRAINER_FEMALE,
+        // Temporary visual placeholder until WTH-GYM2-ART-KUKIK is integrated.
         .trainerPic = TRAINER_PIC_LEADER_MISTY,
-        .trainerName = _("MISTY"),
-        .items = {ITEM_SUPER_POTION},
+        .trainerName = _("KUKIK"),
+        .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_LeaderMisty),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_LeaderKukik),
     },
     [TRAINER_LEADER_LT_SURGE] = {
         .trainerClass = TRAINER_CLASS_LEADER,
@@ -7411,6 +7412,17 @@ const struct Trainer gTrainers[] = {
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
         .party = ITEM_CUSTOM_MOVES(sParty_ChampionRematchCharmander),
+    },
+    [TRAINER_SNOWBOARDER_TAVI] = {
+        .trainerClass = TRAINER_CLASS_SNOWBOARDER,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_HIKER,
+        // Temporary visual placeholder only; do not overwrite shared RS Youngster art.
+        .trainerPic = TRAINER_PIC_RS_YOUNGSTER,
+        .trainerName = _("TAVI"),
+        .items = {},
+        .doubleBattle = FALSE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_SnowboarderTavi),
     },
     [TRAINER_CUE_BALL_PAXTON] = {
         .trainerClass = TRAINER_CLASS_CUE_BALL,
