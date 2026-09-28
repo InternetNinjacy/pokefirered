@@ -7250,8 +7250,14 @@ static void Cmd_weatherdamage(void)
         }
         if (gBattleWeather & B_WEATHER_HAIL)
         {
-            if (!IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_ICE)
-                && !IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_FIRE)
+            gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_HAIL;
+            if (IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_FIRE))
+            {
+                gBattleMoveDamage = 0;
+                gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_HAIL_FIRE_IMMUNE;
+            }
+            else if (!IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_ICE)
+                && gBattleMons[gBattlerAttacker].ability != ABILITY_SNOW_CLOAK
                 && !(gStatuses3[gBattlerAttacker] & STATUS3_UNDERGROUND)
                 && !(gStatuses3[gBattlerAttacker] & STATUS3_UNDERWATER))
             {
