@@ -69,7 +69,7 @@ PewterCity_Text_BrocksLookingForChallengersFollowMe::
 
 PewterCity_Text_GoTakeOnBrock::
     .string "If you have the right stuff,\n"
-    .string "go take on BROCK!$"
+    .string "go take on RAINA!$"
 
 PewterCity_Text_TrainerTipsEarningEXP::
     .string "TRAINER TIPS\p"
@@ -87,9 +87,9 @@ PewterCity_Text_MuseumOfScience::
     .string "PEWTER MUSEUM OF SCIENCE$"
 
 PewterCity_Text_GymSign::
-    .string "PEWTER CITY POKéMON GYM\n"
-    .string "LEADER: BROCK\l"
-    .string "The Rock-Solid POKéMON TRAINER!$"
+    .string "CLOUDBURST CITY POKéMON GYM\n"
+    .string "Leader: RAINA\p"
+    .string "The Storm-Front Meteorologist!$"
 
 PewterCity_Text_CitySign::
     .string "PEWTER CITY\n"

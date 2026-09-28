@@ -215,7 +215,20 @@
 #define B_WEATHER_SUN                 (B_WEATHER_SUN_TEMPORARY | B_WEATHER_SUN_PERMANENT)
 #define B_WEATHER_HAIL_TEMPORARY      (1 << 7)
 #define B_WEATHER_HAIL                (B_WEATHER_HAIL_TEMPORARY)
+
+// Pokémon: Weather custom battle-weather category bits.
+// Full setter/timer/permanent-weather lifecycle is implemented by the broader
+// eight-weather system; these category bits let shared consumers such as
+// Weather Ball recognize all eight locked weather categories.
+#define B_WEATHER_FOG                 (1 << 8)
+#define B_WEATHER_TOXIC_SMOG          (1 << 9)
+#define B_WEATHER_POLLEN              (1 << 10)
+#define B_WEATHER_GALE                (1 << 11)
+#define B_WEATHER_CUSTOM              (B_WEATHER_FOG | B_WEATHER_TOXIC_SMOG | B_WEATHER_POLLEN | B_WEATHER_GALE)
+
+// Preserve B_WEATHER_ANY as the vanilla-weather aggregate for legacy consumers.
 #define B_WEATHER_ANY                 (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_SUN | B_WEATHER_HAIL)
+#define B_WEATHER_ALL                 (B_WEATHER_ANY | B_WEATHER_CUSTOM)
 
 // Move Effects
 #define MOVE_EFFECT_SLEEP               1

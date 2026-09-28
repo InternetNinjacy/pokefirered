@@ -156,7 +156,12 @@
 #define OBJ_EVENT_GFX_DEOXYS_N 150
 #define OBJ_EVENT_GFX_SS_ANNE 151
 
-#define NUM_OBJ_EVENT_GFX     152
+// Pokémon: Weather Cloudburst Gym custom object graphics.
+#define OBJ_EVENT_GFX_RAINA         152
+#define OBJ_EVENT_GFX_HYDROLOGIST   153
+#define OBJ_EVENT_GFX_STORM_CHASER  154
+
+#define NUM_OBJ_EVENT_GFX     155
 
 // These are dynamic object gfx ids.
 // They correspond with the values of the VAR_OBJ_GFX_ID_X vars.
