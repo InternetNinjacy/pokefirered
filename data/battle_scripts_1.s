@@ -3163,6 +3163,7 @@ BattleScript_DamagingWeatherContinues::
 BattleScript_DamagingWeatherLoop::
 	copyarraywithindex gBattlerAttacker, gBattlerByTurnOrder, gBattleCommunication, 1
 	weatherdamage
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, B_MSG_HAIL_FIRE_IMMUNE, BattleScript_HailFireImmune
 	jumpifword CMP_EQUAL, gBattleMoveDamage, NULL, BattleScript_DamagingWeatherContinuesEnd
 	printfromtable gSandstormHailDmgStringIds
 	waitmessage B_WAIT_TIME_LONG
@@ -3173,6 +3174,11 @@ BattleScript_DamagingWeatherLoop::
 	datahpupdate BS_ATTACKER
 	tryfaintmon BS_ATTACKER
 	checkteamslost BattleScript_DamagingWeatherContinuesEnd
+	goto BattleScript_DamagingWeatherContinuesEnd
+
+BattleScript_HailFireImmune::
+	printfromtable gSandstormHailDmgStringIds
+	waitmessage B_WAIT_TIME_LONG
 BattleScript_DamagingWeatherContinuesEnd::
 	jumpifbyte CMP_NOT_EQUAL, gBattleOutcome, 0, BattleScript_WeatherDamageEndedBattle
 	addbyte gBattleCommunication, 1
