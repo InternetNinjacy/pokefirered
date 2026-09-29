@@ -66,6 +66,12 @@ expected = {
     "sParty_EliteFourLance": [(56,"PIDGEOT"),(56,"DODRIO"),(57,"SCYTHER"),(57,"FEAROW"),(58,"AERODACTYL"),(59,"DRAGONITE")],
     "sParty_EliteFourBlueWater": [(54,"LANTURN"),(54,"LUDICOLO"),(55,"KINGDRA"),(55,"SWAMPERT"),(56,"STARMIE"),(57,"DITTO")],
     "sParty_EliteFourBlueElectric": [(54,"ELECTRODE"),(54,"MAGNETON"),(55,"AMPHAROS"),(55,"MANECTRIC"),(56,"ELECTABUZZ"),(57,"RAICHU")],
+    "sParty_EliteFourLorelei2": [(62,"KANGASKHAN"),(62,"PERSIAN"),(63,"WIGGLYTUFF"),(63,"LICKITUNG"),(64,"MILTANK"),(65,"TAUROS")],
+    "sParty_EliteFourBruno2": [(64,"NINETALES"),(64,"RAPIDASH"),(65,"ARCANINE"),(65,"CHARIZARD"),(66,"MAGMAR"),(67,"FLAREON")],
+    "sParty_EliteFourAgatha2": [(65,"CROBAT"),(65,"TENTACRUEL"),(66,"WEEZING"),(66,"NIDOKING"),(67,"GENGAR"),(68,"MUK")],
+    "sParty_EliteFourLance2": [(66,"PIDGEOT"),(66,"DODRIO"),(67,"SCYTHER"),(67,"FEAROW"),(68,"AERODACTYL"),(69,"DRAGONITE")],
+    "sParty_EliteFourBlueWater2": [(64,"LANTURN"),(64,"LUDICOLO"),(65,"KINGDRA"),(65,"SWAMPERT"),(66,"STARMIE"),(67,"DITTO")],
+    "sParty_EliteFourBlueElectric2": [(64,"ELECTRODE"),(64,"MAGNETON"),(65,"AMPHAROS"),(65,"MANECTRIC"),(66,"ELECTABUZZ"),(67,"RAICHU")],
 }
 for name, mons in expected.items():
     m = re.search(rf"static const struct TrainerMonItemCustomMoves {name}\[\] = \{{(.*?)\n\}};", party_text, re.S)
