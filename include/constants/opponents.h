@@ -747,11 +747,20 @@
 #define TRAINER_CHAMPION_REMATCH_CHARMANDER      741
 #define TRAINER_CUE_BALL_PAXTON                  742
 
+// Sam Edition League branch trainer IDs.
+// The legacy Bruno IDs are retained as Blue's Fire branch so existing trainer flags remain stable.
+#define TRAINER_ELITE_FOUR_BLUE_FIRE             TRAINER_ELITE_FOUR_BRUNO
+#define TRAINER_ELITE_FOUR_BLUE_FIRE_2           TRAINER_ELITE_FOUR_BRUNO_2
+#define TRAINER_ELITE_FOUR_BLUE_WATER            743
+#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC         744
+#define TRAINER_ELITE_FOUR_BLUE_WATER_2          745
+#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2       746
+
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is 
-//       only space for 25 additional trainers before trainer flag space overflows.
+//       only space for 21 additional trainers before trainer flag space overflows.
 //       MAX_TRAINERS_COUNT can be increased but will take up additional saveblock space
 
-#define NUM_TRAINERS                             743
+#define NUM_TRAINERS                             747
 #define MAX_TRAINERS_COUNT                       768
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
