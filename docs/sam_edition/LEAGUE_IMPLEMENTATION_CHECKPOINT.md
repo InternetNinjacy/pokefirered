@@ -7,8 +7,8 @@ Rule: actual GitHub/source/CI state wins if this file is stale.
 
 ## LAST VERIFIED GOOD STATE
 
-- Latest verified source commit: `0fe4fc02e655427bfa90064105869e11e269712d` — “League Green: close runtime resource dependencies”.
-- CI run: `36587108444` — SUCCESS.
+- Latest verified source commit: `b22d3961c3b65d7e32cdffa0a04420465c5ba561` — “League dialogue: preserve approved Trainer casing”.
+- CI run: `36625708495` — SUCCESS.
 - Sam League static validation: PASS.
 - Standard FireRed build: PASS.
 - Modern build: PASS.
@@ -21,6 +21,11 @@ Rule: actual GitHub/source/CI state wins if this file is stale.
 - Lorelei / Blue / Agatha / Lance first-clear and rematch trainer parties are encoded and statically checked.
 - Blue occupies the vanilla Bruno physical slot and has Fire / Water / Electric specialist branches wired to the documented starter-slot contract.
 - Lorelei locked first-clear dialogue is installed.
+- Agatha and Lance locked first-clear pre-battle, defeat, and advance dialogue is installed from the later approved Elite Four closure conversation.
+- Lorelei, Agatha, and Lance rematches now each use their locked rematch pre-battle, defeat, and post-battle dialogue rather than vanilla/shared first-clear text.
+- All three rooms route rematch trainer losses to dedicated `Text_RematchDefeat` labels and route immediate/repeat post-battle interaction by Hall-of-Fame state.
+- Stale vanilla Lorelei Ice-specialist rematch text, Agatha Oak-centered vanilla dialogue, Lance Dragon-specialist text, and Lance's vanilla rival-Champion reveal are removed from the live room text.
+- Static League validation guards the rematch dialogue labels/routing and prevents the stale Lorelei/Lance vanilla dialogue from silently returning.
 - League first-clear/rematch routing now uses Hall-of-Fame state rather than the stale RS-link flag.
 - Existing Hall-of-Fame reset still clears the four per-run Elite Four defeated flags.
 - Green Champion/title-challenge exact competitive party construction is implemented with per-stat IVs, EVs, nature, ability slot, held item, and exact moves.
@@ -46,7 +51,7 @@ Rule: actual GitHub/source/CI state wins if this file is stale.
 
 Manual implementation blocks are the controlling workflow. There is no active compiler blocker.
 
-Next work block: recover and install the remaining authoritative Elite Four dialogue and close the related scripts without inventing missing wording.
+Next work block: League state/progression regression.
 
 ## NEXT — MANUAL 30–60 MINUTE WORK BLOCKS
 
@@ -56,8 +61,8 @@ Next work block: recover and install the remaining authoritative Elite Four dial
 2. **DONE — Green runtime/resource closure.**  
    Adaptive Gene League behavior, held-item anti-farming, Hidden Power behavior, exact competitive construction, Champion/title-challenge labels/music, and starter-branch routing are reconciled and verified.
 
-3. **Elite Four dialogue + script closure.**  
-   Recover authoritative Agatha/Lance first-clear dialogue and Lorelei/Agatha/Lance rematch wording, install exact text, verify defeat/post-battle flow, text encoding, room progression, and rebuild.
+3. **DONE — Elite Four dialogue + script closure.**  
+   Recovered and installed the approved Agatha/Lance first-clear and Lorelei/Agatha/Lance rematch dialogue, separated rematch defeat/post-battle paths, added regression guards, and proved static/standard/modern builds green.
 
 4. **League state/progression regression.**  
    Audit first-clear versus rematch selection, four per-run defeated flags, Hall-of-Fame reset, Green reveal/title-challenge state, save/reload reconstruction, doors/warps, blackout/retry behavior, and repeated League runs. Add static guards where practical.
@@ -84,7 +89,6 @@ No user decision is currently required.
 Known implementation dependencies to resolve from source/authority:
 - The Sam starter trio itself is not yet integrated on `sam-edition-dev`; League branch routing currently follows the locked intended starter-slot contract. Do not rewrite unrelated starter work unless it becomes necessary to make League testing coherent.
 - Full player-facing Adaptive Gene acquisition/item presentation remains global starter/resource work; the League-side ID, held-item use, damage mechanic, and anti-farming behavior are complete.
-- Exact Agatha/Lance first-clear and Lorelei/Agatha/Lance rematch dialogue must be recovered from authoritative project records; do not invent missing wording.
 - Final paired opening/defeat battle-sprite integration must use approved project assets/registries; do not invent final character art.
 
 ## DO NOT REDO

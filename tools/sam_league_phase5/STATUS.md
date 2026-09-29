@@ -12,6 +12,8 @@ Base: `sam-edition-dev`
 - Blue occupies the physical vanilla Bruno slot and has Fire / Water / Electric specialist branches.
 - Blue branch selection contract: `VAR_STARTER_MON` 0=Eevee -> Water, 1=Pichu -> Fire, 2=Ditto -> Electric.
 - Lorelei's locked first-clear dialogue is installed.
+- Agatha and Lance locked first-clear dialogue is installed from the later approved Elite Four closure conversation.
+- Lorelei / Agatha / Lance locked rematch pre-battle, defeat, and post-battle dialogue is installed with distinct rematch script paths.
 - League rematch selection uses `FLAG_SYS_GAME_CLEAR`, not the vanilla RS-link flag.
 - Per-run Elite Four defeated flags remain reset by the existing Hall-of-Fame reset script.
 - Green's three first-clear Champion branches and three +10 postgame title-challenge branches are wired with exact species, order, items, moves, natures, abilities, IVs, EVs, and two Full Restores.
@@ -26,7 +28,6 @@ Base: `sam-edition-dev`
 
 ## Canon-sensitive work still pending
 
-- Exact Agatha/Lance first-clear dialogue and Lorelei/Agatha/Lance rematch wording must be recovered from authoritative project records; do not invent replacements.
 - Final paired League opening/defeat battle sprites for all five characters still require presentation hooks and approved source assets.
 - Stock AI flags are strengthened, but exact healing-threshold/switch behavior still needs runtime verification before claiming full parity with design prose.
 - The Sam starter trio itself is still vanilla in `sam-edition-dev`; League routing follows the locked intended starter-slot contract without rewriting unrelated starter work.
