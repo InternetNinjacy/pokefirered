@@ -62,7 +62,8 @@ PokemonLeague_ChampionsRoom_EventScript_EnterRoom::
 	clearflag FLAG_TEMP_5
 	setflag FLAG_DEFEATED_CHAMP
 	setflag FLAG_TEMP_4
-	msgbox PokemonLeague_ChampionsRoom_Text_PostBattle
+	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_FirstClearPostBattle
+	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_RematchPostBattle
 	playbgm MUS_SLOW_PALLET, 0
 	addobject LOCALID_CHAMPIONS_ROOM_PROF_OAK
 	msgbox PokemonLeague_ChampionsRoom_Text_OakPlayer
@@ -95,6 +96,14 @@ PokemonLeague_ChampionsRoom_EventScript_EnterRoom::
 	releaseall
 	end
 
+PokemonLeague_ChampionsRoom_EventScript_FirstClearPostBattle::
+	msgbox PokemonLeague_ChampionsRoom_Text_PostBattle
+	return
+
+PokemonLeague_ChampionsRoom_EventScript_RematchPostBattle::
+	msgbox PokemonLeague_ChampionsRoom_Text_RematchPostBattle
+	return
+
 PokemonLeague_ChampionsRoom_EventScript_QuestLogEnd::
 	call PokemonLeague_ChampionsRoom_EventScript_StopSceneTrigger
 	releaseall
@@ -113,11 +122,25 @@ PokemonLeague_ChampionsRoom_EventScript_Rematch::
 	return
 
 PokemonLeague_ChampionsRoom_EventScript_Intro::
+	goto_if_set FLAG_GREEN_CHAMPION_REVEALED, PokemonLeague_ChampionsRoom_EventScript_RepeatIntro
+	// Set before battle so a loss does not replay the Champion surprise.
+	setflag FLAG_GREEN_CHAMPION_REVEALED
 	msgbox PokemonLeague_ChampionsRoom_Text_Intro
 	return
 
+PokemonLeague_ChampionsRoom_EventScript_RepeatIntro::
+	msgbox PokemonLeague_ChampionsRoom_Text_RepeatIntro
+	return
+
 PokemonLeague_ChampionsRoom_EventScript_RematchIntro::
+	goto_if_set FLAG_GREEN_TITLE_CHALLENGE_SEEN, PokemonLeague_ChampionsRoom_EventScript_SubsequentRematchIntro
+	// Set before battle so a loss still advances future title-challenge framing.
+	setflag FLAG_GREEN_TITLE_CHALLENGE_SEEN
 	msgbox PokemonLeague_ChampionsRoom_Text_RematchIntro
+	return
+
+PokemonLeague_ChampionsRoom_EventScript_SubsequentRematchIntro::
+	msgbox PokemonLeague_ChampionsRoom_Text_SubsequentRematchIntro
 	return
 
 PokemonLeague_ChampionsRoom_EventScript_BattleSquirtle::
