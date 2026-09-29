@@ -101,8 +101,15 @@ def main():
     basepng=base/'tiles.png'
     if not basepng.exists(): raise SystemExit('Expected live Sam/pokefirered source root; pokemon_league tiles.png missing.')
     w,h,depth,palette,basepixels=read_png_indexed(basepng)
-    if (w,h)!=(128,192): raise ValueError(f'Unexpected Pokemon League tiles.png dimensions: {w}x{h}')
+    if w != 128 or h > 192 or h % 8:
+        raise ValueError(f'Unexpected Pokemon League tiles.png dimensions: {w}x{h}')
     if depth not in (4,8): raise ValueError('Unsupported indexed PNG depth')
+    # Vanilla FireRed's source PNG is 128x176 (352 explicit tiles), while the
+    # engine reserves 384 secondary tile slots. Pad the source canvas to the
+    # full 128x192 slot space before applying locked Sam tile IDs 640-1023.
+    if h < 192:
+        basepixels.extend([0] * (w * (192 - h)))
+        h = 192
 
     for room,(layout_dir,tsdir) in ROOMS.items():
         src=payload/'tilesets'/tsdir; dest=ROOT/'data/tilesets/secondary'/tsdir
