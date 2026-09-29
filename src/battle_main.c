@@ -1628,6 +1628,41 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 }
                 break;
             }
+            case F_TRAINER_PARTY_CUSTOM_MOVESET | F_TRAINER_PARTY_HELD_ITEM | F_TRAINER_PARTY_COMPETITIVE:
+            {
+                const struct TrainerMonCompetitiveMoves *partyData = gTrainers[trainerNum].party.CompetitiveMoves;
+                u8 statValue;
+
+                for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
+                    nameHash += gSpeciesNames[partyData[i].species][j];
+
+                personalityValue += nameHash << 8;
+                while (personalityValue % NUM_NATURES != partyData[i].nature)
+                    personalityValue++;
+
+                // Create with perfect IVs first, then apply the exact per-stat spread.
+                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, MAX_PER_STAT_IVS, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
+
+                for (j = 0; j < MAX_MON_MOVES; j++)
+                {
+                    SetMonData(&party[i], MON_DATA_MOVE1 + j, &partyData[i].moves[j]);
+                    SetMonData(&party[i], MON_DATA_PP1 + j, &gBattleMoves[partyData[i].moves[j]].pp);
+                }
+
+                for (j = 0; j < NUM_STATS; j++)
+                {
+                    statValue = partyData[i].ivs[j];
+                    SetMonData(&party[i], MON_DATA_HP_IV + j, &statValue);
+                    statValue = partyData[i].evs[j];
+                    SetMonData(&party[i], MON_DATA_HP_EV + j, &statValue);
+                }
+
+                statValue = partyData[i].abilityNum;
+                SetMonData(&party[i], MON_DATA_ABILITY_NUM, &statValue);
+                CalculateMonStats(&party[i]);
+                break;
+            }
             }
         }
 
