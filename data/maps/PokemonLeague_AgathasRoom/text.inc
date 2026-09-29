@@ -1,7 +1,7 @@
 PokemonLeague_AgathasRoom_Text_Intro::
     .string "So. You've made it past BLUE.\p"
     .string "Good.\p"
-    .string "Young TRAINERS are always in such\n"
+    .string "Young Trainers are always in such\n"
     .string "a hurry.\p"
     .string "Hit harder.\p"
     .string "Move faster.\p"
@@ -35,7 +35,7 @@ PokemonLeague_AgathasRoom_Text_Defeat::
     .string "...Heh.\p"
     .string "Very good.\p"
     .string "You didn't panic.\p"
-    .string "Most TRAINERS do, once they realize\n"
+    .string "Most Trainers do, once they realize\n"
     .string "the battle is slipping away from\l"
     .string "them.\p"
     .string "Poison works slowly.\p"
