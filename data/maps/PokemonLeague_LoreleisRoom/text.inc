@@ -1,13 +1,21 @@
 PokemonLeague_LoreleisRoom_Text_Intro::
-    .string "Welcome to the POKéMON LEAGUE.\p"
-    .string "I am LORELEI of the ELITE FOUR.\p"
-    .string "No one can best me when it comes\n"
-    .string "to icy POKéMON.\p"
-    .string "Freezing moves are powerful.\p"
-    .string "Your POKéMON will be at my mercy\n"
-    .string "when they are frozen solid.\p"
-    .string "Hahaha!\n"
-    .string "Are you ready?{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
+    .string "Welcome, challenger!\p"
+    .string "You've made it all the way to the\n"
+    .string "POKéMON LEAGUE!\p"
+    .string "But getting here and surviving\n"
+    .string "what comes next are two very\l"
+    .string "different tricks.\p"
+    .string "Every POKéMON has instincts.\p"
+    .string "Fear.\n"
+    .string "Pride.\l"
+    .string "Temper.\p"
+    .string "A skilled TRAINER doesn't fight\n"
+    .string "those instincts.\p"
+    .string "They command them!\p"
+    .string "Now step into the ring!\p"
+    .string "Let's see if you can keep control\n"
+    .string "when the beasts are loose!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
+
 
 PokemonLeague_LoreleisRoom_Text_RematchIntro::
     .string "Welcome to the POKéMON LEAGUE.\p"
@@ -23,11 +31,21 @@ PokemonLeague_LoreleisRoom_Text_RematchIntro::
     .string "Are you ready?{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
 
 PokemonLeague_LoreleisRoom_Text_Defeat::
-    .string "…Things shouldn't be this way!$"
+    .string "...Ha!\p"
+    .string "Well done.\p"
+    .string "I thought I was the one holding\n"
+    .string "the reins.\p"
+    .string "But your POKéMON never needed to\n"
+    .string "be controlled.\p"
+    .string "They trusted you completely.\p"
+    .string "That's something even the finest\n"
+    .string "tamer can't force.$"
+
 
 PokemonLeague_LoreleisRoom_Text_PostBattle::
-    .string "You're better than I thought.\n"
-    .string "Go on ahead.\p"
-    .string "You only got a taste of the\n"
-    .string "POKéMON LEAGUE's power.$"
-
+    .string "Go on.\p"
+    .string "The next member of the ELITE FOUR\n"
+    .string "is waiting.\p"
+    .string "And challenger?\p"
+    .string "Keep earning that trust.\p"
+    .string "It's worth far more than any whip.$"
