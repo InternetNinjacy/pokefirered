@@ -7,8 +7,8 @@ Rule: actual GitHub/source/CI state wins if this file is stale.
 
 ## LAST VERIFIED GOOD STATE
 
-- Latest verified good commit: `56bb07ce06828618d90bf0263facee755e46f957` — “League QA: guard Green naming placeholder integration”.
-- CI run: `36558267562` — SUCCESS.
+- Latest verified source commit: `0fe4fc02e655427bfa90064105869e11e269712d` — “League Green: close runtime resource dependencies”.
+- CI run: `36587108444` — SUCCESS.
 - Sam League static validation: PASS.
 - Standard FireRed build: PASS.
 - Modern build: PASS.
@@ -28,44 +28,53 @@ Rule: actual GitHub/source/CI state wins if this file is stale.
 - Green first-clear Champion and postgame title-challenge trainer records, labels, reveal state, rematch state, and locked dialogue are integrated.
 - Green no longer aliases Blue's rival-name storage. Dedicated persistent Green-name storage and battle-name routing exist with canonical GREEN fallback.
 - Sam save reserve / trainer-flag capacity required by the League integration is centrally allocated and statically asserted.
-- The overnight Green naming regression was repaired: the custom placeholder token is `GREEN_NAME`, avoiding collision with FireRed's existing `GREEN` color constant.
-- `PLACEHOLDER_ID_GREEN` is now actually wired to `ExpandPlaceholder_GreenName`.
-- Static League validation now explicitly guards Green naming/placeholder integration so the same collision cannot silently return.
+- The Green naming regression is guarded: the custom placeholder token is `GREEN_NAME`, avoiding collision with FireRed's existing `GREEN` color constant.
+- `PLACEHOLDER_ID_GREEN` is wired to `ExpandPlaceholder_GreenName`.
+- Adaptive Gene is reconciled to authoritative item ID 245 in the League branch and Green's Ditto records now use the named `ITEM_ADAPTIVE_GENE` symbol.
+- Adaptive Gene's League/runtime effect is implemented as a 1.20x multiplier on standard calculated damaging moves when the holder's original party species is Ditto. The original party species check preserves eligibility after Transform; self-damage is excluded.
+- Transform preserves Ditto's held item in the live battle struct layout, so Adaptive Gene remains held after transformation.
+- Green's trainer-owned held items are protected from permanent player farming through player-side Thief/Covet and Trick during her six League trainer records.
+- The live Hidden Power calculation was verified against Green's locked IVs: Raichu = Ice / 70 BP; Machamp = Ghost / 70 BP.
+- A field-by-field audit of all six Green first-clear/rematch arrays found no discrepancies in species, order, levels, items, moves, natures, ability slots, IVs, or EVs.
+- First-clear Green uses `TRAINER_CLASS_CHAMPION`; postgame Green uses `TRAINER_CLASS_PKMN_TRAINER`.
+- Both first-clear Green and the postgame title challenge are explicitly forced to `MUS_VS_CHAMPION`.
+- Starter-dependent Green branch routing matches the locked contract: player Ditto -> Green Espeon; player Pichu -> Green Ditto; player Eevee -> Green Raichu.
+- Static League validation now guards the Green naming fix and the League-side Adaptive Gene / anti-farming / Champion-theme integration.
 - Current source passes static validation, standard FireRed compilation, and modern compilation.
 
 ## CURRENT
 
-Manual implementation blocks are now the controlling workflow. There is no active compiler blocker.
+Manual implementation blocks are the controlling workflow. There is no active compiler blocker.
 
-Next work block: close Green's remaining League-runtime/resource dependencies without reopening her locked player-facing design.
+Next work block: recover and install the remaining authoritative Elite Four dialogue and close the related scripts without inventing missing wording.
 
 ## NEXT — MANUAL 30–60 MINUTE WORK BLOCKS
 
-1. **DONE — Repair overnight Green integration / restore green baseline.**
+1. **DONE — Repair overnight Green integration / restore green baseline.**  
    Fix the Green placeholder compiler collision, wire placeholder expansion correctly, add regression validation, and prove standard + modern builds are green.
 
-2. **Green runtime/resource closure.**
-   Reconcile Adaptive Gene from the Sam resource authority/branch, verify exact Green held-item behavior, Hidden Power IV behavior, competitive party construction, trainer-item anti-farming behavior, Champion/title-challenge labels/music, and starter-branch routing. Keep unrelated starter-system implementation out unless required.
+2. **DONE — Green runtime/resource closure.**  
+   Adaptive Gene League behavior, held-item anti-farming, Hidden Power behavior, exact competitive construction, Champion/title-challenge labels/music, and starter-branch routing are reconciled and verified.
 
-3. **Elite Four dialogue + script closure.**
+3. **Elite Four dialogue + script closure.**  
    Recover authoritative Agatha/Lance first-clear dialogue and Lorelei/Agatha/Lance rematch wording, install exact text, verify defeat/post-battle flow, text encoding, room progression, and rebuild.
 
-4. **League state/progression regression.**
+4. **League state/progression regression.**  
    Audit first-clear versus rematch selection, four per-run defeated flags, Hall-of-Fame reset, Green reveal/title-challenge state, save/reload reconstruction, doors/warps, blackout/retry behavior, and repeated League runs. Add static guards where practical.
 
-5. **League paired battle-sprite integration — engine/hook layer.**
+5. **League paired battle-sprite integration — engine/hook layer.**  
    Implement the opening/defeat sprite presentation mechanism so each League opponent can show an opening battle sprite and a distinct defeat sprite after the win, without disturbing ordinary trainer battles.
 
-6. **League paired battle-sprite integration — assets/registries.**
+6. **League paired battle-sprite integration — assets/registries.**  
    Convert/register the approved Lorelei, Blue, Agatha, Lance, and Green opening/defeat assets available in project authorities; use fallbacks only where explicitly permitted, identify any truly missing approved source art, and compile-test all five.
 
-7. **League combat/AI/healing verification.**
+7. **League combat/AI/healing verification.**  
    Verify exact parties, held items, two-Full-Restore rules, strongest intended stock AI/switch behavior, Blue branches, Green competitive construction, Hidden Power results, and rematch levels against current specialist authorities. Fix source discrepancies only; do not rebalance from preference.
 
-8. **Full League integration/regression pass.**
+8. **Full League integration/regression pass.**  
    Run static validation plus standard/modern builds; inspect all five room bindings, script references, resource IDs, save allocations, trainer tables, dialogue symbols, and cross-map progression. Repair any remaining compile/link/data defects.
 
-9. **Test-candidate packaging.**
+9. **Test-candidate packaging.**  
    Produce the coherent test ROM/build artifact if available through CI, record the exact commit, and write a concise human gameplay/visual QA route covering first clear, loss/retry, Hall of Fame, rematch, save/reload, rooms, sprites, dialogue, and all Blue/Green starter branches.
 
 ## BLOCKERS / DECISIONS NEEDED
@@ -73,8 +82,8 @@ Next work block: close Green's remaining League-runtime/resource dependencies wi
 No user decision is currently required.
 
 Known implementation dependencies to resolve from source/authority:
-- Adaptive Gene is allocated on a separate Sam resource-constants branch as the same reserved item slot currently represented by `ITEM_0F5`; final League integration must use the authoritative symbol/behavior rather than leave a dummy placeholder.
 - The Sam starter trio itself is not yet integrated on `sam-edition-dev`; League branch routing currently follows the locked intended starter-slot contract. Do not rewrite unrelated starter work unless it becomes necessary to make League testing coherent.
+- Full player-facing Adaptive Gene acquisition/item presentation remains global starter/resource work; the League-side ID, held-item use, damage mechanic, and anti-farming behavior are complete.
 - Exact Agatha/Lance first-clear and Lorelei/Agatha/Lance rematch dialogue must be recovered from authoritative project records; do not invent missing wording.
 - Final paired opening/defeat battle-sprite integration must use approved project assets/registries; do not invent final character art.
 
@@ -90,7 +99,7 @@ Known implementation dependencies to resolve from source/authority:
 - Do not merge PR #12 until explicitly directed.
 - Do not treat current Blue/Green fallback battle graphics as satisfying the final paired opening/defeat presentation.
 - Do not claim runtime/gameplay-final status merely from compile success.
-- Do not recreate Green's competitive trainer schema or save allocations; they now compile and are guarded.
+- Do not recreate Green's competitive trainer schema, save allocations, Adaptive Gene League behavior, or anti-farming guard; they now compile and are guarded.
 
 ## RECOVERY PROCEDURE
 
