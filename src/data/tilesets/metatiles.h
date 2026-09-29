@@ -199,5 +199,20 @@ const u32 gMetatileAttributes_IslandHarbor[] = INCBIN_U32("data/tilesets/seconda
 const u16 gMetatiles_PokemonLeague[] = INCBIN_U16("data/tilesets/secondary/pokemon_league/metatiles.bin");
 const u32 gMetatileAttributes_PokemonLeague[] = INCBIN_U32("data/tilesets/secondary/pokemon_league/metatile_attributes.bin");
 
+const u16 gMetatiles_PokemonLeagueLorelei[] = INCBIN_U16("data/tilesets/secondary/pokemon_league_lorelei/metatiles.bin");
+const u32 gMetatileAttributes_PokemonLeagueLorelei[] = INCBIN_U32("data/tilesets/secondary/pokemon_league_lorelei/metatile_attributes.bin");
+
+const u16 gMetatiles_PokemonLeagueBlue[] = INCBIN_U16("data/tilesets/secondary/pokemon_league_blue/metatiles.bin");
+const u32 gMetatileAttributes_PokemonLeagueBlue[] = INCBIN_U32("data/tilesets/secondary/pokemon_league_blue/metatile_attributes.bin");
+
+const u16 gMetatiles_PokemonLeagueAgatha[] = INCBIN_U16("data/tilesets/secondary/pokemon_league_agatha/metatiles.bin");
+const u32 gMetatileAttributes_PokemonLeagueAgatha[] = INCBIN_U32("data/tilesets/secondary/pokemon_league_agatha/metatile_attributes.bin");
+
+const u16 gMetatiles_PokemonLeagueLance[] = INCBIN_U16("data/tilesets/secondary/pokemon_league_lance/metatiles.bin");
+const u32 gMetatileAttributes_PokemonLeagueLance[] = INCBIN_U32("data/tilesets/secondary/pokemon_league_lance/metatile_attributes.bin");
+
+const u16 gMetatiles_PokemonLeagueGreen[] = INCBIN_U16("data/tilesets/secondary/pokemon_league_green/metatiles.bin");
+const u32 gMetatileAttributes_PokemonLeagueGreen[] = INCBIN_U32("data/tilesets/secondary/pokemon_league_green/metatile_attributes.bin");
+
 const u16 gMetatiles_HallOfFame[] = INCBIN_U16("data/tilesets/secondary/hall_of_fame/metatiles.bin");
 const u32 gMetatileAttributes_HallOfFame[] = INCBIN_U32("data/tilesets/secondary/hall_of_fame/metatile_attributes.bin");
