@@ -756,6 +756,20 @@ struct ExternalEventFlags
 
 } __attribute__((packed));/*size = 0x15*/
 
+// Sam Edition structured save reserve. The trainer-flag expansion grows the
+// main flag array and four Quest Log snapshots by 160 bytes total. Replacing
+// the stock 400-byte unused block with this 240-byte structure preserves the
+// ramScript offset and the overall SaveBlock1 size.
+struct SamEditionSaveData
+{
+    u8 coreMetadata[0x10];                    // 0x00-0x0F
+    u8 globalMechanicAux[0x40];               // 0x10-0x4F
+    u8 greenName[PLAYER_NAME_LENGTH + 1];     // 0x50-0x57
+    u8 rivalRocketAux[0x38];                  // 0x58-0x8F
+    u8 gymSatoshiPostgameAux[0x30];           // 0x90-0xBF
+    u8 futureExpansion[0x30];                 // 0xC0-0xEF
+};
+
 struct SaveBlock1
 {
     /*0x0000*/ struct Coords16 pos;
@@ -806,7 +820,7 @@ struct SaveBlock1
     /*0x30D0*/ struct Roamer roamer;
     /*0x30EC*/ struct EnigmaBerry enigmaBerry;
     /*0x3120*/ struct MysteryGiftSave mysteryGift;
-    /*0x348C*/ u8 unused_348C[400];
+    /*0x352C*/ struct SamEditionSaveData samEdition;
     /*0x361C*/ struct RamScript ramScript;
     /*0x3A08*/ struct RecordMixingGift recordMixingGift; // unused
     /*0x3A18*/ u8 seen2[DEX_FLAGS_NO];
