@@ -651,6 +651,12 @@ static u8 GetTrainerBattleTransition(void)
             return B_TRANSITION_LANCE;
         return B_TRANSITION_BLUE;
     }
+    // Green's postgame title challenge uses the PKMN TRAINER label by canon,
+    // but keeps the Champion-room battle presentation.
+    if (gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_SQUIRTLE
+     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_BULBASAUR
+     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_CHARMANDER)
+        return B_TRANSITION_BLUE;
     if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION)
         return B_TRANSITION_BLUE;
     if (gTrainers[gTrainerBattleOpponent_A].doubleBattle == TRUE)
