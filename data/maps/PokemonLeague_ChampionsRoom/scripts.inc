@@ -76,11 +76,11 @@ PokemonLeague_ChampionsRoom_EventScript_EnterRoom::
 	specialvar VAR_RESULT, GetStarterSpecies
 	bufferspeciesname STR_VAR_1, VAR_RESULT
 	msgbox PokemonLeague_ChampionsRoom_Text_OakCongratulations
+	// Oak's Green-specific reaction text remains authority-open; keep choreography but
+	// intentionally omit the stale Blue-targeted vanilla speech until that text is closed.
 	applymovement LOCALID_CHAMPIONS_ROOM_PROF_OAK, Common_Movement_WalkInPlaceFasterRight
 	applymovement LOCALID_CHAMPIONS_ROOM_RIVAL, Common_Movement_WalkInPlaceFasterLeft
 	waitmovement 0
-	msgbox PokemonLeague_ChampionsRoom_Text_OakImDisappointedRival
-	closemessage
 	applymovement LOCALID_CHAMPIONS_ROOM_PROF_OAK, Common_Movement_WalkInPlaceFasterDown
 	waitmovement 0
 	delay 20
@@ -156,15 +156,15 @@ PokemonLeague_ChampionsRoom_EventScript_BattleCharmander::
 	return
 
 PokemonLeague_ChampionsRoom_EventScript_RematchSquirtle::
-	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_SQUIRTLE, PokemonLeague_ChampionsRoom_Text_Defeat
+	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_SQUIRTLE, PokemonLeague_ChampionsRoom_Text_RematchDefeat
 	return
 
 PokemonLeague_ChampionsRoom_EventScript_RematchBulbasaur::
-	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_BULBASAUR, PokemonLeague_ChampionsRoom_Text_Defeat
+	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_BULBASAUR, PokemonLeague_ChampionsRoom_Text_RematchDefeat
 	return
 
 PokemonLeague_ChampionsRoom_EventScript_RematchCharmander::
-	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_CHARMANDER, PokemonLeague_ChampionsRoom_Text_Defeat
+	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_CHARMANDER, PokemonLeague_ChampionsRoom_Text_RematchDefeat
 	return
 
 PokemonLeague_ChampionsRoom_Movement_PlayerEnter::
