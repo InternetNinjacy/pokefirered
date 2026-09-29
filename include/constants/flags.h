@@ -1247,9 +1247,12 @@
 #define FLAG_DEFEATED_LANCE           0x4BB
 #define FLAG_DEFEATED_CHAMP           0x4BC
 
-// Unused?
-#define FLAG_0x4BD               0x4BD
-#define FLAG_0x4BE               0x4BE
+// Sam Edition Champion-room persistent presentation state.
+#define FLAG_GREEN_CHAMPION_REVEALED      0x4BD
+#define FLAG_GREEN_TITLE_CHALLENGE_SEEN   0x4BE
+// Legacy aliases retained so unrelated source references remain stable.
+#define FLAG_0x4BD               FLAG_GREEN_CHAMPION_REVEALED
+#define FLAG_0x4BE               FLAG_GREEN_TITLE_CHALLENGE_SEEN
 #define FLAG_0x4BF               0x4BF
 #define FLAG_0x4C0               0x4C0
 #define FLAG_0x4C1               0x4C1
