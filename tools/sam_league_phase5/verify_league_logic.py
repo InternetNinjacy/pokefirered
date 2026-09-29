@@ -136,6 +136,16 @@ require("src/battle_main.c", "MON_DATA_HP_IV + j")
 require("src/battle_main.c", "MON_DATA_HP_EV + j")
 require("src/battle_setup.c", "F_TRAINER_PARTY_COMPETITIVE")
 
+# Green has independent persistent naming. Keep its placeholder distinct from the
+# existing GREEN palette constant in charmap.txt, and ensure expansion is wired.
+require("include/characters.h", "#define PLACEHOLDER_ID_GREEN         0xE")
+require("charmap.txt", "GREEN_NAME     = FD 0E")
+forbid("charmap.txt", "GREEN          = FD 0E",
+       "Green-name placeholder must not collide with the GREEN color constant")
+require("src/string_util.c",
+        "[PLACEHOLDER_ID_GREEN]        = ExpandPlaceholder_GreenName")
+require("src/battle_message.c", "toCpy = GetGreenName()")
+
 green_expected = {
     # Legacy vanilla Champion array names are source IDs only.
     # VAR_STARTER_MON 2 = player Ditto -> Green Espeon.
