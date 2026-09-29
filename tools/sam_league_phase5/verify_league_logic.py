@@ -100,6 +100,33 @@ for symbol in ["TRAINER_ELITE_FOUR_LORELEI","TRAINER_ELITE_FOUR_BRUNO",
     elif ".items = {ITEM_FULL_RESTORE, ITEM_FULL_RESTORE}" not in m.group(1):
         errors.append(f"{symbol}: expected exactly two Full Restores")
 
+# Central Sam resource allocations used by League integration.
+for symbol, value in [
+    ("TRAINER_ELITE_FOUR_BLUE_WATER", "800"),
+    ("TRAINER_ELITE_FOUR_BLUE_ELECTRIC", "801"),
+    ("TRAINER_ELITE_FOUR_BLUE_WATER_2", "802"),
+    ("TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2", "803"),
+]:
+    if not re.search(rf"#define\s+{symbol}\s+{value}\b", opp):
+        errors.append(f"{symbol}: expected centrally allocated trainer ID {value}")
+if not re.search(r"#define\s+NUM_TRAINERS\s+804\b", opp):
+    errors.append("NUM_TRAINERS must cover Blue ID 803 exactly")
+if not re.search(r"#define\s+MAX_TRAINERS_COUNT\s+1024\b", opp):
+    errors.append("MAX_TRAINERS_COUNT must use Sam Edition central 1024 capacity")
+
+flags_text = read("include/constants/flags.h")
+for symbol, value in [
+    ("FLAG_GREEN_CHAMPION_REVEALED", "0x340"),
+    ("FLAG_GREEN_TITLE_CHALLENGE_SEEN", "0x341"),
+]:
+    if not re.search(rf"#define\s+{symbol}\s+{value}\b", flags_text):
+        errors.append(f"{symbol}: expected central rival allocation {value}")
+require("include/global.h", "struct SamEditionSaveData")
+require("include/global.h", "greenName[PLAYER_NAME_LENGTH + 1]")
+require("include/global.h", "struct SamEditionSaveData samEdition;")
+require("src/save.c", "STATIC_ASSERT(sizeof(struct SamEditionSaveData) == 0xF0")
+require("src/save.c", "STATIC_ASSERT(sizeof(struct SaveBlock1) == 0x3D68")
+
 # Green Champion exact competitive-construction integration.
 require("include/constants/trainers.h", "F_TRAINER_PARTY_COMPETITIVE")
 require("include/battle.h", "struct TrainerMonCompetitiveMoves")
