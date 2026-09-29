@@ -100,6 +100,102 @@ for symbol in ["TRAINER_ELITE_FOUR_LORELEI","TRAINER_ELITE_FOUR_BRUNO",
     elif ".items = {ITEM_FULL_RESTORE, ITEM_FULL_RESTORE}" not in m.group(1):
         errors.append(f"{symbol}: expected exactly two Full Restores")
 
+# Green Champion exact competitive-construction integration.
+require("include/constants/trainers.h", "F_TRAINER_PARTY_COMPETITIVE")
+require("include/battle.h", "struct TrainerMonCompetitiveMoves")
+require("include/battle.h", "#define COMPETITIVE_MOVES(party)")
+require("src/battle_main.c", "MON_DATA_ABILITY_NUM")
+require("src/battle_main.c", "MON_DATA_HP_IV + j")
+require("src/battle_main.c", "MON_DATA_HP_EV + j")
+require("src/battle_setup.c", "F_TRAINER_PARTY_COMPETITIVE")
+
+green_expected = {
+    # Legacy vanilla Champion array names are source IDs only.
+    # VAR_STARTER_MON 2 = player Ditto -> Green Espeon.
+    "sParty_ChampionFirstSquirtle": [(59,"GYARADOS"),(57,"STEELIX"),(58,"CROBAT"),(56,"SNORLAX"),(55,"CHARIZARD"),(60,"ESPEON")],
+    # VAR_STARTER_MON 1 = player Pichu -> Green Ditto.
+    "sParty_ChampionFirstBulbasaur": [(56,"CLOYSTER"),(58,"NIDOKING"),(59,"ARCANINE"),(57,"PINSIR"),(55,"GENGAR"),(60,"DITTO")],
+    # VAR_STARTER_MON 0 = player Eevee -> Green Raichu.
+    "sParty_ChampionFirstCharmander": [(59,"VENUSAUR"),(57,"PORYGON2"),(58,"MACHAMP"),(55,"STARMIE"),(56,"DRAGONITE"),(60,"RAICHU")],
+    "sParty_ChampionRematchSquirtle": [(69,"GYARADOS"),(67,"STEELIX"),(68,"CROBAT"),(66,"SNORLAX"),(65,"CHARIZARD"),(70,"ESPEON")],
+    "sParty_ChampionRematchBulbasaur": [(66,"CLOYSTER"),(68,"NIDOKING"),(69,"ARCANINE"),(67,"PINSIR"),(65,"GENGAR"),(70,"DITTO")],
+    "sParty_ChampionRematchCharmander": [(69,"VENUSAUR"),(67,"PORYGON2"),(68,"MACHAMP"),(65,"STARMIE"),(66,"DRAGONITE"),(70,"RAICHU")],
+}
+for name, mons in green_expected.items():
+    m = re.search(rf"static const struct TrainerMonCompetitiveMoves {name}\[\] = \{{(.*?)\n\}};", party_text, re.S)
+    if not m:
+        errors.append(f"missing Green competitive party {name}")
+        continue
+    body = m.group(1)
+    found = [(int(l), s) for l,s in re.findall(r"\.lvl = (\d+),\s*\n\s*\.species = SPECIES_([A-Z0-9_]+),", body)]
+    if found != mons:
+        errors.append(f"{name}: expected {mons}, found {found}")
+
+# Hidden Power construction is exact and must not drift.
+for name, species, expected_ivs in [
+    ("sParty_ChampionFirstCharmander", "MACHAMP", "31, 31, 30, 31, 31, 30"),
+    ("sParty_ChampionFirstCharmander", "RAICHU", "30, 30, 30, 31, 31, 31"),
+    ("sParty_ChampionRematchCharmander", "MACHAMP", "31, 31, 30, 31, 31, 30"),
+    ("sParty_ChampionRematchCharmander", "RAICHU", "30, 30, 30, 31, 31, 31"),
+]:
+    m = re.search(rf"static const struct TrainerMonCompetitiveMoves {name}\[\] = \{{(.*?)\n\}};", party_text, re.S)
+    if m:
+        sm = re.search(rf"\.species = SPECIES_{species},(.*?)(?=\n    \}},|\Z)", m.group(1), re.S)
+        if not sm or f".ivs = {{{expected_ivs}}}" not in sm.group(1):
+            errors.append(f"{name} {species}: expected IVs {expected_ivs}")
+
+champ_script = read("data/maps/PokemonLeague_ChampionsRoom/scripts.inc")
+for route in [
+    "call_if_eq VAR_STARTER_MON, 2, PokemonLeague_ChampionsRoom_EventScript_BattleSquirtle",
+    "call_if_eq VAR_STARTER_MON, 1, PokemonLeague_ChampionsRoom_EventScript_BattleBulbasaur",
+    "call_if_eq VAR_STARTER_MON, 0, PokemonLeague_ChampionsRoom_EventScript_BattleCharmander",
+    "call_if_eq VAR_STARTER_MON, 2, PokemonLeague_ChampionsRoom_EventScript_RematchSquirtle",
+    "call_if_eq VAR_STARTER_MON, 1, PokemonLeague_ChampionsRoom_EventScript_RematchBulbasaur",
+    "call_if_eq VAR_STARTER_MON, 0, PokemonLeague_ChampionsRoom_EventScript_RematchCharmander",
+]:
+    if route not in champ_script:
+        errors.append(f"Champion branch route missing: {route}")
+
+for trainer in [
+    "TRAINER_CHAMPION_FIRST_SQUIRTLE","TRAINER_CHAMPION_FIRST_BULBASAUR","TRAINER_CHAMPION_FIRST_CHARMANDER",
+    "TRAINER_CHAMPION_REMATCH_SQUIRTLE","TRAINER_CHAMPION_REMATCH_BULBASAUR","TRAINER_CHAMPION_REMATCH_CHARMANDER",
+]:
+    m = re.search(rf"\[{trainer}\] = \{{(.*?)\n    \}},", trainers, re.S)
+    if not m:
+        errors.append(f"missing Green trainer record {trainer}")
+        continue
+    body = m.group(1)
+    if ".items = {ITEM_FULL_RESTORE, ITEM_FULL_RESTORE}" not in body:
+        errors.append(f"{trainer}: expected exactly two Full Restores")
+    if ".party = COMPETITIVE_MOVES(" not in body:
+        errors.append(f"{trainer}: expected competitive party schema")
+
+for trainer in [
+    "TRAINER_CHAMPION_REMATCH_SQUIRTLE","TRAINER_CHAMPION_REMATCH_BULBASAUR","TRAINER_CHAMPION_REMATCH_CHARMANDER",
+]:
+    m = re.search(rf"\[{trainer}\] = \{{(.*?)\n    \}},", trainers, re.S)
+    if m and ".trainerClass = TRAINER_CLASS_PKMN_TRAINER" not in m.group(1):
+        errors.append(f"{trainer}: postgame Green must be PKMN TRAINER, not persistent Champion")
+
+flags = read("include/constants/flags.h")
+for flag in ["FLAG_GREEN_CHAMPION_REVEALED", "FLAG_GREEN_TITLE_CHALLENGE_SEEN"]:
+    if flag not in flags:
+        errors.append(f"missing persistent Green presentation flag {flag}")
+
+require("data/maps/PokemonLeague_ChampionsRoom/scripts.inc",
+        "setflag FLAG_GREEN_CHAMPION_REVEALED",
+        "Green reveal flag must be set before the first Champion battle")
+require("data/maps/PokemonLeague_ChampionsRoom/scripts.inc",
+        "setflag FLAG_GREEN_TITLE_CHALLENGE_SEEN",
+        "Green title-challenge seen flag must be set before the postgame battle")
+for trainer in ["SQUIRTLE","BULBASAUR","CHARMANDER"]:
+    require("data/maps/PokemonLeague_ChampionsRoom/scripts.inc",
+            f"trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_{trainer}, PokemonLeague_ChampionsRoom_Text_RematchDefeat",
+            f"Green {trainer} title challenge must use rematch defeat text")
+forbid("data/maps/PokemonLeague_ChampionsRoom/scripts.inc",
+       "msgbox PokemonLeague_ChampionsRoom_Text_OakImDisappointedRival",
+       "Oak's Green-specific Champion-room reaction is authority-open and must not be invented/called")
+
 if errors:
     print("Sam League static validation FAILED:")
     for e in errors:
