@@ -16,19 +16,20 @@ PokemonLeague_LoreleisRoom_Text_Intro::
     .string "Let's see if you can keep control\n"
     .string "when the beasts are loose!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
 
-
 PokemonLeague_LoreleisRoom_Text_RematchIntro::
-    .string "Welcome to the POKéMON LEAGUE.\p"
-    .string "I, LORELEI of the ELITE FOUR,\n"
-    .string "have returned!\p"
-    .string "You know how it goes.\n"
-    .string "No one can best me when it comes\l"
-    .string "to icy POKéMON.\p"
-    .string "Freezing moves are powerful.\p"
-    .string "Your POKéMON will be at my mercy\n"
-    .string "when they are frozen solid.\p"
-    .string "Hahaha!\n"
-    .string "Are you ready?{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
+    .string "Back for another performance?\p"
+    .string "Good!\p"
+    .string "Last time, you showed me something\n"
+    .string "I couldn't teach with a chair or\l"
+    .string "a whip.\p"
+    .string "Trust.\p"
+    .string "So today...\p"
+    .string "no lessons.\p"
+    .string "No demonstrations.\p"
+    .string "Just two TRAINERS who already know\n"
+    .string "what the other can do.\p"
+    .string "Come on, CHAMPION!\p"
+    .string "Let's give them a show!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
 
 PokemonLeague_LoreleisRoom_Text_Defeat::
     .string "...Ha!\p"
@@ -41,6 +42,13 @@ PokemonLeague_LoreleisRoom_Text_Defeat::
     .string "That's something even the finest\n"
     .string "tamer can't force.$"
 
+PokemonLeague_LoreleisRoom_Text_RematchDefeat::
+    .string "Ha!\p"
+    .string "Still got it, I see.\p"
+    .string "Your POKéMON follow you because\n"
+    .string "they want to.\p"
+    .string "There's no trick in the world\n"
+    .string "better than that.$"
 
 PokemonLeague_LoreleisRoom_Text_PostBattle::
     .string "Go on.\p"
@@ -49,3 +57,10 @@ PokemonLeague_LoreleisRoom_Text_PostBattle::
     .string "And challenger?\p"
     .string "Keep earning that trust.\p"
     .string "It's worth far more than any whip.$"
+
+PokemonLeague_LoreleisRoom_Text_RematchPostBattle::
+    .string "Go on.\p"
+    .string "The others will be waiting.\p"
+    .string "And don't expect any of us to\n"
+    .string "make this easy just because you've\l"
+    .string "done it before.$"

@@ -249,6 +249,37 @@ for trainer in [
     if m and ".trainerClass = TRAINER_CLASS_PKMN_TRAINER" not in m.group(1):
         errors.append(f"{trainer}: postgame Green must be PKMN TRAINER, not persistent Champion")
 
+# Elite Four dialogue/script closure: exact approved first-clear and rematch
+# content must remain separate so postgame runs do not reuse first-clear text.
+for room, trainer in [
+    ("LoreleisRoom", "LORELEI"),
+    ("AgathasRoom", "AGATHA"),
+    ("LancesRoom", "LANCE"),
+]:
+    script_path = f"data/maps/PokemonLeague_{room}/scripts.inc"
+    require(script_path,
+            f"trainerbattle_no_intro TRAINER_ELITE_FOUR_{trainer}_2, PokemonLeague_{room}_Text_RematchDefeat")
+    require(script_path, f"PokemonLeague_{room}_EventScript_ShowFirstPostBattle")
+    require(script_path, f"PokemonLeague_{room}_EventScript_ShowRematchPostBattle")
+    require(script_path, f"PokemonLeague_{room}_Text_RematchPostBattle")
+
+require("data/maps/PokemonLeague_AgathasRoom/text.inc", "So. You've made it past BLUE.")
+require("data/maps/PokemonLeague_AgathasRoom/text.inc", "Let me teach you a little patience.")
+require("data/maps/PokemonLeague_AgathasRoom/text.inc", "Let's see how patient the CHAMPION")
+require("data/maps/PokemonLeague_AgathasRoom/text.inc", "That's why you're wearing the title.")
+require("data/maps/PokemonLeague_LancesRoom/text.inc", "But Flying POKéMON are fascinating.")
+require("data/maps/PokemonLeague_LancesRoom/text.inc", "Try to keep up!")
+require("data/maps/PokemonLeague_LancesRoom/text.inc", "GREEN is through that door.")
+require("data/maps/PokemonLeague_LancesRoom/text.inc", "I need another notebook.")
+require("data/maps/PokemonLeague_LoreleisRoom/text.inc", "Back for another performance?")
+require("data/maps/PokemonLeague_LoreleisRoom/text.inc", "Let's give them a show!")
+forbid("data/maps/PokemonLeague_LoreleisRoom/text.inc", "icy POKéMON",
+       "Lorelei rematch must not regress to vanilla Ice-specialist dialogue")
+forbid("data/maps/PokemonLeague_LancesRoom/text.inc", "LANCE the dragon",
+       "Lance must not regress to vanilla Dragon-specialist dialogue")
+forbid("data/maps/PokemonLeague_LancesRoom/text.inc", "His name is",
+       "Lance must not regress to vanilla rival-Champion reveal")
+
 flags = read("include/constants/flags.h")
 for flag in ["FLAG_GREEN_CHAMPION_REVEALED", "FLAG_GREEN_TITLE_CHALLENGE_SEEN"]:
     if flag not in flags:

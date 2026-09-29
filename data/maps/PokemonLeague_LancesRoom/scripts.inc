@@ -126,20 +126,30 @@ PokemonLeague_LancesRoom_EventScript_Battle::
 	return
 
 PokemonLeague_LancesRoom_EventScript_Rematch::
-	trainerbattle_no_intro TRAINER_ELITE_FOUR_LANCE_2, PokemonLeague_LancesRoom_Text_Defeat
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_LANCE_2, PokemonLeague_LancesRoom_Text_RematchDefeat
 	return
 
 PokemonLeague_LancesRoom_EventScript_PostBattle::
-	msgbox PokemonLeague_LancesRoom_Text_PostBattle
+	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_LancesRoom_EventScript_ShowFirstPostBattle
+	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_LancesRoom_EventScript_ShowRematchPostBattle
 	release
 	end
+
+PokemonLeague_LancesRoom_EventScript_ShowFirstPostBattle::
+	msgbox PokemonLeague_LancesRoom_Text_PostBattle
+	return
+
+PokemonLeague_LancesRoom_EventScript_ShowRematchPostBattle::
+	msgbox PokemonLeague_LancesRoom_Text_RematchPostBattle
+	return
 
 PokemonLeague_LancesRoom_EventScript_DefeatedLance::
 	setvar VAR_0x8004, 0
 	special Script_TryGainNewFanFromCounter
 	setflag FLAG_DEFEATED_LANCE
 	call PokemonLeague_EventScript_OpenDoorLance
-	msgbox PokemonLeague_LancesRoom_Text_PostBattle
+	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_LancesRoom_EventScript_ShowFirstPostBattle
+	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_LancesRoom_EventScript_ShowRematchPostBattle
 	closemessage
 	release
 	end
