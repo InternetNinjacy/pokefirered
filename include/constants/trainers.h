@@ -446,5 +446,7 @@
 // Pokémon.
 #define F_TRAINER_PARTY_CUSTOM_MOVESET (1 << 0)
 #define F_TRAINER_PARTY_HELD_ITEM      (1 << 1)
+// Sam Edition: exact competitive construction (nature / ability / per-stat IVs / EVs).
+#define F_TRAINER_PARTY_COMPETITIVE    (1 << 2)
 
 #endif  // GUARD_CONSTANTS_TRAINERS_H
