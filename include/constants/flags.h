@@ -858,8 +858,12 @@
 #define FLAG_0x33D               0x33D
 #define FLAG_0x33E               0x33E
 #define FLAG_0x33F               0x33F
-#define FLAG_0x340               0x340
-#define FLAG_0x341               0x341
+// Sam Edition centrally allocated rival-state flags.
+#define FLAG_GREEN_CHAMPION_REVEALED      0x340
+#define FLAG_GREEN_TITLE_CHALLENGE_SEEN   0x341
+// Preserve vanilla placeholder aliases for source compatibility.
+#define FLAG_0x340               FLAG_GREEN_CHAMPION_REVEALED
+#define FLAG_0x341               FLAG_GREEN_TITLE_CHALLENGE_SEEN
 #define FLAG_0x342               0x342
 #define FLAG_0x343               0x343
 #define FLAG_0x344               0x344
@@ -1247,12 +1251,8 @@
 #define FLAG_DEFEATED_LANCE           0x4BB
 #define FLAG_DEFEATED_CHAMP           0x4BC
 
-// Sam Edition Champion-room persistent presentation state.
-#define FLAG_GREEN_CHAMPION_REVEALED      0x4BD
-#define FLAG_GREEN_TITLE_CHALLENGE_SEEN   0x4BE
-// Legacy aliases retained so unrelated source references remain stable.
-#define FLAG_0x4BD               FLAG_GREEN_CHAMPION_REVEALED
-#define FLAG_0x4BE               FLAG_GREEN_TITLE_CHALLENGE_SEEN
+#define FLAG_0x4BD               0x4BD
+#define FLAG_0x4BE               0x4BE
 #define FLAG_0x4BF               0x4BF
 #define FLAG_0x4C0               0x4C0
 #define FLAG_0x4C1               0x4C1
@@ -1320,11 +1320,11 @@
 #define FLAG_0x4FF               0x4FF
 
 #define TRAINER_FLAGS_START      (FLAG_0x4FF + 1)
-#define TRAINER_FLAGS_END        (TRAINER_FLAGS_START + MAX_TRAINERS_COUNT - 1) // 0x7FF
+#define TRAINER_FLAGS_END        (TRAINER_FLAGS_START + MAX_TRAINERS_COUNT - 1) // 0x8FF
 
 // SYSTEM FLAGS
 
-#define SYS_FLAGS (TRAINER_FLAGS_END + 1) // 0x800
+#define SYS_FLAGS (TRAINER_FLAGS_END + 1) // 0x900
 
 // Temporary system flags
 #define FLAG_SYS_SAFARI_MODE                                        (SYS_FLAGS + 0x0)
@@ -1526,7 +1526,9 @@
 #define FLAG_0x8FE                                                  (SYS_FLAGS + 0xFE)
 #define FLAG_0x8FF                                                  (SYS_FLAGS + 0xFF)
 
-#define FLAGS_COUNT (FLAG_0x8FF + 1)
+// FLAG_0x8FF is a legacy symbolic name; after trainer-capacity expansion it
+// resolves to SYS_FLAGS + 0xFF = 0x9FF.
+#define FLAGS_COUNT (FLAG_0x8FF + 1) // 0xA00
 
 // Special Flags (Stored in EWRAM (sSpecialFlags, not in the SaveBlock)
 #define SPECIAL_FLAGS_START           0x4000
