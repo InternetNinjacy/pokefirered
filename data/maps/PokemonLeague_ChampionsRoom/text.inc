@@ -60,7 +60,8 @@ PokemonLeague_ChampionsRoom_Text_PostBattle::
     .string "with no weak points.\p"
     .string "But there's always another\n"
     .string "decision. Another switch.\l"
-    .string "Another move you could have made.\p"
+    .string "Another move you could have made\n"
+    .string "instead.\p"
     .string "Today, you made the better ones.\p"
     .string "And after everything we've thrown\n"
     .string "at each other...\p"
@@ -93,12 +94,19 @@ PokemonLeague_ChampionsRoom_Text_OakCongratulations::
     .string "{PLAYER}, you have come of age!$"
 
 PokemonLeague_ChampionsRoom_Text_OakImDisappointedRival::
-    .string "OAK: GREEN...\n"
-    .string "That was an excellent battle.\p"
-    .string "You've clearly thought carefully\n"
-    .string "about every member of your team.\p"
-    .string "And {PLAYER} found the answers\n"
-    .string "today.$"
+    .string "OAK: {RIVAL}...\n"
+    .string "I'm disappointed in you.\p"
+    .string "I came when I heard you'd beaten\n"
+    .string "the ELITE FOUR.\p"
+    .string "But, when I got here, you had\n"
+    .string "already lost!\p"
+    .string "{RIVAL}, do you understand why\n"
+    .string "you lost?\p"
+    .string "You have forgotten to treat your\n"
+    .string "POKéMON with love and trust.\p"
+    .string "Without them, you will never\n"
+    .string "become a CHAMP again!$"
+
 
 PokemonLeague_ChampionsRoom_Text_OakPlayerComeWithMe::
     .string "OAK: {PLAYER}.\p"
