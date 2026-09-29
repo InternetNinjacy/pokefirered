@@ -2645,7 +2645,26 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             damage = (15 * damage) / 10;
     }
 
-    return damage + 2;
+    damage += 2;
+
+    // Sam Edition Adaptive Gene: boost standard calculated move damage by 20%
+    // only when the holder's original party species is Ditto. The party species
+    // remains Ditto after Transform, so the effect persists without treating a
+    // non-Ditto transformed into Ditto as eligible. Self-damage is excluded.
+    if (attacker->item == ITEM_ADAPTIVE_GENE && battlerIdAtk != battlerIdDef)
+    {
+        struct Pokemon *party;
+
+        if (GetBattlerSide(battlerIdAtk) == B_SIDE_PLAYER)
+            party = gPlayerParty;
+        else
+            party = gEnemyParty;
+
+        if (GetMonData(&party[gBattlerPartyIndexes[battlerIdAtk]], MON_DATA_SPECIES) == SPECIES_DITTO)
+            damage = (damage * 120) / 100;
+    }
+
+    return damage;
 }
 
 u8 CountAliveMonsInBattle(u8 caseId)

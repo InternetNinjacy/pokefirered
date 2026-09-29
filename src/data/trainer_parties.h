@@ -6400,7 +6400,7 @@ static const struct TrainerMonCompetitiveMoves sParty_ChampionFirstBulbasaur[] =
     {
         .lvl = 60,
         .species = SPECIES_DITTO,
-        .heldItem = ITEM_0F5,
+        .heldItem = ITEM_ADAPTIVE_GENE,
         .moves = {MOVE_TRANSFORM, MOVE_TOXIC, MOVE_PROTECT, MOVE_SUBSTITUTE},
         .nature = NATURE_BOLD,
         .abilityNum = 0,
@@ -11122,7 +11122,7 @@ static const struct TrainerMonCompetitiveMoves sParty_ChampionRematchBulbasaur[]
     {
         .lvl = 70,
         .species = SPECIES_DITTO,
-        .heldItem = ITEM_0F5,
+        .heldItem = ITEM_ADAPTIVE_GENE,
         .moves = {MOVE_TRANSFORM, MOVE_TOXIC, MOVE_PROTECT, MOVE_SUBSTITUTE},
         .nature = NATURE_BOLD,
         .abilityNum = 0,

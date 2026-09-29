@@ -136,6 +136,26 @@ require("src/battle_main.c", "MON_DATA_HP_IV + j")
 require("src/battle_main.c", "MON_DATA_HP_EV + j")
 require("src/battle_setup.c", "F_TRAINER_PARTY_COMPETITIVE")
 
+# Adaptive Gene is the authoritative item-245 identity and its Ditto-only
+# damage rule must use original party species so Transform does not disable it.
+require("include/constants/items.h", "#define ITEM_ADAPTIVE_GENE 245")
+require("include/constants/items.h", "#define ITEM_0F5 ITEM_ADAPTIVE_GENE")
+require("src/pokemon.c", "attacker->item == ITEM_ADAPTIVE_GENE && battlerIdAtk != battlerIdDef")
+require("src/pokemon.c", "GetMonData(&party[gBattlerPartyIndexes[battlerIdAtk]], MON_DATA_SPECIES) == SPECIES_DITTO")
+
+# Green's trainer-held equipment is battle-only: player-side steal/swap effects
+# must not create permanent acquisition sources.
+require("src/battle_script_commands.c", "static bool32 IsGreenLeagueTrainerBattle(void)")
+require("src/battle_script_commands.c", "IsGreenLeagueTrainerBattle()")
+require("src/battle_script_commands.c", "GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER")
+require("src/battle_script_commands.c", "GetBattlerSide(gBattlerTarget) == B_SIDE_OPPONENT")
+
+# Both the first Champion fight and the postgame PKMN TRAINER title challenge
+# use the existing Champion battle theme.
+require("src/battle_setup.c", "static bool32 IsGreenLeagueTrainer(u16 trainerId)")
+require("src/battle_setup.c", "song = MUS_VS_CHAMPION")
+require("src/battle_setup.c", "CreateBattleStartTask(GetTrainerBattleTransition(), song)")
+
 # Green has independent persistent naming. Keep its placeholder distinct from the
 # existing GREEN palette constant in charmap.txt, and ensure expansion is wired.
 require("include/characters.h", "#define PLACEHOLDER_ID_GREEN         0xE")
@@ -167,6 +187,14 @@ for name, mons in green_expected.items():
     found = [(int(l), s) for l,s in re.findall(r"\.lvl = (\d+),\s*\n\s*\.species = SPECIES_([A-Z0-9_]+),", body)]
     if found != mons:
         errors.append(f"{name}: expected {mons}, found {found}")
+
+# Green's Ditto branches use the named Adaptive Gene symbol, not a raw placeholder.
+for name in ["sParty_ChampionFirstBulbasaur", "sParty_ChampionRematchBulbasaur"]:
+    m = re.search(rf"static const struct TrainerMonCompetitiveMoves {name}\\[\\] = \\{{(.*?)\\n\\}};", party_text, re.S)
+    if m:
+        sm = re.search(r"\\.species = SPECIES_DITTO,(.*?)(?=\\n    \\},|\\Z)", m.group(1), re.S)
+        if not sm or ".heldItem = ITEM_ADAPTIVE_GENE" not in sm.group(1):
+            errors.append(f"{name} DITTO: expected ITEM_ADAPTIVE_GENE")
 
 # Hidden Power construction is exact and must not drift.
 for name, species, expected_ivs in [
@@ -206,6 +234,13 @@ for trainer in [
         errors.append(f"{trainer}: expected exactly two Full Restores")
     if ".party = COMPETITIVE_MOVES(" not in body:
         errors.append(f"{trainer}: expected competitive party schema")
+
+for trainer in [
+    "TRAINER_CHAMPION_FIRST_SQUIRTLE","TRAINER_CHAMPION_FIRST_BULBASAUR","TRAINER_CHAMPION_FIRST_CHARMANDER",
+]:
+    m = re.search(rf"\[{trainer}\] = \{{(.*?)\n    \}},", trainers, re.S)
+    if m and ".trainerClass = TRAINER_CLASS_CHAMPION" not in m.group(1):
+        errors.append(f"{trainer}: first-clear Green must use CHAMPION label")
 
 for trainer in [
     "TRAINER_CHAMPION_REMATCH_SQUIRTLE","TRAINER_CHAMPION_REMATCH_BULBASAUR","TRAINER_CHAMPION_REMATCH_CHARMANDER",
