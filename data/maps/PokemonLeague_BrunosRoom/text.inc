@@ -56,7 +56,7 @@ PokemonLeague_BrunosRoom_Text_PostBattle::
     .string "ever.\p"
     .string "And somehow... you're still not\n"
     .string "done.\p"
-    .string "The Champion is—\p"
+    .string "The Champion is...\p"
     .string "...\p"
     .string "Nope. I was specifically told not\n"
     .string "to ruin this.\p"
