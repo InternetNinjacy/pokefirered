@@ -18,6 +18,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      - name: Install Sam League Phase 5 payload
+        run: |
+          python3 tools/sam_league_phase5/install_payload.py
+
       - name: Checkout agbcc
         uses: actions/checkout@master
         with:
