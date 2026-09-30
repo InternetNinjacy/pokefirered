@@ -352,6 +352,28 @@ This estimate is an audit assessment, not a substitute for task-level Registry s
 ### CHK-008 conclusion
 The project is specification-heavy and implementation-light. The shortest path is to consolidate the P0 architecture first, then encode the large closed-data layer, integrate existing opening/Gym2/League work, implement the remaining story/Gym/world packages, and only then enter full-game regression.
 
+## CHK-2026-09-30-009 — Exact global-data packet coverage
+
+### SPEC-001–SPEC-011 source map
+- SPEC-001 Type Retrofit: closed/programmer-ready; no matching Sam source implementation found.
+- SPEC-002 Dark-Type Retrofit: closed/programmer-ready; no dedicated Sam implementation found.
+- SPEC-003 Ralts/Natu: closed; Sam-specific deltas are not encoded on the integration branch.
+- SPEC-004 Ghost Families: closed; Sam-specific family deltas are not encoded.
+- SPEC-005 Early Bug Final Evolutions: closed; redesigned stats/learnsets/TM deltas are not encoded.
+- SPEC-006 Nosepass / Rock Cleanup: **narrow partial implementation only**; the feature branch changes six Gen I Rock-family type fields and does not represent full package completion.
+- SPEC-007 Feebas/Milotic: closed; baseline Milotic stats happen to match the locked target, but Sam typing/evolution changes remain absent.
+- SPEC-008 Legendary Birds: closed; Sam learnset/capture-move package remains absent.
+- SPEC-009 Custom Species Integration: design/architecture closed but source implementation absent; blocked by ARCH-004/ARCH-006.
+- SPEC-010 Tropius: design closure is complete; integration-branch source still reflects baseline rather than a distinct Sam implementation packet.
+- SPEC-011 Sam Pokédex display numbering: final 001–205 design is closed; source mapping remains absent.
+
+### Related systems
+- Evolution accessibility, special-acquisition routing, visible statics, and ordinary trainer encoding remain as classified in CHK-007.
+- No hidden matching Sam implementation commit was identified for the absent packets during the checkpoint search.
+
+### CHK-009 conclusion
+The exact packet map confirms that most global-data work is literal source encoding against already-closed authorities. Existing vanilla Gen III entries are useful scaffolding, but must not be counted as Sam implementation when the Sam packet changes data or behavior.
+
 ## Immediate next audit
 
 Continue into the remaining story/world implementation breadth:
