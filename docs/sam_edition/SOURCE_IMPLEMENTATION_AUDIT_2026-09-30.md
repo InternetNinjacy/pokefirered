@@ -313,3 +313,44 @@ Continue into the remaining global-data implementation surfaces:
 - static encounters and special-acquisition scripts;
 - ordinary trainer-table implementation breadth outside League/Gym2 scaffolds.
 
+
+## CHK-2026-09-30-008 — Release / integration / build / completion state
+
+### Build and CI state
+- The matching FireRed build environment has already been proven under ENV-001; the repository/toolchain itself is not the current project blocker.
+- At the checkpoint audit, successful CI/build evidence existed for the active Sam integration/feature work, including sam-edition-dev CI #181, League integration CI #177, and Gym 2 CI #30.
+- These successes demonstrate that the build pipeline and individual audited branches can compile; they do **not** establish that the final consolidated Sam ROM exists or passes runtime acceptance.
+
+### Integration state
+- Major Sam implementation remains distributed across divergent feature branches rather than consolidated on sam-edition-dev.
+- The opening/title branch, League integration branch, Cerulean Gym branch, narrow ARCH-005/SPEC-006/ENC-001 branches, and Fuchsia scaffold all require dependency-aware reconciliation into the integration target.
+- Known merge-sensitive areas include the shared SaveBlock1 layout, central flags/variables, trainer IDs, trainer graphics/classes, species append bounds, and centralized graphics allocations.
+- Classification: **build-capable development environment; substantial integration debt remains**.
+
+### Registry completion snapshot
+- At CHK-008 recovery, the Programming Readiness Registry Backlog contains 98 tracked tasks:
+  - 11 COMPLETE;
+  - 9 IN PROGRESS;
+  - 73 READY;
+  - 4 BLOCKED;
+  - 1 DEFERRED.
+- READY means programmer-ready, not already coded. Therefore raw READY counts must never be interpreted as implementation completion.
+- QA-ALL-002 remains DEFERRED until implementation is assembled; the QA Matrix release/build gates are not yet globally passed.
+
+### Completion estimate
+- The source-first audit supports a rough **15–25% implemented/integrated-equivalent** project estimate at this checkpoint.
+- Release readiness is lower than that percentage because substantial coded work is still unintegrated and broad runtime/regression QA has not been completed.
+- This is an audit planning estimate, not a canon rule or formal Registry status metric.
+
+### Release gate consequence
+A release candidate is not yet appropriate. Before RC work, the project still needs:
+1. architecture stabilization and shared-branch reconciliation;
+2. broad encoding of already-closed species/TM/evolution/encounter/trainer data;
+3. implementation of the remaining Gyms/core systems/story surfaces;
+4. consolidation onto the integration branch;
+5. clean integrated builds plus focused runtime QA;
+6. full regression/clean-save progression testing and release cleanup.
+
+### CHK-008 conclusion
+CHK-2026-09-30-008 confirms that Pokémon: Sam Edition is **well advanced in design closure but still early-to-mid implementation**. The immediate risk is not lack of design authority; it is dependency-sensitive source integration and the volume of closed-but-not-yet-encoded work.
+
