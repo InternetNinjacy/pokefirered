@@ -356,6 +356,11 @@ const u8 gMoveDescription_WaterPulse[] = _("An attack with a\npulsing blast of\n
 const u8 gMoveDescription_DoomDesire[] = _("A move that attacks\nthe foe with a\nblast of light two\nturns after use.");
 const u8 gMoveDescription_PsychoBoost[] = _("An intense attack\nthat also sharply\nreduces the user's\nSP. ATK stat.");
 
+const u8 gMoveDescription_BoulderBash[] = _("A crushing rock attack\nthat may lower the\nfoe's DEFENSE.");
+const u8 gMoveDescription_GhostlyWail[] = _("A dreadful ghostly cry\nthat may inflict a\nsevere status ailment.");
+const u8 gMoveDescription_SeedStrike[] = _("A seeded strike that\ncan leave the foe\nseeded after damage.");
+const u8 gMoveDescription_NightTerror[] = _("A terrifying attack\nthat may make the\nfoe flinch.");
+
 const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] = {
     [MOVE_POUND         - 1] = gMoveDescription_Pound,
     [MOVE_KARATE_CHOP   - 1] = gMoveDescription_KarateChop,
@@ -711,4 +716,8 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] = {
     [MOVE_WATER_PULSE   - 1] = gMoveDescription_WaterPulse,
     [MOVE_DOOM_DESIRE   - 1] = gMoveDescription_DoomDesire,
     [MOVE_PSYCHO_BOOST  - 1] = gMoveDescription_PsychoBoost,
+    [MOVE_BOULDER_BASH  - 1] = gMoveDescription_BoulderBash,
+    [MOVE_GHOSTLY_WAIL  - 1] = gMoveDescription_GhostlyWail,
+    [MOVE_SEED_STRIKE   - 1] = gMoveDescription_SeedStrike,
+    [MOVE_NIGHT_TERROR  - 1] = gMoveDescription_NightTerror,
 };
