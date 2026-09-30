@@ -478,3 +478,75 @@ The next source-first audit should cover **remaining UI/assets/map-resource brea
 The asset/UI layer is further along than the broad world scripting layer because the opening/title package and Gym 2 contain real converted/in-source resources. It is still far from release-ready: most approved art needs conversion/insertion, no character package is recorded as in-game-tested in the asset tracker, custom-species assets depend on unresolved architecture implementation, and several genuinely open badge/trainer assets remain.
 
 The next audit should now reconcile **the final dependency/execution order** across every verified checkpoint and turn the source-first findings into a concrete implementation sequence, without reopening closed design.
+
+## CHK-2026-09-30-012 — Final dependency / execution-order reconciliation
+
+The source-first audit is now broad enough to replace ad-hoc branch ordering with a stable implementation sequence.
+
+### Stage 0 — Preserve the known-good development baseline
+- Keep `sam-edition-dev` as the integration target.
+- Preserve the reproducible baseline/toolchain and run a focused Sam build after each integration packet.
+- Keep the Programming Readiness Registry and Sync Ledger synchronized after every packet.
+
+### Stage 1 — Stabilize shared architecture before broad content merges
+1. Integrate the already-coded ARCH-001 trainer-capacity architecture.
+2. Reconcile ARCH-002 using the League physical SaveBlock1 layout while porting opening's game-mode/Green-name initialization.
+3. Finish ARCH-003 central flags/variables/trainer symbols and remove feature-local collisions, especially Gym 5 IDs.
+4. Implement ARCH-004 species append: Leafeon 412, Ectoceon 413, Rhyperior 414, Egg 415; preserve OLD_UNOWN.
+5. Integrate ARCH-005 constants, then implement the runtime behavior those constants require.
+6. Implement ARCH-006 centralized graphics/class allocations before broad sprite/Gym merging.
+
+Do not merge the large divergent opening/League/Gym branches wholesale before these shared resource contracts are stable.
+
+### Stage 2 — Implement shared core mechanics
+- Permanent Mode downstream death/protection/healing/revival/storage/blackout behavior.
+- Eevee/Pichu/Ditto starter creation and deterministic Blue/Green assignment.
+- Evolution accessibility package.
+- Shared special-acquisition constructor/delivery behavior using vanilla outsider EXP/obedience primitives.
+- TM01–TM68 engine/mapping, custom moves and literal compatibility matrix.
+- Route 5 Day Care rerouting into the existing two-slot breeding engine plus Sam-specific breeding rules.
+
+These systems are dependencies for large amounts of already-closed content and therefore belong ahead of broad map scripting.
+
+### Stage 3 — Encode the global data layer
+- SPEC-001–011 in dependency order, preserving the narrow SPEC-006 work.
+- Final Sam 001–205 Pokédex display mapping.
+- Broad encounter tables, reconciling ENC-001 to current Nosepass authority.
+- Visible statics, redesigned NPC trades and other special acquisitions.
+- Ordinary trainer redesign and approved corrections.
+- Final TM compatibility encoding and cross-data regression.
+
+### Stage 4 — Integrate existing substantial feature work
+After shared architecture is stable:
+- reconcile and integrate `sam/opening-intro`, including title/mode/name work;
+- reconcile and integrate `sam-gym2-cerulean-complete`;
+- reconcile and integrate `sam/league-phase5-integration`;
+- integrate narrow ARCH-005/SPEC-006/ENC-001 work after current-authority corrections.
+
+Every integration packet gets a clean Sam build and focused runtime acceptance before the next packet.
+
+### Stage 5 — Implement remaining mandatory world/story content
+- Non-League Blue/Green encounters and Route 4 Double Battle.
+- Thomas trainer chain and Team Rocket event matrix.
+- Gyms 1, 3, 4, 5, 6, 7 and 8 from their closed specialist authorities; finish Gym 5 beyond its scaffold.
+- Reusable Satoshi system and per-Gym routing.
+- Mew harbor/truck event and opposite-fossil handoff.
+- Remaining mandatory map/event/story overlays.
+
+### Stage 6 — Optional content and asset lanes
+In dependency-safe parallel where useful:
+- Town side quests.
+- Saffron Hothouse.
+- Oak research milestones / Joey once Gift/TM/shared dependencies are available.
+- ROM-native conversion/insertion of approved character/Gym/badge assets.
+- Custom species graphics after species/graphics architecture is live.
+
+Approved source art is not to be regenerated merely because conversion remains.
+
+### Stage 7 — Release integration and QA
+- Consolidate all surviving feature work into the integration tree.
+- Run the full QA Matrix, save/load and progression regression, battle/system regression and emulator/runtime acceptance.
+- Resolve only actual defects or explicit remaining open items; do not reopen closed design as a substitute for implementation.
+
+### CHK-012 conclusion
+The project no longer needs another broad archaeology pass before programming begins. The dominant risk is integration order, not missing high-level design. The correct next programming move is a **shared-architecture consolidation packet**, beginning with ARCH-001/ARCH-002/ARCH-003 and then ARCH-004/ARCH-006, while preserving the already-coded opening, Gym 2 and League work for later reconciliation against that stabilized base.
