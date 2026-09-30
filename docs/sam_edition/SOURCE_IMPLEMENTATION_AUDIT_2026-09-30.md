@@ -442,3 +442,39 @@ Continue into the remaining story/world implementation breadth:
 The remaining story/world layer is substantially more complete on paper than in source. The implementation strategy should reuse recognizable FireRed map/story scaffolding where the governing Sam authority preserves it, then overlay the locked Sam state/event changes rather than rebuilding Kanto wholesale.
 
 The next source-first audit should cover **remaining UI/assets/map-resource breadth and release-critical non-story systems not yet mapped**, then reconcile the resulting dependency order against the P0/P1 implementation queue before coding begins.
+
+## CHK-2026-09-30-011 — UI / assets / map-resource breadth
+
+### Title screen
+- `sam/opening-intro` contains a real Sam title-screen implementation, not merely a design handoff: native title palette/tile resources exist under `graphics/title_screen/sam/`, and `src/title_screen.c` loads them through the title-screen flow.
+- The audited accepted-transition path contains no `PlayCry` call; the locked no-Pokémon-cry behavior is therefore coded on the feature branch.
+- TITLE-001/002/003 were corrected from untouched READY work to **IN PROGRESS / feature-branch implementation**.
+- Remaining: reconcile the branch with the integration tree, visually verify against the approved composition, run a clean Sam-specific build, and runtime-test idle/skip/input/main-menu/save-clear behavior.
+- Classification: **substantially implemented on feature branch; not integrated/QA-passed**.
+
+### Character / trainer sprite pipeline
+- The Character Sprite Implementation Tracker remains the operational asset surface.
+- At this checkpoint its Control Center reports extensive pending conversion/open-creation work and **zero in-game-tested packages**; source branches likewise show substantial custom graphics insertion mainly in opening and Gym 2.
+- Approved source art must be distinguished from ROM-native conversion/insertion. Source approval is not implementation completion.
+- The tracker still contained stale Open/Create-overworld wording for core-cast characters. Red, Blue, Green, Thomas and Satoshi were reconciled to **Approved Source / Pending Conversion** for overworld art in accordance with the current project closure: preserve the approved individual source art and do not regenerate it unless a technical impossibility explicitly reopens canon.
+- League-specific Blue/Green battle-pose requirements remain separate from their closed overworld source art.
+
+### Gym / badge / trainer art
+- Several Gym packages have approved or working source art but still need ROM-native palette/index/frame conversion and in-engine QA.
+- Gym 2 proves the insertion path is viable but also exposes the need for ARCH-006 centralized allocation before broad branch consolidation.
+- Some badge/trainer-art packages remain genuinely open or working rather than source-approved; those remain asset-production tasks and are not evidence that the associated Gym design is open.
+- Classification: **mixed asset readiness; broad conversion/insertion/QA workload remains**.
+
+### Custom species assets
+- SPRITE-003 remains downstream of SPEC-009 and ARCH-006.
+- Because Leafeon/Ectoceon/Rhyperior species-table integration is not yet implemented, their battle/back/shiny/menu/footprint/cry integration cannot be considered complete even where source art exists.
+- Classification: **dependency-blocked integration work**.
+
+### Map/resource breadth
+- Active branch comparison continues to show custom map/resource implementation concentrated in the already-known Gym 2 and League packages, with opening/title resources on the opening branch.
+- There is no hidden broad map-resource layer that materially changes the CHK-010 story/world conclusion.
+
+### CHK-011 conclusion
+The asset/UI layer is further along than the broad world scripting layer because the opening/title package and Gym 2 contain real converted/in-source resources. It is still far from release-ready: most approved art needs conversion/insertion, no character package is recorded as in-game-tested in the asset tracker, custom-species assets depend on unresolved architecture implementation, and several genuinely open badge/trainer assets remain.
+
+The next audit should now reconcile **the final dependency/execution order** across every verified checkpoint and turn the source-first findings into a concrete implementation sequence, without reopening closed design.
