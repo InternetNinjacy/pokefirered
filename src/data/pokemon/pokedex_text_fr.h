@@ -2523,6 +2523,17 @@ const u8 gChimechoPokedexText[] = _(
 
 const u8 gChimechoPokedexTextUnused[] = _("");
 
+// SPEC-009 custom species text. Leafeon and Rhyperior continue to use
+// explicit family-text placeholders until current Sam authorities provide
+// approved final entries.
+const u8 gEctoceonPokedexText[] = _(
+    "It silently follows weakened prey from\n"
+    "the shadows. Once it marks a victim with\n"
+    "strange venom, it pursues it without rest.");
+
+const u8 gEctoceonPokedexTextUnused[] = _("");
+
+
 const u8 gAbsolPokedexText[] = _(
     "It appears when it senses an impending\n"
     "natural disaster. As a result, it was\n"
