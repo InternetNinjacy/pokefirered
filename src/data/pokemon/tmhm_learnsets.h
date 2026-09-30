@@ -9385,4 +9385,8 @@ static const u32 sTMHMLearnsets[][2] =
                                         | TMHM(TM49_SNATCH)
                                         | TMHM(HM05_FLASH)),
 
+    // ARCH-004 structural placeholders only. TM-004/SPEC-009 own final compatibility.
+    [SPECIES_LEAFEON]      = TMHM_LEARNSET(0),
+    [SPECIES_ECTOCEON]     = TMHM_LEARNSET(0),
+    [SPECIES_RHYPERIOR]    = TMHM_LEARNSET(0),
 };
