@@ -318,8 +318,8 @@ Continue into the remaining global-data implementation surfaces:
 
 ### Build and CI state
 - The matching FireRed build environment has already been proven under ENV-001; the repository/toolchain itself is not the current project blocker.
-- At the checkpoint audit, successful CI/build evidence existed for the active Sam integration/feature work, including sam-edition-dev CI #181, League integration CI #177, and Gym 2 CI #30.
-- These successes demonstrate that the build pipeline and individual audited branches can compile; they do **not** establish that the final consolidated Sam ROM exists or passes runtime acceptance.
+- At the checkpoint audit, CI/build evidence showed sam-edition-dev run #181 passing and League run #177 passing its Sam build. Gym 2 run #30 failed at the vanilla Compare FireRed step, so Gym 2 still requires purpose-built Sam compile/runtime validation; opening and Gym 5 had no current CI evidence in the checkpoint audit.
+- The passing integration/League evidence demonstrates that the build pipeline is usable, but it does **not** establish that every feature branch compiles under its intended Sam configuration, nor that a final consolidated Sam ROM exists or passes runtime acceptance.
 
 ### Integration state
 - Major Sam implementation remains distributed across divergent feature branches rather than consolidated on sam-edition-dev.
