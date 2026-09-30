@@ -10009,12 +10009,12 @@ const struct SpeciesInfo gSpeciesInfo[] =
     },
     [SPECIES_TROPIUS] =
     {
-        .baseHP = 99,
-        .baseAttack = 68,
-        .baseDefense = 83,
-        .baseSpeed = 51,
-        .baseSpAttack = 72,
-        .baseSpDefense = 87,
+        .baseHP = 110,
+        .baseAttack = 95,
+        .baseDefense = 105,
+        .baseSpeed = 65,
+        .baseSpAttack = 105,
+        .baseSpDefense = 100,
         .types = {TYPE_GRASS, TYPE_FLYING},
         .catchRate = 200,
         .expYield = 169,
