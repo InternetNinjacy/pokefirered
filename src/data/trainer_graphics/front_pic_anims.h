@@ -888,4 +888,12 @@ const union AnimCmd *const *const gTrainerFrontAnimsPtrTable[] =
     [TRAINER_PIC_RUIN_MANIAC]           = sAnims_RuinManiac,
     [TRAINER_PIC_LADY]                  = sAnims_Lady,
     [TRAINER_PIC_PAINTER]               = sAnims_Painter,
+    // ARCH-006 allocation-only animation routing; all placeholder front pics are static.
+    [TRAINER_PIC_LEILANI]               = sAnims_ProfessorOak,
+    [TRAINER_PIC_LEHUA]                 = sAnims_ProfessorOak,
+    [TRAINER_PIC_KEAHI]                 = sAnims_ProfessorOak,
+    [TRAINER_PIC_SATOSHI]               = sAnims_ProfessorOak,
+    [TRAINER_PIC_BAZ]                   = sAnims_ProfessorOak,
+    [TRAINER_PIC_BUSHRANGER_M]          = sAnims_ProfessorOak,
+    [TRAINER_PIC_BUSHRANGER_F]          = sAnims_ProfessorOak,
 };
