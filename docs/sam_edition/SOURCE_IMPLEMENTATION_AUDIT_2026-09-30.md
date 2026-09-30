@@ -220,12 +220,62 @@ The next implementation-critical sequence is now source-confirmed:
 7. encode global species/TM/evolution data;
 8. then merge map/Gym/rival feature branches against the stabilized architecture.
 
+## Symbols, trainer architecture, Pokédex and encounter audit — 2026-09-30
+
+### ARCH-001 trainer architecture
+- `sam/league-phase5-integration` implements `MAX_TRAINERS_COUNT=1024`.
+- Trainer flags extend through 0x8FF; `SYS_FLAGS` begins at 0x900; `FLAGS_COUNT` is 0xA00.
+- SaveBlock1 remains 0x3D68 and the League branch carries static assertions for the compensated layout.
+- Classification: **ARCH-001 COMPLETE at architecture/compile level**. Individual trainer packages still require integration/runtime QA.
+
+### ARCH-003 central symbol insertion
+- Central registry allocations are internally coherent, but source insertion is incomplete:
+  - opening: `VAR_SAM_GAME_MODE=0x408C`;
+  - Gym 2: Satoshi practice flags 0x310–0x317 and `VAR_SAM_CERULEAN_GYM_FLAME_STATE=0x40A0`;
+  - League: Green flags 0x340/0x341.
+- Most remaining 0x300–0x37F flags and 0x408C–0x40A9 variables are still exposed only as generic `FLAG_0x*` / `VAR_0x*` names on the shared branch.
+- Known branch collision: `sam-gym5-fuchsia` assigns trainer IDs 743–750 to Bushrangers/Baz/Satoshi. The central registry assigns 743–758 to Satoshi practice/rematch records, and Gym 2 already follows that central allocation.
+- Gym 5 must be renumbered into the approved free Gym/trainer range before merge.
+- Classification: **central allocations closed; source insertion partial; collision cleanup required**.
+
+### ARCH-006 trainer graphics/class collision
+- `sam-gym2-cerulean-complete` locally uses trainer pics 148–151 for Leilani/Lehua/Keahi/Satoshi and trainer class 107 for FIRE DANCER.
+- `sam-gym5-fuchsia` independently uses trainer pics 148–151 for Baz/Bushrangers/Satoshi and trainer class 107 for BUSHRANGER.
+- The central Symbol Registry explicitly allocates FIRE DANCER=107. Gym 5's branch-local 107 therefore cannot survive consolidation.
+- Classification: **central range policy sound; feature-local graphics/class IDs conflict and must be reassigned before merge**.
+
+### Final Sam Pokédex numbering
+- Final design authority is closed at a gapless 001–205 player-facing Pokédex with Mew #205.
+- Current source still uses vanilla `NATIONAL_DEX_*` numbering through Deoxys, with `KANTO_DEX_COUNT=NATIONAL_DEX_MEW` and `NATIONAL_DEX_COUNT=NATIONAL_DEX_DEOXYS`.
+- No Sam 205-entry player-facing display-number mapping/order implementation was found on audited branches.
+- Internal engine/National species IDs do not need to equal Sam display numbers; the implementation should add the Sam mapping/order layer rather than destabilize internal species identity unnecessarily.
+- Classification: **design complete; ROM implementation absent**. The Programming Readiness Registry was corrected so SPEC-011 is no longer treated as finished ROM work.
+
+### Encounter distribution breadth
+- Current readiness authority treats encounter design as closed/programmer-ready.
+- `sam-edition-dev/src/data/wild_encounters.json` contains none of several locked Sam markers checked during this audit: Smoochum, Feebas, rare Bulbasaur/Squirtle/Charmander wild sources, Nosepass, Duskull, Shuppet or Tropius.
+- Among audited active Sam branches, only `sam/enc-001-nosepass-rock-tunnel` changes `wild_encounters.json`.
+- That branch places Nosepass Lv24–26 in the older 4% land slot; the current central registry/authority requires Rock Tunnel B1F Nosepass at 5% Lv24–26.
+- Classification: **broad encounter implementation absent; ENC-001 is a narrow stale-rate packet needing reconciliation**.
+
+## Dependency consequence
+
+The global implementation picture is now tighter:
+1. ARCH-001 trainer capacity is no longer a blocker.
+2. ARCH-002 save reconciliation remains integration work.
+3. ARCH-003 must centralize symbols and clean branch-local ID collisions.
+4. ARCH-004 must expand species tables.
+5. ARCH-006 must assign unique graphics/class IDs across feature branches.
+6. Final Sam Pokédex display numbering must be implemented after/with species architecture.
+7. Encounter tables require a broad encoding pass; Nosepass alone does not materially reduce that workload.
+
 ## Immediate next audit
 
-Continue through the remaining project-wide architecture dependencies and global data implementation surfaces:
-- ARCH-003 exact flag/variable/trainer-symbol coverage and collisions;
-- ARCH-001 trainer/battle architecture;
-- final Pokédex numbering implementation versus internal species IDs;
-- species tables/learnsets/evolution tables that can be encoded once ARCH-004 lands;
-- encounter-table implementation breadth beyond the already-coded Nosepass packet.
+Continue into the remaining global-data implementation surfaces:
+- exact species-data packets already closed versus still absent in source;
+- level-up learnsets;
+- evolution tables;
+- abilities/items that support those species;
+- static encounters and special-acquisition scripts;
+- ordinary trainer-table implementation breadth outside League/Gym2 scaffolds.
 
