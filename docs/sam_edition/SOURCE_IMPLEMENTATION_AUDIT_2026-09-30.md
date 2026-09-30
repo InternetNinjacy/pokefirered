@@ -269,6 +269,40 @@ The global implementation picture is now tighter:
 6. Final Sam Pokédex display numbering must be implemented after/with species architecture.
 7. Encounter tables require a broad encoding pass; Nosepass alone does not materially reduce that workload.
 
+## CHK-2026-09-30-007 — Global Pokémon data / statics / acquisitions / ordinary trainers
+
+### Global species data
+- On `sam-edition-dev`, `src/data/pokemon/species_info.h`, `src/data/pokemon/level_up_learnsets.h`, and `src/data/pokemon/evolution.h` remain baseline outside narrow feature work.
+- Existing Gen III entries are reusable implementation scaffolds, but the closed Sam-specific species packets are not broadly encoded.
+- Ralts/Natu, the three Ghost-family packages, early Bug final evolutions, Feebas/Milotic, and the legendary-bird learnset package remain implementation work.
+- Milotic's baseline stats already match the locked 95/60/79/100/125/81 target, but its typing remains Water/Water and Feebas still uses Beauty-based evolution instead of the locked Lv20 method.
+- `sam/spec-006-nosepass-rock-cleanup` is narrow: it changes only Geodude, Graveler, Golem, Onix, Rhyhorn, and Rhydon to pure Rock. Nosepass remains baseline and Steelix is unchanged.
+
+### Custom item / ability runtime
+- `sam/arch-005-resource-constants` allocates Soul Rot, Brick, Adaptive Gene, and Protector resources.
+- No corresponding Sam runtime behavior was found for those resources.
+- Classification: **allocation foundation only; gameplay behavior still requires implementation**.
+
+### Visible static encounters
+- No active Sam branch/commit was found for the approved visible static encounter packages reviewed in this checkpoint.
+- FireRed's existing encounter primitives are reusable, but the Sam persistence, map-event, reward, and item behavior remains to be encoded.
+- Classification: **design closed; implementation absent**.
+
+### Special acquisitions and NPC trades
+- `src/data/ingame_trades.h` on `sam-edition-dev` remains the vanilla trade table.
+- The redesigned Sam NPC trades are not encoded.
+- The shared qualifying-acquisition delivery path and safe one-time reward helper remain unimplemented.
+- Classification: **design closed; vanilla engine reusable; Sam content/routing absent**.
+
+### Ordinary trainer tables
+- `src/data/trainers.h` and `src/data/trainer_parties.h` on `sam-edition-dev` remain baseline.
+- The broad ordinary-trainer redesign through Seven Island is not encoded on the integration branch.
+- The approved S.S. Anne Lickitung and Mt. Moon Fury Cutter corrections also remain to be integrated.
+- Focused trainer work on League/Gym branches must not be mistaken for ordinary-trainer completion.
+
+### CHK-007 conclusion
+CHK-2026-09-30-007 confirms that the global Pokémon-data layer is **design-heavy but source-light**. Most remaining work is dependency-sensitive encoding and integration against already-closed authorities, not additional broad creative design.
+
 ## Immediate next audit
 
 Continue into the remaining global-data implementation surfaces:
