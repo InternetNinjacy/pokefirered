@@ -2445,16 +2445,18 @@ const u8 gArmaldoPokedexText[] = _(
 const u8 gArmaldoPokedexTextUnused[] = _("");
 
 const u8 gFeebasPokedexText[] = _(
-    "Ridiculed for its shabby appearance,\n"
-    "it is ignored by researchers. It lives in\n"
-    "ponds choked with weeds.");
+    "It survives in stagnant ponds that\n"
+    "other Pokemon avoid. Though weak and\n"
+    "ragged, its stubborn vitality lets it\n"
+    "endure almost any water.");
 
 const u8 gFeebasPokedexTextUnused[] = _("");
 
 const u8 gMiloticPokedexText[] = _(
-    "MILOTIC is breathtakingly beautiful.\n"
-    "Those that see it are said to forget their\n"
-    "combative spirits.");
+    "Its serene mind reaches through the\n"
+    "water and stills violent emotions. Even\n"
+    "enraged Pokemon are said to grow calm\n"
+    "beneath its gaze.");
 
 const u8 gMiloticPokedexTextUnused[] = _("");
 
