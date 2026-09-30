@@ -6041,11 +6041,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_STEELIX] =
     {
         .baseHP = 75,
-        .baseAttack = 85,
+        .baseAttack = 105,
         .baseDefense = 200,
-        .baseSpeed = 30,
-        .baseSpAttack = 55,
-        .baseSpDefense = 65,
+        .baseSpeed = 40,
+        .baseSpAttack = 35,
+        .baseSpDefense = 70,
         .types = {TYPE_STEEL, TYPE_GROUND},
         .catchRate = 25,
         .expYield = 196,
