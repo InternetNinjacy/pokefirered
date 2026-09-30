@@ -2645,7 +2645,14 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             damage = (15 * damage) / 10;
     }
 
-    return damage + 2;
+    damage += 2;
+
+    if (attacker->ability == ABILITY_SOUL_ROT
+     && type == TYPE_GHOST
+     && (defender->status1 & STATUS1_PSN_ANY))
+        damage = (130 * damage) / 100;
+
+    return damage;
 }
 
 u8 CountAliveMonsInBattle(u8 caseId)
