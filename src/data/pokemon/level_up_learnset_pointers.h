@@ -418,8 +418,8 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_DEOXYS] = sDeoxysLevelUpLearnset,
     [SPECIES_CHIMECHO] = sChimechoLevelUpLearnset,
 
-    // ARCH-004 structural placeholders only. SPEC-009 owns final learnsets.
-    [SPECIES_LEAFEON] = sSamSpeciesPlaceholderLevelUpLearnset,
-    [SPECIES_ECTOCEON] = sSamSpeciesPlaceholderLevelUpLearnset,
-    [SPECIES_RHYPERIOR] = sSamSpeciesPlaceholderLevelUpLearnset,
+    // SPEC-009 custom species learnsets.
+    [SPECIES_LEAFEON] = sLeafeonLevelUpLearnset,
+    [SPECIES_ECTOCEON] = sEctoceonLevelUpLearnset,
+    [SPECIES_RHYPERIOR] = sRhyperiorLevelUpLearnset,
 };
