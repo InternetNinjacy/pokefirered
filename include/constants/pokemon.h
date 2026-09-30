@@ -279,7 +279,12 @@
 #define EVO_LEVEL_SHEDINJA   14 // Pokémon reaches the specified level (special value for Shedinja)
 #define EVO_BEAUTY           15 // Pokémon levels up with beauty ≥ specified value
 
-#define EVOS_PER_MON 5
+// Sam Edition Eevee has seven approved evolution endpoints.
+#define EVOS_PER_MON 7
+
+#if EVOS_PER_MON < 7
+#error "SPEC-009 requires at least seven evolution slots for Eevee"
+#endif
 
 #define EVO_MODE_NORMAL     0
 #define EVO_MODE_TRADE      1
