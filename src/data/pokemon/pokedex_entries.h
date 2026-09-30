@@ -5030,4 +5030,45 @@ const struct PokedexEntry gPokedexEntries[] =
         .trainerScale = 337,
         .trainerOffset = 2,
     },
+
+    // SPEC-009 technical Dex entries. Leafeon/Rhyperior family metadata and
+    // text are safe non-final placeholders pending approved Sam entry data.
+    [NATIONAL_DEX_LEAFEON] =
+    {
+        .categoryName = _("EVOLUTION"),
+        .height = 3,
+        .weight = 65,
+        .description = gEeveePokedexText,
+        .unusedDescription = gEeveePokedexTextUnused,
+        .pokemonScale = 476,
+        .pokemonOffset = 19,
+        .trainerScale = 256,
+        .trainerOffset = -2,
+    },
+
+    [NATIONAL_DEX_ECTOCEON] =
+    {
+        .categoryName = _("WRAITH"),
+        .height = 9,
+        .weight = 250,
+        .description = gEctoceonPokedexText,
+        .unusedDescription = gEctoceonPokedexTextUnused,
+        .pokemonScale = 256,
+        .pokemonOffset = 0,
+        .trainerScale = 256,
+        .trainerOffset = -2,
+    },
+
+    [NATIONAL_DEX_RHYPERIOR] =
+    {
+        .categoryName = _("DRILL"),
+        .height = 19,
+        .weight = 1200,
+        .description = gRhydonPokedexText,
+        .unusedDescription = gRhydonPokedexTextUnused,
+        .pokemonScale = 272,
+        .pokemonOffset = -1,
+        .trainerScale = 344,
+        .trainerOffset = 3,
+    },
 };
