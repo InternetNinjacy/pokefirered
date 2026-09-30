@@ -209,6 +209,7 @@ static void ComputePartyHPBarLevels(u8 side);
 static void SetTradePartyHPBarSprites(void);
 static void SaveTradeGiftRibbons(void);
 static u32 CanTradeSelectedMon(struct Pokemon * party, int partyCount, int cursorPos);
+static bool32 IsSamCustomSpecies(u16 species);
 
 static const size_t sSizesAndOffsets[] = {
     sizeof(struct SaveBlock2),
@@ -2742,6 +2743,13 @@ static void SaveTradeGiftRibbons(void)
     }
 }
 
+static bool32 IsSamCustomSpecies(u16 species)
+{
+    return species == SPECIES_LEAFEON
+        || species == SPECIES_ECTOCEON
+        || species == SPECIES_RHYPERIOR;
+}
+
 static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int monIdx)
 {
     int i, numMonsLeft;
@@ -2778,6 +2786,13 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
     }
 
     partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
+
+    // SPEC-009: Sam-only species may trade between Sam copies, but must never
+    // be serialized into unmodified Gen III software.
+    if (IsSamCustomSpecies(species[monIdx])
+     && partner->lp_field_2 != SAM_EDITION_LINK_SIGNATURE)
+        return CANT_TRADE_INVALID_MON;
+
     if ((partner->version & 0xFF) != VERSION_RUBY &&
         (partner->version & 0xFF) != VERSION_SAPPHIRE)
     {
