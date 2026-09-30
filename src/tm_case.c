@@ -678,17 +678,19 @@ static void InitTMCaseListMenuItems(void)
 static void GetTMNumberAndMoveString(u8 * dest, u16 itemId)
 {
     StringCopy(gStringVar4, gText_FontSmall);
-    if (itemId >= ITEM_HM01)
+    s16 tmhmIndex = ItemIdToTMHMIndex(itemId);
+
+    if (tmhmIndex >= NUM_TECHNICAL_MACHINES)
     {
         StringAppend(gStringVar4, sText_ClearTo18);
         StringAppend(gStringVar4, gText_NumberClear01);
-        ConvertIntToDecimalStringN(gStringVar1, itemId - ITEM_HM01 + 1, STR_CONV_MODE_LEADING_ZEROS, 1);
+        ConvertIntToDecimalStringN(gStringVar1, tmhmIndex - NUM_TECHNICAL_MACHINES + 1, STR_CONV_MODE_LEADING_ZEROS, 1);
         StringAppend(gStringVar4, gStringVar1);
     }
     else
     {
         StringAppend(gStringVar4, gText_NumberClear01);
-        ConvertIntToDecimalStringN(gStringVar1, itemId - ITEM_TM01 + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
+        ConvertIntToDecimalStringN(gStringVar1, tmhmIndex + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
         StringAppend(gStringVar4, gStringVar1);
     }
     StringAppend(gStringVar4, sText_SingleSpace);
@@ -1630,7 +1632,7 @@ static u8 CreateDiscSprite(u16 itemId)
     }
     else
     {
-        tmIdx = itemId - ITEM_TM01;
+        tmIdx = ItemIdToTMHMIndex(itemId);
         SetDiscSpriteAnim(&gSprites[spriteId], tmIdx);
         TintDiscpriteByType(gBattleMoves[ItemIdToBattleMoveId(itemId)].type);
         SetDiscSpritePosition(&gSprites[spriteId], tmIdx);
@@ -1700,7 +1702,7 @@ static void SpriteCB_SwapDisc(struct Sprite *sprite)
             {
                 sprite->sState++;
                 TintDiscpriteByType(gBattleMoves[ItemIdToBattleMoveId(sprite->sItemId)].type);
-                sprite->sItemId -= ITEM_TM01;
+                sprite->sItemId = ItemIdToTMHMIndex(sprite->sItemId);
                 SetDiscSpriteAnim(sprite, sprite->sItemId);
                 SetDiscSpritePosition(sprite, sprite->sItemId);
             }
