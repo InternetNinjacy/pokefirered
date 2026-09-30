@@ -5729,20 +5729,15 @@ bool8 TryIncrementMonLevel(struct Pokemon *mon)
 u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm)
 {
     u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, NULL);
-    if (species == SPECIES_EGG)
-    {
+    u8 word;
+    u32 mask;
+
+    if (species == SPECIES_EGG || tm >= NUM_TECHNICAL_MACHINES + NUM_HIDDEN_MACHINES)
         return 0;
-    }
-    else if (tm < 32)
-    {
-        u32 mask = 1 << tm;
-        return sTMHMLearnsets[species][0] & mask;
-    }
-    else
-    {
-        u32 mask = 1 << (tm - 32);
-        return sTMHMLearnsets[species][1] & mask;
-    }
+
+    word = tm / 32;
+    mask = 1u << (tm % 32);
+    return sTMHMLearnsets[species][word] & mask;
 }
 
 u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
