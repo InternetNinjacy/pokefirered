@@ -348,7 +348,10 @@ static void InitLocalLinkPlayer(void)
     gLocalLinkPlayer.linkType = gLinkType;
     gLocalLinkPlayer.language = gGameLanguage;
     gLocalLinkPlayer.version = gGameVersion + 0x4000;
-    gLocalLinkPlayer.lp_field_2 = 0x8000;
+    // SPEC-009: this field is exchanged with LinkPlayer data and is otherwise
+    // unused by the current FRLG link path. Mark Sam copies so custom species
+    // are only transferred to another Sam Edition instance.
+    gLocalLinkPlayer.lp_field_2 = SAM_EDITION_LINK_SIGNATURE;
     gLocalLinkPlayer.progressFlags = IsNationalPokedexEnabled();
     if (FlagGet(FLAG_SYS_CAN_LINK_WITH_RS))
     {
