@@ -138,10 +138,10 @@ static const u16 sHoennSpeciesIdToCryId[] =
     [SPECIES_DEOXYS - HOENN_MON_SPECIES_START] = CRY_DEOXYS,
     [SPECIES_CHIMECHO - HOENN_MON_SPECIES_START] = CRY_CHIMECHO,
 
-    // ARCH-004 placeholders only. SPEC-009 owns final custom cry mappings.
-    [SPECIES_LEAFEON - HOENN_MON_SPECIES_START] = CRY_CHIMECHO,
-    [SPECIES_ECTOCEON - HOENN_MON_SPECIES_START] = CRY_CHIMECHO,
-    [SPECIES_RHYPERIOR - HOENN_MON_SPECIES_START] = CRY_CHIMECHO,
+    // SPEC-009 current authority: reuse existing family cries; no custom cry assets.
+    [SPECIES_LEAFEON - HOENN_MON_SPECIES_START] = CRY_EEVEE,
+    [SPECIES_ECTOCEON - HOENN_MON_SPECIES_START] = CRY_VAPOREON,
+    [SPECIES_RHYPERIOR - HOENN_MON_SPECIES_START] = CRY_RHYDON,
     // SpeciesToCryId uses a one-position-shifted Hoenn lookup; keep the
     // shifted Egg slot populated so custom species IDs cannot read past the table.
     [SPECIES_EGG - HOENN_MON_SPECIES_START] = CRY_CHIMECHO,
