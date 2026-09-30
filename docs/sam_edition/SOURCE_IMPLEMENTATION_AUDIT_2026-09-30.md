@@ -550,3 +550,29 @@ Approved source art is not to be regenerated merely because conversion remains.
 
 ### CHK-012 conclusion
 The project no longer needs another broad archaeology pass before programming begins. The dominant risk is integration order, not missing high-level design. The correct next programming move is a **shared-architecture consolidation packet**, beginning with ARCH-001/ARCH-002/ARCH-003 and then ARCH-004/ARCH-006, while preserving the already-coded opening, Gym 2 and League work for later reconciliation against that stabilized base.
+
+
+## Source-audit continuation thread retirement — 2026-09-30
+
+The continuation thread that completed CHK-011 and CHK-012 is now retired.
+
+Durable retirement routing:
+- Drive: `Pokemon_Sam_Edition_Programming_Source_Audit_Continuation_Thread_Archival_Record_v1.0`.
+- Drive: `Pokemon_Sam_Edition_Project_Document_Sync_Index_v1.27_Source_Audit_Continuation_Retirement_Sync`.
+- Programming Readiness Registry Sync Control / Sync Ledger.
+
+Verified end state:
+- CHK-001 through CHK-012 are VERIFIED / LOCKED IN.
+- No completed source-audit block remains chat-only.
+- No gameplay canon was created or reopened by the continuation.
+- Pokémon: Weather and `wth-*` branches remain excluded from Sam implementation evidence.
+- Broad source archaeology is complete unless repository state materially changes.
+
+Exact next action:
+1. Create/use a dedicated shared-architecture consolidation branch from current `sam-edition-dev`.
+2. Integrate/reconcile ARCH-001, ARCH-002 and ARCH-003 as the first implementation packet.
+3. Run a clean Sam-specific build plus focused new-game/save/load/trainer-allocation regression.
+4. Persist and verify that implementation checkpoint.
+5. Then proceed to ARCH-004 + ARCH-006.
+
+Do not merge the divergent opening, Gym 2 or League branches wholesale before the shared save/symbol/resource contracts are stabilized.
