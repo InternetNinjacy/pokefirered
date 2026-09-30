@@ -521,9 +521,6 @@
 #define ITEM_TO_BERRY(itemId)(((itemId - FIRST_BERRY_INDEX) + 1))
 #define MAIL_NONE 0xFF
 
-#define NUM_TECHNICAL_MACHINES 68
-#define NUM_HIDDEN_MACHINES     8
-
 // Secondary IDs for rods
 #define OLD_ROD   0
 #define GOOD_ROD  1

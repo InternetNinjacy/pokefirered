@@ -30,6 +30,10 @@
 #define GAME_LANGUAGE (LANGUAGE_ENGLISH)
 #endif
 
+// TM/HM machine counts are needed by SaveBlock1 before item constants are included.
+#define NUM_TECHNICAL_MACHINES 68
+#define NUM_HIDDEN_MACHINES     8
+
 // capacities of various saveblock objects
 #define DAYCARE_MON_COUNT   2
 #define PC_ITEMS_COUNT      30
