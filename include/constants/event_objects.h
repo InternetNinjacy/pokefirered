@@ -156,7 +156,23 @@
 #define OBJ_EVENT_GFX_DEOXYS_N 150
 #define OBJ_EVENT_GFX_SS_ANNE 151
 
-#define NUM_OBJ_EVENT_GFX     152
+// Sam Edition fixed overworld graphics allocation architecture.
+// 152-223 is the primary Sam allocation block, 224-239 is fixed-ID headroom,
+// and 240-255 remains reserved for the engine's dynamic VAR-based graphics IDs.
+#define OBJ_EVENT_GFX_SAM_RESERVED_START 152
+#define OBJ_EVENT_GFX_SAM_RESERVED_END   223
+#define OBJ_EVENT_GFX_SAM_HEADROOM_START 224
+#define OBJ_EVENT_GFX_SAM_FIXED_END      239
+
+#define OBJ_EVENT_GFX_LEILANI            152
+#define OBJ_EVENT_GFX_LEHUA              153
+#define OBJ_EVENT_GFX_KEAHI              154
+#define OBJ_EVENT_GFX_SATOSHI            155
+#define OBJ_EVENT_GFX_BAZ                156
+#define OBJ_EVENT_GFX_BUSHRANGER_M       157
+#define OBJ_EVENT_GFX_BUSHRANGER_F       158
+
+#define NUM_OBJ_EVENT_GFX                159
 
 // These are dynamic object gfx ids.
 // They correspond with the values of the VAR_OBJ_GFX_ID_X vars.
@@ -178,6 +194,22 @@
 #define OBJ_EVENT_GFX_VAR_D  (OBJ_EVENT_GFX_VARS + 0xD)
 #define OBJ_EVENT_GFX_VAR_E  (OBJ_EVENT_GFX_VARS + 0xE)
 #define OBJ_EVENT_GFX_VAR_F  (OBJ_EVENT_GFX_VARS + 0xF) // 255
+
+#if OBJ_EVENT_GFX_SS_ANNE != 151
+#error "ARCH-006: vanilla fixed OBJ graphics boundary drifted"
+#endif
+#if OBJ_EVENT_GFX_SAM_RESERVED_START != 152 || OBJ_EVENT_GFX_SAM_RESERVED_END != 223
+#error "ARCH-006: Sam primary OBJ graphics reservation drifted"
+#endif
+#if OBJ_EVENT_GFX_SAM_HEADROOM_START != 224 || OBJ_EVENT_GFX_SAM_FIXED_END != 239
+#error "ARCH-006: Sam OBJ graphics headroom drifted"
+#endif
+#if OBJ_EVENT_GFX_VARS != 240 || OBJ_EVENT_GFX_VAR_F != 255
+#error "ARCH-006: dynamic OBJ graphics range must remain 240-255"
+#endif
+#if OBJ_EVENT_GFX_BUSHRANGER_F >= OBJ_EVENT_GFX_VARS || NUM_OBJ_EVENT_GFX > OBJ_EVENT_GFX_VARS
+#error "ARCH-006: fixed Sam OBJ graphics crossed into the dynamic range"
+#endif
 
 #define SHADOW_SIZE_S   0
 #define SHADOW_SIZE_M   1

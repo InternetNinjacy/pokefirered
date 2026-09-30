@@ -167,6 +167,34 @@
 #define TRAINER_PIC_LADY                  146
 #define TRAINER_PIC_PAINTER               147
 
+// Sam Edition trainer-picture allocation architecture.
+// 148-223 is the primary Sam allocation block; 224-255 is additional headroom.
+#define TRAINER_PIC_SAM_RESERVED_START      148
+#define TRAINER_PIC_SAM_RESERVED_END        223
+#define TRAINER_PIC_SAM_HEADROOM_START      224
+#define TRAINER_PIC_SAM_HEADROOM_END        255
+
+#define TRAINER_PIC_LEILANI                 148
+#define TRAINER_PIC_LEHUA                   149
+#define TRAINER_PIC_KEAHI                   150
+#define TRAINER_PIC_SATOSHI                 151
+#define TRAINER_PIC_BAZ                     152
+#define TRAINER_PIC_BUSHRANGER_M            153
+#define TRAINER_PIC_BUSHRANGER_F            154
+
+#if TRAINER_PIC_PAINTER != 147
+#error "ARCH-006: vanilla trainer-picture boundary drifted"
+#endif
+#if TRAINER_PIC_SAM_RESERVED_START != 148 || TRAINER_PIC_SAM_RESERVED_END != 223
+#error "ARCH-006: Sam trainer-picture reservation drifted"
+#endif
+#if TRAINER_PIC_SAM_HEADROOM_START != 224 || TRAINER_PIC_SAM_HEADROOM_END != 255
+#error "ARCH-006: Sam trainer-picture headroom drifted"
+#endif
+#if TRAINER_PIC_BUSHRANGER_F > TRAINER_PIC_SAM_RESERVED_END
+#error "ARCH-006: allocated Sam trainer picture left the primary reserved block"
+#endif
+
 // The player back pics are assumed to alternate according to the gender values (MALE/FEMALE)
 #define TRAINER_BACK_PIC_RED                    0
 #define TRAINER_BACK_PIC_LEAF                   1
@@ -287,6 +315,23 @@
 #define TRAINER_CLASS_RUIN_MANIAC         104
 #define TRAINER_CLASS_LADY                105
 #define TRAINER_CLASS_PAINTER             106
+
+// Sam Edition trainer-class extension block. Central assignments win over
+// feature-branch scaffolding.
+#define TRAINER_CLASS_SAM_RESERVED_START 107
+#define TRAINER_CLASS_SAM_RESERVED_END   122
+#define TRAINER_CLASS_FIRE_DANCER        107
+#define TRAINER_CLASS_BUSHRANGER         108
+
+#if TRAINER_CLASS_PAINTER != 106
+#error "ARCH-006: vanilla trainer-class boundary drifted"
+#endif
+#if TRAINER_CLASS_FIRE_DANCER != 107 || TRAINER_CLASS_BUSHRANGER != 108
+#error "ARCH-006: central Sam trainer-class assignments drifted"
+#endif
+#if TRAINER_CLASS_BUSHRANGER > TRAINER_CLASS_SAM_RESERVED_END
+#error "ARCH-006: Sam trainer class left the reserved extension block"
+#endif
 
 #define FACILITY_CLASS_AQUA_LEADER_ARCHIE     0
 #define FACILITY_CLASS_AQUA_GRUNT_M           1
