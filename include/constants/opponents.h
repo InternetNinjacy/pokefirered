@@ -781,9 +781,9 @@
 #define TRAINER_LEADER_BAZ                        767
 #define TRAINER_LEADER_BAZ_REMATCH                768
 
-// NOTE: Because each Trainer uses a flag to determine when they are defeated, there is 
-//       only space for 25 additional trainers before trainer flag space overflows.
-//       MAX_TRAINERS_COUNT can be increased but will take up additional saveblock space
+// Sam Edition expands trainer defeat-flag capacity to 1024 records.
+// NUM_TRAINERS continues to track the highest trainer record actually defined in data;
+// feature integrations must advance it as their trainer records are merged.
 
 #define NUM_TRAINERS                             743
 #define MAX_TRAINERS_COUNT                       1024
