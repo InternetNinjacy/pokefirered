@@ -1948,6 +1948,17 @@ static void CB_ShowTradeMonSummaryScreen(void)
     }
 }
 
+// Until Sam Edition has an explicit link-compatibility marker, custom species
+// must not leave a Sam save over the vanilla Gen III protocol. This is a
+// deliberately conservative safety gate: Sam-to-Sam custom-species trading
+// remains pending rather than risking an invalid species ID on an unmodified ROM.
+static bool32 IsSamCustomSpecies(u16 species)
+{
+    return species == SPECIES_LEAFEON
+        || species == SPECIES_ECTOCEON
+        || species == SPECIES_RHYPERIOR;
+}
+
 static u8 CheckValidityOfTradeMons(u8 *aliveMons, u8 playerPartyCount, u8 cursorPos)
 {
     s32 i;
@@ -1961,8 +1972,16 @@ static u8 CheckValidityOfTradeMons(u8 *aliveMons, u8 playerPartyCount, u8 cursor
             hasLiveMon += aliveMons[i];
     }
 
-    // Partner cant trade illegitimate Deoxys or Mew
+    // Custom Sam species are blocked at the vanilla link boundary until a
+    // Sam-to-Sam compatibility marker is implemented.
+    if (IsSamCustomSpecies(GetMonData(&gPlayerParty[cursorPos], MON_DATA_SPECIES)))
+        return PLAYER_MON_INVALID;
+
     partnerSpecies = GetMonData(&gEnemyParty[sTradeMenu->partnerCursorPosition % PARTY_SIZE], MON_DATA_SPECIES);
+    if (IsSamCustomSpecies(partnerSpecies))
+        return PARTNER_MON_INVALID;
+
+    // Partner cant trade illegitimate Deoxys or Mew
     if ((partnerSpecies == SPECIES_DEOXYS || partnerSpecies == SPECIES_MEW)
         && !GetMonData(&gEnemyParty[sTradeMenu->partnerCursorPosition % PARTY_SIZE], MON_DATA_MODERN_FATEFUL_ENCOUNTER))
         return PARTNER_MON_INVALID;
@@ -2755,6 +2774,10 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
         species[i] = GetMonData(&playerParty[i], MON_DATA_SPECIES);
     }
 
+    // Protect unmodified Gen III games from Sam-only species IDs.
+    if (IsSamCustomSpecies(species[monIdx]))
+        return CANT_TRADE_INVALID_MON;
+
     // Cant trade Eggs or non-Kanto mons if player doesn't have National Dex
     if (!IsNationalPokedexEnabled())
     {
@@ -2892,6 +2915,10 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
         else if (!partnerCanLinkNationally)
             return UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_2;
     }
+
+    // Union Room uses the same conservative custom-species safety boundary.
+    if (IsSamCustomSpecies(playerSpecies) || IsSamCustomSpecies(partnerSpecies))
+        return UR_TRADE_MSG_MON_CANT_BE_TRADED_2;
 
     // Cannot trade illegitimate Deoxys/Mew
     if (IsDeoxysOrMewUntradable(playerSpecies, isModernFatefulEncounter))
