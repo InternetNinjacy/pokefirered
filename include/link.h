@@ -119,6 +119,8 @@ enum {
 #define SLAVE_HANDSHAKE   0xB9A0
 #define EREADER_HANDSHAKE 0xCCD0
 
+#define SAM_EDITION_LINK_SIGNATURE 0x534D // "SM"; custom-species transfer compatibility marker
+
 #define IsSendCmdComplete()    (gSendCmd[0] == 0)
 
 enum
