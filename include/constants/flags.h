@@ -794,7 +794,10 @@
 #define FLAG_OAKS_RATING_IS_VIA_PC                       0x2FF
 
 // Unused?
-#define FLAG_0x300               0x300
+// Sam Edition central persistent-flag namespace.
+#define FLAG_SAM_START             0x300
+#define FLAG_SAM_END               0x37F
+#define FLAG_0x300                 FLAG_SAM_START
 #define FLAG_0x301               0x301
 #define FLAG_0x302               0x302
 #define FLAG_0x303               0x303
@@ -810,14 +813,22 @@
 #define FLAG_0x30D               0x30D
 #define FLAG_0x30E               0x30E
 #define FLAG_0x30F               0x30F
-#define FLAG_0x310               0x310
-#define FLAG_0x311               0x311
-#define FLAG_0x312               0x312
-#define FLAG_0x313               0x313
-#define FLAG_0x314               0x314
-#define FLAG_0x315               0x315
-#define FLAG_0x316               0x316
-#define FLAG_0x317               0x317
+#define FLAG_SATOSHI_PEWTER_PRACTICE_WON    0x310
+#define FLAG_0x310               FLAG_SATOSHI_PEWTER_PRACTICE_WON
+#define FLAG_SATOSHI_CERULEAN_PRACTICE_WON    0x311
+#define FLAG_0x311               FLAG_SATOSHI_CERULEAN_PRACTICE_WON
+#define FLAG_SATOSHI_VERMILION_PRACTICE_WON    0x312
+#define FLAG_0x312               FLAG_SATOSHI_VERMILION_PRACTICE_WON
+#define FLAG_SATOSHI_CELADON_PRACTICE_WON    0x313
+#define FLAG_0x313               FLAG_SATOSHI_CELADON_PRACTICE_WON
+#define FLAG_SATOSHI_FUCHSIA_PRACTICE_WON    0x314
+#define FLAG_0x314               FLAG_SATOSHI_FUCHSIA_PRACTICE_WON
+#define FLAG_SATOSHI_SAFFRON_PRACTICE_WON    0x315
+#define FLAG_0x315               FLAG_SATOSHI_SAFFRON_PRACTICE_WON
+#define FLAG_SATOSHI_CINNABAR_PRACTICE_WON    0x316
+#define FLAG_0x316               FLAG_SATOSHI_CINNABAR_PRACTICE_WON
+#define FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON    0x317
+#define FLAG_0x317               FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON
 #define FLAG_0x318               0x318
 #define FLAG_0x319               0x319
 #define FLAG_0x31A               0x31A
@@ -858,8 +869,12 @@
 #define FLAG_0x33D               0x33D
 #define FLAG_0x33E               0x33E
 #define FLAG_0x33F               0x33F
-#define FLAG_0x340               0x340
-#define FLAG_0x341               0x341
+// Sam Edition centrally allocated rival-state flags.
+#define FLAG_GREEN_CHAMPION_REVEALED      0x340
+#define FLAG_GREEN_TITLE_CHALLENGE_SEEN   0x341
+// Preserve vanilla placeholder aliases for source compatibility.
+#define FLAG_0x340               FLAG_GREEN_CHAMPION_REVEALED
+#define FLAG_0x341               FLAG_GREEN_TITLE_CHALLENGE_SEEN
 #define FLAG_0x342               0x342
 #define FLAG_0x343               0x343
 #define FLAG_0x344               0x344
@@ -1317,11 +1332,11 @@
 #define FLAG_0x4FF               0x4FF
 
 #define TRAINER_FLAGS_START      (FLAG_0x4FF + 1)
-#define TRAINER_FLAGS_END        (TRAINER_FLAGS_START + MAX_TRAINERS_COUNT - 1) // 0x7FF
+#define TRAINER_FLAGS_END        (TRAINER_FLAGS_START + MAX_TRAINERS_COUNT - 1) // 0x8FF
 
 // SYSTEM FLAGS
 
-#define SYS_FLAGS (TRAINER_FLAGS_END + 1) // 0x800
+#define SYS_FLAGS (TRAINER_FLAGS_END + 1) // 0x900
 
 // Temporary system flags
 #define FLAG_SYS_SAFARI_MODE                                        (SYS_FLAGS + 0x0)
@@ -1523,7 +1538,9 @@
 #define FLAG_0x8FE                                                  (SYS_FLAGS + 0xFE)
 #define FLAG_0x8FF                                                  (SYS_FLAGS + 0xFF)
 
-#define FLAGS_COUNT (FLAG_0x8FF + 1)
+// FLAG_0x8FF is a legacy symbolic name; after trainer-capacity expansion it
+// resolves to SYS_FLAGS + 0xFF = 0x9FF.
+#define FLAGS_COUNT (FLAG_0x8FF + 1) // 0xA00
 
 // Special Flags (Stored in EWRAM (sSpecialFlags, not in the SaveBlock)
 #define SPECIAL_FLAGS_START           0x4000
