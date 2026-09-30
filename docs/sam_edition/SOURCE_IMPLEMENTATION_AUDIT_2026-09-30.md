@@ -354,3 +354,31 @@ A release candidate is not yet appropriate. Before RC work, the project still ne
 ### CHK-008 conclusion
 CHK-2026-09-30-008 confirms that Pokémon: Sam Edition is **well advanced in design closure but still early-to-mid implementation**. The immediate risk is not lack of design authority; it is dependency-sensitive source integration and the volume of closed-but-not-yet-encoded work.
 
+
+## CHK-2026-09-30-009 — Exact global-data packet coverage
+
+This checkpoint converts the broad CHK-007 conclusion into an exact implementation-coverage map for the closed global Pokémon-data packets.
+
+| Packet | Source-first state |
+| --- | --- |
+| SPEC-001 Flying + Psyduck/Golduck type retrofit | READY / not implemented on sam-edition-dev |
+| SPEC-002 Dark-type retrofit | READY / no dedicated Sam implementation commit found |
+| SPEC-003 Ralts/Natu | READY / vanilla Gen III data present; Sam deltas absent |
+| SPEC-004 Duskull/Dusclops + Shuppet/Banette + Gastly/Haunter/Gengar | READY / vanilla data present; Sam deltas absent |
+| SPEC-005 early Bug final evolutions | READY / closed 450-BST/learnset/TM deltas absent |
+| SPEC-006 Nosepass / Gen I Rock cleanup | PARTIAL / six Gen I Rock type fields coded on feature branch; Nosepass package still baseline |
+| SPEC-007 Feebas/Milotic | READY / Milotic locked base stats happen to match baseline, but typing/evolution and remaining Sam packet are absent |
+| SPEC-008 legendary birds | READY / Sam natural-learnset/capture package absent |
+| SPEC-009 Leafeon/Ectoceon/Rhyperior | BLOCKED by ARCH-004/006 / species append implementation absent |
+| SPEC-010 Tropius | DESIGN CLOSED / source remains baseline; implementation must use the locked specialist package when its data is encoded |
+| SPEC-011 Sam Pokédex 001–205 | READY / display-number mapping absent |
+
+Additional source checks found no repository commits matching the Ralts/Natu, Ghost-family, early-Bug, Feebas/Milotic, legendary-bird, custom-species, type-retrofit, Tropius-learnset, or custom-item-runtime packet names. This supports the Registry's existing source-light classification rather than revealing a hidden implementation branch.
+
+Evolution remains baseline in important closed cases, including Haunter trade evolution and Feebas Beauty evolution. The closed Sam evolution-accessibility package therefore remains genuine implementation work rather than a documentation-only task.
+
+The special-acquisition, static-encounter and ordinary-trainer conclusions from CHK-007 remain unchanged: vanilla primitives/data are reusable, but the broad Sam routing/content is not encoded on sam-edition-dev.
+
+### CHK-009 conclusion
+The global-data layer now has an exact packet-level source map. No additional hidden Sam implementation was discovered. The principal exception to broad absence remains the narrow SPEC-006 Rock-type feature branch; otherwise these closed packets should be scheduled as encoding/integration work after the architecture dependencies they name.
+
