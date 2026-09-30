@@ -747,11 +747,45 @@
 #define TRAINER_CHAMPION_REMATCH_CHARMANDER      741
 #define TRAINER_CUE_BALL_PAXTON                  742
 
-// NOTE: Because each Trainer uses a flag to determine when they are defeated, there is 
-//       only space for 25 additional trainers before trainer flag space overflows.
-//       MAX_TRAINERS_COUNT can be increased but will take up additional saveblock space
+// Pokémon: Sam Edition — central Trainer ID registry.
+// Satoshi practice/rematch records: 743-758.
+#define TRAINER_SATOSHI_PEWTER_PRACTICE          743
+#define TRAINER_SATOSHI_CERULEAN_PRACTICE        744
+#define TRAINER_SATOSHI_VERMILION_PRACTICE       745
+#define TRAINER_SATOSHI_CELADON_PRACTICE         746
+#define TRAINER_SATOSHI_FUCHSIA_PRACTICE         747
+#define TRAINER_SATOSHI_SAFFRON_PRACTICE         748
+#define TRAINER_SATOSHI_CINNABAR_PRACTICE        749
+#define TRAINER_SATOSHI_VIRIDIAN_PRACTICE        750
+#define TRAINER_SATOSHI_PEWTER_REMATCH           751
+#define TRAINER_SATOSHI_CERULEAN_REMATCH         752
+#define TRAINER_SATOSHI_VERMILION_REMATCH        753
+#define TRAINER_SATOSHI_CELADON_REMATCH          754
+#define TRAINER_SATOSHI_FUCHSIA_REMATCH          755
+#define TRAINER_SATOSHI_SAFFRON_REMATCH          756
+#define TRAINER_SATOSHI_CINNABAR_REMATCH         757
+#define TRAINER_SATOSHI_VIRIDIAN_REMATCH         758
+
+// Cerulean Gym central allocations: 759-762.
+#define TRAINER_FIRE_DANCER_LEHUA                 759
+#define TRAINER_FIRE_DANCER_KEAHI                 760
+#define TRAINER_LEADER_LEILANI                    761
+#define TRAINER_LEADER_LEILANI_REMATCH            762
+
+// Fuchsia Gym central allocations: 763-768.
+// These replace the branch-local 743-750 assignments that collided with Satoshi.
+#define TRAINER_BUSHRANGER_MICK                   763
+#define TRAINER_BUSHRANGER_SHAZZA                 764
+#define TRAINER_BUSHRANGER_DAZZA                  765
+#define TRAINER_BUSHRANGER_NARELLE                766
+#define TRAINER_LEADER_BAZ                        767
+#define TRAINER_LEADER_BAZ_REMATCH                768
+
+// Sam Edition expands trainer defeat-flag capacity to 1024 records.
+// NUM_TRAINERS continues to track the highest trainer record actually defined in data;
+// feature integrations must advance it as their trainer records are merged.
 
 #define NUM_TRAINERS                             743
-#define MAX_TRAINERS_COUNT                       768
+#define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H

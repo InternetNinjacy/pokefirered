@@ -11254,4 +11254,9 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
     },
+
+    // ARCH-004 structural placeholders only. SPEC-009 owns final species data.
+    [SPECIES_LEAFEON] = {0},
+    [SPECIES_ECTOCEON] = {0},
+    [SPECIES_RHYPERIOR] = {0},
 };

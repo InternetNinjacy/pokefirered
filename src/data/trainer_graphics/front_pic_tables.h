@@ -148,6 +148,14 @@ const struct MonCoords gTrainerFrontPicCoords[] =
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
+    // ARCH-006 allocation-only trainer-picture placeholders (148-154).
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
 };
 
 const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
@@ -300,6 +308,15 @@ const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
     TRAINER_SPRITE(RUIN_MANIAC, gTrainerFrontPic_RuinManiac, 0x800),
     TRAINER_SPRITE(LADY, gTrainerFrontPic_Lady, 0x800),
     TRAINER_SPRITE(PAINTER, gTrainerFrontPic_Painter, 0x800),
+    // ARCH-006 allocation-only placeholders. Final approved art is integrated
+    // by the owning SPRITE tasks; Satoshi remains one shared identity.
+    TRAINER_SPRITE(LEILANI, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(LEHUA, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(KEAHI, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(SATOSHI, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(BAZ, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(BUSHRANGER_M, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(BUSHRANGER_F, gTrainerFrontPic_ProfessorOak, 0x800),
 };
 
 const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
@@ -452,4 +469,12 @@ const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
     TRAINER_PAL(RUIN_MANIAC, gTrainerPalette_RuinManiac),
     TRAINER_PAL(LADY, gTrainerPalette_Lady),
     TRAINER_PAL(PAINTER, gTrainerPalette_Painter),
+    // Match the allocation-only graphics routes above with a safe existing palette.
+    TRAINER_PAL(LEILANI, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(LEHUA, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(KEAHI, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(SATOSHI, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(BAZ, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(BUSHRANGER_M, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(BUSHRANGER_F, gTrainerPalette_ProfessorOak),
 };

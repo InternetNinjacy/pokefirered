@@ -418,9 +418,22 @@
 #define SPECIES_JIRACHI 409
 #define SPECIES_DEOXYS 410
 #define SPECIES_CHIMECHO 411
-#define SPECIES_EGG 412
+#define SPECIES_LEAFEON 412
+#define SPECIES_ECTOCEON 413
+#define SPECIES_RHYPERIOR 414
+#define SPECIES_EGG 415
 
 #define NUM_SPECIES SPECIES_EGG
+
+#if SPECIES_OLD_UNOWN_B != 252 || SPECIES_OLD_UNOWN_Z != 276
+#error "Sam Edition ARCH-004 requires OLD_UNOWN IDs 252-276 to remain unchanged"
+#endif
+#if SPECIES_LEAFEON != 412 || SPECIES_ECTOCEON != 413 || SPECIES_RHYPERIOR != 414 || SPECIES_EGG != 415
+#error "Sam Edition ARCH-004 species append IDs have drifted"
+#endif
+#if NUM_SPECIES != SPECIES_EGG
+#error "Sam Edition ARCH-004 requires NUM_SPECIES to track SPECIES_EGG"
+#endif
 
 #define SPECIES_UNOWN_B (NUM_SPECIES + 1)
 #define SPECIES_UNOWN_C (NUM_SPECIES + 2)

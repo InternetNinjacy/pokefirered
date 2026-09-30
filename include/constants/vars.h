@@ -191,7 +191,11 @@
 #define VAR_MAP_SCENE_MT_MOON_B2F                                              0x408B
 
 
-#define VAR_0x408C                 0x408C
+// Sam Edition central persistent-variable namespace.
+#define VAR_SAM_START                                                           0x408C
+#define VAR_SAM_END                                                             0x40A9
+#define VAR_SAM_GAME_MODE                                                       VAR_SAM_START // 0 = Standard; 1 = Permanent
+#define VAR_0x408C                                                              VAR_SAM_GAME_MODE
 #define VAR_0x408D                 0x408D
 #define VAR_0x408E                 0x408E
 #define VAR_0x408F                 0x408F
@@ -211,7 +215,8 @@
 #define VAR_0x409D                 0x409D
 #define VAR_0x409E                 0x409E
 #define VAR_0x409F                 0x409F
-#define VAR_0x40A0                 0x40A0
+#define VAR_SAM_CERULEAN_GYM_FLAME_STATE                                      0x40A0
+#define VAR_0x40A0                                                             VAR_SAM_CERULEAN_GYM_FLAME_STATE
 #define VAR_0x40A1                 0x40A1
 #define VAR_0x40A2                 0x40A2
 #define VAR_0x40A3                 0x40A3

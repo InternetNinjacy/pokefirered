@@ -412,6 +412,10 @@ const struct CompressedSpriteSheet gMonFrontPicTable[] =
     SPECIES_SPRITE(JIRACHI, gMonFrontPic_Jirachi),
     SPECIES_SPRITE(DEOXYS, gMonFrontPic_Deoxys),
     SPECIES_SPRITE(CHIMECHO, gMonFrontPic_Chimecho),
+    // ARCH-004 placeholders; SPEC-009 supplies final custom species art.
+    SPECIES_SPRITE(LEAFEON, gMonFrontPic_CircledQuestionMark),
+    SPECIES_SPRITE(ECTOCEON, gMonFrontPic_CircledQuestionMark),
+    SPECIES_SPRITE(RHYPERIOR, gMonFrontPic_CircledQuestionMark),
     SPECIES_SPRITE(EGG, gMonFrontPic_Egg),
     SPECIES_SPRITE(UNOWN_B, gMonFrontPic_UnownB),
     SPECIES_SPRITE(UNOWN_C, gMonFrontPic_UnownC),

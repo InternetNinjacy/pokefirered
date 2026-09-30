@@ -412,6 +412,10 @@ const struct CompressedSpritePalette gMonPaletteTable[] =
     SPECIES_PAL(JIRACHI, gMonPalette_Jirachi),
     SPECIES_PAL(DEOXYS, gMonPalette_Deoxys),
     SPECIES_PAL(CHIMECHO, gMonPalette_Chimecho),
+    // ARCH-004 placeholders; SPEC-009 supplies final custom species palettes.
+    SPECIES_PAL(LEAFEON, gMonPalette_CircledQuestionMark),
+    SPECIES_PAL(ECTOCEON, gMonPalette_CircledQuestionMark),
+    SPECIES_PAL(RHYPERIOR, gMonPalette_CircledQuestionMark),
     SPECIES_PAL(EGG, gMonPalette_Egg),
     SPECIES_PAL(UNOWN_B, gMonPalette_Unown),
     SPECIES_PAL(UNOWN_C, gMonPalette_Unown),
