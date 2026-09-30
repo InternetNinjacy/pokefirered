@@ -929,6 +929,12 @@ static const u16 sSpeciesToNationalPokedexNum[NUM_SPECIES - 1] =
     SPECIES_TO_NATIONAL(JIRACHI),
     SPECIES_TO_NATIONAL(DEOXYS),
     SPECIES_TO_NATIONAL(CHIMECHO),
+
+    // SPEC-009 temporary technical Dex mappings. Final player-facing Sam
+    // numbering is a separate roster-closure remap.
+    NATIONAL_DEX_LEAFEON,
+    NATIONAL_DEX_ECTOCEON,
+    NATIONAL_DEX_RHYPERIOR,
 };
 
 // Assigns all Hoenn Dex Indexes to a National Dex Index
