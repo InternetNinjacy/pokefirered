@@ -811,9 +811,10 @@ struct SaveBlock1
     /*0x2D00*/ u16 easyChatBattleLost[EASY_CHAT_BATTLE_WORDS_COUNT];
     /*0x2D0C*/ struct Mail mail[MAIL_COUNT];
     /*0x2F4C*/ u8 additionalPhrases[NUM_ADDITIONAL_PHRASE_BYTES];
-    // Sam Edition: the remaining 60 bytes of TM/HM pocket growth consume the
-    // unused OldMan storage, keeping SamEditionSaveData and ramScript fixed.
-    /*0x2F54*/ struct DewfordTrend dewfordTrends[5]; // unused
+    // Sam Edition: reclaim 60 of the unused OldMan union's 64 bytes for the
+    // expanded TM/HM pocket. Keep 4 bytes so all following save offsets stay fixed.
+    /*0x2F54*/ u8 tmHmSaveCompensationPadding[4];
+    /*0x2F58*/ struct DewfordTrend dewfordTrends[5]; // unused
     /*0x2F80*/ struct DayCare daycare;
     /*0x309C*/ u8 giftRibbons[GIFT_RIBBONS_COUNT];
     /*0x30A7*/ struct ExternalEventData externalEventData;
