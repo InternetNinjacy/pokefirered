@@ -384,3 +384,61 @@ Continue into the remaining story/world implementation breadth:
 - Mew truck/harbor event and opposite-fossil handoff;
 - map/event implementation breadth outside the already-coded opening, League, and Gym 2 packages.
 
+
+## CHK-2026-09-30-010 — Story / world map-script implementation breadth
+
+### Source coverage result
+- Compared every active Sam feature branch against `sam-edition-dev`: opening, League, Gym 2, Gym 5, SPEC-006, ENC-001 and ARCH-005.
+- Outside the already-known opening, League and Gym 2 packages, no active Sam branch carries broad story/world map-script changes.
+- Repository commit searches found no separate Sam implementation commits for Team Rocket, Thomas, Professor Oak milestones, Mew, Hothouse, town side quests, fossil handoff, or non-League Blue/Green story encounters.
+- Classification: **design is substantially closed; broad world/story implementation is absent**.
+
+### Blue / Green outside the League
+- League Blue/Green work remains genuine partial implementation and must be preserved.
+- No non-League Blue/Green map/script package was found on active Sam branches.
+- The mandatory Route 4 Blue+Green Double Battle and other non-League rival encounters therefore remain implementation work.
+- Classification: **League slices implemented-but-unintegrated; non-League rival scripting absent**.
+
+### Team Rocket / Thomas
+- Current readiness authority locks the Team Rocket / Thomas event matrix, including the Viridian theft/fencing event, Mt. Moon, Cerulean burglary, Nugget Bridge Thomas #1, Rock Tunnel/Porygon, Celadon, Lavender, Silph, Cinnabar, Giovanni dissolution, Victory Road Thomas and post-League Viridian Thomas.
+- No corresponding broad Sam map/script implementation was found on active branches.
+- Thomas trainer data and chronology remain READY rather than coded.
+- Shared Rocket evidence/recovery/state plumbing is also absent.
+- Classification: **design closed; implementation absent outside reusable vanilla map/story scaffolding**.
+
+### Professor Oak research milestones
+- No implementation was found for the locked 30/50/75/100/125/151 OWNED-species milestone ladder or Joey unlock/reset loop.
+- Existing Oak/new-game work on `sam/opening-intro` is intro/name/mode work, not the research-milestone system.
+- OAK-001/OAK-002 remain blocked by their recorded shared implementation dependencies.
+- Classification: **design/dialogue closed; source implementation absent**.
+
+### Professor Palm
+- Live Drive authority/backlog search at this checkpoint found no current Sam Edition Professor Palm specialist authority or Programming Readiness Registry task.
+- Therefore no Palm package is counted as current Sam implementation work from memory/history alone.
+- If a current authority is later located or Tom explicitly restores/imports the package, add it through a new verified checkpoint rather than silently importing stale material.
+
+### Town side quests
+- The current Town Side Quest implementation authority explicitly states that ROM implementation was not completed by its synchronization pass.
+- No active Sam branch carries the reusable quest framework or the ten town quest map/script packages.
+- QUEST-001 through the individual quest tasks remain source implementation work; shared Gift handling is a dependency for Pokémon-reward quests.
+- Classification: **design/content closed; implementation absent**.
+
+### Saffron Hothouse
+- No Hothouse map/script/battle implementation was found on active Sam branches.
+- Current registry authority keeps creative design/dialogue closed; HOT-001 is blocked only by implementation/assets/shared Gift integration/QA.
+- Classification: **design closed; implementation absent**.
+
+### Mew truck / harbor rumor hooks
+- Current readiness authority locks the two post-S.S.-Anne Vermilion rumor hooks and the mechanical Mew event: Lv50, Surf + Strength access, movable truck, visible overworld Mew, one-time static, permanent loss if defeated.
+- No Sam map/script implementation for the rumor NPC updates or truck/Mew event was found on active branches.
+- Classification: **design closed; implementation absent**.
+
+### Cinnabar opposite-fossil handoff
+- Current readiness authority locks the post-revival opposite-fossil handoff, including Bag-full retry and one-time delivery behavior.
+- No Sam implementation was found on active branches.
+- Classification: **design closed; implementation absent**.
+
+### CHK-010 conclusion
+The remaining story/world layer is substantially more complete on paper than in source. The implementation strategy should reuse recognizable FireRed map/story scaffolding where the governing Sam authority preserves it, then overlay the locked Sam state/event changes rather than rebuilding Kanto wholesale.
+
+The next source-first audit should cover **remaining UI/assets/map-resource breadth and release-critical non-story systems not yet mapped**, then reconcile the resulting dependency order against the P0/P1 implementation queue before coding begins.
