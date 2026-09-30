@@ -107,15 +107,75 @@ Before declaring a feature finished:
 3. verify runtime/emulator acceptance where required;
 4. update the Programming Readiness Registry.
 
+## Shared core-engine audit — 2026-09-30
+
+### Permanent Mode
+- `sam/opening-intro` already implements the Standard/Permanent selector and persists `VAR_SAM_GAME_MODE`.
+- No downstream permanent-death mechanics were found: no per-Pokémon death marker, protected-original-starter marker, faint hook, healing/revival guard, PC/Day Care eligibility guard or blackout integration.
+- The existing `BoxPokemon` header exposes unused persistent bits, so the current authority's low-impact per-individual marker strategy is technically viable without growing the Pokémon structure.
+- Classification: **partial implementation**. CORE-001 is integration/QA work; CORE-002–004 remain genuine engine work.
+
+### Starter and evolution
+- Starter design is closed around Eevee / Pichu / Ditto with deterministic Blue/Green assignment.
+- No Sam-specific starter implementation branch/commit was found.
+- No Sam deterministic evolution-method implementation branch/commit was found for the locked single-player evolution package.
+- Classification: **design closed, implementation absent**.
+
+### Special acquisition / outsider behavior
+- Vanilla source already contains the needed effect primitives:
+  - `IsTradedMon()` drives the ×1.5 outsider/traded EXP branch.
+  - `IsMonDisobedient()` applies badge-based outsider obedience.
+- Vanilla `ScriptGiveMon()` creates player-OT Pokémon, so qualifying Sam Gift/Purchase/Game Corner/Fossil/Rocket-recovery acquisitions cannot use it unchanged.
+- No Sam shared qualifying-acquisition constructor/delivery implementation was found.
+- Classification: **design closed; reuse vanilla mechanics; shared Sam routing still required**.
+
+### TM01–TM68 and custom moves
+- `sam/arch-005-resource-constants` allocates TM51–68 item IDs and custom move IDs only.
+- TM Case/range/mapping expansion is not implemented.
+- No move-data/effect entries were found for Boulder Bash, Ghostly Wail, Seed Strike or Night Terror.
+- Stock Shadow Punch remains 60 BP / 20 PP / always-hit in audited source; the Sam 70 BP / 15 PP + screen-break modification is not implemented.
+- Signal Beam/Shadow Punch class/effect override work remains under TM-003.
+- Current Programming Readiness Registry/TM-005 closure confirms the current roster's TM/HM compatibility **design is fully closed**. Older archival notes listing later-added families as OPEN/authority-trace are stale snapshots.
+- Literal ROM species × TM01–TM68 compatibility encoding remains absent.
+- Classification: **constants partial; engine/data implementation still required; compatibility design closed**.
+
+### Custom species foundation
+- Ordinary Gen III species used by Sam exist in baseline source.
+- No `SPECIES_LEAFEON`, `SPECIES_ECTOCEON` or `SPECIES_RHYPERIOR` constants/data implementation was found on audited Sam branches.
+- Current closed architecture assigns Leafeon=412, Ectoceon=413, Rhyperior=414, with Egg shifted to 415; OLD_UNOWN slots remain untouched.
+- ARCH-004 must implement the species-table expansion before SPEC-009 can integrate the three species; ARCH-006 remains the graphics-allocation dependency.
+- Classification: **architecture/design closed; source implementation absent**.
+
+### Reusable Satoshi infrastructure
+- `sam/league-phase5-integration` reserves `gymSatoshiPostgameAux[0x30]` in Sam save data.
+- No reusable Satoshi practice state machine, Gym scripts, first-Hall-of-Fame rematch conversion, or Viridian Thomas/Satoshi coexistence implementation was found.
+- All eight specialist battle packages remain design/data closed and should be mapped into one reusable system rather than reauthored.
+- Classification: **save-layout scaffold only; SAT-001–003 remain implementation work**.
+
+## Shared core-engine audit conclusion
+
+The originally requested shared layer has now been source-audited end to end:
+
+| Package | Source-first state |
+| --- | --- |
+| Permanent Mode | Partial: selector/persistence coded; mechanics absent |
+| Starter system | Design closed; implementation absent |
+| Evolution accessibility | Design closed; implementation absent |
+| Special acquisition | Vanilla primitives reusable; Sam shared routing absent |
+| TM01–68 | Constants partial; engine/mapping absent |
+| TM compatibility | Design fully closed; literal ROM matrix absent |
+| Custom moves | IDs allocated; move behavior/data absent |
+| Custom species foundation | Architecture closed; implementation absent |
+| Satoshi reusable system | Save allocation scaffold only; state machine absent |
+
+The Programming Readiness Registry has been synchronized to these findings. Future completion work should treat these as implementation/integration/QA tasks and must not reopen closed design.
+
 ## Immediate next audit
 
-Continue with the shared core-engine layer:
-- Permanent Mode downstream mechanics;
-- Gift/outsider EXP behavior;
-- starter/evolution logic;
-- TM01–TM68 engine and compatibility;
-- custom moves;
-- custom species foundation;
-- reusable Satoshi/rematch infrastructure.
+Proceed from shared-core verification into the remaining architecture/global-data blockers that gate implementation:
+- ARCH-004 species append architecture;
+- ARCH-006 graphics allocation architecture;
+- Route 5 breeding/Day Care core;
+- final shared save-layout reconciliation across opening, League, Permanent Mode and Satoshi;
+- then global species/evolution/TM data encoding in dependency order.
 
-Do not repeat the Gym branch archaeology above unless repository state changes after this audit.
