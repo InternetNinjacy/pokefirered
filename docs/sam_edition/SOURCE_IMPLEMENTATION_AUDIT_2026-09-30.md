@@ -170,12 +170,62 @@ The originally requested shared layer has now been source-audited end to end:
 
 The Programming Readiness Registry has been synchronized to these findings. Future completion work should treat these as implementation/integration/QA tasks and must not reopen closed design.
 
+## Architecture/global-data blocker audit — 2026-09-30
+
+### ARCH-004 species append architecture
+- Current `sam-edition-dev` still ends the ordinary species constants at `SPECIES_CHIMECHO = 411`, followed by `SPECIES_EGG = 412` and `NUM_SPECIES = SPECIES_EGG`.
+- No `SPECIES_LEAFEON`, `SPECIES_ECTOCEON` or `SPECIES_RHYPERIOR` implementation exists on audited Sam branches.
+- `SPECIES_OLD_UNOWN_B` through `SPECIES_OLD_UNOWN_Z` remain actively represented in species/graphics tables and must not be repurposed.
+- Closed architecture remains: Leafeon=412, Ectoceon=413, Rhyperior=414, Egg=415; derived Unown IDs follow the new `NUM_SPECIES`.
+- Implementation must audit all species-indexed tables and graphics/Pokédex/learnset/evolution bounds after the shift.
+- Classification: **design/architecture closed; source implementation absent; P0 blocker**.
+
+### ARCH-006 graphics allocation architecture
+- The Resource Registry reserves OBJ 152–223 and Trainer Pic 148–223, preserving dynamic OBJ 240–255.
+- No centralized Sam graphics-allocation implementation was found on `sam-edition-dev`.
+- `sam-gym2-cerulean-complete` already proves the range is usable with feature-local allocations including Leilani OBJ 152, Satoshi OBJ 155, Leilani trainer pic 148 and Satoshi trainer pic 151.
+- Satoshi still uses Professor Oak battle-art fallback on the Gym 2 branch, so final art conversion/insertion remains open.
+- Classification: **registry allocation closed; central source encoding absent; feature-local allocations must be reconciled before broad merging**.
+
+### Shared SaveBlock1 reconciliation
+- `sam/opening-intro` and `sam/league-phase5-integration` use the same 0xF0 `SamEditionSaveData` internal functional layout:
+  - 0x00–0x0F core;
+  - 0x10–0x4F global mechanics;
+  - 0x50–0x57 Green name;
+  - 0x58–0x8F rival/Rocket;
+  - 0x90–0xBF Gym/Satoshi/postgame;
+  - 0xC0–0xEF future.
+- Opening places the block at SaveBlock1 0x348C and carries temporary 0xA0 tail padding.
+- League uses the compensated final placement at 0x352C, keeps `ramScript` at 0x361C and preserves total SaveBlock1 size 0x3D68.
+- Integration direction is therefore clear: keep the League physical save layout and port opening's Green-name/game-mode initialization/preservation logic into it.
+- Classification: **two compatible partial implementations requiring reconciliation, not redesign**.
+
+### Route 5 Day Care / breeding
+- FireRed source already contains a two-slot Day Care, compatibility, Egg-generation and hatching engine in `src/daycare.c`.
+- Route 5 still uses its separate vanilla `route5DayCareMon` single-Pokémon script path on `sam-edition-dev`, `sam/opening-intro` and `sam/league-phase5-integration`.
+- No Sam Route 5 conversion, one-pending-Egg rule, 50% Egg shiny rule, Sam withdrawal-fee rule, Permanent-dead deposit rejection, starter-protection interaction or legendary-bird Ditto-only override was found.
+- The implementation should reuse the existing two-slot Gen III breeding primitives rather than create another breeding engine.
+- Classification: **underlying engine support exists; Sam Route 5 behavior not implemented**.
+
+## Dependency consequence
+
+The next implementation-critical sequence is now source-confirmed:
+
+1. reconcile ARCH-002 shared save layout;
+2. implement ARCH-004 species append architecture;
+3. implement ARCH-006 centralized graphics allocations;
+4. finish ARCH-003 central symbol insertion;
+5. implement core Permanent/starter/evolution/Gift mechanics;
+6. route Route 5 into the existing breeding engine;
+7. encode global species/TM/evolution data;
+8. then merge map/Gym/rival feature branches against the stabilized architecture.
+
 ## Immediate next audit
 
-Proceed from shared-core verification into the remaining architecture/global-data blockers that gate implementation:
-- ARCH-004 species append architecture;
-- ARCH-006 graphics allocation architecture;
-- Route 5 breeding/Day Care core;
-- final shared save-layout reconciliation across opening, League, Permanent Mode and Satoshi;
-- then global species/evolution/TM data encoding in dependency order.
+Continue through the remaining project-wide architecture dependencies and global data implementation surfaces:
+- ARCH-003 exact flag/variable/trainer-symbol coverage and collisions;
+- ARCH-001 trainer/battle architecture;
+- final Pokédex numbering implementation versus internal species IDs;
+- species tables/learnsets/evolution tables that can be encoded once ARCH-004 lands;
+- encounter-table implementation breadth beyond the already-coded Nosepass packet.
 
