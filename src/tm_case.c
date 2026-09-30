@@ -677,8 +677,9 @@ static void InitTMCaseListMenuItems(void)
 
 static void GetTMNumberAndMoveString(u8 * dest, u16 itemId)
 {
-    StringCopy(gStringVar4, gText_FontSmall);
     s16 tmhmIndex = ItemIdToTMHMIndex(itemId);
+
+    StringCopy(gStringVar4, gText_FontSmall);
 
     if (tmhmIndex >= NUM_TECHNICAL_MACHINES)
     {
