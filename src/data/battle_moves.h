@@ -4630,7 +4630,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_GHOSTLY_WAIL] =
     {
-        .effect = EFFECT_HIT,
+        .effect = EFFECT_TRI_ATTACK,
         .power = 100,
         .type = TYPE_GHOST,
         .accuracy = 90,
@@ -4643,7 +4643,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_SEED_STRIKE] =
     {
-        .effect = EFFECT_HIT,
+        .effect = EFFECT_SEED_STRIKE,
         .power = 70,
         .type = TYPE_GRASS,
         .accuracy = 95,
