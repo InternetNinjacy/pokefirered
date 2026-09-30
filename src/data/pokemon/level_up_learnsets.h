@@ -5690,6 +5690,40 @@ static const u16 sDeoxysLevelUpLearnset[] = {
 };
 #endif
 
+static const u16 sLeafeonLevelUpLearnset[] = {
+    LEVEL_UP_MOVE(1, MOVE_TACKLE),
+    LEVEL_UP_MOVE(1, MOVE_TAIL_WHIP),
+    LEVEL_UP_MOVE(1, MOVE_HELPING_HAND),
+    LEVEL_UP_MOVE(8, MOVE_SAND_ATTACK),
+    LEVEL_UP_MOVE(16, MOVE_MEGA_DRAIN),
+    LEVEL_UP_MOVE(21, MOVE_LEECH_SEED),
+    LEVEL_UP_MOVE(26, MOVE_QUICK_ATTACK),
+    LEVEL_UP_MOVE(31, MOVE_MAGICAL_LEAF),
+    LEVEL_UP_MOVE(36, MOVE_GROWTH),
+    LEVEL_UP_MOVE(41, MOVE_SYNTHESIS),
+    LEVEL_UP_MOVE(46, MOVE_LEAF_BLADE),
+    LEVEL_UP_MOVE(52, MOVE_SOLAR_BEAM),
+    LEVEL_UP_END
+};
+
+static const u16 sEctoceonLevelUpLearnset[] = {
+    LEVEL_UP_MOVE(1, MOVE_TACKLE),
+    LEVEL_UP_MOVE(1, MOVE_TAIL_WHIP),
+    LEVEL_UP_MOVE(1, MOVE_HELPING_HAND),
+    LEVEL_UP_MOVE(8, MOVE_SAND_ATTACK),
+    LEVEL_UP_MOVE(16, MOVE_LICK),
+    LEVEL_UP_MOVE(23, MOVE_QUICK_ATTACK),
+    LEVEL_UP_MOVE(30, MOVE_PURSUIT),
+    LEVEL_UP_MOVE(36, MOVE_POISON_FANG),
+    LEVEL_UP_MOVE(42, MOVE_SHADOW_PUNCH),
+    LEVEL_UP_MOVE(47, MOVE_MEAN_LOOK),
+    LEVEL_UP_MOVE(52, MOVE_SHADOW_BALL),
+    LEVEL_UP_END
+};
+
+// Rhyperior intentionally reuses sRhydonLevelUpLearnset by pointer at this
+// data freeze, as required by the current Rhyperior authority.
+
 static const u16 sChimechoLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_WRAP),
     LEVEL_UP_MOVE(6, MOVE_GROWL),
