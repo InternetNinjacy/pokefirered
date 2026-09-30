@@ -9777,7 +9777,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     },
     [SPECIES_DUSKULL] =
     {
-        .baseHP = 20,
+        .baseHP = 25,
         .baseAttack = 40,
         .baseDefense = 90,
         .baseSpeed = 25,
@@ -9806,7 +9806,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     },
     [SPECIES_DUSCLOPS] =
     {
-        .baseHP = 40,
+        .baseHP = 45,
         .baseAttack = 70,
         .baseDefense = 130,
         .baseSpeed = 25,
