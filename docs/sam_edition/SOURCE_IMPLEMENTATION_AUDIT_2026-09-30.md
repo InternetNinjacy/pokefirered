@@ -303,82 +303,62 @@ The global implementation picture is now tighter:
 ### CHK-007 conclusion
 CHK-2026-09-30-007 confirms that the global Pokémon-data layer is **design-heavy but source-light**. Most remaining work is dependency-sensitive encoding and integration against already-closed authorities, not additional broad creative design.
 
-## Immediate next audit
+## CHK-2026-09-30-008 — Release / integration / build state
 
-Continue into the remaining global-data implementation surfaces:
-- exact species-data packets already closed versus still absent in source;
-- level-up learnsets;
-- evolution tables;
-- abilities/items that support those species;
-- static encounters and special-acquisition scripts;
-- ordinary trainer-table implementation breadth outside League/Gym2 scaffolds.
+### Build and CI evidence
+- `sam-edition-dev` head used by the audit passed CI run #181, including the comparison/build matrix.
+- `sam/league-phase5-integration` passed Sam-specific CI run #177, including the League payload validation and Sam Edition FireRed build.
+- `sam-gym2-cerulean-complete` latest observed CI run #30 failed at the vanilla `Compare FireRed` step. Because this branch intentionally changes the ROM, that result is not by itself proof of a compile failure; it still lacks the purpose-built successful Sam build validation available for League.
+- Opening and Gym 5 did not have current CI evidence in this audit.
+- Classification: **build environment is healthy; feature-level validation is uneven**.
 
+### Branch integration state
+Relative to `sam-edition-dev` at this checkpoint, the major feature branches were divergent rather than cleanly stacked:
+- opening: 33 commits ahead / 4 behind;
+- League: 64 ahead / 4 behind;
+- Gym 2: 68 ahead / 10 behind;
+- Gym 5: 3 ahead / 8 behind;
+- SPEC-006: 1 ahead / 4 behind;
+- ENC-001: 1 ahead / 4 behind;
+- ARCH-005: 3 ahead / 4 behind.
 
-## CHK-2026-09-30-008 — Release / integration / build / completion state
-
-### Build and CI state
-- The matching FireRed build environment has already been proven under ENV-001; the repository/toolchain itself is not the current project blocker.
-- At the checkpoint audit, CI/build evidence showed sam-edition-dev run #181 passing and League run #177 passing its Sam build. Gym 2 run #30 failed at the vanilla Compare FireRed step, so Gym 2 still requires purpose-built Sam compile/runtime validation; opening and Gym 5 had no current CI evidence in the checkpoint audit.
-- The passing integration/League evidence demonstrates that the build pipeline is usable, but it does **not** establish that every feature branch compiles under its intended Sam configuration, nor that a final consolidated Sam ROM exists or passes runtime acceptance.
-
-### Integration state
-- Major Sam implementation remains distributed across divergent feature branches rather than consolidated on sam-edition-dev.
-- The opening/title branch, League integration branch, Cerulean Gym branch, narrow ARCH-005/SPEC-006/ENC-001 branches, and Fuchsia scaffold all require dependency-aware reconciliation into the integration target.
-- Known merge-sensitive areas include the shared SaveBlock1 layout, central flags/variables, trainer IDs, trainer graphics/classes, species append bounds, and centralized graphics allocations.
-- Classification: **build-capable development environment; substantial integration debt remains**.
+Much of the integration-branch movement is documentation/workflow, but the divergence is real and should be reconciled before broad new parallel implementation expands.
 
 ### Registry completion snapshot
-- At CHK-008 recovery, the Programming Readiness Registry Backlog contains 98 tracked tasks:
-  - 11 COMPLETE;
-  - 9 IN PROGRESS;
-  - 73 READY;
-  - 4 BLOCKED;
-  - 1 DEFERRED.
-- READY means programmer-ready, not already coded. Therefore raw READY counts must never be interpreted as implementation completion.
-- QA-ALL-002 remains DEFERRED until implementation is assembled; the QA Matrix release/build gates are not yet globally passed.
+The Programming Readiness Registry contained 98 tracked Backlog tasks:
+- 11 COMPLETE;
+- 9 IN PROGRESS;
+- 73 READY;
+- 4 BLOCKED;
+- 1 DEFERRED.
+
+READY primarily means programmer-ready/design-closed, not implemented. COMPLETE also includes some design/data closure work, so raw task counts must not be treated as ROM completion percentage.
+
+### Release gates
+- Full-game regression has not begun and remains deferred until implementation/integration is substantially complete.
+- Approved source art still requires ROM-native conversion, allocation, insertion, hookup, and QA where applicable.
+- Major feature branches must be consolidated against the stabilized architecture and then revalidated with clean Sam-specific builds.
+- Final release acceptance still requires the full QA Matrix plus runtime/emulator testing.
 
 ### Completion estimate
-- The source-first audit supports a rough **15–25% implemented/integrated-equivalent** project estimate at this checkpoint.
-- Release readiness is lower than that percentage because substantial coded work is still unintegrated and broad runtime/regression QA has not been completed.
-- This is an audit planning estimate, not a canon rule or formal Registry status metric.
+Source-first audit estimate at this checkpoint:
+- creative/design specification: roughly 90–95% complete;
+- actual ROM/source implementation: roughly 15–20%;
+- integrated/tested/release-ready game: roughly 10–15%;
+- practical single-number answer for “how close is the ROM to actually finished?”: about 20%, with a reasonable source-audit range of 15–25%.
 
-### Release gate consequence
-A release candidate is not yet appropriate. Before RC work, the project still needs:
-1. architecture stabilization and shared-branch reconciliation;
-2. broad encoding of already-closed species/TM/evolution/encounter/trainer data;
-3. implementation of the remaining Gyms/core systems/story surfaces;
-4. consolidation onto the integration branch;
-5. clean integrated builds plus focused runtime QA;
-6. full regression/clean-save progression testing and release cleanup.
+This estimate is an audit assessment, not a substitute for task-level Registry status.
 
 ### CHK-008 conclusion
-CHK-2026-09-30-008 confirms that Pokémon: Sam Edition is **well advanced in design closure but still early-to-mid implementation**. The immediate risk is not lack of design authority; it is dependency-sensitive source integration and the volume of closed-but-not-yet-encoded work.
+The project is specification-heavy and implementation-light. The shortest path is to consolidate the P0 architecture first, then encode the large closed-data layer, integrate existing opening/Gym2/League work, implement the remaining story/Gym/world packages, and only then enter full-game regression.
 
+## Immediate next audit
 
-## CHK-2026-09-30-009 — Exact global-data packet coverage
-
-This checkpoint converts the broad CHK-007 conclusion into an exact implementation-coverage map for the closed global Pokémon-data packets.
-
-| Packet | Source-first state |
-| --- | --- |
-| SPEC-001 Flying + Psyduck/Golduck type retrofit | READY / not implemented on sam-edition-dev |
-| SPEC-002 Dark-type retrofit | READY / no dedicated Sam implementation commit found |
-| SPEC-003 Ralts/Natu | READY / vanilla Gen III data present; Sam deltas absent |
-| SPEC-004 Duskull/Dusclops + Shuppet/Banette + Gastly/Haunter/Gengar | READY / vanilla data present; Sam deltas absent |
-| SPEC-005 early Bug final evolutions | READY / closed 450-BST/learnset/TM deltas absent |
-| SPEC-006 Nosepass / Gen I Rock cleanup | PARTIAL / six Gen I Rock type fields coded on feature branch; Nosepass package still baseline |
-| SPEC-007 Feebas/Milotic | READY / Milotic locked base stats happen to match baseline, but typing/evolution and remaining Sam packet are absent |
-| SPEC-008 legendary birds | READY / Sam natural-learnset/capture package absent |
-| SPEC-009 Leafeon/Ectoceon/Rhyperior | BLOCKED by ARCH-004/006 / species append implementation absent |
-| SPEC-010 Tropius | DESIGN CLOSED / source remains baseline; implementation must use the locked specialist package when its data is encoded |
-| SPEC-011 Sam Pokédex 001–205 | READY / display-number mapping absent |
-
-Additional source checks found no repository commits matching the Ralts/Natu, Ghost-family, early-Bug, Feebas/Milotic, legendary-bird, custom-species, type-retrofit, Tropius-learnset, or custom-item-runtime packet names. This supports the Registry's existing source-light classification rather than revealing a hidden implementation branch.
-
-Evolution remains baseline in important closed cases, including Haunter trade evolution and Feebas Beauty evolution. The closed Sam evolution-accessibility package therefore remains genuine implementation work rather than a documentation-only task.
-
-The special-acquisition, static-encounter and ordinary-trainer conclusions from CHK-007 remain unchanged: vanilla primitives/data are reusable, but the broad Sam routing/content is not encoded on sam-edition-dev.
-
-### CHK-009 conclusion
-The global-data layer now has an exact packet-level source map. No additional hidden Sam implementation was discovered. The principal exception to broad absence remains the narrow SPEC-006 Rock-type feature branch; otherwise these closed packets should be scheduled as encoding/integration work after the architecture dependencies they name.
+Continue into the remaining story/world implementation breadth:
+- Team Rocket city-operation scripts and Thomas non-League battles;
+- Blue/Green non-League rival encounters;
+- Professor Oak research milestones and Professor Palm routing/status;
+- town side quests and Saffron Hothouse;
+- Mew truck/harbor event and opposite-fossil handoff;
+- map/event implementation breadth outside the already-coded opening, League, and Gym 2 packages.
 
