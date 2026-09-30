@@ -2075,9 +2075,15 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                 }
                 else
                 {
-                    if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_EARLY
-                     || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_LATE
-                     || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION)
+                    if (gTrainerBattleOpponent_A == TRAINER_CHAMPION_FIRST_SQUIRTLE
+                     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_FIRST_BULBASAUR
+                     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_FIRST_CHARMANDER
+                     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_SQUIRTLE
+                     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_BULBASAUR
+                     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_CHARMANDER)
+                        toCpy = GetGreenName();
+                    else if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_EARLY
+                          || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_LATE)
                         toCpy = GetExpandedPlaceholder(PLACEHOLDER_ID_RIVAL);
                     else
                         toCpy = gTrainers[gTrainerBattleOpponent_A].trainerName;

@@ -735,6 +735,61 @@ const struct Tileset gTileset_PokemonLeague =
     .callback = NULL,
 };
 
+const struct Tileset gTileset_PokemonLeagueLorelei =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_PokemonLeagueLorelei,
+    .palettes = gTilesetPalettes_PokemonLeagueLorelei,
+    .metatiles = gMetatiles_PokemonLeagueLorelei,
+    .metatileAttributes = gMetatileAttributes_PokemonLeagueLorelei,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_PokemonLeagueBlue =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_PokemonLeagueBlue,
+    .palettes = gTilesetPalettes_PokemonLeagueBlue,
+    .metatiles = gMetatiles_PokemonLeagueBlue,
+    .metatileAttributes = gMetatileAttributes_PokemonLeagueBlue,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_PokemonLeagueAgatha =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_PokemonLeagueAgatha,
+    .palettes = gTilesetPalettes_PokemonLeagueAgatha,
+    .metatiles = gMetatiles_PokemonLeagueAgatha,
+    .metatileAttributes = gMetatileAttributes_PokemonLeagueAgatha,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_PokemonLeagueLance =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_PokemonLeagueLance,
+    .palettes = gTilesetPalettes_PokemonLeagueLance,
+    .metatiles = gMetatiles_PokemonLeagueLance,
+    .metatileAttributes = gMetatileAttributes_PokemonLeagueLance,
+    .callback = NULL,
+};
+
+const struct Tileset gTileset_PokemonLeagueGreen =
+{
+    .isCompressed = TRUE,
+    .isSecondary = TRUE,
+    .tiles = gTilesetTiles_PokemonLeagueGreen,
+    .palettes = gTilesetPalettes_PokemonLeagueGreen,
+    .metatiles = gMetatiles_PokemonLeagueGreen,
+    .metatileAttributes = gMetatileAttributes_PokemonLeagueGreen,
+    .callback = NULL,
+};
+
 const struct Tileset gTileset_HallOfFame =
 {
     .isCompressed = TRUE,

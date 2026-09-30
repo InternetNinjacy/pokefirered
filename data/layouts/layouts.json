@@ -2355,7 +2355,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_PokemonLeague",
+      "secondary_tileset": "gTileset_PokemonLeagueLorelei",
       "border_filepath": "data/layouts/PokemonLeague_LoreleisRoom/border.bin",
       "blockdata_filepath": "data/layouts/PokemonLeague_LoreleisRoom/map.bin"
     },
@@ -2367,7 +2367,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_PokemonLeague",
+      "secondary_tileset": "gTileset_PokemonLeagueBlue",
       "border_filepath": "data/layouts/PokemonLeague_BrunosRoom/border.bin",
       "blockdata_filepath": "data/layouts/PokemonLeague_BrunosRoom/map.bin"
     },
@@ -2379,7 +2379,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_PokemonLeague",
+      "secondary_tileset": "gTileset_PokemonLeagueAgatha",
       "border_filepath": "data/layouts/PokemonLeague_AgathasRoom/border.bin",
       "blockdata_filepath": "data/layouts/PokemonLeague_AgathasRoom/map.bin"
     },
@@ -2391,7 +2391,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_PokemonLeague",
+      "secondary_tileset": "gTileset_PokemonLeagueLance",
       "border_filepath": "data/layouts/PokemonLeague_LancesRoom/border.bin",
       "blockdata_filepath": "data/layouts/PokemonLeague_LancesRoom/map.bin"
     },
@@ -2403,7 +2403,7 @@
       "border_width": 2,
       "border_height": 2,
       "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_PokemonLeague",
+      "secondary_tileset": "gTileset_PokemonLeagueGreen",
       "border_filepath": "data/layouts/PokemonLeague_ChampionsRoom/border.bin",
       "blockdata_filepath": "data/layouts/PokemonLeague_ChampionsRoom/map.bin"
     },

@@ -253,7 +253,8 @@
 #define ITEM_0F2 242
 #define ITEM_0F3 243
 #define ITEM_0F4 244
-#define ITEM_0F5 245
+#define ITEM_ADAPTIVE_GENE 245
+#define ITEM_0F5 ITEM_ADAPTIVE_GENE
 #define ITEM_0F6 246
 #define ITEM_0F7 247
 #define ITEM_0F8 248

@@ -278,6 +278,7 @@
 #define PLACEHOLDER_ID_ARCHIE        0xB
 #define PLACEHOLDER_ID_GROUDON       0xC
 #define PLACEHOLDER_ID_KYOGRE        0xD
+#define PLACEHOLDER_ID_GREEN         0xE
 
 // Note that while all dot combinations are represented in
 // the Braille font, they are not all meaningful characters.

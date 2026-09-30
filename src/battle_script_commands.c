@@ -36,6 +36,7 @@
 #include "constants/abilities.h"
 #include "constants/pokemon.h"
 #include "constants/maps.h"
+#include "constants/opponents.h"
 
 extern const u8 *const gBattleScriptsForMoveEffects[];
 
@@ -45,6 +46,22 @@ extern const u8 *const gBattleScriptsForMoveEffects[];
 #define LEVEL_UP_BANNER_END   512
 
 #define TAG_LVLUP_BANNER_MON_ICON 55130
+
+static bool32 IsGreenLeagueTrainerBattle(void)
+{
+    switch (gTrainerBattleOpponent_A)
+    {
+    case TRAINER_CHAMPION_FIRST_SQUIRTLE:
+    case TRAINER_CHAMPION_FIRST_BULBASAUR:
+    case TRAINER_CHAMPION_FIRST_CHARMANDER:
+    case TRAINER_CHAMPION_REMATCH_SQUIRTLE:
+    case TRAINER_CHAMPION_REMATCH_BULBASAUR:
+    case TRAINER_CHAMPION_REMATCH_CHARMANDER:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
 
 static bool8 IsTwoTurnsMove(u16 move);
 static void TrySetDestinyBondToHappen(void);
@@ -2609,6 +2626,16 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 break;
             case MOVE_EFFECT_STEAL_ITEM:
                 {
+                    // Green's trainer-owned equipment is battle-only and must
+                    // never become a permanent player item source.
+                    if (IsGreenLeagueTrainerBattle()
+                     && GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER
+                     && GetBattlerSide(gBattlerTarget) == B_SIDE_OPPONENT)
+                    {
+                        gBattlescriptCurrInstr++;
+                        break;
+                    }
+
                     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER)
                     {
                         gBattlescriptCurrInstr++;
@@ -8797,8 +8824,16 @@ static void Cmd_trysethelpinghand(void)
 // Trick
 static void Cmd_tryswapitems(void)
 {
+    // Green's trainer-owned equipment is battle-only; block player-side Trick
+    // from turning any of it into a persistent acquisition source.
+    if (IsGreenLeagueTrainerBattle()
+     && GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER
+     && GetBattlerSide(gBattlerTarget) == B_SIDE_OPPONENT)
+    {
+        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
+    }
     // opponent can't swap items with player in regular battles
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER
+    else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER
         || (GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
             && !(gBattleTypeFlags & (BATTLE_TYPE_LINK
                                   | BATTLE_TYPE_BATTLE_TOWER

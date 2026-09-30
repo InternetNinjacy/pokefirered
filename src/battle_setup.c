@@ -71,6 +71,8 @@ static void CB2_EndTrainerBattle(void);
 static const u8 *GetIntroSpeechOfApproachingTrainer(void);
 static const u8 *GetTrainerCantBattleSpeech(void);
 
+static bool32 IsGreenLeagueTrainer(u16 trainerId);
+
 static EWRAM_DATA u16 sTrainerBattleMode = 0;
 EWRAM_DATA u16 gTrainerBattleOpponent_A = 0;
 static EWRAM_DATA u16 sTrainerObjectEventLocalId = 0;
@@ -291,9 +293,32 @@ static void DoGhostBattle(void)
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
 }
 
+static bool32 IsGreenLeagueTrainer(u16 trainerId)
+{
+    switch (trainerId)
+    {
+    case TRAINER_CHAMPION_FIRST_SQUIRTLE:
+    case TRAINER_CHAMPION_FIRST_BULBASAUR:
+    case TRAINER_CHAMPION_FIRST_CHARMANDER:
+    case TRAINER_CHAMPION_REMATCH_SQUIRTLE:
+    case TRAINER_CHAMPION_REMATCH_BULBASAUR:
+    case TRAINER_CHAMPION_REMATCH_CHARMANDER:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
 static void DoTrainerBattle(void)
 {
-    CreateBattleStartTask(GetTrainerBattleTransition(), 0);
+    u16 song = 0;
+
+    // Green's first Champion battle and postgame title challenge both use the
+    // existing Champion battle theme, even though postgame is labeled PKMN TRAINER.
+    if (IsGreenLeagueTrainer(gTrainerBattleOpponent_A))
+        song = MUS_VS_CHAMPION;
+
+    CreateBattleStartTask(GetTrainerBattleTransition(), song);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_TRAINER_BATTLES);
 }
@@ -605,6 +630,15 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
                 sum += party[i].lvl;
         }
         break;
+    case F_TRAINER_PARTY_CUSTOM_MOVESET | F_TRAINER_PARTY_HELD_ITEM | F_TRAINER_PARTY_COMPETITIVE:
+        {
+            const struct TrainerMonCompetitiveMoves *party;
+
+            party = gTrainers[opponentId].party.CompetitiveMoves;
+            for (i = 0; i < count; ++i)
+                sum += party[i].lvl;
+        }
+        break;
     }
     return sum;
 }
@@ -642,6 +676,12 @@ static u8 GetTrainerBattleTransition(void)
             return B_TRANSITION_LANCE;
         return B_TRANSITION_BLUE;
     }
+    // Green's postgame title challenge uses the PKMN TRAINER label by canon,
+    // but keeps the Champion-room battle presentation.
+    if (gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_SQUIRTLE
+     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_BULBASAUR
+     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_CHARMANDER)
+        return B_TRANSITION_BLUE;
     if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION)
         return B_TRANSITION_BLUE;
     if (gTrainers[gTrainerBattleOpponent_A].doubleBattle == TRUE)

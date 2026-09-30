@@ -406,6 +406,23 @@ static u8 *ExpandPlaceholder_RivalName(void)
     }
 }
 
+const u8 *GetGreenName(void)
+{
+    // Freshly cleared SaveBlock memory is zero-filled, while normal game strings
+    // terminate with EOS. Treat either state as "not named yet" and use the
+    // canonical GREEN preset until the dedicated Green naming flow writes here.
+    if (gSaveBlock1Ptr->samEdition.greenName[0] == EOS
+     || gSaveBlock1Ptr->samEdition.greenName[0] == 0)
+        return gExpandedPlaceholder_Green;
+
+    return gSaveBlock1Ptr->samEdition.greenName;
+}
+
+static u8 *ExpandPlaceholder_GreenName(void)
+{
+    return (u8 *)GetGreenName();
+}
+
 static u8 *ExpandPlaceholder_Version(void)
 {
 #if defined(FIRERED)
@@ -489,6 +506,7 @@ u8 *GetExpandedPlaceholder(u32 id)
         [PLACEHOLDER_ID_ARCHIE]       = ExpandPlaceholder_Archie,
         [PLACEHOLDER_ID_GROUDON]      = ExpandPlaceholder_Groudon,
         [PLACEHOLDER_ID_KYOGRE]       = ExpandPlaceholder_Kyogre,
+        [PLACEHOLDER_ID_GREEN]        = ExpandPlaceholder_GreenName,
     };
 
     if (id >= NELEMS(funcs))

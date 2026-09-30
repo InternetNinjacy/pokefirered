@@ -13,10 +13,18 @@ jobs:
       GAME_LANGUAGE: ENGLISH
       GAME_REVISION: 0
       MODERN: 0
-      COMPARE: 1
+      COMPARE: 0
     steps:
       - name: Checkout
         uses: actions/checkout@master
+
+      - name: Install Sam League Phase 5 payload
+        run: |
+          python3 tools/sam_league_phase5/install_payload.py
+
+      - name: Sam League static validation
+        run: |
+          python3 tools/sam_league_phase5/verify_league_logic.py
 
       - name: Checkout agbcc
         uses: actions/checkout@master
@@ -45,39 +53,7 @@ jobs:
           ./install.sh ../
         working-directory: ./agbcc
 
-      - name: Compare FireRed
-        run: |
-          make -j${nproc} all syms
-
-      - name: Compare FireRed rev1
-        env:
-          GAME_REVISION: 1
-        run: |
-          make -j${nproc} all syms
-
-      - name: Compare FireRed rev10
-        env:
-          GAME_REVISION: 10
-        run: |
-          make -j${nproc} all syms
-
-      - name: Compare LeafGreen
-        env:
-          GAME_VERSION: LEAFGREEN
-        run: |
-          make -j${nproc} all syms
-
-      - name: Compare LeafGreen rev1
-        env:
-          GAME_VERSION: LEAFGREEN
-          GAME_REVISION: 1
-        run: |
-          make -j${nproc} all syms
-
-      - name: Compare LeafGreen rev10
-        env:
-          GAME_VERSION: LEAFGREEN
-          GAME_REVISION: 10
+      - name: Build Sam Edition FireRed
         run: |
           make -j${nproc} all syms
 
