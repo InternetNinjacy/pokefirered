@@ -168,9 +168,9 @@
 #define TRAINER_PIC_PAINTER               147
 
 // Pokémon: Sam Edition
-#define TRAINER_PIC_BAZ                   148
-#define TRAINER_PIC_BUSHRANGER_M          149
-#define TRAINER_PIC_BUSHRANGER_F          150
+#define TRAINER_PIC_BAZ                   152
+#define TRAINER_PIC_BUSHRANGER_M          153
+#define TRAINER_PIC_BUSHRANGER_F          154
 #define TRAINER_PIC_SATOSHI               151
 
 // The player back pics are assumed to alternate according to the gender values (MALE/FEMALE)
@@ -293,7 +293,7 @@
 #define TRAINER_CLASS_RUIN_MANIAC         104
 #define TRAINER_CLASS_LADY                105
 #define TRAINER_CLASS_PAINTER             106
-#define TRAINER_CLASS_BUSHRANGER          107
+#define TRAINER_CLASS_BUSHRANGER          108
 
 #define FACILITY_CLASS_AQUA_LEADER_ARCHIE     0
 #define FACILITY_CLASS_AQUA_GRUNT_M           1
