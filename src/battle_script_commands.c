@@ -1206,6 +1206,17 @@ static void Cmd_critcalc(void)
     gBattlescriptCurrInstr++;
 }
 
+static void ApplySoulRotDamageBonus(u8 attacker, u8 defender)
+{
+    u8 moveType;
+
+    GET_MOVE_TYPE(gCurrentMove, moveType);
+    if (gBattleMons[attacker].ability == ABILITY_SOUL_ROT
+     && moveType == TYPE_GHOST
+     && (gBattleMons[defender].status1 & STATUS1_PSN_ANY))
+        gBattleMoveDamage = gBattleMoveDamage * 13 / 10;
+}
+
 static void Cmd_damagecalc(void)
 {
     u16 sideStatus = gSideStatuses[GET_BATTLER_SIDE(gBattlerTarget)];
@@ -1218,6 +1229,7 @@ static void Cmd_damagecalc(void)
         gBattleMoveDamage *= 2;
     if (gProtectStructs[gBattlerAttacker].helpingHand)
         gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
+    ApplySoulRotDamageBonus(gBattlerAttacker, gBattlerTarget);
 
     gBattlescriptCurrInstr++;
 }
@@ -1235,6 +1247,7 @@ void AI_CalcDmg(u8 attacker, u8 defender)
         gBattleMoveDamage *= 2;
     if (gProtectStructs[attacker].helpingHand)
         gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
+    ApplySoulRotDamageBonus(attacker, defender);
 }
 
 static void ModulateDmgByType(u8 multiplier)
