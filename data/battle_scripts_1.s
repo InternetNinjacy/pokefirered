@@ -235,6 +235,8 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectCalmMind               @ EFFECT_CALM_MIND
 	.4byte BattleScript_EffectDragonDance            @ EFFECT_DRAGON_DANCE
 	.4byte BattleScript_EffectCamouflage             @ EFFECT_CAMOUFLAGE
+	.4byte BattleScript_EffectSeedStrike             @ EFFECT_SEED_STRIKE
+	.4byte BattleScript_EffectShadowPunchSam         @ EFFECT_SHADOW_PUNCH_SAM
 
 BattleScript_EffectHit::
 	jumpifnotmove MOVE_SURF, BattleScript_HitFromAtkCanceler
@@ -282,6 +284,38 @@ BattleScript_MoveMissed::
 	effectivenesssound
 	resultmessage
 	waitmessage B_WAIT_TIME_LONG
+	goto BattleScript_MoveEnd
+
+BattleScript_EffectSeedStrike::
+	attackcanceler
+	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
+	attackstring
+	ppreduce
+	critcalc
+	damagecalc
+	typecalc
+	adjustnormaldamage
+	attackanimation
+	waitanimation
+	effectivenesssound
+	hitanimation BS_TARGET
+	waitstate
+	healthbarupdate BS_TARGET
+	datahpupdate BS_TARGET
+	critmessage
+	waitmessage B_WAIT_TIME_LONG
+	resultmessage
+	waitmessage B_WAIT_TIME_LONG
+	jumpifmovehadnoeffect BattleScript_SeedStrikeFinish
+	jumpifhasnohp BS_TARGET, BattleScript_SeedStrikeFinish
+	jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_SeedStrikeFinish
+	jumpifstatus3 BS_TARGET, STATUS3_LEECHSEED, BattleScript_SeedStrikeFinish
+	jumpiftype BS_TARGET, TYPE_GRASS, BattleScript_SeedStrikeFinish
+	setseeded
+	printfromtable gLeechSeedStringIds
+	waitmessage B_WAIT_TIME_LONG
+BattleScript_SeedStrikeFinish:
+	tryfaintmon BS_TARGET
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectSleep::
@@ -2409,6 +2443,38 @@ BattleScript_EffectRecycle::
 BattleScript_EffectRevenge::
 	doubledamagedealtifdamaged
 	goto BattleScript_EffectHit
+
+BattleScript_EffectShadowPunchSam::
+	attackcanceler
+	accuracycheck BattleScript_PrintMoveMissed, NO_ACC_CALC
+	attackstring
+	ppreduce
+	removelightscreenreflect
+	critcalc
+	damagecalc
+	typecalc
+	adjustnormaldamage
+	jumpifbyte CMP_EQUAL, sB_ANIM_TURN, 0, BattleScript_ShadowPunchSamAnim
+	bicbyte gMoveResultFlags, MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE
+BattleScript_ShadowPunchSamAnim:
+	attackanimation
+	waitanimation
+	jumpifbyte CMP_LESS_THAN, sB_ANIM_TURN, 2, BattleScript_ShadowPunchSamDoHit
+	printstring STRINGID_THEWALLSHATTERED
+	waitmessage B_WAIT_TIME_LONG
+BattleScript_ShadowPunchSamDoHit:
+	typecalc2
+	effectivenesssound
+	hitanimation BS_TARGET
+	waitstate
+	healthbarupdate BS_TARGET
+	datahpupdate BS_TARGET
+	critmessage
+	waitmessage B_WAIT_TIME_LONG
+	resultmessage
+	waitmessage B_WAIT_TIME_LONG
+	tryfaintmon BS_TARGET
+	goto BattleScript_MoveEnd
 
 BattleScript_EffectBrickBreak::
 	attackcanceler

@@ -375,7 +375,12 @@ gBattleAnims_Moves::
 	.4byte Move_WATER_PULSE
 	.4byte Move_DOOM_DESIRE
 	.4byte Move_PSYCHO_BOOST
-	.4byte Move_COUNT @ cannot be reached, because last move is Psycho Boost
+	@ Sam Edition custom moves reuse existing Gen III animation scripts; no new art assets.
+	.4byte Move_ROCK_TOMB   @ MOVE_BOULDER_BASH
+	.4byte Move_SHADOW_BALL @ MOVE_GHOSTLY_WAIL
+	.4byte Move_BULLET_SEED @ MOVE_SEED_STRIKE
+	.4byte Move_CRUNCH      @ MOVE_NIGHT_TERROR
+	.4byte Move_COUNT @ cannot be reached
 
 	.align 2
 gBattleAnims_StatusConditions::
