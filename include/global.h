@@ -793,24 +793,24 @@ struct SaveBlock1
     /*0x03b8*/ struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
     /*0x0430*/ struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
     /*0x0464*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
-    /*0x054c*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
-    /*0x05F8*/ u8 seen1[DEX_FLAGS_NO];
+    /*0x0594*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
+    /*0x0640*/ u8 seen1[DEX_FLAGS_NO];
     // Sam Edition: the expanded TM/HM pocket consumes the 12 bytes that were
     // previously occupied here by unused berryBlenderRecords and unused_632.
-    /*0x0638*/ u16 trainerRematchStepCounter;
-    /*0x063A*/ u8 ALIGNED(2) trainerRematches[MAX_REMATCH_ENTRIES];
-    /*0x06A0*/ struct ObjectEvent objectEvents[OBJECT_EVENTS_COUNT];
-    /*0x08E0*/ struct ObjectEventTemplate objectEventTemplates[OBJECT_EVENT_TEMPLATES_COUNT];
-    /*0x0EE0*/ u8 flags[NUM_FLAG_BYTES];
-    /*0x1000*/ u16 vars[VARS_COUNT];
-    /*0x1200*/ u32 gameStats[NUM_GAME_STATS];
-    /*0x1300*/ struct QuestLogScene questLog[QUEST_LOG_SCENE_COUNT];
-    /*0x2CA0*/ u16 easyChatProfile[EASY_CHAT_BATTLE_WORDS_COUNT];
-    /*0x2CAC*/ u16 easyChatBattleStart[EASY_CHAT_BATTLE_WORDS_COUNT];
-    /*0x2CB8*/ u16 easyChatBattleWon[EASY_CHAT_BATTLE_WORDS_COUNT];
-    /*0x2CC4*/ u16 easyChatBattleLost[EASY_CHAT_BATTLE_WORDS_COUNT];
-    /*0x2CD0*/ struct Mail mail[MAIL_COUNT];
-    /*0x2F10*/ u8 additionalPhrases[NUM_ADDITIONAL_PHRASE_BYTES];
+    /*0x0674*/ u16 trainerRematchStepCounter;
+    /*0x0676*/ u8 ALIGNED(2) trainerRematches[MAX_REMATCH_ENTRIES];
+    /*0x06DC*/ struct ObjectEvent objectEvents[OBJECT_EVENTS_COUNT];
+    /*0x091C*/ struct ObjectEventTemplate objectEventTemplates[OBJECT_EVENT_TEMPLATES_COUNT];
+    /*0x0F1C*/ u8 flags[NUM_FLAG_BYTES];
+    /*0x103C*/ u16 vars[VARS_COUNT];
+    /*0x123C*/ u32 gameStats[NUM_GAME_STATS];
+    /*0x133C*/ struct QuestLogScene questLog[QUEST_LOG_SCENE_COUNT];
+    /*0x2CDC*/ u16 easyChatProfile[EASY_CHAT_BATTLE_WORDS_COUNT];
+    /*0x2CE8*/ u16 easyChatBattleStart[EASY_CHAT_BATTLE_WORDS_COUNT];
+    /*0x2CF4*/ u16 easyChatBattleWon[EASY_CHAT_BATTLE_WORDS_COUNT];
+    /*0x2D00*/ u16 easyChatBattleLost[EASY_CHAT_BATTLE_WORDS_COUNT];
+    /*0x2D0C*/ struct Mail mail[MAIL_COUNT];
+    /*0x2F4C*/ u8 additionalPhrases[NUM_ADDITIONAL_PHRASE_BYTES];
     // Sam Edition: the remaining 60 bytes of TM/HM pocket growth consume the
     // unused OldMan storage, keeping SamEditionSaveData and ramScript fixed.
     /*0x2F54*/ struct DewfordTrend dewfordTrends[5]; // unused
