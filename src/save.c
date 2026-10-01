@@ -82,8 +82,8 @@ STATIC_ASSERT(offsetof(struct SamEditionSaveData, rivalRocketAux) == 0x58, SamEd
 STATIC_ASSERT(offsetof(struct SamEditionSaveData, gymSatoshiPostgameAux) == 0x90, SamEditionGymSatoshiPostgameAuxOffset);
 STATIC_ASSERT(offsetof(struct SamEditionSaveData, futureExpansion) == 0xC0, SamEditionFutureExpansionOffset);
 STATIC_ASSERT(offsetof(struct SaveBlock1, flags) == 0x0EE0, SamEditionFlagsOffset);
-STATIC_ASSERT(offsetof(struct SaveBlock1, vars) == 0x1000, SamEditionVarsOffset);
-STATIC_ASSERT(offsetof(struct SaveBlock1, mysteryGift) == 0x3120, SamEditionMysteryGiftOffset);
+STATIC_ASSERT(offsetof(struct SaveBlock1, vars) == 0x1020, SamEditionVarsOffset);
+STATIC_ASSERT(offsetof(struct SaveBlock1, mysteryGift) == 0x31C0, SamEditionMysteryGiftOffset);
 STATIC_ASSERT(offsetof(struct SaveBlock1, samEdition) == 0x352C, SamEditionSaveBlockOffset);
 STATIC_ASSERT(offsetof(struct SaveBlock1, ramScript) == 0x361C, SamEditionRamScriptOffset);
 STATIC_ASSERT(sizeof(struct SaveBlock1) == 0x3D68, SamEditionSaveBlock1Layout);
