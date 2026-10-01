@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gflib.h"
 #include "data.h"
+#include "event_data.h"
 #include "item.h"
 #include "item_menu.h"
 #include "link.h"
@@ -23,6 +24,7 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
+#include "constants/vars.h"
 
 static void PlayerHandleGetMonData(void);
 static void PlayerHandleSetMonData(void);
@@ -2018,6 +2020,13 @@ static void SetPlayerMonData(u8 monId)
         break;
     case REQUEST_HP_BATTLE:
         SetMonData(&gPlayerParty[monId], MON_DATA_HP, &gBattleBufferA[gActiveBattler][3]);
+        if (VarGet(VAR_SAM_GAME_MODE) == 1
+            && GetMonData(&gPlayerParty[monId], MON_DATA_HP) == 0
+            && !GetMonData(&gPlayerParty[monId], MON_DATA_SAM_ORIGINAL_STARTER))
+        {
+            bool8 isPermanentDead = TRUE;
+            SetMonData(&gPlayerParty[monId], MON_DATA_SAM_PERMANENT_DEAD, &isPermanentDead);
+        }
         break;
     case REQUEST_MAX_HP_BATTLE:
         SetMonData(&gPlayerParty[monId], MON_DATA_MAX_HP, &gBattleBufferA[gActiveBattler][3]);
