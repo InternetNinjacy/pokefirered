@@ -5,6 +5,7 @@
 #include "load_save.h"
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
+#include "pokemon_storage_system_internal.h"
 #include "save.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
