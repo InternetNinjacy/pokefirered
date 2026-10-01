@@ -1,0 +1,139 @@
+name: START-001-004 Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/start-001-004-runtime
+  workflow_dispatch:
+
+jobs:
+  starter-runtime-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/start-001-004-runtime
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          sudo apt update
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Static Starter System assertions
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path(".")
+          items = json.loads((root / "src/data/items.json").read_text())
+          by_id = {x.get("itemId"): x for x in items if isinstance(x, dict)}
+          brick = by_id["ITEM_BRICK"]
+          gene = by_id["ITEM_ADAPTIVE_GENE"]
+          assert brick["price"] == 2100
+          assert brick["fieldUseFunc"] == "FieldUseFunc_EvoItem"
+          assert brick["battleUsage"] == 0
+          assert brick["description_english"].replace("\\n", " ") == "A peculiar, heavy brick. It makes EEVEE evolve."
+          assert gene["price"] == 0
+          assert gene["pocket"] == "POCKET_ITEMS"
+          assert gene["battleUsage"] == 0
+          assert gene["description_english"].replace("\\n", " ") == "A strange gene that boosts the power of DITTO's moves."
+
+          evo = (root / "src/data/pokemon/evolution.h").read_text()
+          for token in [
+              "ITEM_WATER_STONE, SPECIES_VAPOREON",
+              "ITEM_THUNDER_STONE, SPECIES_JOLTEON",
+              "ITEM_FIRE_STONE, SPECIES_FLAREON",
+              "ITEM_SUN_STONE, SPECIES_ESPEON",
+              "ITEM_MOON_STONE, SPECIES_UMBREON",
+              "ITEM_LEAF_STONE, SPECIES_LEAFEON",
+              "ITEM_BRICK, SPECIES_ECTOCEON",
+          ]:
+              assert token in evo
+
+          oak = (root / "data/maps/PalletTown_ProfessorOaksLab/scripts.inc").read_text()
+          assert "setvar PLAYER_STARTER_SPECIES, SPECIES_EEVEE" in oak
+          assert "setvar PLAYER_STARTER_SPECIES, SPECIES_PICHU" in oak
+          assert "setvar PLAYER_STARTER_SPECIES, SPECIES_DITTO" in oak
+          assert "special GiveSamStarter" in oak
+          assert "goto_if_ne VAR_STARTER_MON, 0, PalletTown_ProfessorOaksLab_EventScript_RivalPicksStarter" in oak
+
+          for mapname in ["ViridianCity_Mart", "PewterCity_Mart"]:
+              src = (root / f"data/maps/{mapname}/scripts.inc").read_text()
+              for item in ["ITEM_FIRE_STONE","ITEM_THUNDER_STONE","ITEM_WATER_STONE","ITEM_LEAF_STONE","ITEM_SUN_STONE","ITEM_MOON_STONE","ITEM_BRICK"]:
+                  assert item in src
+          celadon = (root / "data/maps/CeladonCity_DepartmentStore_4F/scripts.inc").read_text()
+          for item in ["ITEM_FIRE_STONE","ITEM_THUNDER_STONE","ITEM_WATER_STONE","ITEM_LEAF_STONE","ITEM_SUN_STONE","ITEM_MOON_STONE","ITEM_BRICK"]:
+              assert item in celadon
+
+          map_gene_refs = []
+          for p in (root / "data/maps").rglob("*.inc"):
+              if "ITEM_ADAPTIVE_GENE" in p.read_text(errors="ignore"):
+                  map_gene_refs.append(str(p))
+          assert map_gene_refs == [], map_gene_refs
+
+          battle = (root / "src/battle_script_commands.c").read_text()
+          assert "gBattleMoveDamage = ApplyAdaptiveGeneDamageModifier(gBattleMoveDamage, gBattlerAttacker);" in battle
+          assert "GetMonData(&party[partyIndex], MON_DATA_SPECIES, NULL) == SPECIES_DITTO" in battle
+
+          print("STARTQA STATIC PASS items shops mappings evolution tutorial gates unique-source hook")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make COMPARE=0
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee START001004_ROM_SHA1.txt
+          git rev-parse HEAD | tee START001004_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > start001004_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat start001004_phase1.log
+          grep -q "STARTQA PHASE1 PASS starter mapping evolution gene state saved" start001004_phase1.log
+          test -f pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > start001004_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat start001004_phase2.log
+          grep -q "STARTQA PASS runtime starter mapping evolution gene rounding save reload" start001004_phase2.log
+
+      - name: Reject QA failure markers
+        run: |
+          set -euxo pipefail
+          ! grep -h "STARTQA FAIL" start001004_phase*.log
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: start-001-004-runtime-qa
+          path: |
+            pokefirered.gba
+            pokefirered.sav
+            START001004_ROM_SHA1.txt
+            START001004_SOURCE_SHA.txt
+            start001004_phase1.log
+            start001004_phase2.log
+          if-no-files-found: error
