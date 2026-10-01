@@ -169,6 +169,69 @@ jobs:
           print("STARTQA STATIC PASS items shops mappings evolutions species TMs tutorials consumption transfer unique-source damage-hook")
           PY
 
+      - name: Starter regression source assertions
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          root = Path(".")
+          item_effects = (root / "src/data/pokemon/item_effects.h").read_text()
+          for name in ["FireStone", "ThunderStone", "WaterStone", "LeafStone", "Brick"]:
+              assert f"sItemEffect_{name}" in item_effects
+
+          battle = (root / "src/battle_script_commands.c").read_text()
+          assert battle.count("ApplyAdaptiveGeneDamageModifier(gBattleMoveDamage, gBattlerAttacker)") == 1
+          transform_start = battle.rindex("static void Cmd_transformdataexecution(void)\n{")
+          transform_end = battle.index("static void Cmd_setsubstitute(void)", transform_start)
+          assert "AdaptiveGene" not in battle[transform_start:transform_end]
+          for start_token, end_token in [
+              ("static void Cmd_dmgtolevel(void)\n{", "static void Cmd_psywavedamageeffect(void)"),
+              ("static void Cmd_psywavedamageeffect(void)\n{", "static void Cmd_counterdamagecalculator(void)"),
+              ("static void Cmd_tryKO(void)\n{", "static void Cmd_damagetohalftargethp(void)"),
+              ("static void Cmd_weatherdamage(void)\n{", "static void Cmd_tryinfatuating(void)"),
+          ]:
+              start = battle.rindex(start_token)
+              end = battle.index(end_token, start + len(start_token))
+              assert "ApplyAdaptiveGeneDamageModifier" not in battle[start:end]
+
+          bs = (root / "data/battle_scripts_1.s").read_text()
+          conf = bs[bs.index("BattleScript_DoSelfConfusionDmg::"):bs.index("BattleScript_MoveUsedIsConfusedRet::")]
+          assert "damagecalc" not in conf
+          assert "adjustnormaldamage2" in conf
+          assert "HITMARKER_PASSIVE_DAMAGE" in conf
+
+          stone_tokens = ["ITEM_FIRE_STONE","ITEM_THUNDER_STONE","ITEM_WATER_STONE","ITEM_LEAF_STONE","ITEM_SUN_STONE","ITEM_MOON_STONE"]
+          stone_shops = []
+          for p in (root / "data/maps").rglob("scripts.inc"):
+              txt = p.read_text(errors="ignore")
+              if "pokemart" in txt and any(t in txt for t in stone_tokens):
+                  stone_shops.append(str(p))
+                  assert "ITEM_BRICK" in txt, p
+          assert stone_shops
+
+          map_gene_refs = [str(p) for p in (root / "data/maps").rglob("*.inc") if "ITEM_ADAPTIVE_GENE" in p.read_text(errors="ignore")]
+          assert map_gene_refs == [], map_gene_refs
+
+          party = (root / "src/party_menu.c").read_text()
+          gate = party.index("noEffect = PokemonItemUseNoEffect")
+          remove = party.index("RemoveBagItem(gSpecialVar_ItemId, 1);", gate)
+          assert "if (noEffect)" in party[gate:remove]
+          assert "Task_DoUseItemAnim(taskId);" in party[gate:remove]
+
+          constants = (root / "include/constants/pokemon.h").read_text()
+          assert "#define EVOS_PER_MON 7" in constants
+          species = (root / "include/constants/species.h").read_text()
+          for token in ["SPECIES_LEAFEON", "SPECIES_ECTOCEON", "SPECIES_RHYPERIOR"]:
+              assert token in species
+
+          util = (root / "src/script_pokemon_util.c").read_text()
+          assert "u8 ScriptGiveMon(" in util
+          assert "u8 ScriptGiveSamStarter(" in util
+
+          print("STARTQA REGRESSION PASS stones shops gene exclusions confusion transform gift path indexing consumption")
+          PY
+
       - name: Build QA ROM
         run: |
           set -euxo pipefail
