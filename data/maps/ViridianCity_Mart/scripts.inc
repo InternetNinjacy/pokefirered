@@ -55,7 +55,9 @@ ViridianCity_Mart_EventScript_Clerk::
 	goto_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 1, ViridianCity_Mart_EventScript_SayHiToOak
 	goto_if_questlog EventScript_ReleaseEnd
 	goto_if_ne VAR_STARTER_MON, 0, ViridianCity_Mart_EventScript_OpenShop
+	goto_if_ne VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 2, ViridianCity_Mart_EventScript_OpenShop
 	msgbox ViridianCity_Mart_Text_EeveeEvolutionTutorial
+	setvar VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 3
 ViridianCity_Mart_EventScript_OpenShop::
 	message Text_MayIHelpYou
 	waitmessage
