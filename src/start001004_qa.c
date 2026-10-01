@@ -17,6 +17,8 @@
 #define START_QA_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)
 
 extern u32 ApplyAdaptiveGeneDamageModifier(u32 damage, u8 battler);
+extern void SetBoxMonAt(u8 boxId, u8 boxPosition, struct BoxPokemon *src);
+extern void BoxMonAtToMon(u8 boxId, u8 boxPosition, struct Pokemon *dst);
 
 static void QaLog(const char *text)
 {
@@ -130,9 +132,12 @@ static void CheckAdaptiveGene(void)
     SetMonData(&gPlayerParty[0], MON_DATA_HELD_ITEM, &item);
 
     gBattlerPartyIndexes[0] = 0;
-    gBattleMons[0].species = transformedSpecies;
+    gBattleMons[0].species = SPECIES_DITTO;
     gBattleMons[0].item = ITEM_ADAPTIVE_GENE;
+    if (ApplyAdaptiveGeneDamageModifier(100, 0) != 120)
+        Fail("STARTQA FAIL Adaptive Gene pre-Transform");
 
+    gBattleMons[0].species = transformedSpecies;
     if (ApplyAdaptiveGeneDamageModifier(5, 0) != 6
      || ApplyAdaptiveGeneDamageModifier(9, 0) != 10
      || ApplyAdaptiveGeneDamageModifier(10, 0) != 12
@@ -154,6 +159,20 @@ static void CheckAdaptiveGene(void)
     SetMonData(&gPlayerParty[1], MON_DATA_HELD_ITEM, &item);
     if (GetMonData(&gPlayerParty[1], MON_DATA_HELD_ITEM) != ITEM_ADAPTIVE_GENE)
         Fail("STARTQA FAIL Adaptive Gene transfer");
+
+    SetBoxMonAt(0, 0, &gPlayerParty[1].box);
+    ZeroMonData(&gPlayerParty[1]);
+    BoxMonAtToMon(0, 0, &gPlayerParty[1]);
+    if (GetMonData(&gPlayerParty[1], MON_DATA_HELD_ITEM) != ITEM_ADAPTIVE_GENE)
+        Fail("STARTQA FAIL Adaptive Gene PC storage");
+
+    gBattlerPartyIndexes[0] = 0;
+    gBattleMons[0].species = SPECIES_PIKACHU;
+    gBattleMons[0].item = ITEM_ADAPTIVE_GENE;
+    item = ITEM_ADAPTIVE_GENE;
+    SetMonData(&gPlayerParty[0], MON_DATA_HELD_ITEM, &item);
+    if (ApplyAdaptiveGeneDamageModifier(100, 0) != 120)
+        Fail("STARTQA FAIL Adaptive Gene transform chain");
 
     gBattlerPartyIndexes[0] = 1;
     gBattleMons[0].species = SPECIES_DITTO;
@@ -178,6 +197,16 @@ static void RunFresh(void)
     ResetParty();
     if (ScriptGiveSamStarter(SPECIES_DITTO) != MON_GIVEN_TO_PARTY)
         Fail("STARTQA FAIL persistence grant");
+    {
+        u16 hp = 0;
+        SetMonData(&gPlayerParty[0], MON_DATA_HP, &hp);
+    }
+    CreateMon(&gPlayerParty[1], SPECIES_PICHU, 15, 20, FALSE, 0, OT_ID_PLAYER_ID, 0);
+    {
+        u16 evolved = SPECIES_PIKACHU;
+        SetMonData(&gPlayerParty[1], MON_DATA_SPECIES, &evolved);
+    }
+    gPlayerPartyCount = 2;
     VarSet(VAR_STARTER_MON, 2);
     if (TrySavingData(SAVE_NORMAL) != SAVE_STATUS_OK)
         Fail("STARTQA FAIL save");
@@ -190,10 +219,13 @@ static void RunReload(void)
 {
     if (VarGet(VAR_STARTER_MON) != 2)
         Fail("STARTQA FAIL starter state reload");
-    if (gPlayerPartyCount != 1
+    if (gPlayerPartyCount != 2
      || GetMonData(&gPlayerParty[0], MON_DATA_SPECIES) != SPECIES_DITTO
+     || GetMonData(&gPlayerParty[0], MON_DATA_HP) != 0
      || GetMonData(&gPlayerParty[0], MON_DATA_HELD_ITEM) != ITEM_ADAPTIVE_GENE)
-        Fail("STARTQA FAIL starter/item reload");
+        Fail("STARTQA FAIL fainted starter/item reload");
+    if (GetMonData(&gPlayerParty[1], MON_DATA_SPECIES) != SPECIES_PIKACHU)
+        Fail("STARTQA FAIL evolved species reload");
 
     QaLog("STARTQA PASS runtime starter mapping evolution gene rounding save reload");
     for (;;);
