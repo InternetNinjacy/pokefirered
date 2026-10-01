@@ -1,0 +1,49 @@
+name: CORE-001 Mode Integration Build
+
+on:
+  push:
+    branches:
+      - sam/core-001-mode-selection-integration
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout CORE-001 branch
+        uses: actions/checkout@v4
+        with:
+          ref: sam/core-001-mode-selection-integration
+
+      - name: Install documented prerequisites
+        run: |
+          set -euxo pipefail
+          sudo apt update
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Build CORE-001 ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          git rev-parse HEAD | tee CORE001_SOURCE_SHA.txt
+          sha1sum pokefirered.gba | tee CORE001_ROM_SHA1.txt
+
+      - name: Upload build evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-001-build
+          path: |
+            pokefirered.gba
+            CORE001_SOURCE_SHA.txt
+            CORE001_ROM_SHA1.txt
+          if-no-files-found: error
