@@ -4102,6 +4102,11 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
         itemEffect = gItemEffectTable[item - ITEM_POTION];
     }
 
+    if (VarGet(VAR_SAM_GAME_MODE) == 1
+        && GetMonData(mon, MON_DATA_SAM_PERMANENT_DEAD)
+        && (itemEffect[4] & ITEM4_REVIVE))
+        return TRUE;
+
     // Do item effect
     for (cmdIndex = 0; cmdIndex < ITEM_EFFECT_ARG_START; cmdIndex++)
     {
@@ -4629,6 +4634,11 @@ bool8 PokemonItemUseNoEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mo
     {
         itemEffect = gItemEffectTable[item - ITEM_POTION];
     }
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1
+        && GetMonData(mon, MON_DATA_SAM_PERMANENT_DEAD)
+        && (itemEffect[4] & ITEM4_REVIVE))
+        return TRUE;
 
     for (cmdIndex = 0; cmdIndex < ITEM_EFFECT_ARG_START; cmdIndex++)
     {
