@@ -104,6 +104,27 @@ void GetSamGreenStarterSpecies(void)
     gSpecialVar_Result = GetSamRivalStarterSpecies(TRUE);
 }
 
+static u16 GetSamRivalStarterEndpointSpecies(bool8 green)
+{
+    u16 starter = GetSamRivalStarterSpecies(green);
+
+    if (starter == SPECIES_EEVEE)
+        return green ? SPECIES_ESPEON : SPECIES_FLAREON;
+    if (starter == SPECIES_PICHU)
+        return SPECIES_RAICHU;
+    return starter;
+}
+
+void GetSamBlueStarterEndpointSpecies(void)
+{
+    gSpecialVar_Result = GetSamRivalStarterEndpointSpecies(FALSE);
+}
+
+void GetSamGreenStarterEndpointSpecies(void)
+{
+    gSpecialVar_Result = GetSamRivalStarterEndpointSpecies(TRUE);
+}
+
 u8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 unused1, u32 unused2, u8 unused3)
 {
     u16 nationalDexNum;
