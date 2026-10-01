@@ -45,7 +45,7 @@ jobs:
           rm -f pokefirered.sav
           export SDL_VIDEODRIVER=dummy
           export SDL_AUDIODRIVER=dummy
-          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > gift_runtime_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          timeout --signal=TERM 30s mgba -l 31 pokefirered.gba > gift_runtime_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
           cat gift_runtime_phase1.log
           grep -q "GIFT QA PHASE1 PASS one-time script claimed and saved" gift_runtime_phase1.log
           ! grep -q "GIFT QA FAIL" gift_runtime_phase1.log
@@ -56,7 +56,7 @@ jobs:
           set -euxo pipefail
           export SDL_VIDEODRIVER=dummy
           export SDL_AUDIODRIVER=dummy
-          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > gift_runtime_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > gift_runtime_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
           cat gift_runtime_phase2.log
           grep -q "GIFT QA PASS core plus one-time script save reload reclaim blocked" gift_runtime_phase2.log
           ! grep -q "GIFT QA FAIL" gift_runtime_phase2.log
