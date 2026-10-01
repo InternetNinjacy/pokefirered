@@ -1,6 +1,7 @@
 #include "global.h"
 #include "event_data.h"
 #include "gba/isagbprint.h"
+#include "load_save.h"
 #include "pokemon.h"
 #include "script_pokemon_util.h"
 #include "constants/items.h"
