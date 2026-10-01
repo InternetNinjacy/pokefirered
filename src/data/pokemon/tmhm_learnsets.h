@@ -7129,9 +7129,24 @@ static const u32 sTMHMLearnsets[][3] =
     [SPECIES_LEAFEON]      = TMHM_LEARNSET(0,
                                          0,
                                          0),
-    [SPECIES_ECTOCEON]     = TMHM_LEARNSET(0,
-                                         0,
-                                         0),
+    [SPECIES_ECTOCEON] = TMHM_LEARNSET(TMHM0(TM01_BODY_SLAM)
+                                         | TMHM0(TM02_RETURN)
+                                         | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
+                                         | TMHM0(TM05_PROTECT)
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM15_POISON_FANG)
+                                         | TMHM0(TM16_SLUDGE_BOMB)
+                                         | TMHM0(TM18_DIG)
+                                         | TMHM0(TM20_MUD_SLAP)
+                                         | TMHM0(TM28_SHADOW_PUNCH)
+                                         | TMHM0(TM29_SHADOW_BALL)
+                                         | TMHM0(TM30_GHOSTLY_WAIL),
+                                         TMHM1(TM64_THIEF),
+                                         TMHM2(TM65_CRUNCH)
+                                         | TMHM2(TM67_TAUNT)
+                                         | TMHM2(TM68_HIDDEN_POWER)
+                                         | TMHM2(HM02_FLY)),
     [SPECIES_RHYPERIOR]    = TMHM_LEARNSET(0,
                                          0,
                                          0),
