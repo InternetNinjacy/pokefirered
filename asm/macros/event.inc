@@ -984,8 +984,8 @@
 	.byte \textTop
 	.endm
 
-	@ Gives the player a Pokémon of the specified species and level, holding the specified item. The trailing 0s are unused parameters.
-	@ VAR_RESULT will be set to MON_GIVEN_TO_PARTY, MON_GIVEN_TO_PC, or MON_CANT_GIVE depending on the outcome. 
+	@ Gives the player a player-owned Pokémon of the specified species and level, holding the specified item.
+	@ VAR_RESULT will be set to MON_GIVEN_TO_PARTY, MON_GIVEN_TO_PC, or MON_CANT_GIVE depending on the outcome.
 	.macro givemon species:req, level:req, item=ITEM_NONE
 	.byte 0x79
 	.2byte \species
@@ -994,6 +994,31 @@
 	.4byte 0
 	.4byte 0
 	.byte 0
+	.endm
+
+	@ Gives the player a pre-owned Pokémon while preserving the authored non-player OT.
+	@ This is the shared Sam Edition special-acquisition path for rewards that use
+	@ native traded-Pokémon EXP and obedience behavior.
+	@ Scripts must only set their one-time completion flag after VAR_RESULT is
+	@ MON_GIVEN_TO_PARTY or MON_GIVEN_TO_PC; MON_CANT_GIVE leaves the reward unclaimed.
+	.macro givepreownedmon species:req, level:req, otName:req, otId:req, otGender:req, item=ITEM_NONE
+	.byte 0x79
+	.2byte \species
+	.byte \level
+	.2byte \item
+	.4byte \otName
+	.4byte \otId
+	.byte \otGender
+	.endm
+
+	@ Safe one-time wrapper for a pre-owned Pokémon reward. It guards an
+	@ already-claimed reward, commits the claim flag only after party/PC delivery
+	@ succeeds, and leaves the reward unclaimed if both party and storage are full.
+	.macro givepreownedmononce species:req, level:req, otName:req, otId:req, otGender:req, claimedFlag:req, claimedScript:req, noRoomScript:req, item=ITEM_NONE
+	goto_if_set \claimedFlag, \claimedScript
+	givepreownedmon \species, \level, \otName, \otId, \otGender, \item
+	goto_if_eq VAR_RESULT, 2, \noRoomScript
+	setflag \claimedFlag
 	.endm
 
 	@ Gives the player an Egg of the specified species.
