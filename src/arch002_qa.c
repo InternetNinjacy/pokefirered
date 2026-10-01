@@ -9,6 +9,22 @@
 #define ARCH002_STAGE_A 0xA1
 #define ARCH002_STAGE_B 0xB2
 
+#define ARCH002_MGBA_DEBUG_FLAGS  ((vu16 *)0x4FFF700)
+#define ARCH002_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)
+
+static void Arch002_Log(const char *text)
+{
+    u32 i = 0;
+    while (text[i] != '\0' && i < 255)
+    {
+        ARCH002_MGBA_DEBUG_STRING[i] = text[i];
+        i++;
+    }
+    ARCH002_MGBA_DEBUG_STRING[i] = '\0';
+    *ARCH002_MGBA_DEBUG_FLAGS = MGBA_LOG_INFO | 0x100;
+}
+
+
 static bool8 BytesAreZero(const u8 *data, u32 size)
 {
     u32 i;
@@ -156,14 +172,14 @@ void Arch002_RunRuntimeQa(void)
 
     if (loadStatus != SAVE_STATUS_OK)
     {
-        MgbaPrintf(MGBA_LOG_INFO, "ARCH002 PHASE1 fresh save start");
+        Arch002_Log("ARCH002 PHASE1 fresh save start");
         ClearSav2();
         ClearSav1();
 
         samBytes = (u8 *)&gSaveBlock1Ptr->samEdition;
         if (!BytesAreZero(samBytes, sizeof(struct SamEditionSaveData)))
         {
-            MgbaPrintf(MGBA_LOG_FATAL, "ARCH002 FAIL fresh SamEditionSaveData not zero");
+            Arch002_Log("ARCH002 FAIL fresh SamEditionSaveData not zero");
             for (;;);
         }
 
@@ -180,7 +196,7 @@ void Arch002_RunRuntimeQa(void)
         if (gSaveBlock1Ptr->samEdition.greenName[0] != 'G'
          || gSaveBlock1Ptr->vars[VAR_SAM_GAME_MODE - VARS_START] != 1)
         {
-            MgbaPrintf(MGBA_LOG_FATAL, "ARCH002 FAIL NewGameInitData preservation");
+            Arch002_Log("ARCH002 FAIL NewGameInitData preservation");
             for (;;);
         }
 
@@ -188,20 +204,20 @@ void Arch002_RunRuntimeQa(void)
         saveStatus = TrySavingData(SAVE_NORMAL);
         if (saveStatus != SAVE_STATUS_OK)
         {
-            MgbaPrintf(MGBA_LOG_FATAL, "ARCH002 FAIL phase1 save");
+            Arch002_Log("ARCH002 FAIL phase1 save");
             for (;;);
         }
 
-        MgbaPrintf(MGBA_LOG_INFO, "ARCH002 PHASE1 PASS state A saved");
+        Arch002_Log("ARCH002 PHASE1 PASS state A saved");
         for (;;);
     }
 
     if (gSaveBlock1Ptr->samEdition.futureExpansion[0] == ARCH002_STAGE_A)
     {
-        MgbaPrintf(MGBA_LOG_INFO, "ARCH002 PHASE2 loaded state A");
+        Arch002_Log("ARCH002 PHASE2 loaded state A");
         if (!CheckStateA())
         {
-            MgbaPrintf(MGBA_LOG_FATAL, "ARCH002 FAIL state A persistence");
+            Arch002_Log("ARCH002 FAIL state A persistence");
             for (;;);
         }
 
@@ -209,20 +225,20 @@ void Arch002_RunRuntimeQa(void)
         saveStatus = TrySavingData(SAVE_NORMAL);
         if (saveStatus != SAVE_STATUS_OK)
         {
-            MgbaPrintf(MGBA_LOG_FATAL, "ARCH002 FAIL phase2 save");
+            Arch002_Log("ARCH002 FAIL phase2 save");
             for (;;);
         }
 
-        MgbaPrintf(MGBA_LOG_INFO, "ARCH002 PHASE2 PASS state B saved");
+        Arch002_Log("ARCH002 PHASE2 PASS state B saved");
         for (;;);
     }
 
     if (gSaveBlock1Ptr->samEdition.futureExpansion[0] == ARCH002_STAGE_B)
     {
-        MgbaPrintf(MGBA_LOG_INFO, "ARCH002 PHASE3 loaded state B");
+        Arch002_Log("ARCH002 PHASE3 loaded state B");
         if (!CheckStateB())
         {
-            MgbaPrintf(MGBA_LOG_FATAL, "ARCH002 FAIL state B persistence");
+            Arch002_Log("ARCH002 FAIL state B persistence");
             for (;;);
         }
 
@@ -233,26 +249,26 @@ void Arch002_RunRuntimeQa(void)
         samBytes = (u8 *)&gSaveBlock1Ptr->samEdition;
         if (!BytesAreZero(samBytes, sizeof(struct SamEditionSaveData)))
         {
-            MgbaPrintf(MGBA_LOG_FATAL, "ARCH002 FAIL fresh regression clear");
+            Arch002_Log("ARCH002 FAIL fresh regression clear");
             for (;;);
         }
 
         NewGameInitData();
         if (!BytesAreZero((u8 *)&gSaveBlock1Ptr->samEdition, sizeof(struct SamEditionSaveData)))
         {
-            MgbaPrintf(MGBA_LOG_FATAL, "ARCH002 FAIL fresh regression NewGameInitData");
+            Arch002_Log("ARCH002 FAIL fresh regression NewGameInitData");
             for (;;);
         }
         if (gSaveBlock1Ptr->vars[VAR_SAM_GAME_MODE - VARS_START] != 0)
         {
-            MgbaPrintf(MGBA_LOG_FATAL, "ARCH002 FAIL fresh regression game mode");
+            Arch002_Log("ARCH002 FAIL fresh regression game mode");
             for (;;);
         }
 
-        MgbaPrintf(MGBA_LOG_INFO, "ARCH002 PASS runtime save load repeated-cycle fresh-regression");
+        Arch002_Log("ARCH002 PASS runtime save load repeated-cycle fresh-regression");
         for (;;);
     }
 
-    MgbaPrintf(MGBA_LOG_FATAL, "ARCH002 FAIL unknown persisted stage");
+    Arch002_Log("ARCH002 FAIL unknown persisted stage");
     for (;;);
 }
