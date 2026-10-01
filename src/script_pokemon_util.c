@@ -125,18 +125,33 @@ void GetSamGreenStarterEndpointSpecies(void)
     gSpecialVar_Result = GetSamRivalStarterEndpointSpecies(TRUE);
 }
 
-u8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 unused1, u32 unused2, u8 unused3)
+u8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 otName, u32 otId, u8 otGender)
 {
     u16 nationalDexNum;
     int sentToPc;
     u8 heldItem[2];
     struct Pokemon *mon = AllocZeroed(sizeof(struct Pokemon));
 
-    CreateMon(mon, species, level, 32, 0, 0, OT_ID_PLAYER_ID, 0);
+    if (otName != 0)
+    {
+        CreateMon(mon, species, level, 32, 0, 0, OT_ID_PRESET, otId);
+        SetMonData(mon, MON_DATA_OT_NAME, (const u8 *)otName);
+        SetMonData(mon, MON_DATA_OT_GENDER, &otGender);
+    }
+    else
+    {
+        CreateMon(mon, species, level, 32, 0, 0, OT_ID_PLAYER_ID, 0);
+    }
+
     heldItem[0] = item;
     heldItem[1] = item >> 8;
     SetMonData(mon, MON_DATA_HELD_ITEM, heldItem);
-    sentToPc = GiveMonToPlayer(mon);
+
+    if (otName != 0)
+        sentToPc = GivePreOwnedMonToPlayer(mon);
+    else
+        sentToPc = GiveMonToPlayer(mon);
+
     nationalDexNum = SpeciesToNationalPokedexNum(species);
 
     switch(sentToPc)
