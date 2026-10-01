@@ -15,6 +15,8 @@
 #define MATRIX_QA_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)
 
 extern void MarkSamOriginalStarter(void);
+extern void SetBoxMonAt(u8 boxId, u8 boxPosition, struct BoxPokemon *src);
+extern void BoxMonAtToMon(u8 boxId, u8 boxPosition, struct Pokemon *dst);
 
 static void Log(const char *text)
 {
@@ -105,6 +107,30 @@ static void CheckMatrix(void)
     }
 }
 
+static void CheckStarterMarkerEvolutionAndStorage(void)
+{
+    u16 species = SPECIES_PIKACHU;
+
+    ResetParty();
+    VarSet(VAR_SAM_GAME_MODE, 1);
+    VarSet(VAR_STARTER_MON, 1);
+    if (ScriptGiveSamStarter(SPECIES_PICHU) != MON_GIVEN_TO_PARTY)
+        Fail("STARTCORE FAIL marker setup grant");
+    MarkSamOriginalStarter();
+
+    SetMonData(&gPlayerParty[0], MON_DATA_SPECIES, &species);
+    if (!GetMonData(&gPlayerParty[0], MON_DATA_SAM_ORIGINAL_STARTER))
+        Fail("STARTCORE FAIL evolution marker");
+
+    SetBoxMonAt(0, 0, &gPlayerParty[0].box);
+    ZeroMonData(&gPlayerParty[0]);
+    BoxMonAtToMon(0, 0, &gPlayerParty[0]);
+
+    if (GetMonData(&gPlayerParty[0], MON_DATA_SPECIES) != SPECIES_PIKACHU
+     || !GetMonData(&gPlayerParty[0], MON_DATA_SAM_ORIGINAL_STARTER))
+        Fail("STARTCORE FAIL PC marker persistence");
+}
+
 static void RunFresh(void)
 {
     ClearSav2();
@@ -112,6 +138,7 @@ static void RunFresh(void)
     CpuFill16(0, gPokemonStoragePtr, sizeof(*gPokemonStoragePtr));
 
     CheckMatrix();
+    CheckStarterMarkerEvolutionAndStorage();
 
     ResetParty();
     VarSet(VAR_SAM_GAME_MODE, 1);
