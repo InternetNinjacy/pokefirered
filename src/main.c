@@ -148,7 +148,6 @@ void AgbMain()
     EnableVCountIntrAtLine150();
     InitRFU();
     CheckForFlashMemory();
-    Arch002_RunRuntimeQa();
     InitMainCallbacks();
     InitMapMusic();
     ClearDma3Requests();
@@ -169,6 +168,8 @@ void AgbMain()
     AGBPrintInit();
 #endif
 #endif
+
+    Arch002_RunRuntimeQa();
 
 #if REVISION >= 1
     if (gFlashMemoryPresent != TRUE)
