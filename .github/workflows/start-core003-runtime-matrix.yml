@@ -63,8 +63,18 @@ jobs:
 
           battle = Path("src/battle_script_commands.c").read_text()
           assert battle.count("ApplyAdaptiveGeneDamageModifier(gBattleMoveDamage, gBattlerAttacker)") == 1
+          for start_token, end_token in [
+              ("static void Cmd_dmgtolevel(void)\n{", "static void Cmd_psywavedamageeffect(void)"),
+              ("static void Cmd_psywavedamageeffect(void)\n{", "static void Cmd_counterdamagecalculator(void)"),
+              ("static void Cmd_tryKO(void)\n{", "static void Cmd_damagetohalftargethp(void)"),
+              ("static void Cmd_weatherdamage(void)\n{", "static void Cmd_tryinfatuating(void)"),
+          ]:
+              start = battle.rindex(start_token)
+              end = battle.index(end_token, start + len(start_token))
+              block = battle[start:end]
+              assert "ApplyAdaptiveGeneDamageModifier" not in block
 
-          print("STARTCORE STATIC PASS all stone shops Brick; no Gene map source; success-only evo consumption gate; narrow Gene hook")
+          print("STARTCORE STATIC PASS all stone shops Brick; no Gene map source; success-only evo consumption gate; fixed/OHKO/passive exclusions; narrow Gene hook")
           PY
 
       - name: Build QA ROM
