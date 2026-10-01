@@ -1,0 +1,40 @@
+name: START CORE-003 Integration QA
+on:
+  push:
+    branches:
+      - qa/start-core003-integration
+  workflow_dispatch:
+jobs:
+  build-integration:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/start-core003-integration
+      - run: |
+          sudo apt update
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev
+      - run: |
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+      - name: Static integration assertions
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          oak=Path("data/maps/PalletTown_ProfessorOaksLab/scripts.inc").read_text()
+          assert "special GiveSamStarter\n\tspecial MarkSamOriginalStarter" in oak
+          util=Path("src/script_pokemon_util.c").read_text()
+          assert "MON_DATA_SAM_ORIGINAL_STARTER" in util
+          poke=Path("src/pokemon.c").read_text()
+          assert "MON_DATA_SAM_PERMANENT_DEAD" in poke
+          assert "MON_DATA_SAM_ORIGINAL_STARTER" in poke
+          print("STARTCORE STATIC PASS START grant + CORE exact-individual marker coexist")
+          PY
+      - name: Build combined source
+        run: |
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba
