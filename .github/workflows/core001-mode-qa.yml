@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-ui:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout CORE-001 branch
@@ -15,11 +15,16 @@ jobs:
         with:
           ref: sam/core-001-mode-selection-integration
 
-      - name: Install documented prerequisites
+      - name: Install build and emulator dependencies
         run: |
           set -euxo pipefail
           sudo apt update
-          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl xvfb xdotool
+
+      - name: Enable compile-time QA trace
+        run: |
+          set -euxo pipefail
+          sed -i '1i#define CORE001_QA' src/oak_speech.c
 
       - name: Build and install agbcc
         run: |
@@ -30,7 +35,7 @@ jobs:
           ./build.sh
           ./install.sh ../pokefirered
 
-      - name: Build CORE-001 ROM
+      - name: Build CORE-001 QA ROM
         run: |
           set -euxo pipefail
           make
@@ -38,12 +43,39 @@ jobs:
           git rev-parse HEAD | tee CORE001_SOURCE_SHA.txt
           sha1sum pokefirered.gba | tee CORE001_ROM_SHA1.txt
 
-      - name: Upload build evidence
+      - name: Exercise actual mode-selection input path
+        run: |
+          set -euxo pipefail
+          export DISPLAY=:99
+          export SDL_AUDIODRIVER=dummy
+          Xvfb :99 -screen 0 1024x768x24 > xvfb.log 2>&1 &
+          XVFB_PID=$!
+          sleep 2
+          mgba -l 31 pokefirered.gba > core001_ui.log 2>&1 &
+          MGBA_PID=$!
+          trap 'kill $MGBA_PID $XVFB_PID 2>/dev/null || true' EXIT
+
+          sleep 8
+          xdotool search --name "mGBA" windowactivate --sync key x
+          sleep 3
+          xdotool search --name "mGBA" windowactivate --sync key x
+          sleep 3
+          xdotool search --name "mGBA" windowactivate --sync key Down
+          sleep 1
+          xdotool search --name "mGBA" windowactivate --sync key x
+          sleep 4
+
+          cat core001_ui.log
+          grep -q "CORE001 MODE SELECT SHOWN" core001_ui.log
+          grep -q "CORE001 MODE SELECTED PERMANENT" core001_ui.log
+
+      - name: Upload QA evidence
         uses: actions/upload-artifact@v4
         with:
-          name: core-001-build
+          name: core-001-mode-qa
           path: |
             pokefirered.gba
             CORE001_SOURCE_SHA.txt
             CORE001_ROM_SHA1.txt
+            core001_ui.log
           if-no-files-found: error
