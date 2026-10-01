@@ -179,14 +179,14 @@ Route24_EventScript_EthanRematch::
 	end
 
 Route25_EventScript_Joey::
-	trainerbattle_single TRAINER_YOUNGSTER_JOEY, Route25_Text_JoeyIntro, Route25_Text_JoeyDefeat
+	trainerbattle_single TRAINER_YOUNGSTER_JOEY_VANILLA, Route25_Text_JoeyIntro, Route25_Text_JoeyDefeat
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_JoeyRematch
 	msgbox Route25_Text_JoeyPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route25_EventScript_JoeyRematch::
-	trainerbattle_rematch TRAINER_YOUNGSTER_JOEY, Route25_Text_JoeyRematchIntro, Route25_Text_JoeyDefeat
+	trainerbattle_rematch TRAINER_YOUNGSTER_JOEY_VANILLA, Route25_Text_JoeyRematchIntro, Route25_Text_JoeyDefeat
 	msgbox Route25_Text_JoeyPostBattle, MSGBOX_AUTOCLOSE
 	end
 
