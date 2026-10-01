@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - qa/core-004-healing-revival
+  pull_request:
+    branches:
+      - sam/core-004-healing-revival
   workflow_dispatch:
 
 jobs:
