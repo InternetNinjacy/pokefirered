@@ -55,18 +55,27 @@ jobs:
           MGBA_PID=$!
           trap 'kill $MGBA_PID $XVFB_PID 2>/dev/null || true' EXIT
 
-          sleep 8
-          xdotool search --name "mGBA" key --window %@ x
-          sleep 3
-          xdotool search --name "mGBA" key --window %@ x
-          sleep 3
-          xdotool search --name "mGBA" key --window %@ Down
-          sleep 1
-          xdotool search --name "mGBA" key --window %@ x
-          sleep 4
+          # Advance through boot/title/main-menu timing until the selector itself
+          # confirms that NEW GAME has been entered. A on mGBA's default keyboard
+          # mapping is X. The selector deliberately has no default choice, so an
+          # extra A press at this point cannot silently choose a mode.
+          for i in $(seq 1 30); do
+            xdotool search --name "mGBA" key --window %@ x || true
+            sleep 1
+            if grep -q "CORE001 MODE SELECT SHOWN" core001_ui.log; then
+              break
+            fi
+          done
 
           cat core001_ui.log
           grep -q "CORE001 MODE SELECT SHOWN" core001_ui.log
+
+          xdotool search --name "mGBA" key --window %@ Down
+          sleep 1
+          xdotool search --name "mGBA" key --window %@ x
+          sleep 3
+
+          cat core001_ui.log
           grep -q "CORE001 MODE SELECTED PERMANENT" core001_ui.log
 
       - name: Upload QA evidence
