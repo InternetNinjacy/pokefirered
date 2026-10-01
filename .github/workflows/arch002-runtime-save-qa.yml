@@ -1,0 +1,88 @@
+name: ARCH-002 Runtime Save QA
+
+on:
+  push:
+    branches:
+      - arch-002-runtime-save-qa
+  workflow_dispatch:
+
+jobs:
+  runtime-save-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: arch-002-runtime-save-qa
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          sudo apt update
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Build QA ROM with structural assertions
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ARCH002_ROM_SHA1.txt
+          git rev-parse HEAD | tee ARCH002_SOURCE_SHA.txt
+
+      - name: Runtime phase 1 - fresh initialization and State A save
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 6s mgba pokefirered.gba > arch002_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat arch002_phase1.log
+          grep -q "ARCH002 PHASE1 PASS state A saved" arch002_phase1.log
+          test -f pokefirered.sav
+
+      - name: Runtime phase 2 - reload State A and save State B
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 6s mgba pokefirered.gba > arch002_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat arch002_phase2.log
+          grep -q "ARCH002 PHASE2 PASS state B saved" arch002_phase2.log
+
+      - name: Runtime phase 3 - reload State B and fresh-save regression
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 6s mgba pokefirered.gba > arch002_phase3.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat arch002_phase3.log
+          grep -q "ARCH002 PASS runtime save load repeated-cycle fresh-regression" arch002_phase3.log
+
+      - name: Reject any QA failure marker
+        run: |
+          set -euxo pipefail
+          ! grep -h "ARCH002 FAIL" arch002_phase*.log
+
+      - name: Upload ARCH-002 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: arch-002-runtime-save-qa
+          path: |
+            pokefirered.gba
+            pokefirered.sav
+            ARCH002_ROM_SHA1.txt
+            ARCH002_SOURCE_SHA.txt
+            arch002_phase1.log
+            arch002_phase2.log
+            arch002_phase3.log
+          if-no-files-found: error
