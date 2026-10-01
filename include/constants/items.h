@@ -252,9 +252,14 @@
 #define ITEM_TM66 241
 #define ITEM_TM67 242
 #define ITEM_TM68 243
-#define ITEM_0F4 244
-#define ITEM_0F5 245
-#define ITEM_0F6 246
+#define ITEM_BRICK 244
+#define ITEM_ADAPTIVE_GENE 245
+#define ITEM_PROTECTOR 246
+
+// Legacy placeholder aliases retained for source compatibility.
+#define ITEM_0F4 ITEM_BRICK
+#define ITEM_0F5 ITEM_ADAPTIVE_GENE
+#define ITEM_0F6 ITEM_PROTECTOR
 #define ITEM_0F7 247
 #define ITEM_0F8 248
 #define ITEM_0F9 249
@@ -417,7 +422,9 @@
 #define ITEM_TM57_ICE_BEAM ITEM_TM57
 #define ITEM_TM58_BLIZZARD ITEM_TM58
 #define ITEM_TM59_HAIL ITEM_TM59
-#define ITEM_TM60_DRAGON_BREATH ITEM_TM60
+#define ITEM_TM60_DRAGONBREATH ITEM_TM60
+// Legacy spelling retained for source compatibility.
+#define ITEM_TM60_DRAGON_BREATH ITEM_TM60_DRAGONBREATH
 #define ITEM_TM61_DRAGON_CLAW ITEM_TM61
 #define ITEM_TM62_OUTRAGE ITEM_TM62
 #define ITEM_TM63_DRAGON_DANCE ITEM_TM63
