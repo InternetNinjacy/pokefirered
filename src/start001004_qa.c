@@ -88,6 +88,8 @@ static void CheckEvolutions(void)
     struct Pokemon mon;
 
     CreateMon(&mon, SPECIES_EEVEE, 15, 20, FALSE, 0, OT_ID_PLAYER_ID, 0);
+    if (PokemonItemUseNoEffect(&mon, ITEM_BRICK, 0, 0))
+        Fail("STARTQA FAIL Brick Eevee legality");
     if (GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_USE, ITEM_WATER_STONE) != SPECIES_VAPOREON
      || GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_USE, ITEM_THUNDER_STONE) != SPECIES_JOLTEON
      || GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_USE, ITEM_FIRE_STONE) != SPECIES_FLAREON
@@ -108,6 +110,8 @@ static void CheckEvolutions(void)
         Fail("STARTQA FAIL Pikachu stone evolution");
 
     CreateMon(&mon, SPECIES_PICHU, 15, 20, FALSE, 0, OT_ID_PLAYER_ID, 0);
+    if (!PokemonItemUseNoEffect(&mon, ITEM_BRICK, 0, 0))
+        Fail("STARTQA FAIL Brick invalid legality");
     if (GetEvolutionTargetSpecies(&mon, EVO_MODE_ITEM_USE, ITEM_BRICK) != SPECIES_NONE)
         Fail("STARTQA FAIL Brick invalid target");
 }
