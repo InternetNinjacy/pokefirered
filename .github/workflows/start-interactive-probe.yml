@@ -13,19 +13,38 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: qa/start-interactive-probe
-      - name: Install mGBA
+      - name: Install dependencies
         run: |
           set -euxo pipefail
           sudo apt update
-          sudo apt install -y mgba-sdl
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
           mgba --version
-          mgba --help | tee mgba-help.txt
-          if grep -q -- "--script" mgba-help.txt; then
-            echo "MGBA_SCRIPT_CLI=YES"
-          else
-            echo "MGBA_SCRIPT_CLI=NO"
-          fi
+          mgba --help > mgba-help.txt 2>&1 || true
+      - name: Build agbcc and ROM
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+          cd ../pokefirered
+          make
+          test -f pokefirered.gba
+      - name: Probe debugger Lua source
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          printf 'source qa/mgba_lua_probe.lua\nquit\n' | timeout 10s mgba -d pokefirered.gba > debugger-probe.log 2>&1 || true
+          cat debugger-probe.log
+          test -f mgba-lua-probe.txt
+          grep -q "LUA_PROBE_LOADED" mgba-lua-probe.txt
+          echo "MGBA_DEBUGGER_LUA=YES"
       - uses: actions/upload-artifact@v4
         with:
           name: mgba-script-probe
-          path: mgba-help.txt
+          path: |
+            mgba-help.txt
+            debugger-probe.log
+            mgba-lua-probe.txt
