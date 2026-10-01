@@ -366,6 +366,8 @@ gSpecials::
 	def_special GiveSamStarter
 	def_special GetSamBlueStarterSpecies
 	def_special GetSamGreenStarterSpecies
+	def_special GetSamBlueStarterEndpointSpecies
+	def_special GetSamGreenStarterEndpointSpecies
 	def_special SetSeenMon
 	def_special VsSeekerResetObjectMovementAfterChargeComplete
 	def_special ShouldShowBoxWasFullMessage
