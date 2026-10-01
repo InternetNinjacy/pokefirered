@@ -173,8 +173,10 @@ void Arch002_RunRuntimeQa(void)
     if (loadStatus != SAVE_STATUS_OK)
     {
         Arch002_Log("ARCH002 PHASE1 fresh save start");
+        Arch002_Log("ARCH002 TRACE before clear");
         ClearSav2();
         ClearSav1();
+        Arch002_Log("ARCH002 TRACE after clear");
 
         samBytes = (u8 *)&gSaveBlock1Ptr->samEdition;
         if (!BytesAreZero(samBytes, sizeof(struct SamEditionSaveData)))
@@ -191,7 +193,9 @@ void Arch002_RunRuntimeQa(void)
         gSaveBlock1Ptr->samEdition.greenName[5] = EOS;
         gSaveBlock1Ptr->vars[VAR_SAM_GAME_MODE - VARS_START] = 1;
 
+        Arch002_Log("ARCH002 TRACE before NewGameInitData");
         NewGameInitData();
+        Arch002_Log("ARCH002 TRACE after NewGameInitData");
 
         if (gSaveBlock1Ptr->samEdition.greenName[0] != 'G'
          || gSaveBlock1Ptr->vars[VAR_SAM_GAME_MODE - VARS_START] != 1)
@@ -201,7 +205,9 @@ void Arch002_RunRuntimeQa(void)
         }
 
         SetStateA();
+        Arch002_Log("ARCH002 TRACE before phase1 save");
         saveStatus = TrySavingData(SAVE_NORMAL);
+        Arch002_Log("ARCH002 TRACE after phase1 save");
         if (saveStatus != SAVE_STATUS_OK)
         {
             Arch002_Log("ARCH002 FAIL phase1 save");
