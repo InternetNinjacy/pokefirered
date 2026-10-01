@@ -39,7 +39,8 @@ jobs:
           from pathlib import Path
 
           root = Path(".")
-          items = json.loads((root / "src/data/items.json").read_text())
+          items_doc = json.loads((root / "src/data/items.json").read_text())
+          items = items_doc["items"] if isinstance(items_doc, dict) else items_doc
           by_id = {x.get("itemId"): x for x in items if isinstance(x, dict)}
           brick = by_id["ITEM_BRICK"]
           gene = by_id["ITEM_ADAPTIVE_GENE"]
