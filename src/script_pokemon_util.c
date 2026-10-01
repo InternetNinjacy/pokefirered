@@ -45,6 +45,60 @@ void HealPlayerParty(void)
     }
 }
 
+u8 ScriptGiveSamStarter(u16 species)
+{
+    u16 nationalDexNum;
+    u16 item = (species == SPECIES_DITTO) ? ITEM_ADAPTIVE_GENE : ITEM_NONE;
+    int sentToPc;
+    u8 heldItem[2];
+    struct Pokemon *mon = AllocZeroed(sizeof(struct Pokemon));
+
+    do
+    {
+        CreateMon(mon, species, 5, 32, 0, 0, OT_ID_PLAYER_ID, 0);
+    } while (species == SPECIES_EEVEE && GetMonGender(mon) != MON_MALE);
+
+    heldItem[0] = item;
+    heldItem[1] = item >> 8;
+    SetMonData(mon, MON_DATA_HELD_ITEM, heldItem);
+    sentToPc = GiveMonToPlayer(mon);
+    nationalDexNum = SpeciesToNationalPokedexNum(species);
+
+    if (sentToPc == MON_GIVEN_TO_PARTY || sentToPc == MON_GIVEN_TO_PC)
+    {
+        GetSetPokedexFlag(nationalDexNum, FLAG_SET_SEEN);
+        GetSetPokedexFlag(nationalDexNum, FLAG_SET_CAUGHT);
+    }
+
+    Free(mon);
+    return sentToPc;
+}
+
+static u16 GetSamRivalStarterSpecies(bool8 green)
+{
+    switch (VarGet(VAR_STARTER_MON))
+    {
+    case 0: // Player Eevee
+        return green ? SPECIES_PICHU : SPECIES_DITTO;
+    case 1: // Player Pichu
+        return green ? SPECIES_DITTO : SPECIES_EEVEE;
+    case 2: // Player Ditto
+        return green ? SPECIES_EEVEE : SPECIES_PICHU;
+    default:
+        return SPECIES_NONE;
+    }
+}
+
+void GetSamBlueStarterSpecies(void)
+{
+    gSpecialVar_Result = GetSamRivalStarterSpecies(FALSE);
+}
+
+void GetSamGreenStarterSpecies(void)
+{
+    gSpecialVar_Result = GetSamRivalStarterSpecies(TRUE);
+}
+
 u8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 unused1, u32 unused2, u8 unused3)
 {
     u16 nationalDexNum;
