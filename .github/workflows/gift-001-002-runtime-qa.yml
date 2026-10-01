@@ -1,0 +1,62 @@
+name: GIFT-001-002 Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/gift-001-002-runtime
+  workflow_dispatch:
+
+jobs:
+  runtime-gift-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/gift-001-002-runtime
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee GIFT_ROM_SHA1.txt
+          git rev-parse HEAD | tee GIFT_SOURCE_SHA.txt
+
+      - name: Runtime GIFT-001/002 QA
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > gift_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat gift_runtime.log
+          grep -q "GIFT QA PASS outsider evolution party pc full-storage" gift_runtime.log
+          ! grep -q "GIFT QA FAIL" gift_runtime.log
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: gift-001-002-runtime-qa
+          path: |
+            pokefirered.gba
+            GIFT_ROM_SHA1.txt
+            GIFT_SOURCE_SHA.txt
+            gift_runtime.log
+          if-no-files-found: error
