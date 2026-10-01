@@ -89,8 +89,71 @@ jobs:
           battle = (root / "src/battle_script_commands.c").read_text()
           assert "gBattleMoveDamage = ApplyAdaptiveGeneDamageModifier(gBattleMoveDamage, gBattlerAttacker);" in battle
           assert "GetMonData(&party[partyIndex], MON_DATA_SPECIES, NULL) == SPECIES_DITTO" in battle
+          assert battle.count("ApplyAdaptiveGeneDamageModifier(gBattleMoveDamage, gBattlerAttacker)") == 1
 
-          print("STARTQA STATIC PASS items shops mappings evolution tutorial gates unique-source hook")
+          party_menu = (root / "src/party_menu.c").read_text()
+          assert "GetEvolutionTargetSpecies(currentPokemon, EVO_MODE_ITEM_CHECK, item) != SPECIES_NONE" in party_menu
+          assert "ExecuteTableBasedItemEffect_(gPartyMenu.slotId, gSpecialVar_ItemId, 0);" in party_menu
+          assert "RemoveBagItem(gSpecialVar_ItemId, 1);" in party_menu
+          item_menu = (root / "src/item_menu.c").read_text()
+          assert "gSpecialVar_ItemId == ITEM_ADAPTIVE_GENE" in item_menu
+          assert "sContextMenuItems_GiveIfNotKeyItemPocket[OPEN_BAG_ITEMS]" in item_menu
+          assert "ItemId_GetPrice(gSpecialVar_ItemId) == 0" in item_menu
+
+          learn = (root / "src/data/pokemon/level_up_learnsets.h").read_text()
+          eevee = learn[learn.index("static const u16 sEeveeLevelUpLearnset"):learn.index("static const u16 sVaporeonLevelUpLearnset")]
+          for token in [
+              "LEVEL_UP_MOVE(1, MOVE_TACKLE)", "LEVEL_UP_MOVE(1, MOVE_TAIL_WHIP)",
+              "LEVEL_UP_MOVE(5, MOVE_SAND_ATTACK)", "LEVEL_UP_MOVE(8, MOVE_GROWL)",
+              "LEVEL_UP_MOVE(11, MOVE_QUICK_ATTACK)", "LEVEL_UP_MOVE(14, MOVE_BITE)"
+          ]:
+              assert token in eevee
+          assert "LEVEL_UP_MOVE(15," not in eevee and "LEVEL_UP_MOVE(16," not in eevee
+
+          ditto = learn[learn.index("static const u16 sDittoLevelUpLearnset"):learn.index("static const u16 sEeveeLevelUpLearnset")]
+          for token in [
+              "LEVEL_UP_MOVE(1, MOVE_TRANSFORM)", "LEVEL_UP_MOVE(1, MOVE_TACKLE)",
+              "LEVEL_UP_MOVE(10, MOVE_MIMIC)", "LEVEL_UP_MOVE(20, MOVE_SWIFT)",
+              "LEVEL_UP_MOVE(30, MOVE_SUBSTITUTE)", "LEVEL_UP_MOVE(40, MOVE_RECOVER)",
+              "LEVEL_UP_MOVE(50, MOVE_TRI_ATTACK)"
+          ]:
+              assert token in ditto
+
+          tm = (root / "src/data/pokemon/tmhm_learnsets.h").read_text()
+          ditto_tm = tm[tm.index("[SPECIES_DITTO] = TMHM_LEARNSET"):tm.index("[SPECIES_EEVEE] = TMHM_LEARNSET")]
+          for n in range(1, 69):
+              assert f"TM{n:02d}_" in ditto_tm, n
+          for n in range(1, 9):
+              assert f"HM{n:02d}_" in ditto_tm, n
+          for species, next_species in [("PICHU","CLEFFA"),("PIKACHU","RAICHU"),("RAICHU","SANDSHREW")]:
+              block = tm[tm.index(f"[SPECIES_{species}] = TMHM_LEARNSET"):tm.index(f"[SPECIES_{next_species}] = TMHM_LEARNSET")]
+              assert "HM03_SURF" in block
+              assert "FIRE_PUNCH" not in block and "ICE_PUNCH" not in block
+
+          info = (root / "src/data/pokemon/species_info.h").read_text()
+          for species, values in [
+              ("EEVEE", [".baseHP = 55", ".baseAttack = 55", ".baseDefense = 50", ".baseSpeed = 55", ".baseSpAttack = 45", ".baseSpDefense = 65", "ABILITY_RUN_AWAY"]),
+              ("PICHU", [".baseHP = 45", ".baseAttack = 45", ".baseDefense = 35", ".baseSpeed = 80", ".baseSpAttack = 65", ".baseSpDefense = 45", "ABILITY_STATIC"]),
+              ("PIKACHU", [".baseHP = 55", ".baseAttack = 55", ".baseDefense = 45", ".baseSpeed = 95", ".baseSpAttack = 90", ".baseSpDefense = 65", "ABILITY_STATIC"]),
+              ("RAICHU", [".baseHP = 75", ".baseAttack = 80", ".baseDefense = 65", ".baseSpeed = 110", ".baseSpAttack = 115", ".baseSpDefense = 80", "ABILITY_STATIC"]),
+              ("DITTO", [".baseHP = 65", ".baseAttack = 65", ".baseDefense = 65", ".baseSpeed = 65", ".baseSpAttack = 65", ".baseSpDefense = 65", "ABILITY_LIMBER"]),
+          ]:
+              start = info.index(f"[SPECIES_{species}] =")
+              block = info[start:start+1600]
+              for value in values:
+                  assert value in block, (species, value)
+
+          oak_text = (root / "data/maps/PalletTown_ProfessorOaksLab/text.inc").read_text()
+          vir_text = (root / "data/maps/ViridianCity_Mart/text.inc").read_text()
+          pew_text = (root / "data/maps/PewterCity_Mart/text.inc").read_text()
+          for phrase in ["EEVEE is a little different from", "It stops learning new moves on", "By around Lv. 15, you'll want"]:
+              assert phrase in oak_text
+          for phrase in ["That EEVEE of yours can evolve", "We carry evolution items here", "Lv. 15 in mind."]:
+              assert phrase in vir_text
+          for phrase in ["Still deciding what to do with", "after Lv. 14 it won't learn new", "Lv. 16 onward."]:
+              assert phrase in pew_text
+
+          print("STARTQA STATIC PASS items shops mappings evolutions species TMs tutorials consumption transfer unique-source damage-hook")
           PY
 
       - name: Build QA ROM
