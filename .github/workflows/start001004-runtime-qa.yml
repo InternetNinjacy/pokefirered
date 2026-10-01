@@ -159,7 +159,7 @@ jobs:
       - name: Build QA ROM
         run: |
           set -euxo pipefail
-          make COMPARE=0
+          make
           test -f pokefirered.gba
           sha1sum pokefirered.gba | tee START001004_ROM_SHA1.txt
           git rev-parse HEAD | tee START001004_SOURCE_SHA.txt
