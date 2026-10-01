@@ -1,4 +1,5 @@
 #include "global.h"
+#include "characters.h"
 #include "gba/isagbprint.h"
 #include "load_save.h"
 #include "new_game.h"
