@@ -5,8 +5,11 @@
 #include "pokedex.h"
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
+#include "script.h"
 #include "script_pokemon_util.h"
+#include "save.h"
 #include "string_util.h"
+#include "constants/flags.h"
 #include "constants/items.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
@@ -16,6 +19,8 @@
 
 static const u8 sGiftQaPlayerName[] = _("SAM");
 static const u8 sGiftQaOtName[] = _("FERN");
+
+extern const u8 Gift001002Qa_EventScript_ClaimBulbasaur[];
 
 static void GiftQaLog(const char *text)
 {
@@ -73,7 +78,7 @@ static void FillStorage(void)
     }
 }
 
-void Gift001002_RunRuntimeQa(void)
+static void CheckCoreDeliveryBehavior(void)
 {
     u8 result;
     u8 otName[PLAYER_NAME_LENGTH + 1];
@@ -81,10 +86,7 @@ void Gift001002_RunRuntimeQa(void)
     struct BoxPokemon *boxedMon;
     u16 nationalDexNum;
 
-    MgbaOpen();
-    ResetGiftQaState();
-
-    result = ScriptGiveMon(SPECIES_BULBASAUR, 10, ITEM_MIRACLE_SEED, (u32)sGiftQaOtName, 52001, MON_FEMALE);
+    result = ScriptGiveMon(SPECIES_BULBASAUR, 10, ITEM_MIRACLE_SEED, (u32)sGiftQaOtName, 52001, FEMALE);
     if (result != MON_GIVEN_TO_PARTY)
         GiftQaFail("GIFT QA FAIL preowned party delivery");
 
@@ -109,7 +111,7 @@ void Gift001002_RunRuntimeQa(void)
 
     ResetGiftQaState();
     FillParty();
-    result = ScriptGiveMon(SPECIES_BULBASAUR, 10, ITEM_MIRACLE_SEED, (u32)sGiftQaOtName, 52001, MON_FEMALE);
+    result = ScriptGiveMon(SPECIES_BULBASAUR, 10, ITEM_MIRACLE_SEED, (u32)sGiftQaOtName, 52001, FEMALE);
     if (result != MON_GIVEN_TO_PC)
         GiftQaFail("GIFT QA FAIL full-party PC delivery");
     boxedMon = GetBoxedMonPtr(gSpecialVar_MonBoxId, gSpecialVar_MonBoxPos);
@@ -124,12 +126,87 @@ void Gift001002_RunRuntimeQa(void)
     nationalDexNum = SpeciesToNationalPokedexNum(SPECIES_BULBASAUR);
     if (GetSetPokedexFlag(nationalDexNum, FLAG_GET_CAUGHT))
         GiftQaFail("GIFT QA FAIL dex precondition");
-    result = ScriptGiveMon(SPECIES_BULBASAUR, 10, ITEM_MIRACLE_SEED, (u32)sGiftQaOtName, 52001, MON_FEMALE);
+    result = ScriptGiveMon(SPECIES_BULBASAUR, 10, ITEM_MIRACLE_SEED, (u32)sGiftQaOtName, 52001, FEMALE);
     if (result != MON_CANT_GIVE)
         GiftQaFail("GIFT QA FAIL full storage accepted reward");
     if (GetSetPokedexFlag(nationalDexNum, FLAG_GET_CAUGHT))
         GiftQaFail("GIFT QA FAIL failed reward set dex");
+}
 
-    GiftQaLog("GIFT QA PASS outsider evolution party pc full-storage");
+static void RunFresh(void)
+{
+    u8 otName[PLAYER_NAME_LENGTH + 1];
+
+    ResetGiftQaState();
+    CheckCoreDeliveryBehavior();
+
+    ResetGiftQaState();
+    FlagClear(FLAG_GOT_LAPRAS_FROM_SILPH);
+    gSpecialVar_0x8000 = 0xFFFF;
+
+    RunScriptImmediately(Gift001002Qa_EventScript_ClaimBulbasaur);
+
+    if (gSpecialVar_0x8000 != 1)
+        GiftQaFail("GIFT QA FAIL one-time script success path");
+    if (!FlagGet(FLAG_GOT_LAPRAS_FROM_SILPH))
+        GiftQaFail("GIFT QA FAIL one-time claim flag not set");
+    if (gPlayerPartyCount != 1
+     || GetMonData(&gPlayerParty[0], MON_DATA_SPECIES) != SPECIES_BULBASAUR)
+        GiftQaFail("GIFT QA FAIL scripted reward delivery");
+
+    GetMonData(&gPlayerParty[0], MON_DATA_OT_NAME, otName);
+    if (GetMonData(&gPlayerParty[0], MON_DATA_OT_ID, NULL) != 52001
+     || StringCompare(otName, sGiftQaOtName)
+     || !IsTradedMon(&gPlayerParty[0]))
+        GiftQaFail("GIFT QA FAIL scripted reward ownership");
+
+    if (TrySavingData(SAVE_NORMAL) != SAVE_STATUS_OK)
+        GiftQaFail("GIFT QA FAIL save after scripted claim");
+
+    GiftQaLog("GIFT QA PHASE1 PASS one-time script claimed and saved");
     for (;;);
+}
+
+static void RunReload(void)
+{
+    u8 beforeCount;
+    u8 otName[PLAYER_NAME_LENGTH + 1];
+
+    if (!FlagGet(FLAG_GOT_LAPRAS_FROM_SILPH))
+        GiftQaFail("GIFT QA FAIL claim flag reload");
+    if (gPlayerPartyCount != 1
+     || GetMonData(&gPlayerParty[0], MON_DATA_SPECIES) != SPECIES_BULBASAUR)
+        GiftQaFail("GIFT QA FAIL reward reload");
+
+    GetMonData(&gPlayerParty[0], MON_DATA_OT_NAME, otName);
+    if (GetMonData(&gPlayerParty[0], MON_DATA_OT_ID, NULL) != 52001
+     || StringCompare(otName, sGiftQaOtName)
+     || !IsTradedMon(&gPlayerParty[0]))
+        GiftQaFail("GIFT QA FAIL ownership reload");
+
+    beforeCount = gPlayerPartyCount;
+    gSpecialVar_0x8000 = 0xFFFF;
+    RunScriptImmediately(Gift001002Qa_EventScript_ClaimBulbasaur);
+
+    if (gSpecialVar_0x8000 != 2)
+        GiftQaFail("GIFT QA FAIL reclaim did not take claimed branch");
+    if (gPlayerPartyCount != beforeCount)
+        GiftQaFail("GIFT QA FAIL duplicate party reward");
+    if (GetMonData(&gPlayerParty[0], MON_DATA_SPECIES) != SPECIES_BULBASAUR)
+        GiftQaFail("GIFT QA FAIL original reward changed");
+
+    GiftQaLog("GIFT QA PASS core plus one-time script save reload reclaim blocked");
+    for (;;);
+}
+
+void Gift001002_RunRuntimeQa(void)
+{
+    u8 loadStatus;
+
+    MgbaOpen();
+    SetSaveBlocksPointers();
+    loadStatus = LoadGameSave(SAVE_NORMAL);
+    if (loadStatus != SAVE_STATUS_OK)
+        RunFresh();
+    RunReload();
 }
