@@ -247,15 +247,20 @@ void Arch002_RunRuntimeQa(void)
     if (gSaveBlock1Ptr->samEdition.futureExpansion[0] == ARCH002_STAGE_B)
     {
         Arch002_Log("ARCH002 PHASE3 loaded state B");
+        Arch002_Log("ARCH002 TRACE before state B verify");
         if (!CheckStateB())
         {
             Arch002_Log("ARCH002 FAIL state B persistence");
             for (;;);
         }
+        Arch002_Log("ARCH002 TRACE after state B verify");
 
+        Arch002_Log("ARCH002 TRACE before flash clear");
         ClearSaveData();
+        Arch002_Log("ARCH002 TRACE after flash clear");
         ClearSav2();
         ClearSav1();
+        Arch002_Log("ARCH002 TRACE after RAM clear");
 
         samBytes = (u8 *)&gSaveBlock1Ptr->samEdition;
         if (!BytesAreZero(samBytes, sizeof(struct SamEditionSaveData)))
@@ -264,7 +269,11 @@ void Arch002_RunRuntimeQa(void)
             for (;;);
         }
 
+        gSaveBlock1Ptr->rivalName[0] = EOS;
+        gSaveBlock1Ptr->samEdition.greenName[0] = EOS;
+        Arch002_Log("ARCH002 TRACE before fresh NewGameInitData");
         NewGameInitData();
+        Arch002_Log("ARCH002 TRACE after fresh NewGameInitData");
         if (!BytesAreZero((u8 *)&gSaveBlock1Ptr->samEdition, sizeof(struct SamEditionSaveData)))
         {
             Arch002_Log("ARCH002 FAIL fresh regression NewGameInitData");
