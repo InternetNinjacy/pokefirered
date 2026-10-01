@@ -56,13 +56,13 @@ jobs:
           trap 'kill $MGBA_PID $XVFB_PID 2>/dev/null || true' EXIT
 
           sleep 8
-          xdotool search --name "mGBA" windowactivate --sync key x
+          xdotool search --name "mGBA" key --window %@ x
           sleep 3
-          xdotool search --name "mGBA" windowactivate --sync key x
+          xdotool search --name "mGBA" key --window %@ x
           sleep 3
-          xdotool search --name "mGBA" windowactivate --sync key Down
+          xdotool search --name "mGBA" key --window %@ Down
           sleep 1
-          xdotool search --name "mGBA" windowactivate --sync key x
+          xdotool search --name "mGBA" key --window %@ x
           sleep 4
 
           cat core001_ui.log
