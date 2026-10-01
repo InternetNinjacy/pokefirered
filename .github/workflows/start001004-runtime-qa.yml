@@ -68,6 +68,13 @@ jobs:
               assert token in evo
 
           oak = (root / "data/maps/PalletTown_ProfessorOaksLab/scripts.inc").read_text()
+          trainer_parties = (root / "src/data/trainer_parties.h").read_text()
+          squirtle_party = trainer_parties[trainer_parties.index("sParty_RivalOaksLabSquirtle"):trainer_parties.index("sParty_RivalOaksLabBulbasaur")]
+          bulbasaur_party = trainer_parties[trainer_parties.index("sParty_RivalOaksLabBulbasaur"):trainer_parties.index("sParty_RivalOaksLabCharmander")]
+          charmander_party = trainer_parties[trainer_parties.index("sParty_RivalOaksLabCharmander"):trainer_parties.index("sParty_RivalRoute22EarlySquirtle")]
+          assert "SPECIES_PICHU" in squirtle_party
+          assert "SPECIES_EEVEE" in bulbasaur_party
+          assert "SPECIES_DITTO" in charmander_party
           assert "setvar PLAYER_STARTER_SPECIES, SPECIES_EEVEE" in oak
           assert "setvar PLAYER_STARTER_SPECIES, SPECIES_PICHU" in oak
           assert "setvar PLAYER_STARTER_SPECIES, SPECIES_DITTO" in oak
