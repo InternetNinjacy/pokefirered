@@ -74,6 +74,11 @@ u8 ScriptGiveSamStarter(u16 species)
     return sentToPc;
 }
 
+void GiveSamStarter(void)
+{
+    gSpecialVar_Result = ScriptGiveSamStarter(gSpecialVar_0x8004);
+}
+
 static u16 GetSamRivalStarterSpecies(bool8 green)
 {
     switch (VarGet(VAR_STARTER_MON))
