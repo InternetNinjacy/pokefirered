@@ -66,6 +66,8 @@ static void Cmd_attackstring(void);
 static void Cmd_ppreduce(void);
 static void Cmd_critcalc(void);
 static void Cmd_damagecalc(void);
+static bool8 BattlerIsOriginalDittoHoldingAdaptiveGene(u8 battler);
+u32 ApplyAdaptiveGeneDamageModifier(u32 damage, u8 battler);
 static void Cmd_typecalc(void);
 static void Cmd_adjustnormaldamage(void);
 static void Cmd_adjustnormaldamage2(void);
@@ -1206,6 +1208,27 @@ static void Cmd_critcalc(void)
     gBattlescriptCurrInstr++;
 }
 
+static bool8 BattlerIsOriginalDittoHoldingAdaptiveGene(u8 battler)
+{
+    struct Pokemon *party;
+    u8 partyIndex = gBattlerPartyIndexes[battler];
+
+    if (GetBattlerSide(battler) == B_SIDE_PLAYER)
+        party = gPlayerParty;
+    else
+        party = gEnemyParty;
+
+    return GetMonData(&party[partyIndex], MON_DATA_SPECIES, NULL) == SPECIES_DITTO
+        && gBattleMons[battler].item == ITEM_ADAPTIVE_GENE;
+}
+
+u32 ApplyAdaptiveGeneDamageModifier(u32 damage, u8 battler)
+{
+    if (BattlerIsOriginalDittoHoldingAdaptiveGene(battler))
+        return damage * 6 / 5;
+    return damage;
+}
+
 static void Cmd_damagecalc(void)
 {
     u16 sideStatus = gSideStatuses[GET_BATTLER_SIDE(gBattlerTarget)];
@@ -1218,6 +1241,7 @@ static void Cmd_damagecalc(void)
         gBattleMoveDamage *= 2;
     if (gProtectStructs[gBattlerAttacker].helpingHand)
         gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
+    gBattleMoveDamage = ApplyAdaptiveGeneDamageModifier(gBattleMoveDamage, gBattlerAttacker);
 
     gBattlescriptCurrInstr++;
 }
