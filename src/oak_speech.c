@@ -19,6 +19,23 @@
 #include "constants/songs.h"
 #include "constants/vars.h"
 
+#ifdef CORE001_QA
+#define CORE001_MGBA_DEBUG_FLAGS  ((vu16 *)0x4FFF700)
+#define CORE001_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)
+
+static void Core001QaLog(const char *text)
+{
+    u32 i = 0;
+    while (text[i] != '\0' && i < 255)
+    {
+        CORE001_MGBA_DEBUG_STRING[i] = text[i];
+        i++;
+    }
+    CORE001_MGBA_DEBUG_STRING[i] = '\0';
+    *CORE001_MGBA_DEBUG_FLAGS = 3 | 0x100;
+}
+#endif
+
 #define INTRO_SPECIES SPECIES_NIDORAN_F
 
 enum
@@ -834,6 +851,9 @@ static void Task_SamModeSelect_Show(u8 taskId)
     s16 *data = gTasks[taskId].data;
 
     tSamModeChoice = -1;
+#ifdef CORE001_QA
+    Core001QaLog("CORE001 MODE SELECT SHOWN");
+#endif
     tSamModeWindowId = AddWindow(&sIntro_WindowTemplates[WIN_INTRO_MODE]);
     PutWindowTilemap(tSamModeWindowId);
     DrawStdFrameWithCustomTileAndPalette(tSamModeWindowId, TRUE, GetStdWindowBaseTileNum(), 14);
@@ -865,6 +885,12 @@ static void Task_SamModeSelect_HandleInput(u8 taskId)
     {
         PlaySE(SE_SELECT);
         VarSet(VAR_SAM_GAME_MODE, tSamModeChoice);
+#ifdef CORE001_QA
+        if (tSamModeChoice == 0)
+            Core001QaLog("CORE001 MODE SELECTED STANDARD");
+        else
+            Core001QaLog("CORE001 MODE SELECTED PERMANENT");
+#endif
         ClearStdWindowAndFrameToTransparent(tSamModeWindowId, TRUE);
         RemoveWindow(tSamModeWindowId);
         FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 30, 20);
