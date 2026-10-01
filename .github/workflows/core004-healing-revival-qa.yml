@@ -21,8 +21,8 @@ jobs:
       - name: Install build and emulator dependencies
         run: |
           set -euxo pipefail
-          timeout 120s sudo apt-get update
-          timeout 180s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
           mgba --version || true
 
       - name: Build and install agbcc
