@@ -36,6 +36,7 @@
 #include "constants/hold_effects.h"
 #include "constants/battle_move_effects.h"
 #include "constants/union_room.h"
+#include "constants/vars.h"
 
 #define SPECIES_TO_HOENN(name)      [SPECIES_##name - 1] = HOENN_DEX_##name
 #define SPECIES_TO_NATIONAL(name)   [SPECIES_##name - 1] = NATIONAL_DEX_##name
@@ -2169,6 +2170,18 @@ void CalculateMonStats(struct Pokemon *mon)
     SetMonData(mon, MON_DATA_HP, &currentHP);
 }
 
+void TryMarkMonPermanentDead(struct Pokemon *mon)
+{
+    bool8 isPermanentDead = TRUE;
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1
+        && GetMonData(mon, MON_DATA_HP) == 0
+        && !GetMonData(mon, MON_DATA_SAM_ORIGINAL_STARTER))
+    {
+        SetMonData(mon, MON_DATA_SAM_PERMANENT_DEAD, &isPermanentDead);
+    }
+}
+
 void BoxMonToMon(struct BoxPokemon *src, struct Pokemon *dest)
 {
     u32 value = 0;
@@ -2982,7 +2995,9 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
     struct PokemonSubstruct2 *substruct2 = NULL;
     struct PokemonSubstruct3 *substruct3 = NULL;
 
-    if (field > MON_DATA_ENCRYPT_SEPARATOR)
+    if (field > MON_DATA_ENCRYPT_SEPARATOR
+        && field != MON_DATA_SAM_PERMANENT_DEAD
+        && field != MON_DATA_SAM_ORIGINAL_STARTER)
     {
         substruct0 = &(GetSubstruct(boxMon, boxMon->personality, 0)->type0);
         substruct1 = &(GetSubstruct(boxMon, boxMon->personality, 1)->type1);
@@ -3057,6 +3072,12 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         break;
     case MON_DATA_SANITY_IS_EGG:
         retVal = boxMon->isEgg;
+        break;
+    case MON_DATA_SAM_PERMANENT_DEAD:
+        retVal = boxMon->isSamPermanentDead;
+        break;
+    case MON_DATA_SAM_ORIGINAL_STARTER:
+        retVal = boxMon->isSamOriginalStarter;
         break;
     case MON_DATA_OT_NAME:
     {
@@ -3323,7 +3344,9 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         break;
     }
 
-    if (field > MON_DATA_ENCRYPT_SEPARATOR)
+    if (field > MON_DATA_ENCRYPT_SEPARATOR
+        && field != MON_DATA_SAM_PERMANENT_DEAD
+        && field != MON_DATA_SAM_ORIGINAL_STARTER)
         EncryptBoxMon(boxMon);
 
     return retVal;
@@ -3412,7 +3435,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
     struct PokemonSubstruct2 *substruct2 = NULL;
     struct PokemonSubstruct3 *substruct3 = NULL;
 
-    if (field > MON_DATA_ENCRYPT_SEPARATOR)
+    if (field > MON_DATA_ENCRYPT_SEPARATOR
+        && field != MON_DATA_SAM_PERMANENT_DEAD
+        && field != MON_DATA_SAM_ORIGINAL_STARTER)
     {
         substruct0 = &(GetSubstruct(boxMon, boxMon->personality, 0)->type0);
         substruct1 = &(GetSubstruct(boxMon, boxMon->personality, 1)->type1);
@@ -3457,6 +3482,12 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     case MON_DATA_SANITY_IS_EGG:
         SET8(boxMon->isEgg);
+        break;
+    case MON_DATA_SAM_PERMANENT_DEAD:
+        SET8(boxMon->isSamPermanentDead);
+        break;
+    case MON_DATA_SAM_ORIGINAL_STARTER:
+        SET8(boxMon->isSamOriginalStarter);
         break;
     case MON_DATA_OT_NAME:
     {
@@ -3671,7 +3702,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     }
 
-    if (field > MON_DATA_ENCRYPT_SEPARATOR)
+    if (field > MON_DATA_ENCRYPT_SEPARATOR
+        && field != MON_DATA_SAM_PERMANENT_DEAD
+        && field != MON_DATA_SAM_ORIGINAL_STARTER)
     {
         boxMon->checksum = CalculateBoxMonChecksum(boxMon);
         EncryptBoxMon(boxMon);

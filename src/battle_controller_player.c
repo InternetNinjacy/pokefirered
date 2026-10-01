@@ -2018,6 +2018,7 @@ static void SetPlayerMonData(u8 monId)
         break;
     case REQUEST_HP_BATTLE:
         SetMonData(&gPlayerParty[monId], MON_DATA_HP, &gBattleBufferA[gActiveBattler][3]);
+        TryMarkMonPermanentDead(&gPlayerParty[monId]);
         break;
     case REQUEST_MAX_HP_BATTLE:
         SetMonData(&gPlayerParty[monId], MON_DATA_MAX_HP, &gBattleBufferA[gActiveBattler][3]);
