@@ -1,0 +1,31 @@
+name: START Interactive Automation Probe
+
+on:
+  push:
+    branches:
+      - qa/start-interactive-probe
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/start-interactive-probe
+      - name: Install mGBA
+        run: |
+          set -euxo pipefail
+          sudo apt update
+          sudo apt install -y mgba-sdl
+          mgba --version
+          mgba --help | tee mgba-help.txt
+          if grep -q -- "--script" mgba-help.txt; then
+            echo "MGBA_SCRIPT_CLI=YES"
+          else
+            echo "MGBA_SCRIPT_CLI=NO"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mgba-script-probe
+          path: mgba-help.txt
