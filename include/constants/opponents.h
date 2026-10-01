@@ -96,7 +96,7 @@
 #define TRAINER_YOUNGSTER_CALVIN                  90
 #define TRAINER_YOUNGSTER_JOSH                    91
 #define TRAINER_YOUNGSTER_TIMMY                   92
-#define TRAINER_YOUNGSTER_JOEY                    93
+#define TRAINER_YOUNGSTER_JOEY_VANILLA            93
 #define TRAINER_YOUNGSTER_DAN                     94
 #define TRAINER_YOUNGSTER_CHAD                    95
 #define TRAINER_YOUNGSTER_TYLER                   96
@@ -780,6 +780,16 @@
 #define TRAINER_BUSHRANGER_NARELLE                766
 #define TRAINER_LEADER_BAZ                        767
 #define TRAINER_LEADER_BAZ_REMATCH                768
+
+// Blue League branch allocations: 800-803.
+#define TRAINER_ELITE_FOUR_BLUE_WATER             800
+#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC          801
+#define TRAINER_ELITE_FOUR_BLUE_WATER_2           802
+#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2        803
+
+// Oak research/postgame central allocations.
+#define TRAINER_YOUNGSTER_JOEY                    940
+#define TRAINER_OAK_POSTGAME                      941
 
 // Sam Edition expands trainer defeat-flag capacity to 1024 records.
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
