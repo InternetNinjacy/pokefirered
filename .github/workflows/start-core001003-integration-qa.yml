@@ -1,0 +1,109 @@
+name: START CORE-001-003 Integration QA
+
+on:
+  push:
+    branches:
+      - qa/start-core001-003-integration
+  workflow_dispatch:
+
+jobs:
+  integration-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout integration QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/start-core001-003-integration
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          sudo apt update
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Static integration assertions
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          root = Path(".")
+          oak_speech = (root / "src/oak_speech.c").read_text()
+          assert "sSamModeText_Standard" in oak_speech
+          assert "sSamModeText_Permanent" in oak_speech
+          assert "VarSet(VAR_SAM_GAME_MODE, tSamModeChoice);" in oak_speech
+          assert "Task_SamModeSelect_FadeToOak" in oak_speech
+
+          oak = (root / "data/maps/PalletTown_ProfessorOaksLab/scripts.inc").read_text()
+          assert "special GiveSamStarter\n\tspecial MarkSamOriginalStarter" in oak
+
+          mon_h = (root / "include/pokemon.h").read_text()
+          assert "isSamPermanentDead:1" in mon_h
+          assert "isSamOriginalStarter:1" in mon_h
+
+          mon_c = (root / "src/pokemon.c").read_text()
+          assert "VarGet(VAR_SAM_GAME_MODE) == 1" in mon_c
+          assert "!GetMonData(mon, MON_DATA_SAM_ORIGINAL_STARTER)" in mon_c
+
+          util = (root / "src/script_pokemon_util.c").read_text()
+          assert "void MarkSamOriginalStarter(void)" in util
+          assert "ScriptGiveSamStarter" in util
+
+          print("STARTCORE STATIC PASS mode selector starter grant exact-individual protection integration")
+          PY
+
+      - name: Build integration QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee STARTCORE_ROM_SHA1.txt
+          git rev-parse HEAD | tee STARTCORE_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > startcore_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat startcore_phase1.log
+          grep -q "STARTCORE PHASE1 PASS six starter-mode paths exact protection state saved" startcore_phase1.log
+          test -f pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > startcore_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat startcore_phase2.log
+          grep -q "STARTCORE PASS six-path mode starter protection gene save reload" startcore_phase2.log
+
+      - name: Reject integration QA failure markers
+        run: |
+          set -euxo pipefail
+          ! grep -h "STARTCORE FAIL" startcore_phase*.log
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: start-core001-003-integration-qa
+          path: |
+            pokefirered.gba
+            pokefirered.sav
+            STARTCORE_ROM_SHA1.txt
+            STARTCORE_SOURCE_SHA.txt
+            startcore_phase1.log
+            startcore_phase2.log
+          if-no-files-found: error
