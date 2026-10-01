@@ -60,6 +60,8 @@ static void CheckRivalMappings(void)
 {
     static const u16 sBlue[3] = {SPECIES_DITTO, SPECIES_EEVEE, SPECIES_PICHU};
     static const u16 sGreen[3] = {SPECIES_PICHU, SPECIES_DITTO, SPECIES_EEVEE};
+    static const u16 sBlueEndpoint[3] = {SPECIES_DITTO, SPECIES_FLAREON, SPECIES_RAICHU};
+    static const u16 sGreenEndpoint[3] = {SPECIES_RAICHU, SPECIES_DITTO, SPECIES_ESPEON};
     u8 i;
 
     for (i = 0; i < 3; i++)
@@ -71,6 +73,12 @@ static void CheckRivalMappings(void)
         GetSamGreenStarterSpecies();
         if (gSpecialVar_Result != sGreen[i])
             Fail("STARTQA FAIL Green mapping");
+        GetSamBlueStarterEndpointSpecies();
+        if (gSpecialVar_Result != sBlueEndpoint[i])
+            Fail("STARTQA FAIL Blue endpoint");
+        GetSamGreenStarterEndpointSpecies();
+        if (gSpecialVar_Result != sGreenEndpoint[i])
+            Fail("STARTQA FAIL Green endpoint");
     }
 }
 
