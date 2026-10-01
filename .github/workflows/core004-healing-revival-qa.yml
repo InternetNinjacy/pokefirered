@@ -1,0 +1,62 @@
+name: CORE-004 Healing Revival QA
+
+on:
+  push:
+    branches:
+      - qa/core-004-healing-revival
+  workflow_dispatch:
+
+jobs:
+  runtime-healing-revival-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/core-004-healing-revival
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          sudo apt update
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee CORE004_ROM_SHA1.txt
+          git rev-parse HEAD | tee CORE004_SOURCE_SHA.txt
+
+      - name: Runtime healing and revival QA
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 8s mgba -l 31 pokefirered.gba > core004_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat core004_runtime.log
+          grep -q "CORE004 PASS center revive maxrevive sacredash standard" core004_runtime.log
+          ! grep -q "CORE004 FAIL" core004_runtime.log
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-004-healing-revival-qa
+          path: |
+            pokefirered.gba
+            CORE004_ROM_SHA1.txt
+            CORE004_SOURCE_SHA.txt
+            core004_runtime.log
+          if-no-files-found: error
