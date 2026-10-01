@@ -30,6 +30,43 @@ jobs:
           ./build.sh
           ./install.sh ../pokefirered
 
+      - name: Static cross-system regression assertions
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          stone_tokens = [
+              "ITEM_FIRE_STONE", "ITEM_THUNDER_STONE", "ITEM_WATER_STONE",
+              "ITEM_LEAF_STONE", "ITEM_SUN_STONE", "ITEM_MOON_STONE"
+          ]
+          stone_shop_files = []
+          for p in Path("data/maps").rglob("scripts.inc"):
+              text = p.read_text(errors="ignore")
+              if "pokemart" in text and any(t in text for t in stone_tokens):
+                  stone_shop_files.append(str(p))
+                  assert "ITEM_BRICK" in text, f"Brick missing from evolution-stone shop {p}"
+
+          assert stone_shop_files, "No evolution-stone shops detected"
+          assert not any("ITEM_ADAPTIVE_GENE" in p.read_text(errors="ignore") for p in Path("data/maps").rglob("*.inc"))
+
+          oak = Path("data/maps/PalletTown_ProfessorOaksLab/scripts.inc").read_text()
+          assert "special GiveSamStarter\n\tspecial MarkSamOriginalStarter" in oak
+          assert "VAR_SAM_STARTER" not in oak
+
+          party = Path("src/party_menu.c").read_text()
+          invalid_gate = party.index("noEffect = PokemonItemUseNoEffect")
+          remove = party.index("RemoveBagItem(gSpecialVar_ItemId, 1);", invalid_gate)
+          assert invalid_gate < remove
+          assert "if (noEffect)" in party[invalid_gate:remove]
+          assert "Task_DoUseItemAnim(taskId);" in party[invalid_gate:remove]
+
+          battle = Path("src/battle_script_commands.c").read_text()
+          assert battle.count("ApplyAdaptiveGeneDamageModifier(gBattleMoveDamage, gBattlerAttacker)") == 1
+
+          print("STARTCORE STATIC PASS all stone shops Brick; no Gene map source; success-only evo consumption gate; narrow Gene hook")
+          PY
+
       - name: Build QA ROM
         run: |
           set -euxo pipefail
