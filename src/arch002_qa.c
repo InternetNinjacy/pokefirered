@@ -185,6 +185,11 @@ void Arch002_RunRuntimeQa(void)
             for (;;);
         }
 
+        gSaveBlock1Ptr->rivalName[0] = 'B';
+        gSaveBlock1Ptr->rivalName[1] = 'L';
+        gSaveBlock1Ptr->rivalName[2] = 'U';
+        gSaveBlock1Ptr->rivalName[3] = 'E';
+        gSaveBlock1Ptr->rivalName[4] = EOS;
         gSaveBlock1Ptr->samEdition.greenName[0] = 'G';
         gSaveBlock1Ptr->samEdition.greenName[1] = 'R';
         gSaveBlock1Ptr->samEdition.greenName[2] = 'E';
