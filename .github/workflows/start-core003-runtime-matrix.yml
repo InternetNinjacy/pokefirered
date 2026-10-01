@@ -1,0 +1,76 @@
+name: START CORE-003 Runtime Matrix QA
+
+on:
+  push:
+    branches:
+      - qa/start-core003-runtime-matrix
+  workflow_dispatch:
+
+jobs:
+  runtime-matrix:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/start-core003-runtime-matrix
+
+      - name: Install dependencies
+        run: |
+          set -euxo pipefail
+          sudo apt update
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee STARTCORE003_ROM_SHA1.txt
+          git rev-parse HEAD | tee STARTCORE003_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > startcore_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat startcore_phase1.log
+          grep -q "STARTCORE PHASE1 PASS six path matrix saved" startcore_phase1.log
+          test -f pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > startcore_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat startcore_phase2.log
+          grep -q "STARTCORE PASS six starter mode paths marker death save reload" startcore_phase2.log
+
+      - name: Reject failures
+        run: |
+          set -euxo pipefail
+          ! grep -h "STARTCORE FAIL" startcore_phase*.log
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: start-core003-runtime-matrix
+          path: |
+            pokefirered.gba
+            pokefirered.sav
+            STARTCORE003_ROM_SHA1.txt
+            STARTCORE003_SOURCE_SHA.txt
+            startcore_phase1.log
+            startcore_phase2.log
+          if-no-files-found: error
