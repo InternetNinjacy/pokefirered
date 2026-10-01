@@ -39,16 +39,27 @@ jobs:
           sha1sum pokefirered.gba | tee GIFT_ROM_SHA1.txt
           git rev-parse HEAD | tee GIFT_SOURCE_SHA.txt
 
-      - name: Runtime GIFT-001/002 QA
+      - name: Runtime GIFT-001/002 QA phase 1 — claim and save
         run: |
           set -euxo pipefail
           rm -f pokefirered.sav
           export SDL_VIDEODRIVER=dummy
           export SDL_AUDIODRIVER=dummy
-          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > gift_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
-          cat gift_runtime.log
-          grep -q "GIFT QA PASS outsider evolution party pc full-storage" gift_runtime.log
-          ! grep -q "GIFT QA FAIL" gift_runtime.log
+          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > gift_runtime_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat gift_runtime_phase1.log
+          grep -q "GIFT QA PHASE1 PASS one-time script claimed and saved" gift_runtime_phase1.log
+          ! grep -q "GIFT QA FAIL" gift_runtime_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime GIFT-001/002 QA phase 2 — reload and reclaim attempt
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 10s mgba -l 31 pokefirered.gba > gift_runtime_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat gift_runtime_phase2.log
+          grep -q "GIFT QA PASS core plus one-time script save reload reclaim blocked" gift_runtime_phase2.log
+          ! grep -q "GIFT QA FAIL" gift_runtime_phase2.log
 
       - name: Upload evidence
         uses: actions/upload-artifact@v4
@@ -58,5 +69,7 @@ jobs:
             pokefirered.gba
             GIFT_ROM_SHA1.txt
             GIFT_SOURCE_SHA.txt
-            gift_runtime.log
+            gift_runtime_phase1.log
+            gift_runtime_phase2.log
+            pokefirered.sav
           if-no-files-found: error
