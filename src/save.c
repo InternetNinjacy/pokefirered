@@ -75,6 +75,17 @@ struct
 // alloted for it in the flash.
 STATIC_ASSERT(sizeof(struct SaveBlock2) <= SECTOR_DATA_SIZE, SaveBlock2FreeSpace);
 STATIC_ASSERT(sizeof(struct SamEditionSaveData) == 0xF0, SamEditionSaveDataSize);
+STATIC_ASSERT(offsetof(struct SamEditionSaveData, coreMetadata) == 0x00, SamEditionCoreMetadataOffset);
+STATIC_ASSERT(offsetof(struct SamEditionSaveData, globalMechanicAux) == 0x10, SamEditionGlobalMechanicAuxOffset);
+STATIC_ASSERT(offsetof(struct SamEditionSaveData, greenName) == 0x50, SamEditionGreenNameOffset);
+STATIC_ASSERT(offsetof(struct SamEditionSaveData, rivalRocketAux) == 0x58, SamEditionRivalRocketAuxOffset);
+STATIC_ASSERT(offsetof(struct SamEditionSaveData, gymSatoshiPostgameAux) == 0x90, SamEditionGymSatoshiPostgameAuxOffset);
+STATIC_ASSERT(offsetof(struct SamEditionSaveData, futureExpansion) == 0xC0, SamEditionFutureExpansionOffset);
+STATIC_ASSERT(offsetof(struct SaveBlock1, flags) == 0x0EE0, SamEditionFlagsOffset);
+STATIC_ASSERT(offsetof(struct SaveBlock1, vars) == 0x1000, SamEditionVarsOffset);
+STATIC_ASSERT(offsetof(struct SaveBlock1, mysteryGift) == 0x3120, SamEditionMysteryGiftOffset);
+STATIC_ASSERT(offsetof(struct SaveBlock1, samEdition) == 0x352C, SamEditionSaveBlockOffset);
+STATIC_ASSERT(offsetof(struct SaveBlock1, ramScript) == 0x361C, SamEditionRamScriptOffset);
 STATIC_ASSERT(sizeof(struct SaveBlock1) == 0x3D68, SamEditionSaveBlock1Layout);
 STATIC_ASSERT(sizeof(struct SaveBlock1) <= SECTOR_DATA_SIZE * (SECTOR_ID_SAVEBLOCK1_END - SECTOR_ID_SAVEBLOCK1_START + 1), SaveBlock1FreeSpace);
 STATIC_ASSERT(sizeof(struct PokemonStorage) <= SECTOR_DATA_SIZE * (SECTOR_ID_PKMN_STORAGE_END - SECTOR_ID_PKMN_STORAGE_START + 1), PokemonStorageFreeSpace);
