@@ -10,6 +10,7 @@
 #include "script_pokemon_util.h"
 #include "constants/items.h"
 #include "constants/pokemon.h"
+#include "constants/vars.h"
 
 static void CB2_ReturnFromChooseHalfParty(void);
 static void CB2_ReturnFromChooseBattleTowerParty(void);
@@ -70,6 +71,14 @@ u8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 unused1, u32 unused2, u8 u
 
     Free(mon);
     return sentToPc;
+}
+
+void MarkSamOriginalStarter(void)
+{
+    bool8 isOriginalStarter = TRUE;
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1 && gPlayerPartyCount != 0)
+        SetMonData(&gPlayerParty[0], MON_DATA_SAM_ORIGINAL_STARTER, &isOriginalStarter);
 }
 
 u8 ScriptGiveEgg(u16 species)
