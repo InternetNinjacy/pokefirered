@@ -36,6 +36,7 @@
 #include "constants/hold_effects.h"
 #include "constants/battle_move_effects.h"
 #include "constants/union_room.h"
+#include "constants/vars.h"
 
 #define SPECIES_TO_HOENN(name)      [SPECIES_##name - 1] = HOENN_DEX_##name
 #define SPECIES_TO_NATIONAL(name)   [SPECIES_##name - 1] = NATIONAL_DEX_##name
@@ -2167,6 +2168,18 @@ void CalculateMonStats(struct Pokemon *mon)
     }
 
     SetMonData(mon, MON_DATA_HP, &currentHP);
+}
+
+void TryMarkMonPermanentDead(struct Pokemon *mon)
+{
+    bool8 isPermanentDead = TRUE;
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1
+        && GetMonData(mon, MON_DATA_HP) == 0
+        && !GetMonData(mon, MON_DATA_SAM_ORIGINAL_STARTER))
+    {
+        SetMonData(mon, MON_DATA_SAM_PERMANENT_DEAD, &isPermanentDead);
+    }
 }
 
 void BoxMonToMon(struct BoxPokemon *src, struct Pokemon *dest)
