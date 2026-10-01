@@ -1752,6 +1752,12 @@ bool8 ScrCmd_givemon(struct ScriptContext * ctx)
     unkParam2 = ScriptReadWord(ctx);
     unkParam3 = ScriptReadByte(ctx);
 
+    // Sam Edition reuses the otherwise-unused givemon parameters for authored
+    // pre-owned rewards. Convert the optional OT-name script pointer into a
+    // runtime address before passing it to the shared delivery helper.
+    if (unkParam1 != 0)
+        unkParam1 -= sAddressOffset;
+
     gSpecialVar_Result = ScriptGiveMon(species, level, item, unkParam1, unkParam2, unkParam3);
     return FALSE;
 }
