@@ -5,7 +5,6 @@
 #include "load_save.h"
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
-#include "pokemon_storage_system_internal.h"
 #include "save.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
@@ -16,6 +15,8 @@
 #define CORE_QA_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)
 
 extern void MarkSamOriginalStarter(void);
+extern void BoxMonAtToMon(u8 boxId, u8 boxPosition, struct Pokemon *dst);
+extern void SetBoxMonAt(u8 boxId, u8 boxPosition, struct BoxPokemon *src);
 
 static void CoreQaLog(const char *text)
 {
