@@ -1121,6 +1121,7 @@ PalletTown_ProfessorOaksLab_EventScript_ChoseStarter::
 	setflag FLAG_PALLET_LADY_NOT_BLOCKING_SIGN
 	copyvar VAR_0x8004, PLAYER_STARTER_SPECIES
 	special GiveSamStarter
+	special MarkSamOriginalStarter
 	copyvar VAR_STARTER_MON, PLAYER_STARTER_NUM
 	bufferspeciesname STR_VAR_1, PLAYER_STARTER_SPECIES
 	message PalletTown_ProfessorOaksLab_Text_ReceivedMonFromOak
