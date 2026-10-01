@@ -45,7 +45,7 @@ jobs:
           rm -f pokefirered.sav
           export SDL_VIDEODRIVER=dummy
           export SDL_AUDIODRIVER=dummy
-          timeout --signal=TERM 6s mgba pokefirered.gba > arch002_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          timeout --signal=TERM 6s mgba -l 31 pokefirered.gba > arch002_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
           cat arch002_phase1.log
           grep -q "ARCH002 PHASE1 PASS state A saved" arch002_phase1.log
           test -f pokefirered.sav
@@ -55,7 +55,7 @@ jobs:
           set -euxo pipefail
           export SDL_VIDEODRIVER=dummy
           export SDL_AUDIODRIVER=dummy
-          timeout --signal=TERM 6s mgba pokefirered.gba > arch002_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          timeout --signal=TERM 6s mgba -l 31 pokefirered.gba > arch002_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
           cat arch002_phase2.log
           grep -q "ARCH002 PHASE2 PASS state B saved" arch002_phase2.log
 
@@ -64,7 +64,7 @@ jobs:
           set -euxo pipefail
           export SDL_VIDEODRIVER=dummy
           export SDL_AUDIODRIVER=dummy
-          timeout --signal=TERM 6s mgba pokefirered.gba > arch002_phase3.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          timeout --signal=TERM 6s mgba -l 31 pokefirered.gba > arch002_phase3.log 2>&1 || test $? -eq 124 -o $? -eq 143
           cat arch002_phase3.log
           grep -q "ARCH002 PASS runtime save load repeated-cycle fresh-regression" arch002_phase3.log
 
