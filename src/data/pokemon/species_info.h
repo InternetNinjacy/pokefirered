@@ -11311,7 +11311,8 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 70,
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = {EGG_GROUP_FIELD, EGG_GROUP_FIELD},
-        .abilities = {ABILITY_SOUL_ROT, ABILITY_NONE},
+        // Soul Rot is authoritative but assignment/runtime integration remains a later SPEC-009 step.
+        .abilities = {ABILITY_NONE, ABILITY_NONE},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
