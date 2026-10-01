@@ -44,6 +44,8 @@ jobs:
           by_id = {x.get("itemId"): x for x in items if isinstance(x, dict)}
           brick = by_id["ITEM_BRICK"]
           gene = by_id["ITEM_ADAPTIVE_GENE"]
+          assert items[244]["itemId"] == "ITEM_BRICK"
+          assert items[245]["itemId"] == "ITEM_ADAPTIVE_GENE"
           assert brick["price"] == 2100
           assert brick["fieldUseFunc"] == "FieldUseFunc_EvoItem"
           assert brick["battleUsage"] == 0
@@ -76,6 +78,10 @@ jobs:
               src = (root / f"data/maps/{mapname}/scripts.inc").read_text()
               for item in ["ITEM_FIRE_STONE","ITEM_THUNDER_STONE","ITEM_WATER_STONE","ITEM_LEAF_STONE","ITEM_SUN_STONE","ITEM_MOON_STONE","ITEM_BRICK"]:
                   assert item in src
+          viridian = (root / "data/maps/ViridianCity_Mart/scripts.inc").read_text()
+          assert "goto_if_ne VAR_STARTER_MON, 0, ViridianCity_Mart_EventScript_OpenShop" in viridian
+          assert "goto_if_ne VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 2, ViridianCity_Mart_EventScript_OpenShop" in viridian
+          assert "setvar VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 3" in viridian
           celadon = (root / "data/maps/CeladonCity_DepartmentStore_4F/scripts.inc").read_text()
           for item in ["ITEM_FIRE_STONE","ITEM_THUNDER_STONE","ITEM_WATER_STONE","ITEM_LEAF_STONE","ITEM_SUN_STONE","ITEM_MOON_STONE","ITEM_BRICK"]:
               assert item in celadon
