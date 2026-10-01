@@ -922,7 +922,7 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_YoungsterTimmy),
     },
-    [TRAINER_YOUNGSTER_JOEY] = {
+    [TRAINER_YOUNGSTER_JOEY_VANILLA] = {
         .trainerClass = TRAINER_CLASS_YOUNGSTER,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
         .trainerPic = TRAINER_PIC_YOUNGSTER,
