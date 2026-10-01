@@ -79,6 +79,14 @@ void GiveSamStarter(void)
     gSpecialVar_Result = ScriptGiveSamStarter(gSpecialVar_0x8004);
 }
 
+void MarkSamOriginalStarter(void)
+{
+    bool8 isOriginalStarter = TRUE;
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1 && gPlayerPartyCount != 0)
+        SetMonData(&gPlayerParty[0], MON_DATA_SAM_ORIGINAL_STARTER, &isOriginalStarter);
+}
+
 static u16 GetSamRivalStarterSpecies(bool8 green)
 {
     switch (VarGet(VAR_STARTER_MON))
