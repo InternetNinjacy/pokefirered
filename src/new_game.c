@@ -1,4 +1,6 @@
 #include "global.h"
+
+void Arch002_Log(const char *text);
 #include "gflib.h"
 #include "random.h"
 #include "overworld.h"
@@ -94,6 +96,7 @@ void Sav2_ClearSetDefault(void)
 void ResetMenuAndMonGlobals(void)
 {
     gDifferentSaveFile = FALSE;
+    Arch002_Log("ARCH002 NG before party clear");
     ZeroPlayerPartyMons();
     ZeroEnemyPartyMons();
     ResetBagCursorPositions();
@@ -117,7 +120,9 @@ void NewGameInitData(void)
     ZeroPlayerPartyMons();
     ZeroEnemyPartyMons();
     ClearBattleTower();
+    Arch002_Log("ARCH002 NG before ClearSav1");
     ClearSav1();
+    Arch002_Log("ARCH002 NG after ClearSav1");
     ClearMailData();
     gSaveBlock2Ptr->specialSaveWarpFlags = 0;
     gSaveBlock2Ptr->gcnLinkFlags = 0;
@@ -126,7 +131,9 @@ void NewGameInitData(void)
     InitPlayerTrainerId();
     PlayTimeCounter_Reset();
     ClearPokedexFlags();
+    Arch002_Log("ARCH002 NG before InitEventData");
     InitEventData();
+    Arch002_Log("ARCH002 NG after InitEventData");
     ResetFameChecker();
     SetMoney(&gSaveBlock1Ptr->money, 3000);
     ResetGameStats();
@@ -136,7 +143,9 @@ void NewGameInitData(void)
     EnableNationalPokedex_RSE();
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
+    Arch002_Log("ARCH002 NG before storage reset");
     ResetPokemonStorageSystem();
+    Arch002_Log("ARCH002 NG after storage reset");
     ClearRoamerData();
     gSaveBlock1Ptr->registeredItem = 0;
     ClearBag();
@@ -148,12 +157,15 @@ void NewGameInitData(void)
     ResetMiniGamesResults();
     ClearMysteryGift();
     SetAllRenewableItemFlags();
+    Arch002_Log("ARCH002 NG before warp/script");
     WarpToPlayersRoom();
     RunScriptImmediately(EventScript_ResetAllMapFlags);
+    Arch002_Log("ARCH002 NG after warp/script");
     StringCopy(gSaveBlock1Ptr->rivalName, rivalName);
     StringCopy(gSaveBlock1Ptr->samEdition.greenName, greenName);
     gSaveBlock1Ptr->vars[VAR_SAM_GAME_MODE - VARS_START] = samGameMode;
     ResetTrainerTowerResults();
+    Arch002_Log("ARCH002 NG complete");
 }
 
 static void ResetMiniGamesResults(void)
