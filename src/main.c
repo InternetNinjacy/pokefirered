@@ -18,6 +18,7 @@
 #include "sloopsvc.h"
 
 extern u32 intr_main[];
+void Arch002_RunRuntimeQa(void);
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -147,6 +148,7 @@ void AgbMain()
     EnableVCountIntrAtLine150();
     InitRFU();
     CheckForFlashMemory();
+    Arch002_RunRuntimeQa();
     InitMainCallbacks();
     InitMapMusic();
     ClearDma3Requests();
