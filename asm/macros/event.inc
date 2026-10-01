@@ -1011,6 +1011,15 @@
 	.byte \otGender
 	.endm
 
+	@ Safe one-time wrapper for a pre-owned Pokémon reward. The claim flag is
+	@ committed only after party/PC delivery succeeds. If party and storage are
+	@ both full, control jumps to noRoomScript and the reward stays unclaimed.
+	.macro givepreownedmononce species:req, level:req, otName:req, otId:req, otGender:req, claimedFlag:req, noRoomScript:req, item=ITEM_NONE
+	givepreownedmon \species, \level, \otName, \otId, \otGender, \item
+	goto_if_eq VAR_RESULT, 2, \noRoomScript
+	setflag \claimedFlag
+	.endm
+
 	@ Gives the player an Egg of the specified species.
 	@ VAR_RESULT will be set to MON_GIVEN_TO_PARTY, MON_GIVEN_TO_PC, or MON_CANT_GIVE depending on the outcome. 
 	.macro giveegg species:req
