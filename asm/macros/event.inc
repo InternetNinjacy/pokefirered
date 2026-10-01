@@ -1011,10 +1011,11 @@
 	.byte \otGender
 	.endm
 
-	@ Safe one-time wrapper for a pre-owned Pokémon reward. The claim flag is
-	@ committed only after party/PC delivery succeeds. If party and storage are
-	@ both full, control jumps to noRoomScript and the reward stays unclaimed.
-	.macro givepreownedmononce species:req, level:req, otName:req, otId:req, otGender:req, claimedFlag:req, noRoomScript:req, item=ITEM_NONE
+	@ Safe one-time wrapper for a pre-owned Pokémon reward. It guards an
+	@ already-claimed reward, commits the claim flag only after party/PC delivery
+	@ succeeds, and leaves the reward unclaimed if both party and storage are full.
+	.macro givepreownedmononce species:req, level:req, otName:req, otId:req, otGender:req, claimedFlag:req, claimedScript:req, noRoomScript:req, item=ITEM_NONE
+	goto_if_set \claimedFlag, \claimedScript
 	givepreownedmon \species, \level, \otName, \otId, \otGender, \item
 	goto_if_eq VAR_RESULT, 2, \noRoomScript
 	setflag \claimedFlag
