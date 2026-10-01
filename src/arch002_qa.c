@@ -274,7 +274,13 @@ void Arch002_RunRuntimeQa(void)
         Arch002_Log("ARCH002 TRACE before fresh NewGameInitData");
         NewGameInitData();
         Arch002_Log("ARCH002 TRACE after fresh NewGameInitData");
-        if (!BytesAreZero((u8 *)&gSaveBlock1Ptr->samEdition, sizeof(struct SamEditionSaveData)))
+        if (!BytesAreZero(gSaveBlock1Ptr->samEdition.coreMetadata, sizeof(gSaveBlock1Ptr->samEdition.coreMetadata))
+         || !BytesAreZero(gSaveBlock1Ptr->samEdition.globalMechanicAux, sizeof(gSaveBlock1Ptr->samEdition.globalMechanicAux))
+         || gSaveBlock1Ptr->samEdition.greenName[0] != EOS
+         || !BytesAreZero(&gSaveBlock1Ptr->samEdition.greenName[1], sizeof(gSaveBlock1Ptr->samEdition.greenName) - 1)
+         || !BytesAreZero(gSaveBlock1Ptr->samEdition.rivalRocketAux, sizeof(gSaveBlock1Ptr->samEdition.rivalRocketAux))
+         || !BytesAreZero(gSaveBlock1Ptr->samEdition.gymSatoshiPostgameAux, sizeof(gSaveBlock1Ptr->samEdition.gymSatoshiPostgameAux))
+         || !BytesAreZero(gSaveBlock1Ptr->samEdition.futureExpansion, sizeof(gSaveBlock1Ptr->samEdition.futureExpansion)))
         {
             Arch002_Log("ARCH002 FAIL fresh regression NewGameInitData");
             for (;;);
