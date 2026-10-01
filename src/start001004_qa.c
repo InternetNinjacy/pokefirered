@@ -3,6 +3,7 @@
 #include "event_data.h"
 #include "gba/isagbprint.h"
 #include "load_save.h"
+#include "item.h"
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
 #include "save.h"
@@ -117,8 +118,13 @@ static void CheckAdaptiveGene(void)
     u16 transformedSpecies = SPECIES_VAPOREON;
 
     ResetParty();
+    ClearBag();
     CreateMon(&gPlayerParty[0], SPECIES_DITTO, 20, 20, FALSE, 0, OT_ID_PLAYER_ID, 0);
-    gPlayerPartyCount = 1;
+    CreateMon(&gPlayerParty[1], SPECIES_EEVEE, 20, 20, FALSE, 0, OT_ID_PLAYER_ID, 0);
+    gPlayerPartyCount = 2;
+    item = ITEM_ADAPTIVE_GENE;
+    SetMonData(&gPlayerParty[0], MON_DATA_HELD_ITEM, &item);
+
     gBattlerPartyIndexes[0] = 0;
     gBattleMons[0].species = transformedSpecies;
     gBattleMons[0].item = ITEM_ADAPTIVE_GENE;
@@ -130,11 +136,22 @@ static void CheckAdaptiveGene(void)
         Fail("STARTQA FAIL Adaptive Gene rounding");
 
     item = ITEM_NONE;
-    gBattleMons[0].item = item;
+    SetMonData(&gPlayerParty[0], MON_DATA_HELD_ITEM, &item);
+    gBattleMons[0].item = ITEM_NONE;
     if (ApplyAdaptiveGeneDamageModifier(100, 0) != 100)
         Fail("STARTQA FAIL Adaptive Gene removal");
 
-    CreateMon(&gPlayerParty[0], SPECIES_EEVEE, 20, 20, FALSE, 0, OT_ID_PLAYER_ID, 0);
+    if (!AddBagItem(ITEM_ADAPTIVE_GENE, 1) || !CheckBagHasItem(ITEM_ADAPTIVE_GENE, 1))
+        Fail("STARTQA FAIL Adaptive Gene bag storage");
+    if (!RemoveBagItem(ITEM_ADAPTIVE_GENE, 1) || CheckBagHasItem(ITEM_ADAPTIVE_GENE, 1))
+        Fail("STARTQA FAIL Adaptive Gene bag removal");
+
+    item = ITEM_ADAPTIVE_GENE;
+    SetMonData(&gPlayerParty[1], MON_DATA_HELD_ITEM, &item);
+    if (GetMonData(&gPlayerParty[1], MON_DATA_HELD_ITEM) != ITEM_ADAPTIVE_GENE)
+        Fail("STARTQA FAIL Adaptive Gene transfer");
+
+    gBattlerPartyIndexes[0] = 1;
     gBattleMons[0].species = SPECIES_DITTO;
     gBattleMons[0].item = ITEM_ADAPTIVE_GENE;
     if (ApplyAdaptiveGeneDamageModifier(100, 0) != 100)
