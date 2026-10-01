@@ -1,0 +1,71 @@
+name: ENV-002 Clean Reproduction
+
+on:
+  push:
+    branches:
+      - env-002-clean-repro
+  workflow_dispatch:
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Record clean host
+        run: |
+          set -euxo pipefail
+          uname -a
+          cat /etc/os-release
+
+      - name: Install documented prerequisites
+        run: |
+          set -euxo pipefail
+          sudo apt update
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev
+          git --version
+          make --version | head -n 1
+          gcc --version | head -n 1
+          arm-none-eabi-as --version | head -n 1
+          arm-none-eabi-ar --version | head -n 1
+
+      - name: Clone Sam Edition exactly as documented
+        run: |
+          set -euxo pipefail
+          cd "$HOME"
+          mkdir -p pokemon-sam
+          cd pokemon-sam
+          git clone https://github.com/InternetNinjacy/pokefirered.git
+          cd pokefirered
+          git fetch origin
+          git checkout env-002-reproducible-build-docs
+          git rev-parse HEAD
+          git status --short --branch
+
+      - name: Build and install agbcc exactly as documented
+        run: |
+          set -euxo pipefail
+          cd "$HOME/pokemon-sam"
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Build Sam Edition
+        run: |
+          set -euxo pipefail
+          cd "$HOME/pokemon-sam/pokefirered"
+          git status --short --branch
+          make
+          test -f pokefirered.gba
+          ls -lh pokefirered.gba
+          sha1sum pokefirered.gba | tee ENV002_ROM_SHA1.txt
+          git rev-parse HEAD | tee ENV002_SOURCE_SHA.txt
+
+      - name: Upload reproduction evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: env-002-clean-reproduction
+          path: |
+            ~/pokemon-sam/pokefirered/pokefirered.gba
+            ~/pokemon-sam/pokefirered/ENV002_ROM_SHA1.txt
+            ~/pokemon-sam/pokefirered/ENV002_SOURCE_SHA.txt
+          if-no-files-found: error
