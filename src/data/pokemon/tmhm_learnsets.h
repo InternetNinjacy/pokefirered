@@ -186,23 +186,25 @@ static const u32 sTMHMLearnsets[][3] =
                                          0,
                                          0),
 
-    [SPECIES_BUTTERFREE]  = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+        [SPECIES_BUTTERFREE]  = TMHM_LEARNSET(TMHM0(TM02_RETURN)
                                          | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
                                          | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
-                                         | TMHM0(TM29_SHADOW_BALL)
                                          | TMHM0(TM11_AERIAL_ACE)
-                                         | TMHM0(TM04_FACADE),
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM26_SIGNAL_BEAM)
+                                         | TMHM0(TM29_SHADOW_BALL),
                                          TMHM1(TM38_SUNNY_DAY)
                                          | TMHM1(TM42_RAIN_DANCE)
                                          | TMHM1(TM43_GIGA_DRAIN)
                                          | TMHM1(TM45_SOLAR_BEAM)
+                                         | TMHM1(TM51_CALM_MIND)
                                          | TMHM1(TM54_PSYCHIC)
                                          | TMHM1(TM64_THIEF),
                                          TMHM2(TM68_HIDDEN_POWER)
                                          | TMHM2(HM05_FLASH)),
 
-    [SPECIES_WEEDLE]      = TMHM_LEARNSET(0,
+[SPECIES_WEEDLE]      = TMHM_LEARNSET(0,
                                          0,
                                          0),
 
@@ -210,14 +212,17 @@ static const u32 sTMHMLearnsets[][3] =
                                          0,
                                          0),
 
-    [SPECIES_BEEDRILL]    = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+        [SPECIES_BEEDRILL]    = TMHM_LEARNSET(TMHM0(TM02_RETURN)
                                          | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
                                          | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
                                          | TMHM0(TM08_BRICK_BREAK)
-                                         | TMHM0(TM16_SLUDGE_BOMB)
                                          | TMHM0(TM11_AERIAL_ACE)
-                                         | TMHM0(TM04_FACADE),
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM15_POISON_FANG)
+                                         | TMHM0(TM16_SLUDGE_BOMB)
+                                         | TMHM0(TM25_FURY_CUTTER)
+                                         | TMHM0(TM27_MEGAHORN),
                                          TMHM1(TM38_SUNNY_DAY)
                                          | TMHM1(TM43_GIGA_DRAIN)
                                          | TMHM1(TM45_SOLAR_BEAM)
@@ -226,7 +231,7 @@ static const u32 sTMHMLearnsets[][3] =
                                          | TMHM2(HM01_CUT)
                                          | TMHM2(HM06_ROCK_SMASH)),
 
-    [SPECIES_PIDGEY]      = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+[SPECIES_PIDGEY]      = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
                                          | TMHM0(TM05_PROTECT)
                                          | TMHM0(TM02_RETURN)
                                          | TMHM0(TM11_AERIAL_ACE)
@@ -1571,58 +1576,58 @@ static const u32 sTMHMLearnsets[][3] =
                                          | TMHM2(HM03_SURF)
                                          | TMHM2(HM08_DIVE)),
 
-    [SPECIES_GASTLY]      = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+        [SPECIES_GASTLY]      = TMHM_LEARNSET(TMHM0(TM04_FACADE)
                                          | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
-                                         | TMHM0(TM29_SHADOW_BALL)
-                                         | TMHM0(TM16_SLUDGE_BOMB)
-                                         | TMHM0(TM04_FACADE),
-                                         TMHM1(TM38_SUNNY_DAY)
-                                         | TMHM1(TM42_RAIN_DANCE)
-                                         | TMHM1(TM43_GIGA_DRAIN)
-                                         | TMHM1(TM48_THUNDERBOLT)
-                                         | TMHM1(TM54_PSYCHIC)
-                                         | TMHM1(TM64_THIEF),
-                                         TMHM2(TM68_HIDDEN_POWER)
-                                         | TMHM2(TM67_TAUNT)),
-
-    [SPECIES_HAUNTER]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
-                                         | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
-                                         | TMHM0(TM29_SHADOW_BALL)
-                                         | TMHM0(TM16_SLUDGE_BOMB)
-                                         | TMHM0(TM04_FACADE),
-                                         TMHM1(TM38_SUNNY_DAY)
-                                         | TMHM1(TM42_RAIN_DANCE)
-                                         | TMHM1(TM43_GIGA_DRAIN)
-                                         | TMHM1(TM48_THUNDERBOLT)
-                                         | TMHM1(TM54_PSYCHIC)
-                                         | TMHM1(TM64_THIEF),
-                                         TMHM2(TM68_HIDDEN_POWER)
-                                         | TMHM2(TM67_TAUNT)),
-
-    [SPECIES_GENGAR]      = TMHM_LEARNSET(TMHM0(TM06_FOCUS_PUNCH)
                                          | TMHM0(TM14_TOXIC)
-                                         | TMHM0(TM03_HYPER_BEAM)
-                                         | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
-                                         | TMHM0(TM29_SHADOW_BALL)
-                                         | TMHM0(TM08_BRICK_BREAK)
                                          | TMHM0(TM16_SLUDGE_BOMB)
-                                         | TMHM0(TM04_FACADE),
-                                         TMHM1(TM38_SUNNY_DAY)
-                                         | TMHM1(TM42_RAIN_DANCE)
-                                         | TMHM1(TM43_GIGA_DRAIN)
+                                         | TMHM0(TM29_SHADOW_BALL)
+                                         | TMHM0(TM30_GHOSTLY_WAIL),
+                                         TMHM1(TM43_GIGA_DRAIN)
+                                         | TMHM1(TM46_SHOCK_WAVE)
                                          | TMHM1(TM48_THUNDERBOLT)
                                          | TMHM1(TM49_THUNDER)
                                          | TMHM1(TM54_PSYCHIC)
                                          | TMHM1(TM64_THIEF),
-                                         TMHM2(TM68_HIDDEN_POWER)
-                                         | TMHM2(TM67_TAUNT)
-                                         | TMHM2(HM04_STRENGTH)
-                                         | TMHM2(HM06_ROCK_SMASH)),
+                                         TMHM2(TM67_TAUNT)
+                                         | TMHM2(TM68_HIDDEN_POWER)),
 
-    [SPECIES_ONIX]        = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+    [SPECIES_HAUNTER]     = TMHM_LEARNSET(TMHM0(TM04_FACADE)
+                                         | TMHM0(TM05_PROTECT)
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM16_SLUDGE_BOMB)
+                                         | TMHM0(TM29_SHADOW_BALL)
+                                         | TMHM0(TM30_GHOSTLY_WAIL),
+                                         TMHM1(TM43_GIGA_DRAIN)
+                                         | TMHM1(TM46_SHOCK_WAVE)
+                                         | TMHM1(TM48_THUNDERBOLT)
+                                         | TMHM1(TM49_THUNDER)
+                                         | TMHM1(TM54_PSYCHIC)
+                                         | TMHM1(TM64_THIEF),
+                                         TMHM2(TM67_TAUNT)
+                                         | TMHM2(TM68_HIDDEN_POWER)),
+
+    [SPECIES_GENGAR]      = TMHM_LEARNSET(TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
+                                         | TMHM0(TM05_PROTECT)
+                                         | TMHM0(TM08_BRICK_BREAK)
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM16_SLUDGE_BOMB)
+                                         | TMHM0(TM28_SHADOW_PUNCH)
+                                         | TMHM0(TM29_SHADOW_BALL)
+                                         | TMHM0(TM30_GHOSTLY_WAIL),
+                                         TMHM1(TM34_FIRE_PUNCH)
+                                         | TMHM1(TM43_GIGA_DRAIN)
+                                         | TMHM1(TM46_SHOCK_WAVE)
+                                         | TMHM1(TM47_THUNDER_PUNCH)
+                                         | TMHM1(TM48_THUNDERBOLT)
+                                         | TMHM1(TM49_THUNDER)
+                                         | TMHM1(TM54_PSYCHIC)
+                                         | TMHM1(TM56_ICE_PUNCH)
+                                         | TMHM1(TM64_THIEF),
+                                         TMHM2(TM67_TAUNT)
+                                         | TMHM2(TM68_HIDDEN_POWER)),
+
+[SPECIES_ONIX]        = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
                                          | TMHM0(TM05_PROTECT)
                                          | TMHM0(TM17_EARTHQUAKE)
                                          | TMHM0(TM02_RETURN)
@@ -1849,29 +1854,40 @@ static const u32 sTMHMLearnsets[][3] =
                                          | TMHM2(HM04_STRENGTH)
                                          | TMHM2(HM06_ROCK_SMASH)),
 
-    [SPECIES_LICKITUNG]   = TMHM_LEARNSET(TMHM0(TM06_FOCUS_PUNCH)
-                                         | TMHM0(TM14_TOXIC)
-                                         | TMHM0(TM03_HYPER_BEAM)
-                                         | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM17_EARTHQUAKE)
+        [SPECIES_LICKITUNG]   = TMHM_LEARNSET(TMHM0(TM01_BODY_SLAM)
                                          | TMHM0(TM02_RETURN)
-                                         | TMHM0(TM18_DIG)
-                                         | TMHM0(TM29_SHADOW_BALL)
+                                         | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
+                                         | TMHM0(TM05_PROTECT)
+                                         | TMHM0(TM06_FOCUS_PUNCH)
                                          | TMHM0(TM08_BRICK_BREAK)
-                                         | TMHM0(TM24_SANDSTORM)
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM17_EARTHQUAKE)
+                                         | TMHM0(TM18_DIG)
+                                         | TMHM0(TM20_MUD_SLAP)
                                          | TMHM0(TM21_ROCK_TOMB)
-                                         | TMHM0(TM04_FACADE),
-                                         TMHM1(TM40_WATER_PULSE)
-                                         | TMHM1(TM38_SUNNY_DAY)
-                                         | TMHM1(TM57_ICE_BEAM)
-                                         | TMHM1(TM58_BLIZZARD)
-                                         | TMHM1(TM42_RAIN_DANCE)
-                                         | TMHM1(TM45_SOLAR_BEAM)
-                                         | TMHM1(TM48_THUNDERBOLT)
-                                         | TMHM1(TM49_THUNDER)
-                                         | TMHM1(TM46_SHOCK_WAVE)
+                                         | TMHM0(TM22_ROCK_SLIDE)
+                                         | TMHM0(TM23_BOULDER_BASH)
+                                         | TMHM0(TM24_SANDSTORM)
+                                         | TMHM0(TM28_SHADOW_PUNCH)
+                                         | TMHM0(TM29_SHADOW_BALL)
+                                         | TMHM0(TM30_GHOSTLY_WAIL),
+                                         TMHM1(TM34_FIRE_PUNCH)
                                          | TMHM1(TM35_FLAMETHROWER)
                                          | TMHM1(TM36_FIRE_BLAST)
+                                         | TMHM1(TM38_SUNNY_DAY)
+                                         | TMHM1(TM40_WATER_PULSE)
+                                         | TMHM1(TM42_RAIN_DANCE)
+                                         | TMHM1(TM45_SOLAR_BEAM)
+                                         | TMHM1(TM46_SHOCK_WAVE)
+                                         | TMHM1(TM47_THUNDER_PUNCH)
+                                         | TMHM1(TM48_THUNDERBOLT)
+                                         | TMHM1(TM49_THUNDER)
+                                         | TMHM1(TM50_THUNDER_WAVE)
+                                         | TMHM1(TM55_ICY_WIND)
+                                         | TMHM1(TM56_ICE_PUNCH)
+                                         | TMHM1(TM57_ICE_BEAM)
+                                         | TMHM1(TM58_BLIZZARD)
                                          | TMHM1(TM64_THIEF),
                                          TMHM2(TM68_HIDDEN_POWER)
                                          | TMHM2(HM01_CUT)
@@ -1879,7 +1895,7 @@ static const u32 sTMHMLearnsets[][3] =
                                          | TMHM2(HM04_STRENGTH)
                                          | TMHM2(HM06_ROCK_SMASH)),
 
-    [SPECIES_KOFFING]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+[SPECIES_KOFFING]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
                                          | TMHM0(TM05_PROTECT)
                                          | TMHM0(TM02_RETURN)
                                          | TMHM0(TM29_SHADOW_BALL)
@@ -4907,14 +4923,16 @@ static const u32 sTMHMLearnsets[][3] =
                                          0,
                                          0),
 
-    [SPECIES_BEAUTIFLY]   = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+        [SPECIES_BEAUTIFLY]   = TMHM_LEARNSET(TMHM0(TM02_RETURN)
                                          | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
                                          | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
-                                         | TMHM0(TM29_SHADOW_BALL)
                                          | TMHM0(TM11_AERIAL_ACE)
-                                         | TMHM0(TM04_FACADE),
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM25_FURY_CUTTER)
+                                         | TMHM0(TM26_SIGNAL_BEAM),
                                          TMHM1(TM38_SUNNY_DAY)
+                                         | TMHM1(TM42_RAIN_DANCE)
                                          | TMHM1(TM43_GIGA_DRAIN)
                                          | TMHM1(TM45_SOLAR_BEAM)
                                          | TMHM1(TM54_PSYCHIC)
@@ -4922,28 +4940,28 @@ static const u32 sTMHMLearnsets[][3] =
                                          TMHM2(TM68_HIDDEN_POWER)
                                          | TMHM2(HM05_FLASH)),
 
-    [SPECIES_CASCOON]     = TMHM_LEARNSET(0,
+[SPECIES_CASCOON]     = TMHM_LEARNSET(0,
                                          0,
                                          0),
 
-    [SPECIES_DUSTOX]      = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+        [SPECIES_DUSTOX]      = TMHM_LEARNSET(TMHM0(TM02_RETURN)
                                          | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
                                          | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
-                                         | TMHM0(TM29_SHADOW_BALL)
+                                         | TMHM0(TM14_TOXIC)
                                          | TMHM0(TM16_SLUDGE_BOMB)
-                                         | TMHM0(TM11_AERIAL_ACE)
-                                         | TMHM0(TM04_FACADE),
-                                         TMHM1(TM38_SUNNY_DAY)
-                                         | TMHM1(TM52_LIGHT_SCREEN)
+                                         | TMHM0(TM25_FURY_CUTTER)
+                                         | TMHM0(TM26_SIGNAL_BEAM),
+                                         TMHM1(TM42_RAIN_DANCE)
                                          | TMHM1(TM43_GIGA_DRAIN)
-                                         | TMHM1(TM45_SOLAR_BEAM)
+                                         | TMHM1(TM52_LIGHT_SCREEN)
+                                         | TMHM1(TM53_REFLECT)
                                          | TMHM1(TM54_PSYCHIC)
                                          | TMHM1(TM64_THIEF),
                                          TMHM2(TM68_HIDDEN_POWER)
                                          | TMHM2(HM05_FLASH)),
 
-    [SPECIES_LOTAD]       = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+[SPECIES_LOTAD]       = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
                                          | TMHM0(TM05_PROTECT)
                                          | TMHM0(TM02_RETURN)
                                          | TMHM0(TM04_FACADE),
@@ -5546,36 +5564,42 @@ static const u32 sTMHMLearnsets[][3] =
                                          | TMHM2(HM07_WATERFALL)
                                          | TMHM2(HM08_DIVE)),
 
-    [SPECIES_FEEBAS]      = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+        [SPECIES_FEEBAS]      = TMHM_LEARNSET(TMHM0(TM02_RETURN)
+                                         | TMHM0(TM04_FACADE)
                                          | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
-                                         | TMHM0(TM04_FACADE),
+                                         | TMHM0(TM14_TOXIC),
                                          TMHM1(TM40_WATER_PULSE)
-                                         | TMHM1(TM59_HAIL)
+                                         | TMHM1(TM42_RAIN_DANCE)
+                                         | TMHM1(TM55_ICY_WIND)
                                          | TMHM1(TM57_ICE_BEAM)
                                          | TMHM1(TM58_BLIZZARD)
-                                         | TMHM1(TM42_RAIN_DANCE),
+                                         | TMHM1(TM59_HAIL),
                                          TMHM2(TM68_HIDDEN_POWER)
                                          | TMHM2(HM03_SURF)
-                                         | TMHM2(HM07_WATERFALL)
-                                         | TMHM2(HM08_DIVE)),
+                                         | TMHM2(HM07_WATERFALL)),
 
-    [SPECIES_MILOTIC]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+    [SPECIES_MILOTIC]     = TMHM_LEARNSET(TMHM0(TM02_RETURN)
                                          | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
                                          | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
-                                         | TMHM0(TM04_FACADE),
+                                         | TMHM0(TM14_TOXIC),
                                          TMHM1(TM40_WATER_PULSE)
-                                         | TMHM1(TM59_HAIL)
+                                         | TMHM1(TM41_MUDDY_WATER)
+                                         | TMHM1(TM42_RAIN_DANCE)
+                                         | TMHM1(TM51_CALM_MIND)
+                                         | TMHM1(TM52_LIGHT_SCREEN)
+                                         | TMHM1(TM53_REFLECT)
+                                         | TMHM1(TM54_PSYCHIC)
+                                         | TMHM1(TM55_ICY_WIND)
                                          | TMHM1(TM57_ICE_BEAM)
                                          | TMHM1(TM58_BLIZZARD)
-                                         | TMHM1(TM42_RAIN_DANCE),
+                                         | TMHM1(TM59_HAIL)
+                                         | TMHM1(TM60_DRAGON_BREATH),
                                          TMHM2(TM68_HIDDEN_POWER)
                                          | TMHM2(HM03_SURF)
-                                         | TMHM2(HM07_WATERFALL)
-                                         | TMHM2(HM08_DIVE)),
+                                         | TMHM2(HM07_WATERFALL)),
 
-    [SPECIES_CARVANHA]    = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+[SPECIES_CARVANHA]    = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
                                          | TMHM0(TM05_PROTECT)
                                          | TMHM0(TM02_RETURN)
                                          | TMHM0(TM04_FACADE),
@@ -6088,45 +6112,58 @@ static const u32 sTMHMLearnsets[][3] =
                                          0,
                                          0),
 
-    [SPECIES_DUSKULL]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+        [SPECIES_DUSKULL]     = TMHM_LEARNSET(TMHM0(TM02_RETURN)
+                                         | TMHM0(TM04_FACADE)
                                          | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
+                                         | TMHM0(TM14_TOXIC)
                                          | TMHM0(TM29_SHADOW_BALL)
-                                         | TMHM0(TM04_FACADE),
-                                         TMHM1(TM51_CALM_MIND)
-                                         | TMHM1(TM38_SUNNY_DAY)
+                                         | TMHM0(TM30_GHOSTLY_WAIL),
+                                         TMHM1(TM38_SUNNY_DAY)
+                                         | TMHM1(TM39_WILL_O_WISP)
+                                         | TMHM1(TM42_RAIN_DANCE)
+                                         | TMHM1(TM51_CALM_MIND)
+                                         | TMHM1(TM54_PSYCHIC)
+                                         | TMHM1(TM55_ICY_WIND)
                                          | TMHM1(TM57_ICE_BEAM)
                                          | TMHM1(TM58_BLIZZARD)
-                                         | TMHM1(TM42_RAIN_DANCE)
-                                         | TMHM1(TM54_PSYCHIC)
                                          | TMHM1(TM64_THIEF),
-                                         TMHM2(TM68_HIDDEN_POWER)
-                                         | TMHM2(TM67_TAUNT)
+                                         TMHM2(TM67_TAUNT)
+                                         | TMHM2(TM68_HIDDEN_POWER)
                                          | TMHM2(HM05_FLASH)),
 
-    [SPECIES_DUSCLOPS]    = TMHM_LEARNSET(TMHM0(TM06_FOCUS_PUNCH)
-                                         | TMHM0(TM14_TOXIC)
-                                         | TMHM0(TM03_HYPER_BEAM)
-                                         | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM17_EARTHQUAKE)
+    [SPECIES_DUSCLOPS]    = TMHM_LEARNSET(TMHM0(TM01_BODY_SLAM)
                                          | TMHM0(TM02_RETURN)
-                                         | TMHM0(TM29_SHADOW_BALL)
+                                         | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
+                                         | TMHM0(TM05_PROTECT)
+                                         | TMHM0(TM06_FOCUS_PUNCH)
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM17_EARTHQUAKE)
+                                         | TMHM0(TM20_MUD_SLAP)
                                          | TMHM0(TM21_ROCK_TOMB)
-                                         | TMHM0(TM04_FACADE),
-                                         TMHM1(TM51_CALM_MIND)
+                                         | TMHM0(TM22_ROCK_SLIDE)
+                                         | TMHM0(TM28_SHADOW_PUNCH)
+                                         | TMHM0(TM29_SHADOW_BALL)
+                                         | TMHM0(TM30_GHOSTLY_WAIL),
+                                         TMHM1(TM34_FIRE_PUNCH)
                                          | TMHM1(TM38_SUNNY_DAY)
+                                         | TMHM1(TM39_WILL_O_WISP)
+                                         | TMHM1(TM42_RAIN_DANCE)
+                                         | TMHM1(TM47_THUNDER_PUNCH)
+                                         | TMHM1(TM51_CALM_MIND)
+                                         | TMHM1(TM54_PSYCHIC)
+                                         | TMHM1(TM55_ICY_WIND)
+                                         | TMHM1(TM56_ICE_PUNCH)
                                          | TMHM1(TM57_ICE_BEAM)
                                          | TMHM1(TM58_BLIZZARD)
-                                         | TMHM1(TM42_RAIN_DANCE)
-                                         | TMHM1(TM54_PSYCHIC)
                                          | TMHM1(TM64_THIEF),
-                                         TMHM2(TM68_HIDDEN_POWER)
-                                         | TMHM2(TM67_TAUNT)
+                                         TMHM2(TM67_TAUNT)
+                                         | TMHM2(TM68_HIDDEN_POWER)
                                          | TMHM2(HM04_STRENGTH)
                                          | TMHM2(HM05_FLASH)
                                          | TMHM2(HM06_ROCK_SMASH)),
 
-    [SPECIES_ROSELIA]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+[SPECIES_ROSELIA]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
                                          | TMHM0(TM05_PROTECT)
                                          | TMHM0(TM02_RETURN)
                                          | TMHM0(TM29_SHADOW_BALL)
@@ -6254,16 +6291,20 @@ static const u32 sTMHMLearnsets[][3] =
                                          | TMHM2(HM04_STRENGTH)
                                          | TMHM2(HM06_ROCK_SMASH)),
 
-    [SPECIES_TROPIUS]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
-                                         | TMHM0(TM03_HYPER_BEAM)
-                                         | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM17_EARTHQUAKE)
+        [SPECIES_TROPIUS]     = TMHM_LEARNSET(TMHM0(TM01_BODY_SLAM)
                                          | TMHM0(TM02_RETURN)
-                                         | TMHM0(TM11_AERIAL_ACE)
+                                         | TMHM0(TM03_HYPER_BEAM)
                                          | TMHM0(TM04_FACADE)
+                                         | TMHM0(TM05_PROTECT)
+                                         | TMHM0(TM11_AERIAL_ACE)
+                                         | TMHM0(TM13_SKY_ATTACK)
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM17_EARTHQUAKE)
+                                         | TMHM0(TM20_MUD_SLAP)
                                          | TMHM0(TM32_STEEL_WING),
                                          TMHM1(TM38_SUNNY_DAY)
                                          | TMHM1(TM43_GIGA_DRAIN)
+                                         | TMHM1(TM44_SEED_STRIKE)
                                          | TMHM1(TM45_SOLAR_BEAM),
                                          TMHM2(TM68_HIDDEN_POWER)
                                          | TMHM2(HM01_CUT)
@@ -6272,7 +6313,7 @@ static const u32 sTMHMLearnsets[][3] =
                                          | TMHM2(HM05_FLASH)
                                          | TMHM2(HM06_ROCK_SMASH)),
 
-    [SPECIES_WHISMUR]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+[SPECIES_WHISMUR]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
                                          | TMHM0(TM05_PROTECT)
                                          | TMHM0(TM02_RETURN)
                                          | TMHM0(TM29_SHADOW_BALL)
@@ -6408,42 +6449,36 @@ static const u32 sTMHMLearnsets[][3] =
                                          | TMHM2(HM05_FLASH)
                                          | TMHM2(HM06_ROCK_SMASH)),
 
-    [SPECIES_SHUPPET]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+        [SPECIES_SHUPPET]     = TMHM_LEARNSET(TMHM0(TM02_RETURN)
+                                         | TMHM0(TM04_FACADE)
                                          | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
+                                         | TMHM0(TM14_TOXIC)
                                          | TMHM0(TM29_SHADOW_BALL)
-                                         | TMHM0(TM04_FACADE),
-                                         TMHM1(TM51_CALM_MIND)
-                                         | TMHM1(TM38_SUNNY_DAY)
+                                         | TMHM0(TM30_GHOSTLY_WAIL),
+                                         TMHM1(TM38_SUNNY_DAY)
                                          | TMHM1(TM42_RAIN_DANCE)
-                                         | TMHM1(TM48_THUNDERBOLT)
-                                         | TMHM1(TM49_THUNDER)
                                          | TMHM1(TM54_PSYCHIC)
-                                         | TMHM1(TM46_SHOCK_WAVE)
                                          | TMHM1(TM64_THIEF),
                                          TMHM2(TM68_HIDDEN_POWER)
-                                         | TMHM2(TM67_TAUNT)
                                          | TMHM2(HM05_FLASH)),
 
-    [SPECIES_BANETTE]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+    [SPECIES_BANETTE]     = TMHM_LEARNSET(TMHM0(TM02_RETURN)
                                          | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
                                          | TMHM0(TM05_PROTECT)
-                                         | TMHM0(TM02_RETURN)
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM28_SHADOW_PUNCH)
                                          | TMHM0(TM29_SHADOW_BALL)
-                                         | TMHM0(TM04_FACADE),
-                                         TMHM1(TM51_CALM_MIND)
-                                         | TMHM1(TM38_SUNNY_DAY)
+                                         | TMHM0(TM30_GHOSTLY_WAIL),
+                                         TMHM1(TM38_SUNNY_DAY)
                                          | TMHM1(TM42_RAIN_DANCE)
-                                         | TMHM1(TM48_THUNDERBOLT)
-                                         | TMHM1(TM49_THUNDER)
                                          | TMHM1(TM54_PSYCHIC)
-                                         | TMHM1(TM46_SHOCK_WAVE)
                                          | TMHM1(TM64_THIEF),
-                                         TMHM2(TM68_HIDDEN_POWER)
-                                         | TMHM2(TM67_TAUNT)
+                                         TMHM2(TM67_TAUNT)
+                                         | TMHM2(TM68_HIDDEN_POWER)
                                          | TMHM2(HM05_FLASH)),
 
-    [SPECIES_SEVIPER]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
+[SPECIES_SEVIPER]     = TMHM_LEARNSET(TMHM0(TM14_TOXIC)
                                          | TMHM0(TM05_PROTECT)
                                          | TMHM0(TM17_EARTHQUAKE)
                                          | TMHM0(TM02_RETURN)
@@ -7126,13 +7161,67 @@ static const u32 sTMHMLearnsets[][3] =
                                          | TMHM2(HM05_FLASH)),
 
     // ARCH-004 structural placeholders only. TM-004/SPEC-009 own final compatibility.
-    [SPECIES_LEAFEON]      = TMHM_LEARNSET(0,
-                                         0,
-                                         0),
-    [SPECIES_ECTOCEON]     = TMHM_LEARNSET(0,
-                                         0,
-                                         0),
-    [SPECIES_RHYPERIOR]    = TMHM_LEARNSET(0,
-                                         0,
-                                         0),
+        [SPECIES_LEAFEON]     = TMHM_LEARNSET(TMHM0(TM01_BODY_SLAM)
+                                         | TMHM0(TM02_RETURN)
+                                         | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
+                                         | TMHM0(TM05_PROTECT)
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM18_DIG)
+                                         | TMHM0(TM20_MUD_SLAP),
+                                         TMHM1(TM38_SUNNY_DAY)
+                                         | TMHM1(TM43_GIGA_DRAIN)
+                                         | TMHM1(TM44_SEED_STRIKE)
+                                         | TMHM1(TM45_SOLAR_BEAM)
+                                         | TMHM1(TM53_REFLECT),
+                                         TMHM2(TM68_HIDDEN_POWER)),
+
+    [SPECIES_ECTOCEON]    = TMHM_LEARNSET(TMHM0(TM01_BODY_SLAM)
+                                         | TMHM0(TM02_RETURN)
+                                         | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
+                                         | TMHM0(TM05_PROTECT)
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM15_POISON_FANG)
+                                         | TMHM0(TM16_SLUDGE_BOMB)
+                                         | TMHM0(TM18_DIG)
+                                         | TMHM0(TM20_MUD_SLAP)
+                                         | TMHM0(TM28_SHADOW_PUNCH)
+                                         | TMHM0(TM29_SHADOW_BALL)
+                                         | TMHM0(TM30_GHOSTLY_WAIL),
+                                         TMHM1(TM64_THIEF),
+                                         TMHM2(TM65_CRUNCH)
+                                         | TMHM2(TM67_TAUNT)
+                                         | TMHM2(TM68_HIDDEN_POWER)
+                                         | TMHM2(HM02_FLY)),
+
+    [SPECIES_RHYPERIOR]   = TMHM_LEARNSET(TMHM0(TM02_RETURN)
+                                         | TMHM0(TM03_HYPER_BEAM)
+                                         | TMHM0(TM04_FACADE)
+                                         | TMHM0(TM05_PROTECT)
+                                         | TMHM0(TM06_FOCUS_PUNCH)
+                                         | TMHM0(TM08_BRICK_BREAK)
+                                         | TMHM0(TM14_TOXIC)
+                                         | TMHM0(TM17_EARTHQUAKE)
+                                         | TMHM0(TM18_DIG)
+                                         | TMHM0(TM21_ROCK_TOMB)
+                                         | TMHM0(TM23_BOULDER_BASH)
+                                         | TMHM0(TM24_SANDSTORM)
+                                         | TMHM0(TM27_MEGAHORN),
+                                         TMHM1(TM35_FLAMETHROWER)
+                                         | TMHM1(TM36_FIRE_BLAST)
+                                         | TMHM1(TM38_SUNNY_DAY)
+                                         | TMHM1(TM42_RAIN_DANCE)
+                                         | TMHM1(TM46_SHOCK_WAVE)
+                                         | TMHM1(TM48_THUNDERBOLT)
+                                         | TMHM1(TM49_THUNDER)
+                                         | TMHM1(TM57_ICE_BEAM)
+                                         | TMHM1(TM58_BLIZZARD)
+                                         | TMHM1(TM64_THIEF),
+                                         TMHM2(TM68_HIDDEN_POWER)
+                                         | TMHM2(HM01_CUT)
+                                         | TMHM2(HM03_SURF)
+                                         | TMHM2(HM04_STRENGTH)
+                                         | TMHM2(HM06_ROCK_SMASH)),
+
 };
