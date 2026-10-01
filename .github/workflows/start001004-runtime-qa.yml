@@ -214,10 +214,23 @@ jobs:
           assert map_gene_refs == [], map_gene_refs
 
           party = (root / "src/party_menu.c").read_text()
-          gate = party.index("noEffect = PokemonItemUseNoEffect")
-          remove = party.index("RemoveBagItem(gSpecialVar_ItemId, 1);", gate)
-          assert "if (noEffect)" in party[gate:remove]
-          assert "Task_DoUseItemAnim(taskId);" in party[gate:remove]
+          use_start = party.index("void ItemUseCB_EvolutionStone(u8 taskId, TaskFunc func)")
+          callback_start = party.index("static void CB2_UseEvolutionStone(void)", use_start)
+          use_block = party[use_start:callback_start]
+          assert "noEffect = PokemonItemUseNoEffect" in use_block
+          invalid_start = use_block.index("if (noEffect)")
+          success_start = use_block.index("else", invalid_start)
+          invalid_block = use_block[invalid_start:success_start]
+          success_block = use_block[success_start:]
+          assert "RemoveBagItem" not in invalid_block
+          assert "Task_DoUseItemAnim(taskId);" in success_block
+
+          callback_end = party.index("static bool8 MonCanEvolve(void)", callback_start)
+          callback_block = party[callback_start:callback_end]
+          effect_pos = callback_block.index("ExecuteTableBasedItemEffect_(gPartyMenu.slotId, gSpecialVar_ItemId, 0);")
+          remove_pos = callback_block.index("RemoveBagItem(gSpecialVar_ItemId, 1);")
+          assert effect_pos < remove_pos
+          assert callback_block.count("RemoveBagItem(gSpecialVar_ItemId, 1);") == 1
 
           constants = (root / "include/constants/pokemon.h").read_text()
           assert "#define EVOS_PER_MON 7" in constants
