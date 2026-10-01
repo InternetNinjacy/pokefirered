@@ -195,3 +195,26 @@ ENV-002 is reproducible when a fresh WSL2 Ubuntu environment can:
 7. record the exact source and ROM identity used for QA.
 
 Once this procedure has been reproduced successfully, ARCH-002 can use the resulting ROM for the compensated `SaveBlock1` / `SamEditionSaveData` runtime validation.
+
+## 11. Reproduction record
+
+ENV-002 was independently reproduced on October 1, 2026 using a fresh GitHub-hosted `ubuntu-24.04` runner.
+
+Reproduction source:
+
+- Documentation branch: `env-002-reproducible-build-docs`
+- Source commit tested: `073b0d94febca2bb0f17600f50c609c56522d9a0`
+- Clean-reproduction workflow run: `36853460035`
+
+Every acceptance step completed successfully:
+
+1. clean Ubuntu 24.04 host started;
+2. documented prerequisites installed successfully;
+3. Sam Edition repository cloned fresh;
+4. documentation branch checked out successfully;
+5. `pret/agbcc` cloned, built, and installed successfully;
+6. project `make` completed successfully;
+7. `pokefirered.gba` existed after the build;
+8. the ROM and source-identity records were uploaded as the `env-002-clean-reproduction` workflow artifact.
+
+Result: **ENV-002 reproducibility gate PASSED.**
