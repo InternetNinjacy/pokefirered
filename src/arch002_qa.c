@@ -12,7 +12,7 @@
 #define ARCH002_MGBA_DEBUG_FLAGS  ((vu16 *)0x4FFF700)
 #define ARCH002_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)
 
-static void Arch002_Log(const char *text)
+void Arch002_Log(const char *text)
 {
     u32 i = 0;
     while (text[i] != '\0' && i < 255)
