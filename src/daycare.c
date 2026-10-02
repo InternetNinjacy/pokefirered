@@ -876,48 +876,22 @@ static u16 GetEggSpecies(u16 species)
 //    return slot;
 //}
 
-static void _TriggerPendingDaycareEgg(struct DayCare *daycare)
+static void _TriggerPendingDaycareEgg(struct DayCare *daycare, bool8 route5)
 {
-//    s32 natureSlot;
-//    s32 natureTries = 0;
-//
-//    SeedRng2(gMain.vblankCounter2);
-//    natureSlot = GetSlotToInheritNature(daycare);
-//
-//    if (natureSlot < 0)
-//    {
-//        daycare->offspringPersonality = (Random2() << 0x10) | ((Random() % 0xfffe) + 1);
-//    }
-//    else
-//    {
-//        u8 wantedNature = GetNatureFromPersonality(GetBoxMonData(&daycare->mons[natureSlot].mon, MON_DATA_PERSONALITY, NULL));
-//        u32 personality;
-//
-//        do
-//        {
-//            personality = (Random2() << 0x10) | (Random());
-//            if (wantedNature == GetNatureFromPersonality(personality) && personality != 0)
-//                break; // we found a personality with the same nature
-//
-//            natureTries++;
-//        } while (natureTries <= 2400);
-//
-//        daycare->offspringPersonality = personality;
-//    }
-
-    daycare->offspringPersonality = ((Random()) % 0xFFFE) + 1;
-    FlagSet(FLAG_PENDING_DAYCARE_EGG);
+    BuildSamPendingEgg(daycare, route5, FALSE);
+    if (!route5)
+        FlagSet(FLAG_PENDING_DAYCARE_EGG);
 }
 
 static void _TriggerPendingDaycareMaleEgg(struct DayCare *daycare)
 {
-    daycare->offspringPersonality = (Random()) | (EGG_GENDER_MALE);
+    BuildSamPendingEgg(daycare, FALSE, TRUE);
     FlagSet(FLAG_PENDING_DAYCARE_EGG);
 }
 
 void TriggerPendingDaycareEgg(void)
 {
-    _TriggerPendingDaycareEgg(&gSaveBlock1Ptr->daycare);
+    _TriggerPendingDaycareEgg(&gSaveBlock1Ptr->daycare, FALSE);
 }
 
 static void TriggerPendingDaycareMaleEgg(void)
@@ -1218,28 +1192,71 @@ static u16 DetermineEggSpeciesAndParentSlots(struct DayCare *daycare, u8 *parent
     return eggSpecies;
 }
 
-static void _GiveEggFromDaycare(struct DayCare *daycare)
+static void BuildSamPendingEgg(struct DayCare *daycare, bool8 route5, bool8 forceMale)
 {
     struct Pokemon egg;
-    u16 species;
+    struct SamPendingEggData pending;
     u8 parentSlots[DAYCARE_MON_COUNT];
-    bool8 isEgg;
+    u16 species;
+    u32 personality;
+    u8 i;
+
+    personality = GenerateSamEggPersonality(forceMale);
+    daycare->offspringPersonality = personality & 0xFFFF;
 
     species = DetermineEggSpeciesAndParentSlots(daycare, parentSlots);
     AlterEggSpeciesWithIncenseItem(&species, daycare);
-    SetInitialEggData(&egg, species, daycare);
+    SetInitialEggDataWithPersonality(&egg, species, personality);
     InheritIVs(&egg, daycare);
     BuildEggMoveset(&egg, &daycare->mons[parentSlots[1]].mon, &daycare->mons[parentSlots[0]].mon);
 
-    /*if (species == SPECIES_PICHU)
-        GiveVoltTackleIfLightBall(&egg, daycare);*/
+    CpuFill16(0, &pending, sizeof(pending));
+    pending.personality = personality;
+    pending.species = species;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        pending.moves[i] = GetMonData(&egg, MON_DATA_MOVE1 + i);
+    pending.ivs[0] = GetMonData(&egg, MON_DATA_HP_IV);
+    pending.ivs[1] = GetMonData(&egg, MON_DATA_ATK_IV);
+    pending.ivs[2] = GetMonData(&egg, MON_DATA_DEF_IV);
+    pending.ivs[3] = GetMonData(&egg, MON_DATA_SPEED_IV);
+    pending.ivs[4] = GetMonData(&egg, MON_DATA_SPATK_IV);
+    pending.ivs[5] = GetMonData(&egg, MON_DATA_SPDEF_IV);
+    SaveSamPendingEgg(route5, &pending);
+}
 
-    isEgg = TRUE;
-    SetMonData(&egg, MON_DATA_IS_EGG, &isEgg);
+static void RestoreSamPendingEgg(struct Pokemon *egg, const struct SamPendingEggData *pending)
+{
+    bool8 isEgg = TRUE;
+    u8 i;
+
+    SetInitialEggDataWithPersonality(egg, pending->species, pending->personality);
+    SetMonData(egg, MON_DATA_HP_IV, &pending->ivs[0]);
+    SetMonData(egg, MON_DATA_ATK_IV, &pending->ivs[1]);
+    SetMonData(egg, MON_DATA_DEF_IV, &pending->ivs[2]);
+    SetMonData(egg, MON_DATA_SPEED_IV, &pending->ivs[3]);
+    SetMonData(egg, MON_DATA_SPATK_IV, &pending->ivs[4]);
+    SetMonData(egg, MON_DATA_SPDEF_IV, &pending->ivs[5]);
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        SetMonMoveSlot(egg, pending->moves[i], i);
+    SetMonData(egg, MON_DATA_IS_EGG, &isEgg);
+}
+
+static void _GiveEggFromDaycare(struct DayCare *daycare, bool8 route5)
+{
+    struct Pokemon egg;
+    struct SamPendingEggData pending;
+
+    LoadSamPendingEgg(route5, &pending);
+    if (pending.species == SPECIES_NONE)
+        return;
+
+    RestoreSamPendingEgg(&egg, &pending);
     gPlayerParty[PARTY_SIZE - 1] = egg;
     CompactPartySlots();
     CalculatePlayerPartyCount();
+
     RemoveEggFromDayCare(daycare);
+    ClearSamPendingEgg(route5);
 }
 
 void CreateEgg(struct Pokemon *mon, u16 species, bool8 setHotSpringsLocation)
@@ -1250,7 +1267,7 @@ void CreateEgg(struct Pokemon *mon, u16 species, bool8 setHotSpringsLocation)
     u8 metLocation;
     u8 isEgg;
 
-    CreateMon(mon, species, EGG_HATCH_LEVEL, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
+    CreateMon(mon, species, EGG_HATCH_LEVEL, USE_RANDOM_IVS, TRUE, GenerateSamEggPersonality(FALSE), OT_ID_PLAYER_ID, 0);
     metLevel = 0;
     ball = ITEM_POKE_BALL;
     language = LANGUAGE_JAPANESE;
@@ -1269,14 +1286,12 @@ void CreateEgg(struct Pokemon *mon, u16 species, bool8 setHotSpringsLocation)
     SetMonData(mon, MON_DATA_IS_EGG, &isEgg);
 }
 
-static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *daycare)
+static void SetInitialEggDataWithPersonality(struct Pokemon *mon, u16 species, u32 personality)
 {
-    u32 personality;
     u16 ball;
     u8 metLevel;
     u8 language;
 
-    personality = daycare->offspringPersonality | (Random() << 16);
     CreateMon(mon, species, EGG_HATCH_LEVEL, USE_RANDOM_IVS, TRUE, personality, OT_ID_PLAYER_ID, 0);
     metLevel = 0;
     ball = ITEM_POKE_BALL;
@@ -1290,29 +1305,48 @@ static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *
 
 void GiveEggFromDaycare(void)
 {
-    _GiveEggFromDaycare(&gSaveBlock1Ptr->daycare);
+    _GiveEggFromDaycare(&gSaveBlock1Ptr->daycare, FALSE);
 }
 
-static bool8 TryProduceOrHatchEgg(struct DayCare *daycare)
+void GiveEggFromRoute5Daycare(void)
 {
-    u32 i, validEggs = 0;
+    struct DayCare daycare;
+
+    LoadRoute5Daycare(&daycare);
+    _GiveEggFromDaycare(&daycare, TRUE);
+    SaveRoute5Daycare(&daycare);
+}
+
+static void AdvanceDaycareBreeding(struct DayCare *daycare, bool8 route5)
+{
+    u32 i;
+    u32 validMons = 0;
 
     for (i = 0; i < DAYCARE_MON_COUNT; i++)
     {
         if (GetBoxMonData(&daycare->mons[i].mon, MON_DATA_SANITY_HAS_SPECIES))
-            daycare->mons[i].steps++, validEggs++;
+        {
+            daycare->mons[i].steps++;
+            validMons++;
+        }
     }
 
-    // Check if an egg should be produced
-    if (daycare->offspringPersonality == 0 && validEggs == DAYCARE_MON_COUNT && (daycare->mons[1].steps & 0xFF) == 0xFF)
+    if (!HasSamPendingEgg(route5)
+        && validMons == DAYCARE_MON_COUNT
+        && (daycare->mons[1].steps & 0xFF) == 0xFF)
     {
         u8 compatibility = GetDaycareCompatibilityScore(daycare);
-        if (compatibility > (Random() * 100u) / USHRT_MAX)
-            TriggerPendingDaycareEgg();
-    }
 
-    // Hatch Egg
-    if (++daycare->stepCounter == 255)
+        if (compatibility > (Random() * 100u) / USHRT_MAX)
+            _TriggerPendingDaycareEgg(daycare, route5);
+    }
+}
+
+static bool8 TryHatchPartyEgg(void)
+{
+    u32 i;
+
+    if (++gSaveBlock1Ptr->daycare.stepCounter == 255)
     {
         u32 steps;
 
@@ -1326,10 +1360,10 @@ static bool8 TryProduceOrHatchEgg(struct DayCare *daycare)
             steps = GetMonData(&gPlayerParty[i], MON_DATA_FRIENDSHIP);
             if (steps != 0)
             {
-                steps -= 1;
+                steps--;
                 SetMonData(&gPlayerParty[i], MON_DATA_FRIENDSHIP, &steps);
             }
-            else // hatch the egg
+            else
             {
                 gSpecialVar_0x8004 = i;
                 return TRUE;
@@ -1337,23 +1371,19 @@ static bool8 TryProduceOrHatchEgg(struct DayCare *daycare)
         }
     }
 
-    return FALSE; // no hatching
+    return FALSE;
 }
 
 bool8 ShouldEggHatch(void)
 {
     struct DayCare route5;
-    u8 i;
 
     LoadRoute5Daycare(&route5);
-    for (i = 0; i < DAYCARE_MON_COUNT; i++)
-    {
-        if (GetBoxMonData(&route5.mons[i].mon, MON_DATA_SANITY_HAS_SPECIES))
-            route5.mons[i].steps++;
-    }
+    AdvanceDaycareBreeding(&route5, TRUE);
     SaveRoute5Daycare(&route5);
 
-    return TryProduceOrHatchEgg(&gSaveBlock1Ptr->daycare);
+    AdvanceDaycareBreeding(&gSaveBlock1Ptr->daycare, FALSE);
+    return TryHatchPartyEgg();
 }
 
 static bool8 IsEggPending(struct DayCare *daycare)
