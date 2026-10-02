@@ -32,6 +32,13 @@
 #define OTID_NPC_TRADE_GEOFF  51008
 #define OTID_NPC_TRADE_INGRID 51009
 
+// Pokémon Original Trainer IDs for authored Sam Edition Gift Pokémon.
+// These are monster OT IDs, not TRAINER_* battle-table IDs.
+#define OTID_GIFT_FERN   52001
+#define OTID_GIFT_ASHER  52002
+#define OTID_GIFT_MARINA 52003
+#define OTID_GIFT_OAK    52004
+
 // Return values for CanTradeSelectedMon and CanSpinTradeMon
 #define CAN_TRADE_MON              0
 #define CANT_TRADE_LAST_MON        1
