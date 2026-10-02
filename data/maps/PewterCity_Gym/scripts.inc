@@ -110,8 +110,7 @@ PewterCity_Gym_EventScript_Satoshi::
 	end
 
 PewterCity_Gym_EventScript_SatoshiPractice::
-	msgbox PewterCity_Gym_Text_SatoshiYes
-	trainerbattle_single TRAINER_SATOSHI_PEWTER_PRACTICE, PewterCity_Gym_Text_SatoshiBattleIntro, PewterCity_Gym_Text_SatoshiBattleDefeat, PewterCity_Gym_EventScript_SatoshiPracticeWon, NO_MUSIC
+	trainerbattle_single TRAINER_SATOSHI_PEWTER_PRACTICE, PewterCity_Gym_Text_SatoshiYes, PewterCity_Gym_Text_SatoshiLose, PewterCity_Gym_EventScript_SatoshiPracticeWon, NO_MUSIC
 	end
 
 PewterCity_Gym_EventScript_SatoshiPracticeWon::
