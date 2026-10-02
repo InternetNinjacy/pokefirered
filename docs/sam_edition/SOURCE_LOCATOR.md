@@ -28,19 +28,49 @@ Verified on: `sam-edition-dev`
 
 Production branch:
 
-- `sam/core-001-004-current-stack-integration`
-- production head: `0b7f1481134d13fbcdea90b7fb99edb01ce3b639`
-- draft PR: #63
-- base branch: `sam/gift-001-npc-trades` / draft PR #62
+- `sam/evol-001-003-accessibility`
+- production head: `60caa7ffdf2730bcd75c630c2f421cc30b554711`
+- draft PR: #65
+- base branch: `sam/tm-003-signal-beam-special-class` / draft PR #64
 
 Runtime QA branch:
 
-- `qa/core-001-004-current-stack-runtime`
-- QA source: `59ce704108a16559047737d25723c663a6dc3188`
-- successful run: `36958060624`
-- QA ROM SHA-1: `a55794ae62ed5295a3c0bd2baf22e9ca10918d40`
+- `qa/evol-001-003-accessibility`
+- QA source: `fdc3b14b0551772ba8b32d96324e7faa32bdaf8c`
+- successful run: `36961288046`
+- QA ROM SHA-1: `5c1c083070867654ae5625bcdb15c0e161242582`
 
-This is the current delta-only production continuation point. The QA branch is evidence/instrumentation only and must not be used as a production ancestor.
+This is the current delta-only production continuation point. PR #65 is stacked on verified TM-003 PR #64, which is stacked on CORE PR #63. QA branches are evidence/instrumentation only and must not be used as production ancestors.
+
+### TM-003 Signal Beam move-class override
+
+Production branch: `sam/tm-003-signal-beam-special-class`  
+Draft PR: #64  
+Production head: `fb9ba45065d6e87b28db24d76e800e57f72a7594`
+
+Verified narrow production surfaces:
+
+- `src/pokemon.c`
+- `src/battle_script_commands.c`
+
+Signal Beam joins the existing Ghostly Wail move-level Special-class exception without changing Bug globally. Production CI `36960016126`; isolated runtime QA `36960213040`, QA source `a724e917f639e1cb19e67a3e8909f1f926def0be`, ROM SHA-1 `791c217ab9a6596e3447a910f1ad61a9d93b26c5`.
+
+### EVOL-001–003 evolution accessibility
+
+Production branch: `sam/evol-001-003-accessibility`  
+Draft PR: #65  
+Production head: `60caa7ffdf2730bcd75c630c2f421cc30b554711`
+
+Verified production surfaces:
+
+- `include/constants/items.h`
+- `src/data/item_icon_table.h`
+- `src/data/items.json`
+- `src/data/pokemon/evolution.h`
+- `src/data/pokemon/item_effects.h`
+- `src/party_menu.c`
+
+Production CI `36961159729`; isolated runtime QA `36961288046`, QA source `fdc3b14b0551772ba8b32d96324e7faa32bdaf8c`, ROM SHA-1 `5c1c083070867654ae5625bcdb15c0e161242582`. QA-004 is PASS for the current authority/roster scope. Conditional Clamperl trade-item methods remain intentionally untouched.
 
 ### Starter System
 
