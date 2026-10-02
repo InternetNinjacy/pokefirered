@@ -50,3 +50,11 @@ When a system is next touched:
 5. Perform only the delta audit required by subsequent changes.
 
 This makes each completed programming task improve the speed of the next one.
+
+
+## Detailed indexes
+
+- Generic FireRed engine map: `docs/fire_red_framework/FIRERED_SOURCE_LOCATOR.md`
+- Sam implementation-branch surfaces: `docs/sam_edition/SAM_BRANCH_SURFACE_INDEX.md`
+
+Use the generic map for stable FireRed engine locations, then the Sam branch index for project-specific deltas.
