@@ -181,6 +181,7 @@
 #define TRAINER_PIC_BAZ                     152
 #define TRAINER_PIC_BUSHRANGER_M            153
 #define TRAINER_PIC_BUSHRANGER_F            154
+#define TRAINER_PIC_BOREAL                   155
 
 #if TRAINER_PIC_PAINTER != 147
 #error "ARCH-006: vanilla trainer-picture boundary drifted"
