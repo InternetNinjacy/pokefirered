@@ -57,7 +57,7 @@ jobs:
               ["git","diff","--name-only",f"{prod}..HEAD"], text=True
           ).splitlines() if x}
           assert qa_changed=={
-              ".github/workflows/train-002-003-focused-qa-v2.yml",
+              ".github/workflows/train-002-003-focused-qa-v3.yml",
               "include/config.h",
               "src/main.c",
               "src/train_002_003_qa.c",
