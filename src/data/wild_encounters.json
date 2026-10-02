@@ -2635,64 +2635,64 @@
             "encounter_rate": 7,
             "mons": [
               {
-                "min_level": 16,
-                "max_level": 16,
+                "min_level": 23,
+                "max_level": 26,
                 "species": "SPECIES_ZUBAT"
               },
               {
-                "min_level": 17,
-                "max_level": 17,
+                "min_level": 23,
+                "max_level": 26,
                 "species": "SPECIES_GEODUDE"
               },
               {
-                "min_level": 17,
-                "max_level": 17,
-                "species": "SPECIES_MANKEY"
-              },
-              {
-                "min_level": 16,
-                "max_level": 16,
-                "species": "SPECIES_GEODUDE"
-              },
-              {
-                "min_level": 15,
-                "max_level": 15,
-                "species": "SPECIES_ZUBAT"
-              },
-              {
-                "min_level": 17,
-                "max_level": 17,
+                "min_level": 23,
+                "max_level": 27,
                 "species": "SPECIES_MACHOP"
               },
               {
-                "min_level": 16,
-                "max_level": 16,
-                "species": "SPECIES_MANKEY"
+                "min_level": 23,
+                "max_level": 27,
+                "species": "SPECIES_MACHOP"
               },
               {
-                "min_level": 13,
-                "max_level": 13,
+                "min_level": 24,
+                "max_level": 27,
+                "species": "SPECIES_CUBONE"
+              },
+              {
+                "min_level": 24,
+                "max_level": 27,
                 "species": "SPECIES_ONIX"
               },
               {
-                "min_level": 15,
-                "max_level": 15,
+                "min_level": 23,
+                "max_level": 26,
+                "species": "SPECIES_ZUBAT"
+              },
+              {
+                "min_level": 23,
+                "max_level": 26,
                 "species": "SPECIES_GEODUDE"
               },
               {
-                "min_level": 15,
-                "max_level": 15,
-                "species": "SPECIES_ONIX"
+                "min_level": 24,
+                "max_level": 27,
+                "species": "SPECIES_CUBONE"
               },
               {
-                "min_level": 15,
-                "max_level": 15,
-                "species": "SPECIES_GEODUDE"
+                "min_level": 24,
+                "max_level": 26,
+                "species": "SPECIES_NOSEPASS"
               },
               {
-                "min_level": 17,
-                "max_level": 17,
-                "species": "SPECIES_ONIX"
+                "min_level": 24,
+                "max_level": 27,
+                "species": "SPECIES_CUBONE"
+              },
+              {
+                "min_level": 24,
+                "max_level": 26,
+                "species": "SPECIES_NOSEPASS"
               }
             ]
           },
