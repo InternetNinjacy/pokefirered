@@ -380,7 +380,8 @@
     "CeladonCity_Gym",
     "CeladonCity_Restaurant",
     "CeladonCity_House1",
-    "CeladonCity_Hotel"
+    "CeladonCity_Hotel",
+    "CeladonCity_SurfHouse"
   ],
   "gMapGroup_IndoorFuchsia": [
     "FuchsiaCity_SafariZone_Entrance",

@@ -1,0 +1,30 @@
+CeladonCity_SurfHouse_MapScripts::
+	.byte 0
+
+CeladonCity_SurfHouse_EventScript_Nora::
+	lock
+	faceplayer
+	goto_if_set FLAG_GIFT_ELEKID_EGG_CLAIMED, CeladonCity_SurfHouse_EventScript_NoraPostClaim
+	msgbox CeladonCity_SurfHouse_Text_NoraOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, CeladonCity_SurfHouse_EventScript_NoraDecline
+	giveegg SPECIES_ELEKID
+	goto_if_eq VAR_RESULT, 2, CeladonCity_SurfHouse_EventScript_NoraNoRoom
+	setflag FLAG_GIFT_ELEKID_EGG_CLAIMED
+	msgbox CeladonCity_SurfHouse_Text_NoraSuccess
+	release
+	end
+
+CeladonCity_SurfHouse_EventScript_NoraDecline::
+	msgbox CeladonCity_SurfHouse_Text_NoraDecline
+	release
+	end
+
+CeladonCity_SurfHouse_EventScript_NoraNoRoom::
+	msgbox CeladonCity_SurfHouse_Text_NoraNoRoom
+	release
+	end
+
+CeladonCity_SurfHouse_EventScript_NoraPostClaim::
+	msgbox CeladonCity_SurfHouse_Text_NoraPostClaim
+	release
+	end
