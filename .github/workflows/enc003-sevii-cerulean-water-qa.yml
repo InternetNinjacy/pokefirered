@@ -1,0 +1,144 @@
+name: ENC-003 Sevii Cerulean Water QA
+
+on:
+  push:
+    branches:
+      - qa/enc-003-sevii-cerulean-native-water
+  workflow_dispatch:
+
+jobs:
+  enc003-water-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/enc-003-sevii-cerulean-native-water
+          fetch-depth: 0
+
+      - name: Install build dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production and QA isolation
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import subprocess
+          parent="9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a"
+          prod="a1de7a5f9ff4e38b5310f62e619f967872c05be3"
+          p={x for x in subprocess.check_output(["git","diff","--name-only",f"{parent}..{prod}"],text=True).splitlines() if x}
+          assert p == {"src/data/wild_encounters.json"}, p
+          q={x for x in subprocess.check_output(["git","diff","--name-only",f"{prod}..HEAD"],text=True).splitlines() if x}
+          assert q == {".github/workflows/enc003-sevii-cerulean-water-qa.yml"}, q
+          print("ENC003 WATER ISOLATION PASS")
+          PY
+
+      - name: Validate 20 authority tables and preserve frequencies
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+
+          def M(s,a,b): return (s,a,b)
+          families={
+            "A":(
+              [M("SPECIES_KRABBY",30,34),M("SPECIES_HORSEA",30,34),M("SPECIES_STARYU",32,36),M("SPECIES_SEADRA",35,38),M("SPECIES_KINGLER",37,40)],
+              [M("SPECIES_MAGIKARP",5,10),M("SPECIES_KRABBY",15,20),M("SPECIES_KRABBY",28,33),M("SPECIES_HORSEA",28,33),M("SPECIES_STARYU",30,35),M("SPECIES_HORSEA",34,39),M("SPECIES_KRABBY",34,39),M("SPECIES_STARYU",36,41),M("SPECIES_SEADRA",40,44),M("SPECIES_KINGLER",42,45)]),
+            "B":(
+              [M("SPECIES_PSYDUCK",32,36),M("SPECIES_SLOWPOKE",32,36),M("SPECIES_POLIWHIRL",35,38),M("SPECIES_GOLDUCK",37,40),M("SPECIES_SLOWBRO",39,42)],
+              [M("SPECIES_MAGIKARP",5,10),M("SPECIES_POLIWAG",15,20),M("SPECIES_POLIWAG",30,35),M("SPECIES_GOLDEEN",30,35),M("SPECIES_SLOWPOKE",31,36),M("SPECIES_POLIWHIRL",35,40),M("SPECIES_GOLDEEN",35,40),M("SPECIES_SLOWPOKE",36,41),M("SPECIES_SEAKING",40,44),M("SPECIES_SLOWBRO",42,45)]),
+            "C":(
+              [M("SPECIES_SEEL",36,41),M("SPECIES_SPHEAL",34,39),M("SPECIES_SHELLDER",36,41),M("SPECIES_DEWGONG",42,45),M("SPECIES_SEALEO",42,45)],
+              [M("SPECIES_MAGIKARP",5,10),M("SPECIES_SHELLDER",20,25),M("SPECIES_SHELLDER",34,39),M("SPECIES_SEEL",36,41),M("SPECIES_SPHEAL",34,39),M("SPECIES_SEEL",40,44),M("SPECIES_SHELLDER",40,44),M("SPECIES_SPHEAL",39,43),M("SPECIES_DEWGONG",44,47),M("SPECIES_CLOYSTER",45,48)]),
+            "D":(
+              [M("SPECIES_TENTACOOL",40,44),M("SPECIES_KRABBY",40,44),M("SPECIES_STARYU",42,46),M("SPECIES_TENTACRUEL",45,48),M("SPECIES_SEADRA",45,48)],
+              [M("SPECIES_MAGIKARP",5,10),M("SPECIES_KRABBY",20,25),M("SPECIES_KRABBY",38,43),M("SPECIES_HORSEA",38,43),M("SPECIES_STARYU",40,45),M("SPECIES_HORSEA",42,47),M("SPECIES_STARYU",42,47),M("SPECIES_KRABBY",42,47),M("SPECIES_SEADRA",47,50),M("SPECIES_KINGLER",48,51)]),
+            "MEM":(
+              [M("SPECIES_STARYU",42,46),M("SPECIES_KRABBY",42,46),M("SPECIES_HORSEA",42,46),M("SPECIES_SEADRA",46,49),M("SPECIES_KINGLER",48,51)],
+              [M("SPECIES_MAGIKARP",5,10),M("SPECIES_KRABBY",20,25),M("SPECIES_STARYU",40,45),M("SPECIES_KRABBY",40,45),M("SPECIES_HORSEA",40,45),M("SPECIES_STARYU",44,49),M("SPECIES_HORSEA",44,49),M("SPECIES_KRABBY",44,49),M("SPECIES_SEADRA",49,52),M("SPECIES_KINGLER",50,53)]),
+            "LAB":(
+              [M("SPECIES_HORSEA",42,46),M("SPECIES_SEADRA",45,49),M("SPECIES_DRATINI",43,47),M("SPECIES_DRAGONAIR",48,51),M("SPECIES_KINGLER",48,51)],
+              [M("SPECIES_MAGIKARP",5,10),M("SPECIES_HORSEA",20,25),M("SPECIES_HORSEA",40,45),M("SPECIES_KRABBY",40,45),M("SPECIES_DRATINI",40,44),M("SPECIES_HORSEA",44,49),M("SPECIES_SEADRA",46,51),M("SPECIES_DRATINI",45,49),M("SPECIES_DRAGONAIR",50,53),M("SPECIES_KINGLER",50,53)]),
+            "E":(
+              [M("SPECIES_PSYDUCK",42,46),M("SPECIES_SLOWPOKE",42,46),M("SPECIES_POLIWHIRL",44,48),M("SPECIES_GOLDUCK",47,50),M("SPECIES_SLOWBRO",49,52)],
+              [M("SPECIES_MAGIKARP",5,10),M("SPECIES_POLIWAG",20,25),M("SPECIES_POLIWAG",40,45),M("SPECIES_GOLDEEN",40,45),M("SPECIES_SLOWPOKE",40,45),M("SPECIES_POLIWHIRL",44,49),M("SPECIES_GOLDEEN",44,49),M("SPECIES_SLOWPOKE",44,49),M("SPECIES_SEAKING",49,52),M("SPECIES_SLOWBRO",50,53)]),
+            "OUT":(
+              [M("SPECIES_TENTACOOL",43,47),M("SPECIES_TENTACRUEL",46,50),M("SPECIES_STARYU",44,48),M("SPECIES_SEADRA",47,51),M("SPECIES_KINGLER",49,52)],
+              [M("SPECIES_MAGIKARP",5,10),M("SPECIES_KRABBY",20,25),M("SPECIES_KRABBY",40,45),M("SPECIES_HORSEA",40,45),M("SPECIES_STARYU",42,47),M("SPECIES_STARYU",45,50),M("SPECIES_HORSEA",45,50),M("SPECIES_KRABBY",45,50),M("SPECIES_SEADRA",50,53),M("SPECIES_KINGLER",51,54)]),
+            "F":(
+              [M("SPECIES_TENTACRUEL",46,50),M("SPECIES_STARYU",45,49),M("SPECIES_SEADRA",47,51),M("SPECIES_KINGLER",49,52),M("SPECIES_GYARADOS",50,53)],
+              [M("SPECIES_MAGIKARP",5,10),M("SPECIES_KRABBY",20,25),M("SPECIES_HORSEA",42,47),M("SPECIES_KRABBY",42,47),M("SPECIES_STARYU",43,48),M("SPECIES_SEADRA",47,52),M("SPECIES_STARYU",47,52),M("SPECIES_KINGLER",48,53),M("SPECIES_GYARADOS",50,54),M("SPECIES_DRAGONAIR",52,55)]),
+            "CER":(
+              [M("SPECIES_SLOWPOKE",50,54),M("SPECIES_PSYDUCK",50,54),M("SPECIES_SLOWBRO",55,58),M("SPECIES_GOLDUCK",55,58),M("SPECIES_POLIWHIRL",57,60)],
+              [M("SPECIES_MAGIKARP",5,10),M("SPECIES_POLIWAG",20,25),M("SPECIES_POLIWHIRL",48,53),M("SPECIES_SLOWPOKE",48,53),M("SPECIES_GOLDEEN",48,53),M("SPECIES_SLOWBRO",54,59),M("SPECIES_POLIWHIRL",54,59),M("SPECIES_SEAKING",55,60),M("SPECIES_GOLDUCK",58,61),M("SPECIES_DRAGONAIR",60,62)])
+          }
+          assignments={
+            "A":["MAP_ONE_ISLAND_TREASURE_BEACH","MAP_TWO_ISLAND_CAPE_BRINK","MAP_THREE_ISLAND_BOND_BRIDGE"],
+            "B":["MAP_THREE_ISLAND_BERRY_FOREST"],
+            "C":["MAP_FOUR_ISLAND","MAP_FOUR_ISLAND_ICEFALL_CAVE_ENTRANCE","MAP_FOUR_ISLAND_ICEFALL_CAVE_BACK"],
+            "D":["MAP_FIVE_ISLAND","MAP_FIVE_ISLAND_MEADOW","MAP_FIVE_ISLAND_RESORT_GORGEOUS"],
+            "MEM":["MAP_FIVE_ISLAND_MEMORIAL_PILLAR"],
+            "LAB":["MAP_FIVE_ISLAND_WATER_LABYRINTH"],
+            "E":["MAP_SIX_ISLAND_WATER_PATH","MAP_SIX_ISLAND_GREEN_PATH","MAP_SIX_ISLAND_RUIN_VALLEY"],
+            "OUT":["MAP_SIX_ISLAND_OUTCAST_ISLAND"],
+            "F":["MAP_SEVEN_ISLAND_TRAINER_TOWER","MAP_SEVEN_ISLAND_TANOBY_RUINS"],
+            "CER":["MAP_CERULEAN_CAVE_1F","MAP_CERULEAN_CAVE_B1F"],
+          }
+
+          cur=json.loads(Path("src/data/wild_encounters.json").read_text())
+          old=json.loads(subprocess.check_output(
+              ["git","show","9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a:src/data/wild_encounters.json"],text=True
+          ))
+          def index(d):
+              g=next(x for x in d["wild_encounter_groups"] if x["label"]=="gWildMonHeaders")
+              return {e["map"]:e for e in g["encounters"] if e.get("base_label","").endswith("_FireRed")}
+          now,prev=index(cur),index(old)
+          def compact(arr): return [(m["species"],m["min_level"],m["max_level"]) for m in arr]
+
+          seen=[]
+          for key,maps in assignments.items():
+              ew,ef=families[key]
+              for map_name in maps:
+                  e=now[map_name]
+                  assert compact(e["water_mons"]["mons"]) == ew, map_name+" water"
+                  assert compact(e["fishing_mons"]["mons"]) == ef, map_name+" fish"
+                  assert e["water_mons"]["encounter_rate"] == prev[map_name]["water_mons"]["encounter_rate"], map_name+" water rate"
+                  assert e["fishing_mons"]["encounter_rate"] == prev[map_name]["fishing_mons"]["encounter_rate"], map_name+" fish rate"
+                  seen.append(map_name)
+
+          assert len(seen)==20 and len(set(seen))==20
+          assert "MAP_SEVEN_ISLAND" not in now
+          print("ENC003 WATER TABLE PASS 20 maps exact native slots frequencies preserved")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ENC003_WATER_ROM_SHA1.txt
+          git rev-parse HEAD | tee ENC003_WATER_SOURCE_SHA.txt
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: enc-003-sevii-cerulean-water-qa
+          path: |
+            pokefirered.gba
+            ENC003_WATER_ROM_SHA1.txt
+            ENC003_WATER_SOURCE_SHA.txt
+          if-no-files-found: error
