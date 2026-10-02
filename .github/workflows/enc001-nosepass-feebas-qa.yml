@@ -1,0 +1,148 @@
+name: ENC-001 Nosepass Feebas Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/enc-001-nosepass-feebas-final-tables
+  workflow_dispatch:
+
+jobs:
+  enc001-final-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/enc-001-nosepass-feebas-final-tables
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production and QA isolation
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import subprocess
+          prod_parent="1e03ef56cc063e3f9a2888640ec760e4d23d4c8a"
+          prod_head="9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a"
+
+          prod={x for x in subprocess.check_output(
+              ["git","diff","--name-only",f"{prod_parent}..{prod_head}"],text=True
+          ).splitlines() if x}
+          assert prod == {"src/data/wild_encounters.json","src/wild_encounter.c"}, prod
+
+          qa={x for x in subprocess.check_output(
+              ["git","diff","--name-only",f"{prod_head}..HEAD"],text=True
+          ).splitlines() if x}
+          assert qa == {
+              ".github/workflows/enc001-nosepass-feebas-qa.yml",
+              "include/config.h",
+              "src/main.c",
+              "src/wild_encounter.c",
+              "src/enc001_final_qa.c",
+          }, qa
+          print("ENC001 FINAL ISOLATION PASS")
+          PY
+
+      - name: Validate exact tables and local selector source
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          data=json.loads(Path("src/data/wild_encounters.json").read_text())
+          group=next(g for g in data["wild_encounter_groups"] if g["label"]=="gWildMonHeaders")
+          encs=[e for e in group["encounters"] if e.get("base_label","").endswith("_FireRed")]
+          by={e["map"]:e for e in encs}
+
+          weights=[20,20,10,10,10,10,5,5,4,4,1,1]
+          b1=by["MAP_ROCK_TUNNEL_B1F"]["land_mons"]["mons"]
+          rates={}
+          for w,m in zip(weights,b1):
+              rates[m["species"]]=rates.get(m["species"],0)+w
+          assert rates == {
+              "SPECIES_ZUBAT":25,
+              "SPECIES_GEODUDE":25,
+              "SPECIES_MACHOP":20,
+              "SPECIES_CUBONE":15,
+              "SPECIES_ONIX":10,
+              "SPECIES_NOSEPASS":5,
+          }, rates
+          for m in b1:
+              if m["species"]=="SPECIES_NOSEPASS":
+                  assert (m["min_level"],m["max_level"])==(24,26)
+
+          r6=by["MAP_ROUTE6"]
+          water=[(m["species"],m["min_level"],m["max_level"]) for m in r6["water_mons"]["mons"]]
+          assert water[:3] == [
+              ("SPECIES_PSYDUCK",18,22),
+              ("SPECIES_POLIWAG",18,22),
+              ("SPECIES_SLOWPOKE",20,23),
+          ]
+
+          fish=[(m["species"],m["min_level"],m["max_level"]) for m in r6["fishing_mons"]["mons"]]
+          assert fish == [
+              ("SPECIES_MAGIKARP",5,7),
+              ("SPECIES_MAGIKARP",5,7),
+              ("SPECIES_MAGIKARP",12,16),
+              ("SPECIES_POLIWAG",14,17),
+              ("SPECIES_GOLDEEN",15,18),
+              ("SPECIES_FEEBAS",18,19),
+              ("SPECIES_MAGIKARP",16,20),
+              ("SPECIES_POLIWAG",18,22),
+              ("SPECIES_GOLDEEN",19,23),
+              ("SPECIES_POLIWHIRL",22,25),
+          ]
+
+          src=Path("src/wild_encounter.c").read_text()
+          assert "static bool8 IsCurrentMapRoute6(void)" in src
+          assert "Route 6 final Surf table: Psyduck 50%, Poliwag 30%, Slowpoke 20%." in src
+          assert "Slots 2-5: Magikarp 30%, Poliwag 20%, Goldeen 10%, Feebas 40%." in src
+          assert "Slots 5-9: Feebas 40%, Magikarp 20%, Poliwag 20%, Goldeen 10%, Poliwhirl 10%." in src
+          print("ENC001 FINAL TABLE PASS Nosepass Feebas Route6 exact source mapping")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ENC001_FINAL_ROM_SHA1.txt
+          git rev-parse HEAD | tee ENC001_FINAL_SOURCE_SHA.txt
+
+      - name: Runtime selector validation
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > enc001_final_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc001_final_runtime.log
+          grep -q "ENC001 FINAL RUNTIME PASS Route6 exact selectors generic weights preserved" enc001_final_runtime.log
+          ! grep -q "ENC001 FINAL FAIL" enc001_final_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: enc-001-nosepass-feebas-runtime-qa
+          path: |
+            pokefirered.gba
+            ENC001_FINAL_ROM_SHA1.txt
+            ENC001_FINAL_SOURCE_SHA.txt
+            enc001_final_runtime.log
+          if-no-files-found: error

@@ -202,6 +202,16 @@ static u8 ChooseWildMonIndex_Fishing(u8 rod)
     return wildMonIndex;
 }
 
+u8 Enc001QaChooseWaterIndex(void)
+{
+    return ChooseWildMonIndex_Water();
+}
+
+u8 Enc001QaChooseFishingIndex(u8 rod)
+{
+    return ChooseWildMonIndex_Fishing(rod);
+}
+
 static u8 ChooseWildMonLevel(const struct WildPokemon * info)
 {
     u8 lo;
