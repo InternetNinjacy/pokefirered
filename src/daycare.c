@@ -2473,3 +2473,38 @@ static void EggHatchPrintMessage(u8 windowId, u8 *string, u8 x, u8 y, u8 speed)
     sEggHatchData->textColor[2] = 6;
     AddTextPrinterParameterized4(windowId, FONT_NORMAL_COPY_2, x, y, 1, 1, sEggHatchData->textColor, speed, string);
 }
+
+
+/* QA-only branch instrumentation for SPEC-008. Not production code. */
+bool8 Spec008QaBuildBirdDittoEgg(u16 bird, u16 *eggSpecies, u16 *moves)
+{
+    struct DayCare daycare;
+    struct SamPendingEggData pending;
+    u8 i;
+
+    CpuFill16(0, &daycare, sizeof(daycare));
+    CreateBoxMon(&daycare.mons[0].mon, bird, 50, 20, TRUE, 0x12345678, OT_ID_PRESET, 0x11111111);
+    CreateBoxMon(&daycare.mons[1].mon, SPECIES_DITTO, 50, 20, TRUE, 0x87654321, OT_ID_PRESET, 0x22222222);
+
+    if (GetDaycareCompatibilityScore(&daycare) == 0)
+        return FALSE;
+
+    ClearSamPendingEgg(FALSE);
+    BuildSamPendingEgg(&daycare, FALSE, FALSE);
+    LoadSamPendingEgg(FALSE, &pending);
+    *eggSpecies = pending.species;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        moves[i] = pending.moves[i];
+    ClearSamPendingEgg(FALSE);
+    return TRUE;
+}
+
+u8 Spec008QaBirdPairCompatibility(u16 birdA, u16 birdB)
+{
+    struct DayCare daycare;
+
+    CpuFill16(0, &daycare, sizeof(daycare));
+    CreateBoxMon(&daycare.mons[0].mon, birdA, 50, 20, TRUE, 0x12345678, OT_ID_PRESET, 0x11111111);
+    CreateBoxMon(&daycare.mons[1].mon, birdB, 50, 20, TRUE, 0x87654321, OT_ID_PRESET, 0x22222222);
+    return GetDaycareCompatibilityScore(&daycare);
+}
