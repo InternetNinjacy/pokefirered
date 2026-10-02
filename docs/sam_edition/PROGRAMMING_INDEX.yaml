@@ -129,6 +129,7 @@ source_locator:
     production_pr: 88
     production_head: b1427e3700dc34514cfd134aaa14d82d2c651e72
     production_ci_run: 37066177714
+    production_ci_result: "compile/link/ELF/GBA/SYM succeeded; expected stock FireRed SHA comparison failed"
     runtime_qa_status: "not yet run for PR #88; production CI 37066177714 compiled/linked/generated ELF/GBA/SYM and stopped only at expected stock SHA comparison"
     registry_checkpoint: SYNC-2026-10-02-015
 
