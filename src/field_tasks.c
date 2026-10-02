@@ -34,6 +34,7 @@ static void DummyPerStepCallback(u8 taskId);
 static void AshGrassPerStepCallback(u8 taskId);
 static void IcefallCaveIcePerStepCallback(u8 taskId);
 static void CrackedFloorPerStepCallback(u8 taskId);
+static void PewterGymIcePerStepCallback(u8 taskId);
 
 static const TaskFunc sPerStepCallbacks[] =
 {
@@ -44,7 +45,8 @@ static const TaskFunc sPerStepCallbacks[] =
     [STEP_CB_ICE]               = IcefallCaveIcePerStepCallback,
     [STEP_CB_TRUCK]             = DummyPerStepCallback,
     [STEP_CB_SECRET_BASE]       = DummyPerStepCallback,
-    [STEP_CB_CRACKED_FLOOR]     = CrackedFloorPerStepCallback
+    [STEP_CB_CRACKED_FLOOR]     = CrackedFloorPerStepCallback,
+    [STEP_CB_GYM1_ICE]           = PewterGymIcePerStepCallback
 };
 
 // The positions of each map space with crackable ice in Icefall Cave.
@@ -244,6 +246,87 @@ static void IcefallCaveIcePerStepCallback(u8 taskId)
                 tState = 1;
             }
             break;
+    }
+}
+
+#undef tState
+#undef tPrevX
+#undef tPrevY
+#undef tIceX
+#undef tIceY
+#undef tDelay
+
+#define tState data[1]
+#define tPrevX data[2]
+#define tPrevY data[3]
+#define tIceX  data[4]
+#define tIceY  data[5]
+#define tDelay data[6]
+
+static void PewterGymIcePerStepCallback(u8 taskId)
+{
+    s16 x, y;
+    u8 tileBehavior;
+    s16 *data = gTasks[taskId].data;
+
+    switch (tState)
+    {
+    case 0:
+        PlayerGetDestCoords(&x, &y);
+        tPrevX = x;
+        tPrevY = y;
+        tState = 1;
+        break;
+    case 1:
+        PlayerGetDestCoords(&x, &y);
+        if (x == tPrevX && y == tPrevY)
+            return;
+
+        tPrevX = x;
+        tPrevY = y;
+        tileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+        if (MetatileBehavior_IsThinIce(tileBehavior))
+        {
+            tDelay = 4;
+            tState = 2;
+            tIceX = x;
+            tIceY = y;
+        }
+        else if (MetatileBehavior_IsCrackedIce(tileBehavior))
+        {
+            tDelay = 4;
+            tState = 3;
+            tIceX = x;
+            tIceY = y;
+        }
+        break;
+    case 2:
+        if (tDelay != 0)
+        {
+            tDelay--;
+        }
+        else
+        {
+            PlaySE(SE_ICE_CRACK);
+            MapGridSetMetatileIdAt(tIceX, tIceY, METATILE_SeafoamIslands_CrackedIce);
+            CurrentMapDrawMetatileAt(tIceX, tIceY);
+            tState = 1;
+        }
+        break;
+    case 3:
+        if (tDelay != 0)
+        {
+            tDelay--;
+        }
+        else
+        {
+            PlaySE(SE_ICE_BREAK);
+            MapGridSetMetatileIdAt(tIceX, tIceY, METATILE_SeafoamIslands_IceHole);
+            CurrentMapDrawMetatileAt(tIceX, tIceY);
+            VarSet(VAR_TEMP_1, 1);
+            tState = 1;
+        }
+        break;
     }
 }
 
