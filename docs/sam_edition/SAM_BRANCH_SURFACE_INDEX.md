@@ -119,6 +119,40 @@ Branch: `sam/core-004-healing-revival`
 
 Builds on the same core surfaces as CORE-002/003, adding healing/revival enforcement in the relevant runtime paths.
 
+### Current-stack CORE-001–004 reconciliation
+
+Production branch: `sam/core-001-004-current-stack-integration`  
+Draft PR: #63  
+Production head: `0b7f1481134d13fbcdea90b7fb99edb01ce3b639`  
+Base: `sam/gift-001-npc-trades` / draft PR #62
+
+Verified production delta relative to PR #62 is limited to:
+
+- `src/oak_speech.c`
+- `include/pokemon.h`
+- `include/constants/pokemon.h`
+- `src/pokemon.c`
+- `src/script_pokemon_util.c`
+- `src/battle_controller_player.c`
+- `src/evolution_scene.c`
+- `data/specials.inc`
+- `data/maps/PalletTown_ProfessorOaksLab/scripts.inc`
+
+The current Starter path is reconciled as `GiveSamStarter -> MarkSamOriginalStarter`; the obsolete vanilla `givemon` insertion was not copied over the newer Starter implementation.
+
+Production CI run `36957629488` compiled, linked, generated ELF/GBA/SYM, and stopped only at the expected stock-ROM SHA comparison.
+
+Isolated QA branch: `qa/core-001-004-current-stack-runtime`  
+QA source: `59ce704108a16559047737d25723c663a6dc3188`  
+Runtime run: `36958060624`  
+QA ROM SHA-1: `a55794ae62ed5295a3c0bd2baf22e9ca10918d40`
+
+The QA branch is a clean descendant of production and changes only four QA/instrumentation files. It is not a production ancestor.
+
+Runtime QA passed all six starter×mode paths, both mode states through real save/fresh-process reload, exact individual death/protection, evolution retention, Adaptive Gene, PC round-trip, common healing/revive restrictions, Standard regression, and authored-OT IMUGI integrity.
+
+CORE-001 remains QA pending one real human interactive selector smoke. CORE-002/003/004 remain COMPLETE.
+
 ## Special acquisition / gift core
 
 Branch: `sam/gift-001-002-special-acquisition-core`
