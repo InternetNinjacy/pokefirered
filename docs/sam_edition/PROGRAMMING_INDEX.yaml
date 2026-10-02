@@ -42,21 +42,42 @@ live_state:
   last_refresh_date: "2026-10-02"
   integration_head: 1ac7382fd5ecb34cb2de6bdf5bba8e7fcf08e869
   known_good_gameplay_tip:
-    branch: sam/enc-003-surf-fishing-finalization
-    pr: 72
-    production_head: 6e84b85cf47ad76fe81bf5d27a5aac1da127d79a
+    branch: sam/train-002-003-focused-corrections
+    pr: 73
+    production_head: 5b1bde65e321f09a5895a8a4b99f26cd7784d359
     state: "draft / open / unmerged"
-    parent_branch: sam/enc-001-nosepass-feebas-final-tables
-    parent_pr: 69
-    runtime_qa_branch: qa/enc-003-surf-fishing-finalization
-    runtime_qa_source: 58cce3b6f53505bba929f07179cf23917694e844
-    runtime_qa_run: 37006884530
-    runtime_qa_rom_sha1: 0a02ff27d52fdf6e7100178de438dd10d61ecfdd
+    parent_branch: sam/enc-003-surf-fishing-finalization
+    parent_pr: 72
+    runtime_qa_branch: qa/train-002-003-focused-corrections
+    runtime_qa_pr: 74
+    runtime_qa_source: aef75c74110bc6ecb7608d50a9d3353ed708943b
+    runtime_qa_run: 37016542530
+    runtime_qa_rom_sha1: 33f7f9c71db9347328d7e2cbcaf1526ad0374fe9
   notes:
     - "Live GitHub state must be refreshed before implementation."
     - "Pokemon: Weather branches are a separate project and are not Sam implementation evidence."
 
 source_locator:
+  trainer_focused_corrections:
+    notes:
+      - "TRAIN-002 and TRAIN-003 are COMPLETE on the current verified production stack."
+      - "Production delta is limited to trainer party/record data; no global Bug Bite move was introduced."
+      - "QA PR #74 is evidence/instrumentation only and is not production ancestry."
+    branch: sam/train-002-003-focused-corrections
+    pr: 73
+    production_head: 5b1bde65e321f09a5895a8a4b99f26cd7784d359
+    parent_branch: sam/enc-003-surf-fishing-finalization
+    parent_pr: 72
+    files:
+      - src/data/trainer_parties.h
+      - src/data/trainers.h
+    production_ci_run: 37008464595
+    runtime_qa_branch: qa/train-002-003-focused-corrections
+    runtime_qa_pr: 74
+    runtime_qa_source: aef75c74110bc6ecb7608d50a9d3353ed708943b
+    runtime_qa_run: 37016542530
+    runtime_qa_rom_sha1: 33f7f9c71db9347328d7e2cbcaf1526ad0374fe9
+
   project_workflow:
     files:
       - docs/sam_edition/IMPLEMENTATION_WORKFLOW.md
