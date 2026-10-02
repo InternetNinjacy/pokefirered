@@ -1,0 +1,118 @@
+framework:
+  name: firered-rom-hack-programming-framework
+  version: 1
+  framework_doc: docs/fire_red_framework/README.md
+  template: docs/fire_red_framework/PROJECT_INDEX_TEMPLATE.yaml
+
+project:
+  name: "Pokemon: Sam Edition"
+  repository: InternetNinjacy/pokefirered
+  upstream_repository: pret/pokefirered
+  upstream_commit: c75f352304d529f6ba92d4f74b9cf8b5c3810788
+  target_game: Pokemon FireRed
+  revision: "English revision 0 / original release"
+  language: English
+  expected_clean_rom_sha1: 41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc
+  baseline_branch: sam-baseline
+  integration_branch: sam-edition-dev
+
+authority:
+  order:
+    - current explicit project decision
+    - current Canon Authority Index
+    - current specialist design authority
+    - current specialist Implementation Addendum / Programmer Handoff
+    - Programming Readiness Registry
+    - verified source state after merge and QA
+  registry:
+    name: Pokemon_Sam_Edition_Programming_Readiness_Registry_v1.0
+    status_authority: Backlog
+    symbol_authority: Symbol Registry
+    dependency_authority: Dependencies
+    qa_authority: QA Matrix
+    blocking_authority: Blocking Decisions
+    contract_authority: Contract Coverage
+  repository_mirrors:
+    workflow: docs/sam_edition/IMPLEMENTATION_WORKFLOW.md
+    backlog: docs/sam_edition/IMPLEMENTATION_BACKLOG.md
+    source_audit: docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-09-30.md
+    baseline: docs/sam_edition/BASELINE.md
+
+live_state:
+  last_refresh_date: "2026-10-01"
+  integration_head: 1ac7382fd5ecb34cb2de6bdf5bba8e7fcf08e869
+  notes:
+    - "Live GitHub state must be refreshed before implementation."
+    - "Pokemon: Weather branches are a separate project and are not Sam implementation evidence."
+
+source_locator:
+  project_workflow:
+    files:
+      - docs/sam_edition/IMPLEMENTATION_WORKFLOW.md
+      - docs/sam_edition/IMPLEMENTATION_BACKLOG.md
+      - docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-09-30.md
+      - docs/sam_edition/BASELINE.md
+    notes:
+      - "Repository-local programming control surfaces."
+    last_verified_ref: sam-edition-dev
+
+  starter_system:
+    notes:
+      - "Detailed source locations are intentionally populated from verified implementation branches rather than inferred here."
+      - "Current production implementation branch: sam/start-001-004-starter-system."
+    branch: sam/start-001-004-starter-system
+    pr: 59
+    production_head: 2525442045c69501c5574a3827ebed7921c3b841
+    runtime_qa_branch: qa/start-001-004-runtime
+
+  species_evolution_integration:
+    notes:
+      - "Current integration base relevant to the Starter System production branch."
+    branch: sam/spec-009-part4-evolution-integration
+    head_at_framework_initialization: ba530e510fb8db6ea9eb7c4dd47388d0170faa40
+
+work_item_policy:
+  stable_ids: true
+  create_parallel_numbering_system: false
+  statuses:
+    - READY
+    - BLOCKED
+    - IN PROGRESS
+    - QA
+    - COMPLETE
+    - DEFERRED
+  completion_rule: "Do not claim COMPLETE merely because code exists."
+  numeric_resource_rule: "Do not invent Sam-specific numeric resources outside the current Symbol Registry."
+
+qa_policy:
+  required_categories:
+    - specialist_acceptance_tests
+    - backlog_done_when
+    - shared_qa_matrix
+    - clean_build
+    - save_load_and_reentry_for_stateful_features
+    - focused_regression
+  evidence_rule: "Record source commit used for QA separately from implementation branch state."
+
+known_good_builds:
+  starter_runtime_qa:
+    source_commit: bc7cd174744532360df1170db9b7f7cfcd262b97
+    workflow_run: 36903953035
+    rom_sha1: e6044c6d72c6643fbb3c
+    notes:
+      - "Hash retained exactly as supplied in the current programming handoff; refresh/complete from live QA records if needed."
+
+session_refresh:
+  verify_before_work:
+    - sam-edition-dev head
+    - selected feature branch head
+    - selected PR state and base/head
+    - Programming Readiness Registry status
+    - dependencies and blockers
+    - governing authority versions
+    - recorded source surfaces
+  full_rescan_triggers:
+    - baseline change
+    - major source-tree reorganization
+    - architecture refactor affecting indexed systems
+    - stale or contradictory audit/index state
