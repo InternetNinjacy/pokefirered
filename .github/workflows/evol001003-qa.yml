@@ -1,0 +1,158 @@
+name: EVOL-001-003 Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/evol-001-003-accessibility
+  workflow_dispatch:
+
+jobs:
+  evolution-accessibility-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/evol-001-003-accessibility
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production delta and evolution routing
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+
+          production_base = "fb9ba45065d6e87b28db24d76e800e57f72a7594"
+          production_head = "60caa7ffdf2730bcd75c630c2f421cc30b554711"
+
+          prod_changed = {
+              x for x in subprocess.check_output(
+                  ["git", "diff", "--name-only", f"{production_base}..{production_head}"],
+                  text=True,
+              ).splitlines() if x
+          }
+          assert prod_changed == {
+              "include/constants/items.h",
+              "src/data/item_icon_table.h",
+              "src/data/items.json",
+              "src/data/pokemon/evolution.h",
+              "src/data/pokemon/item_effects.h",
+              "src/party_menu.c",
+          }, prod_changed
+
+          qa_changed = {
+              x for x in subprocess.check_output(
+                  ["git", "diff", "--name-only", f"{production_head}..HEAD"],
+                  text=True,
+              ).splitlines() if x
+          }
+          assert qa_changed == {
+              ".github/workflows/evol001003-qa.yml",
+              "include/config.h",
+              "src/evol001003_qa.c",
+              "src/main.c",
+          }, qa_changed
+
+          evo = Path("src/data/pokemon/evolution.h").read_text()
+          items = Path("src/data/items.json").read_text()
+          effects = Path("src/data/pokemon/item_effects.h").read_text()
+          icons = Path("src/data/item_icon_table.h").read_text()
+          party = Path("src/party_menu.c").read_text()
+
+          required = [
+              "[SPECIES_KADABRA]    = {{EVO_LEVEL, 42, SPECIES_ALAKAZAM}}",
+              "[SPECIES_MACHOKE]    = {{EVO_LEVEL, 42, SPECIES_MACHAMP}}",
+              "[SPECIES_GRAVELER]   = {{EVO_LEVEL, 42, SPECIES_GOLEM}}",
+              "[SPECIES_HAUNTER]    = {{EVO_LEVEL, 42, SPECIES_GENGAR}}",
+              "{EVO_ITEM, ITEM_KINGS_ROCK, SPECIES_POLITOED}",
+              "{EVO_ITEM, ITEM_KINGS_ROCK, SPECIES_SLOWKING}",
+              "{EVO_ITEM, ITEM_METAL_COAT, SPECIES_STEELIX}",
+              "{EVO_ITEM, ITEM_METAL_COAT, SPECIES_SCIZOR}",
+              "{EVO_ITEM, ITEM_DRAGON_SCALE, SPECIES_KINGDRA}",
+              "{EVO_ITEM, ITEM_UP_GRADE, SPECIES_PORYGON2}",
+              "[SPECIES_RHYDON]     = {{EVO_ITEM, ITEM_PROTECTOR, SPECIES_RHYPERIOR}}",
+              "[SPECIES_GOLBAT]     = {{EVO_LEVEL, 36, SPECIES_CROBAT}}",
+              "[SPECIES_CHANSEY]    = {{EVO_LEVEL, 40, SPECIES_BLISSEY}}",
+              "[SPECIES_IGGLYBUFF]  = {{EVO_LEVEL, 22, SPECIES_JIGGLYPUFF}}",
+              "[SPECIES_TOGEPI]     = {{EVO_LEVEL, 20, SPECIES_TOGETIC}}",
+              "[SPECIES_AZURILL]    = {{EVO_LEVEL, 15, SPECIES_MARILL}}",
+              "[SPECIES_FEEBAS]     = {{EVO_LEVEL, 20, SPECIES_MILOTIC}}",
+          ]
+          for needle in required:
+              assert needle in evo, needle
+
+          assert evo.count("EVO_FRIENDSHIP") == 0
+          assert evo.count("EVO_BEAUTY") == 0
+          assert "{EVO_TRADE_ITEM, ITEM_DEEP_SEA_TOOTH, SPECIES_HUNTAIL}" in evo
+          assert "{EVO_TRADE_ITEM, ITEM_DEEP_SEA_SCALE, SPECIES_GOREBYSS}" in evo
+
+          for item in ["ITEM_KINGS_ROCK", "ITEM_METAL_COAT", "ITEM_DRAGON_SCALE", "ITEM_UP_GRADE", "ITEM_PROTECTOR"]:
+              marker = f'"itemId": "{item}"'
+              p = items.index(marker)
+              block = items[items.rfind("{", 0, p):items.find("}", p)+1]
+              assert '"type": "ITEM_TYPE_PARTY_MENU"' in block
+              assert '"fieldUseFunc": "FieldUseFunc_EvoItem"' in block
+              assert f"[{item} - ITEM_POTION]" in effects
+
+          assert '"itemId": "ITEM_PROTECTOR"' in items
+          assert '"price": 0' in items[items.index('"itemId": "ITEM_PROTECTOR"')-80:items.index('"itemId": "ITEM_PROTECTOR"')+700]
+          assert "[ITEM_PROTECTOR]      = {gItemIcon_MetalCoat, gItemIconPalette_MetalCoat}" in icons
+
+          start = party.index("static bool8 MonCanEvolve(void)", party.index("static bool8 MonCanEvolve(void)") + 1)
+          block = party[start:party.index("\n}", start)+2]
+          assert "IsNationalPokedexEnabled" not in block
+          assert "GetEvolutionTargetSpecies" in block
+
+          cb = party.index("static void CB2_UseEvolutionStone(void)", party.index("static void CB2_UseEvolutionStone(void)") + 1)
+          cb_block = party[cb:party.index("\n}", cb)+2]
+          assert "RemoveBagItem(gSpecialVar_ItemId, 1);" in cb_block
+
+          print("EVOL001003 STATIC PASS scoped routes items protector no-natdex consumption")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee EVOL001003_ROM_SHA1.txt
+          git rev-parse HEAD | tee EVOL001003_SOURCE_SHA.txt
+
+      - name: Runtime evolution accessibility validation
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > evol001003_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat evol001003_runtime.log
+          grep -q "EVOL001003 QA PASS level42 directitems fixedlevels protector invalidroutes eevee" evol001003_runtime.log
+          ! grep -q "EVOLQA FAIL" evol001003_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evol-001-003-runtime-qa
+          path: |
+            pokefirered.gba
+            EVOL001003_ROM_SHA1.txt
+            EVOL001003_SOURCE_SHA.txt
+            evol001003_runtime.log
+          if-no-files-found: error
