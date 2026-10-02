@@ -28,21 +28,32 @@ Verified on: `sam-edition-dev`
 
 Production branch:
 
-- `sam/enc-003-surf-fishing-finalization`
-- production head: `6e84b85cf47ad76fe81bf5d27a5aac1da127d79a`
-- draft PR: #72
-- base branch: `sam/enc-001-nosepass-feebas-final-tables` / draft PR #69
+- `sam/breed-001-003-route5-breeding-v2`
+- production head: `7ec21e900341b91b50df618a89f39cd9e4a6da92`
+- draft PR: #79
+- parent/base continuation: `sam/train-002-003-focused-corrections` / draft PR #73 @ `7b6e3c29e593cb43878cc2ef9fbc70ce741d7689`
+- ancestry check: 6 commits ahead / 0 behind parent head
 
-Focused QA branch:
+This is the current delta-only production continuation point. Group 1 — Breeding is POC COMPLETE. Manual emulator diagnostics remain deferred under the POC policy. Do not use the superseded experimental breeding PR #66 or any QA branch as production ancestry.
 
-- `qa/enc-003-surf-fishing-finalization`
-- QA source: `58cce3b6f53505bba929f07179cf23917694e844`
-- successful run: `37006884530`
-- QA ROM SHA-1: `0a02ff27d52fdf6e7100178de438dd10d61ecfdd`
+### Group 2 — Special Acquisitions current source-routing state
 
-This is the current delta-only production continuation point. PR #72 is stacked on verified ENC-001 PR #69. QA branches are evidence/instrumentation only and must not be used as production ancestors. BREED PR #66 is explicitly blocked and is not a valid production continuation point.
+Verified against production tip `7ec21e900341b91b50df618a89f39cd9e4a6da92` and Programming Readiness checkpoint `SYNC-2026-10-02-007`.
 
-ENC-003 is verified partial: 20 source-supported FireRed Surf/fishing tables are implemented and QA-passed. The remaining Seven Island shoreline entry is blocked because FireRed has no existing `MAP_SEVEN_ISLAND` wild header and current authority supplies no encounter-rate value; do not infer one.
+- GIFT-002 safe one-time/full-party delivery remains COMPLETE.
+- GIFT-001 shared authored-pre-owned delivery core and all nine NPC trades remain implemented/runtime-proven; do not recreate them.
+- Early starter-family Gift Pokémon data is closed:
+  - Viridian Bulbasaur / FERN / OT ID 52001
+  - Cerulean Charmander / ASHER / OT ID 52002
+  - Vermilion harbor Squirtle / MARINA / OT ID 52003
+- Those three visible source events are not implementation-closed: exact approved NPC/object, trigger/prerequisite, persistent claim state, required dialogue, successful-claim flow and post-claim behavior remain unresolved.
+- Mt. Moon Pokémon Center Cleffa is package-closed with OT LUNA, but no numeric Gift OT ID is allocated and exact NPC/dialogue is open.
+- Lavender Igglybuff is package-closed with OT MELODY, but no numeric Gift OT ID is allocated and the source event is not closed enough to script without invention.
+- Celadon Surf-house Elekid is a player-owned Gift Egg; exact NPC/dialogue and non-species Egg package fields remain open. Do not route it through outsider ownership.
+- Cinnabar Magby Egg belongs to the Town Side Quest implementation.
+- Stock Purchase, Game Corner, Fossil Revival and Silph Gift paths do not yet have complete authored non-player OT name + numeric OT-ID packages for outsider treatment.
+- Rock Tunnel Porygon is SILPH-owned and otherwise package-closed, but its numeric Pokémon OT ID is not centrally allocated and the source event remains Thomas/Rocket-owned.
+- No new Group 2 production branch should be created until one independent packet is implementation-ready without inventing player-visible content or numeric resources.
 
 ### TM-003 Signal Beam move-class override
 
