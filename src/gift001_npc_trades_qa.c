@@ -168,6 +168,22 @@ static void CheckMon(struct Pokemon *mon, const struct NpcTradeQaExpected *expec
         NpcTradeQaFail("NPC TRADE QA FAIL outsider ownership");
 }
 
+static void LogTradePass(u8 tradeId)
+{
+    switch (tradeId)
+    {
+    case INGAME_TRADE_JOULE:   NpcTradeQaLog("NPC TRADE QA JOULE PASS"); break;
+    case INGAME_TRADE_KITSUNE: NpcTradeQaLog("NPC TRADE QA KITSUNE PASS"); break;
+    case INGAME_TRADE_SCORIA:  NpcTradeQaLog("NPC TRADE QA SCORIA PASS"); break;
+    case INGAME_TRADE_IMUGI:   NpcTradeQaLog("NPC TRADE QA IMUGI PASS"); break;
+    case INGAME_TRADE_TALUS:   NpcTradeQaLog("NPC TRADE QA TALUS PASS"); break;
+    case INGAME_TRADE_BRINE:   NpcTradeQaLog("NPC TRADE QA BRINE PASS"); break;
+    case INGAME_TRADE_MATRON:  NpcTradeQaLog("NPC TRADE QA MATRON PASS"); break;
+    case INGAME_TRADE_STRATA:  NpcTradeQaLog("NPC TRADE QA STRATA PASS"); break;
+    case INGAME_TRADE_SELKIE:  NpcTradeQaLog("NPC TRADE QA SELKIE PASS"); break;
+    }
+}
+
 static void CreateAndCheckTrade(u8 tradeId)
 {
     const struct NpcTradeQaExpected *expected = &sExpected[tradeId];
@@ -184,6 +200,7 @@ static void CreateAndCheckTrade(u8 tradeId)
 
     CreateInGameTradePokemon();
     CheckMon(&gEnemyParty[0], expected);
+    LogTradePass(tradeId);
 }
 
 static void RunFresh(void)
