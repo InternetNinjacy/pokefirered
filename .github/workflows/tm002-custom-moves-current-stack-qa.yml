@@ -1,0 +1,119 @@
+name: TM-002 Custom Moves Current Stack QA
+
+on:
+  push:
+    branches:
+      - qa/tm-002-custom-moves-current-stack
+  workflow_dispatch:
+
+jobs:
+  tm002-custom-moves-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/tm-002-custom-moves-current-stack
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify source semantics
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          moves = Path("src/data/battle_moves.h").read_text()
+          scripts = Path("data/battle_scripts_1.s").read_text()
+          effects = Path("include/constants/battle_move_effects.h").read_text()
+          anims = Path("data/battle_anim_scripts.s").read_text()
+
+          for token in ["[MOVE_BOULDER_BASH]", "[MOVE_SHADOW_PUNCH]", "[MOVE_GHOSTLY_WAIL]", "[MOVE_SEED_STRIKE]", "[MOVE_NIGHT_TERROR]"]:
+              assert token in moves, token
+
+          assert "#define EFFECT_SEED_STRIKE 214" in effects
+          assert "#define EFFECT_SHADOW_PUNCH_SAM 215" in effects
+
+          seed = scripts[scripts.index("BattleScript_EffectSeedStrike::"):scripts.index("BattleScript_EffectSleep::")]
+          for token in [
+              "accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE",
+              "jumpifmovehadnoeffect BattleScript_SeedStrikeFinish",
+              "jumpifhasnohp BS_TARGET, BattleScript_SeedStrikeFinish",
+              "jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_SeedStrikeFinish",
+              "jumpifstatus3 BS_TARGET, STATUS3_LEECHSEED, BattleScript_SeedStrikeFinish",
+              "jumpiftype BS_TARGET, TYPE_GRASS, BattleScript_SeedStrikeFinish",
+              "setseeded",
+          ]:
+              assert token in seed, token
+
+          shadow = scripts[scripts.index("BattleScript_EffectShadowPunchSam::"):scripts.index("BattleScript_EffectBrickBreak::")]
+          assert "accuracycheck BattleScript_PrintMoveMissed, NO_ACC_CALC" in shadow
+          assert "removelightscreenreflect" in shadow
+          assert shadow.index("removelightscreenreflect") < shadow.index("damagecalc")
+
+          for token in ["MOVE_BOULDER_BASH", "MOVE_GHOSTLY_WAIL", "MOVE_SEED_STRIKE", "MOVE_NIGHT_TERROR"]:
+              assert token in anims, token
+
+          print("TM002 STATIC PASS exact records custom scripts animation coverage")
+          PY
+
+      - name: Verify QA isolation
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import subprocess
+          base = "60caa7ffdf2730bcd75c630c2f421cc30b554711"
+          changed = set(x for x in subprocess.check_output(["git","diff","--name-only",f"{base}..HEAD"],text=True).splitlines() if x)
+          expected = {
+              ".github/workflows/tm002-custom-moves-current-stack-qa.yml",
+              "include/config.h",
+              "src/main.c",
+              "src/tm002_custom_moves_qa.c",
+          }
+          assert changed == expected, (changed, expected)
+          print("TM002 QA ISOLATION PASS")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee TM002_ROM_SHA1.txt
+          git rev-parse HEAD | tee TM002_SOURCE_SHA.txt
+
+      - name: Runtime validation
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > tm002_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat tm002_runtime.log
+          grep -q "TM002 QA PASS data damage wail scripts source" tm002_runtime.log
+          ! grep -q "TM002 FAIL" tm002_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tm-002-custom-moves-current-stack-qa
+          path: |
+            pokefirered.gba
+            TM002_ROM_SHA1.txt
+            TM002_SOURCE_SHA.txt
+            tm002_runtime.log
+          if-no-files-found: error
