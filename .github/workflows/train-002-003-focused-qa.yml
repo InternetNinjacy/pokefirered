@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - qa/train-002-003-focused-corrections
+  pull_request:
+    branches:
+      - sam/train-002-003-focused-corrections
   workflow_dispatch:
 
 jobs:
