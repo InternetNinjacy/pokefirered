@@ -18,8 +18,33 @@ LavenderTown_PokemonCenter_1F_EventScript_Gentleman::
 	msgbox LavenderTown_PokemonCenter_1F_Text_RocketsDoAnythingForMoney, MSGBOX_NPC
 	end
 
-LavenderTown_PokemonCenter_1F_EventScript_Lass::
-	msgbox LavenderTown_PokemonCenter_1F_Text_CubonesMotherKilledByRockets, MSGBOX_NPC
+LavenderTown_PokemonCenter_1F_EventScript_Melody::
+	lock
+	faceplayer
+	goto_if_set FLAG_GIFT_MELODY_IGGLYBUFF_CLAIMED, LavenderTown_PokemonCenter_1F_EventScript_MelodyPostGift
+	msgbox LavenderTown_PokemonCenter_1F_Text_MelodyOfferIgglybuff, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, LavenderTown_PokemonCenter_1F_EventScript_MelodyDecline
+	setvar VAR_0x8004, 4
+	special GiveSamStarterFamilyGift
+	goto_if_eq VAR_RESULT, 2, LavenderTown_PokemonCenter_1F_EventScript_MelodyNoRoom
+	setflag FLAG_GIFT_MELODY_IGGLYBUFF_CLAIMED
+	msgbox LavenderTown_PokemonCenter_1F_Text_MelodyGiftReceived
+	release
+	end
+
+LavenderTown_PokemonCenter_1F_EventScript_MelodyDecline::
+	msgbox LavenderTown_PokemonCenter_1F_Text_MelodyDecline
+	release
+	end
+
+LavenderTown_PokemonCenter_1F_EventScript_MelodyNoRoom::
+	msgbox LavenderTown_PokemonCenter_1F_Text_MelodyNoRoom
+	release
+	end
+
+LavenderTown_PokemonCenter_1F_EventScript_MelodyPostGift::
+	msgbox LavenderTown_PokemonCenter_1F_Text_MelodyPostGift
+	release
 	end
 
 LavenderTown_PokemonCenter_1F_EventScript_Youngster::
