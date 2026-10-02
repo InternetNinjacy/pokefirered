@@ -315,4 +315,5 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_BAZ]                      = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_M]             = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_F]             = &gObjectEventGraphicsInfo_ProfOak,
+    [OBJ_EVENT_GFX_BOREAL]                   = &gObjectEventGraphicsInfo_Brock,
 };
