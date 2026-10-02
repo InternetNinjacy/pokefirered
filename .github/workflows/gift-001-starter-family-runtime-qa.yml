@@ -1,0 +1,119 @@
+name: GIFT-001 Starter Family Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/gift-001-starter-family-runtime
+  workflow_dispatch:
+
+jobs:
+  starter-family-gift-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/gift-001-starter-family-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and source packet
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          prod="be0c6ab2500f188ce20d49ae69b66f028dea332b"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+
+          flags=pathlib.Path("include/constants/flags.h").read_text()
+          trade=pathlib.Path("include/constants/trade.h").read_text()
+          util=pathlib.Path("src/script_pokemon_util.c").read_text()
+          assert "FLAG_GIFT_FERN_BULBASAUR_CLAIMED      0x370" in flags
+          assert "FLAG_GIFT_ASHER_CHARMANDER_CLAIMED    0x371" in flags
+          assert "FLAG_GIFT_MARINA_SQUIRTLE_CLAIMED     0x372" in flags
+          for token in ["OTID_GIFT_FERN   52001","OTID_GIFT_ASHER  52002","OTID_GIFT_MARINA 52003"]:
+              assert token in trade
+          for token in [
+              "SPECIES_BULBASAUR","NATURE_CALM","ITEM_MIRACLE_SEED","MOVE_LEECH_SEED","MOVE_VINE_WHIP",
+              "SPECIES_CHARMANDER","NATURE_MODEST","ITEM_CHARCOAL","MOVE_METAL_CLAW","MOVE_DRAGON_RAGE",
+              "SPECIES_SQUIRTLE","NATURE_BOLD","ITEM_MYSTIC_WATER","MOVE_WATER_GUN","MOVE_RAPID_SPIN",
+              "GivePreOwnedMonToPlayer"
+          ]:
+              assert token in util
+
+          checks=[
+              ("ViridianCity","ViridianCity_EventScript_Fern",23,8,"FLAG_GIFT_FERN_BULBASAUR_CLAIMED"),
+              ("CeruleanCity","CeruleanCity_EventScript_Asher",29,22,"FLAG_GIFT_ASHER_CHARMANDER_CLAIMED"),
+              ("VermilionCity","VermilionCity_EventScript_Marina",28,31,"FLAG_GIFT_MARINA_SQUIRTLE_CLAIMED"),
+          ]
+          for city,script,x,y,flag in checks:
+              data=json.loads(pathlib.Path(f"data/maps/{city}/map.json").read_text())
+              assert any(o.get("script")==script and o.get("x")==x and o.get("y")==y for o in data["object_events"])
+              src=pathlib.Path(f"data/maps/{city}/scripts.inc").read_text()
+              assert flag in src
+              assert "special GiveSamStarterFamilyGift" in src
+              assert "goto_if_eq VAR_RESULT, 2" in src
+
+          vir=pathlib.Path("data/maps/ViridianCity/scripts.inc").read_text()
+          assert "goto_if_unset FLAG_SYS_POKEDEX_GET" in vir
+          print("GIFT STARTER FAMILY STATIC PASS")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee GIFT_STARTER_ROM_SHA1.txt
+          git rev-parse HEAD | tee GIFT_STARTER_SOURCE_SHA.txt
+
+      - name: Runtime phase 1 — packages and claim save
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 30s mgba -l 31 pokefirered.gba > gift_starter_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat gift_starter_phase1.log
+          grep -q "GIFT STARTER QA PHASE1 PASS exact packages delivery and save" gift_starter_phase1.log
+          ! grep -q "GIFT STARTER QA FAIL" gift_starter_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2 — reload and duplicate block
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > gift_starter_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat gift_starter_phase2.log
+          grep -q "GIFT STARTER QA PASS save reload claim persistence" gift_starter_phase2.log
+          ! grep -q "GIFT STARTER QA FAIL" gift_starter_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gift-001-starter-family-runtime-qa
+          path: |
+            pokefirered.gba
+            GIFT_STARTER_ROM_SHA1.txt
+            GIFT_STARTER_SOURCE_SHA.txt
+            gift_starter_phase1.log
+            gift_starter_phase2.log
+            pokefirered.sav
+          if-no-files-found: error
