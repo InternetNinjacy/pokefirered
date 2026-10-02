@@ -98,11 +98,11 @@ static void CheckSpeciesAndCries(void)
     if (GetMonAbility(&mon) != ABILITY_SOUL_ROT)
         Fail("SPEC009 FAIL Ectoceon runtime ability");
 
-    if (SpeciesToCryId(SPECIES_LEAFEON) != SpeciesToCryId(SPECIES_EEVEE))
+    if (SpeciesToCryId(SPECIES_LEAFEON - 1) != SpeciesToCryId(SPECIES_EEVEE - 1))
         Fail("SPEC009 FAIL Leafeon cry");
-    if (SpeciesToCryId(SPECIES_ECTOCEON) != SpeciesToCryId(SPECIES_VAPOREON))
+    if (SpeciesToCryId(SPECIES_ECTOCEON - 1) != SpeciesToCryId(SPECIES_VAPOREON - 1))
         Fail("SPEC009 FAIL Ectoceon cry");
-    if (SpeciesToCryId(SPECIES_RHYPERIOR) != SpeciesToCryId(SPECIES_RHYDON))
+    if (SpeciesToCryId(SPECIES_RHYPERIOR - 1) != SpeciesToCryId(SPECIES_RHYDON - 1))
         Fail("SPEC009 FAIL Rhyperior cry");
 }
 
