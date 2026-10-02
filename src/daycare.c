@@ -1114,6 +1114,7 @@ static void RemoveEggFromDayCare(struct DayCare *daycare)
 void RejectEggFromDayCare(void)
 {
     RemoveEggFromDayCare(&gSaveBlock1Ptr->daycare);
+    ClearSamPendingEgg(FALSE);
 }
 
 static void AlterEggSpeciesWithIncenseItem(u16 *species, struct DayCare *daycare)
@@ -1821,12 +1822,23 @@ u8 GetRoute5DaycareState(void)
     struct DayCare daycare;
     u8 count;
 
+    if (HasSamPendingEgg(TRUE))
+        return DAYCARE_EGG_WAITING;
+
     LoadRoute5Daycare(&daycare);
     count = CountPokemonInDaycare(&daycare);
     if (count != 0)
         return count + 1;
 
     return DAYCARE_NO_MONS;
+}
+
+u8 GetRoute5DaycarePokemonCount(void)
+{
+    struct DayCare daycare;
+
+    LoadRoute5Daycare(&daycare);
+    return CountPokemonInDaycare(&daycare);
 }
 
 u8 GetNumLevelsGainedForRoute5DaycareMon(void)
