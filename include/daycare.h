@@ -26,7 +26,9 @@ void ShowRoute5DaycareLevelMenu(void);
 void ChooseSendDaycareMon(void);
 bool8 CanSelectedMonEnterDaycare(void);
 u8 GetRoute5DaycareState(void);
+u8 GetRoute5DaycarePokemonCount(void);
 void GetRoute5DaycareMonNicknames(void);
+void GiveEggFromRoute5Daycare(void);
 void SetRoute5DaycareCompatibilityString(void);
 
 void ScriptHatchMon(void);
