@@ -1,0 +1,108 @@
+name: TM-003 Signal Beam Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/tm-003-signal-beam-special-class
+  workflow_dispatch:
+
+jobs:
+  tm003-signal-beam-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/tm-003-signal-beam-special-class
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production delta and class routing
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+
+          production_base = "0b7f1481134d13fbcdea90b7fb99edb01ce3b639"
+          production_head = "fb9ba45065d6e87b28db24d76e800e57f72a7594"
+
+          prod_changed = {
+              x for x in subprocess.check_output(
+                  ["git", "diff", "--name-only", f"{production_base}..{production_head}"],
+                  text=True,
+              ).splitlines() if x
+          }
+          assert prod_changed == {"src/pokemon.c", "src/battle_script_commands.c"}, prod_changed
+
+          qa_changed = {
+              x for x in subprocess.check_output(
+                  ["git", "diff", "--name-only", f"{production_head}..HEAD"],
+                  text=True,
+              ).splitlines() if x
+          }
+          assert qa_changed == {
+              ".github/workflows/tm003-signal-beam-qa.yml",
+              "include/config.h",
+              "src/main.c",
+              "src/tm003_signal_beam_qa.c",
+          }, qa_changed
+
+          pokemon = Path("src/pokemon.c").read_text()
+          battle = Path("src/battle_script_commands.c").read_text()
+          moves = Path("src/data/battle_moves.h").read_text()
+
+          assert pokemon.count("move != MOVE_GHOSTLY_WAIL && move != MOVE_SIGNAL_BEAM") == 2
+          assert pokemon.count("move == MOVE_GHOSTLY_WAIL || move == MOVE_SIGNAL_BEAM") == 1
+          assert battle.count("gCurrentMove != MOVE_GHOSTLY_WAIL && gCurrentMove != MOVE_SIGNAL_BEAM") == 2
+          assert battle.count("gCurrentMove == MOVE_GHOSTLY_WAIL || gCurrentMove == MOVE_SIGNAL_BEAM") == 1
+          assert "[MOVE_SIGNAL_BEAM]" in moves
+          assert ".type = TYPE_BUG" in moves
+
+          print("TM003 STATIC PASS two-file production delta and six class-sensitive checks")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee TM003_ROM_SHA1.txt
+          git rev-parse HEAD | tee TM003_SOURCE_SHA.txt
+
+      - name: Runtime special-class validation
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > tm003_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat tm003_runtime.log
+          grep -q "TM003 SIGNAL BEAM QA PASS special stats defenses screens burn ghostly" tm003_runtime.log
+          ! grep -q "TM003 FAIL" tm003_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tm-003-signal-beam-runtime-qa
+          path: |
+            pokefirered.gba
+            TM003_ROM_SHA1.txt
+            TM003_SOURCE_SHA.txt
+            tm003_runtime.log
+          if-no-files-found: error
