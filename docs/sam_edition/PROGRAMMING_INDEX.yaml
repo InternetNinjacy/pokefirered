@@ -42,16 +42,16 @@ live_state:
   last_refresh_date: "2026-10-02"
   integration_head: 1ac7382fd5ecb34cb2de6bdf5bba8e7fcf08e869
   known_good_gameplay_tip:
-    branch: sam/core-001-004-current-stack-integration
-    pr: 63
-    production_head: 0b7f1481134d13fbcdea90b7fb99edb01ce3b639
+    branch: sam/evol-001-003-accessibility
+    pr: 65
+    production_head: 60caa7ffdf2730bcd75c630c2f421cc30b554711
     state: "draft / open / unmerged"
-    parent_branch: sam/gift-001-npc-trades
-    parent_pr: 62
-    runtime_qa_branch: qa/core-001-004-current-stack-runtime
-    runtime_qa_source: 59ce704108a16559047737d25723c663a6dc3188
-    runtime_qa_run: 36958060624
-    runtime_qa_rom_sha1: a55794ae62ed5295a3c0bd2baf22e9ca10918d40
+    parent_branch: sam/tm-003-signal-beam-special-class
+    parent_pr: 64
+    runtime_qa_branch: qa/evol-001-003-accessibility
+    runtime_qa_source: fdc3b14b0551772ba8b32d96324e7faa32bdaf8c
+    runtime_qa_run: 36961288046
+    runtime_qa_rom_sha1: 5c1c083070867654ae5625bcdb15c0e161242582
   notes:
     - "Live GitHub state must be refreshed before implementation."
     - "Pokemon: Weather branches are a separate project and are not Sam implementation evidence."
@@ -108,6 +108,36 @@ source_locator:
     runtime_qa_run: 36958060624
     runtime_qa_rom_sha1: a55794ae62ed5295a3c0bd2baf22e9ca10918d40
 
+  tm_003_signal_beam:
+    notes:
+      - "TM-003 is COMPLETE for its current scope: pre-existing Shadow Punch behavior plus the Signal Beam move-level Special-class override."
+      - "Signal Beam remains Bug-type and uses Sp. Atk / Sp. Def without introducing a global physical/special split."
+      - "Do not use the QA branch as a production ancestor."
+    branch: sam/tm-003-signal-beam-special-class
+    pr: 64
+    production_head: fb9ba45065d6e87b28db24d76e800e57f72a7594
+    parent_branch: sam/core-001-004-current-stack-integration
+    parent_pr: 63
+    runtime_qa_branch: qa/tm-003-signal-beam-special-class
+    runtime_qa_source: a724e917f639e1cb19e67a3e8909f1f926def0be
+    runtime_qa_run: 36960213040
+    runtime_qa_rom_sha1: 791c217ab9a6596e3447a910f1ad61a9d93b26c5
+
+  evol_001_003_accessibility:
+    notes:
+      - "EVOL-001, EVOL-002, and EVOL-003 are COMPLETE for the current authority/roster scope; QA-004 is PASS."
+      - "Conditional Clamperl trade-item methods remain untouched because the family is not currently authorized."
+      - "Do not use the QA branch as a production ancestor."
+    branch: sam/evol-001-003-accessibility
+    pr: 65
+    production_head: 60caa7ffdf2730bcd75c630c2f421cc30b554711
+    parent_branch: sam/tm-003-signal-beam-special-class
+    parent_pr: 64
+    runtime_qa_branch: qa/evol-001-003-accessibility
+    runtime_qa_source: fdc3b14b0551772ba8b32d96324e7faa32bdaf8c
+    runtime_qa_run: 36961288046
+    runtime_qa_rom_sha1: 5c1c083070867654ae5625bcdb15c0e161242582
+
 work_item_policy:
   stable_ids: true
   create_parallel_numbering_system: false
@@ -132,6 +162,30 @@ qa_policy:
   evidence_rule: "Record source commit used for QA separately from implementation branch state."
 
 known_good_builds:
+  evol_001_003_runtime_qa:
+    production_source_commit: 60caa7ffdf2730bcd75c630c2f421cc30b554711
+    qa_source_commit: fdc3b14b0551772ba8b32d96324e7faa32bdaf8c
+    workflow_run: 36961288046
+    rom_sha1: 5c1c083070867654ae5625bcdb15c0e161242582
+    production_ci_run: 36961159729
+    notes:
+      - "Production compiled, linked, generated ELF/GBA/SYM, then failed only the expected stock FireRed SHA comparison."
+      - "Runtime/static QA passed Lv42 pure-trade replacements, current fixed-level replacements, seven authorized direct-use trade-item routes, invalid-use rejection, Protector routing, and Eevee/Pikachu regressions."
+      - "Conditional Clamperl direct-use routes remain inactive because the family is not currently authorized."
+      - "QA branch is evidence/instrumentation only and is not in production ancestry."
+      - "PR #65 remains draft/open/unmerged and is the current verified gameplay-stack tip."
+  tm_003_signal_beam_runtime_qa:
+    production_source_commit: fb9ba45065d6e87b28db24d76e800e57f72a7594
+    qa_source_commit: a724e917f639e1cb19e67a3e8909f1f926def0be
+    workflow_run: 36960213040
+    rom_sha1: 791c217ab9a6596e3447a910f1ad61a9d93b26c5
+    production_ci_run: 36960016126
+    notes:
+      - "Production compiled, linked, generated ELF/GBA/SYM, then failed only the expected stock FireRed SHA comparison."
+      - "Runtime QA proved Signal Beam uses Sp. Atk / Sp. Def, Light Screen rather than Reflect, no burn/Hustle physical penalty, and preserves physical Bug controls."
+      - "Ghostly Wail's existing Special-class override remained intact."
+      - "QA branch is evidence/instrumentation only and is not in production ancestry."
+      - "PR #64 remains draft/open/unmerged and is the verified parent of PR #65."
   core_001_004_current_stack_runtime_qa:
     production_source_commit: 0b7f1481134d13fbcdea90b7fb99edb01ce3b639
     qa_source_commit: 59ce704108a16559047737d25723c663a6dc3188
