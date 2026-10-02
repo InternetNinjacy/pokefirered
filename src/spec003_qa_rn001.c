@@ -10,7 +10,6 @@
 #include "constants/items.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
-#include "constants/types.h"
 
 #define QA_MGBA_DEBUG_FLAGS  ((vu16 *)0x4FFF700)
 #define QA_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)
