@@ -70,7 +70,7 @@ MtMoon_1F_Text_KentPostBattle::
     .string "I'm sure they're from TEAM ROCKET!$"
 
 MtMoon_1F_Text_KentNotEnoughMons::
-    .string "You need at least two POKéMON\\n"
+    .string "You need at least two POKéMON\n"
     .string "for a Double Battle.$"
 
 MtMoon_1F_Text_RobbyIntro::
