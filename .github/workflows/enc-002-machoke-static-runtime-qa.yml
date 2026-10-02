@@ -1,0 +1,126 @@
+name: ENC-002 Machoke Static Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/enc-002-machoke-static-runtime
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  enc002-machoke-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/enc-002-machoke-static-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and exact source contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          prod="41d3177981037fe2dc0a47b9ddb560b05ea3ff95"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+
+          flags=pathlib.Path("include/constants/flags.h").read_text()
+          assert "#define FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE       0x367" in flags
+          assert "#define FLAG_0x367               FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE" in flags
+
+          m=json.loads(pathlib.Path("data/maps/RockTunnel_B1F/map.json").read_text())
+          objs=[o for o in m["object_events"] if o.get("script")=="RockTunnel_B1F_EventScript_StaticMachoke"]
+          assert len(objs)==1
+          o=objs[0]
+          assert o["graphics_id"]=="OBJ_EVENT_GFX_MACHOKE"
+          assert (o["x"],o["y"],o["elevation"])==(7,36,3)
+          assert o["flag"]=="FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE"
+          assert o["trainer_type"]=="TRAINER_TYPE_NONE"
+
+          s=pathlib.Path("data/maps/RockTunnel_B1F/scripts.inc").read_text()
+          for token in [
+              "setwildbattle SPECIES_MACHOKE, 29, ITEM_BLACK_BELT",
+              "MOVE_KARATE_CHOP","MOVE_SEISMIC_TOSS","MOVE_FORESIGHT","MOVE_REVENGE",
+              "goto_if_eq VAR_RESULT, B_OUTCOME_WON, RockTunnel_B1F_EventScript_CompleteStaticMachoke",
+              "goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, RockTunnel_B1F_EventScript_CompleteStaticMachoke",
+              "setflag FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE",
+              "removeobject VAR_LAST_TALKED"
+          ]: assert token in s
+
+          start=s.index("RockTunnel_B1F_EventScript_StaticMachoke::")
+          complete=s.index("RockTunnel_B1F_EventScript_CompleteStaticMachoke::")
+          pre=s[start:complete]
+          assert "setflag FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE" not in pre
+          assert pre.rstrip().endswith("release\n\tend")
+
+          p=pathlib.Path("src/pokemon.c").read_text()
+          assert "void SetEnemyEventMonMoveSlot(void)" in p
+          assert "SetMonMoveSlot(&gEnemyParty[0], move, slot);" in p
+          specials=pathlib.Path("data/specials.inc").read_text()
+          assert "def_special SetEnemyEventMonMoveSlot" in specials
+
+          print("ENC002 MACHOKE STATIC PASS")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ENC002_MACHOKE_ROM_SHA1.txt
+          git rev-parse HEAD | tee ENC002_MACHOKE_QA_SOURCE_SHA.txt
+          echo 41d3177981037fe2dc0a47b9ddb560b05ea3ff95 | tee ENC002_MACHOKE_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 35s mgba -l 31 pokefirered.gba > enc002_machoke_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc002_machoke_phase1.log
+          grep -q "ENC002 MACHOKE QA PHASE1 PASS package flag save" enc002_machoke_phase1.log
+          ! grep -q "ENC002 MACHOKE QA FAIL" enc002_machoke_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > enc002_machoke_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc002_machoke_phase2.log
+          grep -q "ENC002 MACHOKE QA PASS save reload package" enc002_machoke_phase2.log
+          ! grep -q "ENC002 MACHOKE QA FAIL" enc002_machoke_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: enc-002-machoke-static-runtime-qa
+          path: |
+            pokefirered.gba
+            ENC002_MACHOKE_ROM_SHA1.txt
+            ENC002_MACHOKE_QA_SOURCE_SHA.txt
+            ENC002_MACHOKE_PRODUCTION_SOURCE_SHA.txt
+            enc002_machoke_phase1.log
+            enc002_machoke_phase2.log
+            pokefirered.sav
+          if-no-files-found: error
