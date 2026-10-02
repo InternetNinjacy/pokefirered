@@ -49,9 +49,20 @@ Rule: actual GitHub/source/CI state wins if this file is stale.
 
 ## CURRENT
 
-Manual implementation blocks are the controlling workflow. There is no active compiler blocker.
+Manual implementation blocks are the controlling workflow. There is no active compiler blocker in the last verified build.
 
-Next work block: League state/progression regression.
+2026-10-02 closure delta:
+- source-level League room progression is now statically guarded as Lorelei 0->1, Blue 1->2, Agatha 2->3, Lance 3->4, with the Champion room gated at scene 4;
+- each Elite Four defeated flag is guarded so it cannot drift ahead of its trainer battle;
+- first-clear and rematch Elite Four records are guarded for exactly two Full Restores and the intended strongest stock AI flag set;
+- the battle engine now has an isolated League defeat-pose trainer-pic selection hook on the existing post-victory trainer slide; ordinary opening portraits remain on the vanilla draw path;
+- the hook deliberately falls back to the opening portrait until approved League defeat art receives registered TRAINER_PIC_* resources. This fallback is NOT final-art closure.
+
+Final production closure is blocked by approved paired League battle art. Lorelei has a locked concept but no source binary; Agatha and Lance still require approved visual concepts/source art; Blue and Green require League-specific opening/defeat pairs. ROM conversion/insertion and runtime/visual QA follow those assets.
+
+Latest source-safe code commit before this checkpoint update: `d56d18ab4caa37cb88b2d657c3bf379663418120`. CI for the 2026-10-02 delta was not yet reported by GitHub at checkpoint update time; last verified green remains CI #177.
+
+Next work block: approved paired League art production/registration, then ROM conversion/insertion and final runtime/visual League QA.
 
 ## NEXT — MANUAL 30–60 MINUTE WORK BLOCKS
 
@@ -64,17 +75,17 @@ Next work block: League state/progression regression.
 3. **DONE — Elite Four dialogue + script closure.**  
    Recovered and installed the approved Agatha/Lance first-clear and Lorelei/Agatha/Lance rematch dialogue, separated rematch defeat/post-battle paths, added regression guards, and proved static/standard/modern builds green.
 
-4. **League state/progression regression.**  
-   Audit first-clear versus rematch selection, four per-run defeated flags, Hall-of-Fame reset, Green reveal/title-challenge state, save/reload reconstruction, doors/warps, blackout/retry behavior, and repeated League runs. Add static guards where practical.
+4. **SOURCE-LEVEL COMPLETE / RUNTIME PENDING — League state/progression regression.**  
+   Static guards now enforce room scene order, victory-only defeated-flag ordering, Hall-of-Fame rematch gating/reset, and existing Green reveal/title-challenge state. Save/reload, blackout/retry, repeated-run, and full door/warp behavior still require final runtime gameplay QA.
 
-5. **League paired battle-sprite integration — engine/hook layer.**  
-   Implement the opening/defeat sprite presentation mechanism so each League opponent can show an opening battle sprite and a distinct defeat sprite after the win, without disturbing ordinary trainer battles.
+5. **ENGINE HOOK COMPLETE / ASSET MAPPING PENDING — League paired battle-sprite integration.**  
+   The existing post-victory opponent Trainer slide now has an isolated League defeat-pose selection hook. Opening portrait behavior and ordinary Trainer battles remain unchanged. Actual distinct defeat-pic mappings cannot be completed until approved assets receive registered TRAINER_PIC_* resources.
 
 6. **League paired battle-sprite integration — assets/registries.**  
    Convert/register the approved Lorelei, Blue, Agatha, Lance, and Green opening/defeat assets available in project authorities; use fallbacks only where explicitly permitted, identify any truly missing approved source art, and compile-test all five.
 
-7. **League combat/AI/healing verification.**  
-   Verify exact parties, held items, two-Full-Restore rules, strongest intended stock AI/switch behavior, Blue branches, Green competitive construction, Hidden Power results, and rematch levels against current specialist authorities. Fix source discrepancies only; do not rebalance from preference.
+7. **STATIC COMPLETE / RUNTIME AI BEHAVIOR PENDING — League combat/AI/healing verification.**  
+   Existing exact party/level checks plus Green competitive construction/Hidden Power checks are retained; static guards now cover both first-clear and rematch two-Full-Restore records and the strongest intended stock AI flag set. Actual healing thresholds/switch decisions remain runtime behavior to smoke-test.
 
 8. **Full League integration/regression pass.**  
    Run static validation plus standard/modern builds; inspect all five room bindings, script references, resource IDs, save allocations, trainer tables, dialogue symbols, and cross-map progression. Repair any remaining compile/link/data defects.
