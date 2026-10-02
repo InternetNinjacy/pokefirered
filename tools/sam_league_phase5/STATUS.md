@@ -28,7 +28,7 @@ Base: `sam-edition-dev`
 
 ## Canon-sensitive work still pending
 
-- Final paired League opening/defeat battle sprites for all five characters still require presentation hooks and approved source assets.
+- Paired League opening/defeat source art is recovered and canonically stored for all five characters. Remaining sprite work is technical extraction/normalization, TRAINER_PIC registration/mapping, insertion, and runtime/visual QA.
 - Stock AI flags are strengthened, but exact healing-threshold/switch behavior still needs runtime verification before claiming full parity with design prose.
 - The Sam starter trio itself is still vanilla in `sam-edition-dev`; League routing follows the locked intended starter-slot contract without rewriting unrelated starter work.
 - Full player-facing Adaptive Gene item presentation/acquisition belongs to the global starter/resource implementation. The League-side item identity and battle behavior are closed here.
@@ -46,13 +46,18 @@ Source-safe work completed in this pass:
 - expanded first-clear/rematch Elite Four checks for exactly two Full Restores and the intended strongest stock AI flags;
 - added an isolated defeat-pose Trainer-pic hook to the existing post-victory Trainer slide. Ordinary opening portraits and non-League Trainer battles remain unchanged.
 
-Final production blocker:
-- required approved League-specific paired opening/defeat battle art is incomplete.
-- Lorelei: concept locked; no approved source binary currently registered.
-- Agatha: paired-sprite requirement locked; exact approved visual concept/source art still open.
-- Lance: paired-sprite requirement locked; exact approved visual concept/source art still open.
-- Blue and Green: approved general references exist, but League-specific opening/defeat pairs remain required.
+Asset-recovery correction:
+- the previously reported missing-art blocker is superseded;
+- paired opening/defeat source art is now canonically stored for Lorelei, Blue, Agatha, Lance, and Green;
+- recovered GBA working sheets exist for all five and preserve the intended opening/defeat pairs;
+- the artwork must not be regenerated.
 
-The defeat-pose hook intentionally falls back to the normal opening Trainer pic until dedicated approved resources are registered. That fallback is not final visual closure.
+Current production blocker:
+- extract/normalize true engine-ready indexed 64×64 trainer-pic resources from the recovered working sheets;
+- register distinct opening/defeat TRAINER_PIC_* resources and palettes;
+- map the existing defeat-pose hook to those resources;
+- compile and run full runtime/visual QA.
 
-After asset delivery: register/convert/insert the paired art, then run full runtime/visual QA for first clear, loss/retry, Hall of Fame, rematch, save/reload, room progression, dialogue, paired sprites, and Blue/Green starter branches.
+The defeat-pose hook intentionally falls back to the normal opening Trainer pic until the recovered resources are registered. That fallback is not final visual closure.
+
+After resource registration/insertion: run full runtime/visual QA for first clear, loss/retry, Hall of Fame, rematch, save/reload, room progression, dialogue, paired sprites, and Blue/Green starter branches.
