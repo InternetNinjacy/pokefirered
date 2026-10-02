@@ -1,196 +1,141 @@
 static const struct InGameTrade sInGameTrades[] = {
-    [INGAME_TRADE_MR_MIME] = 
+    [INGAME_TRADE_JOULE] =
     {
-        .nickname = _("MIMIEN"),
-        .species = SPECIES_MR_MIME,
-        .ivs = {20, 15, 17, 24, 23, 22},
-        .abilityNum = 0,
-        .otId = 1985,
-        .conditions = {5, 5, 5, 30, 5},
-        .personality = 0x00009cae,
+        .nickname = _("JOULE"),
+        .species = SPECIES_ELECTABUZZ,
+        .level = 20,
+        .gender = MON_MALE,
+        .nature = NATURE_HASTY,
+        .otId = OTID_NPC_TRADE_MARA,
+        .moves = {MOVE_THUNDER_SHOCK, MOVE_QUICK_ATTACK, MOVE_LEER, MOVE_SWIFT},
         .heldItem = ITEM_NONE,
         .mailNum = 255,
-        .otName = _("REYLEY"),
-        .otGender = MALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_ABRA
-    }, 
-    [INGAME_TRADE_JYNX] = 
-    {
-        .nickname = _("ZYNX"),
-        .species = SPECIES_JYNX,
-        .ivs = {18, 17, 18, 22, 25, 21},
-        .abilityNum = 0,
-        .otId = 36728,
-        .conditions = {5, 30, 5, 5, 5},
-        .personality = 0x498a2e1d,
-        .heldItem = ITEM_FAB_MAIL,
-        .mailNum = 0,
-        .otName = _("DONTAE"),
-        .otGender = MALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_POLIWHIRL
-    }, 
-    [INGAME_TRADE_NIDORAN] = 
-    {
-#if defined(FIRERED)
-        .nickname = _("MS. NIDO"),
-        .species = SPECIES_NIDORAN_F,
-        .ivs = {22, 18, 25, 19, 15, 22},
-        .abilityNum = 0,
-        .otId = 63184,
-        .conditions = {5, 5, 5, 5, 30},
-        .personality = 0x4c970b89,
-        .heldItem = ITEM_TINY_MUSHROOM,
-        .mailNum = 255,
-        .otName = _("SAIGE"),
+        .otName = _("MARA"),
         .otGender = FEMALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_NIDORAN_M
-#elif defined(LEAFGREEN)
-        .nickname = _("MR. NIDO"),
-        .species = SPECIES_NIDORAN_M,
-        .ivs = {19, 25, 18, 22, 22, 15},
-        .abilityNum = 0,
-        .otId = 63184,
-        .conditions = {30, 5, 5, 5, 5},
-        .personality = 0x4c970b9e,
-        .heldItem = ITEM_TINY_MUSHROOM,
-        .mailNum = 255,
-        .otName = _("SAIGE"),
-        .otGender = FEMALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_NIDORAN_F
-#endif
-    }, 
-    [INGAME_TRADE_FARFETCHD] = 
-    {
-        .nickname = _("CH'DING"),
-        .species = SPECIES_FARFETCHD,
-        .ivs = {20, 25, 21, 24, 15, 20},
-        .abilityNum = 0,
-        .otId = 8810,
-        .conditions = {30, 5, 5, 5, 5},
-        .personality = 0x151943d7,
-        .heldItem = ITEM_STICK,
-        .mailNum = 255,
-        .otName = _("ELYSSA"),
-        .otGender = MALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_SPEAROW
-    }, 
-    [INGAME_TRADE_NIDORINOA] = 
-    {
-#if defined(FIRERED)
-        .nickname = _("NINA"),
-        .species = SPECIES_NIDORINA,
-        .ivs = {22, 25, 18, 19, 22, 15},
-        .abilityNum = 0,
-        .otId = 13637,
-        .conditions = {5, 5, 30, 5, 5},
-        .personality = 0x00eeca15,
-        .heldItem = ITEM_NONE,
-        .mailNum = 255,
-        .otName = _("TURNER"),
-        .otGender = MALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_NIDORINO
-#elif defined(LEAFGREEN)
-        .nickname = _("NINO"),
-        .species = SPECIES_NIDORINO,
-        .ivs = {19, 18, 25, 22, 15, 22},
-        .abilityNum = 0,
-        .otId = 13637,
-        .conditions = {5, 5, 5, 5, 30},
-        .personality = 0x00eeca19,
-        .heldItem = ITEM_NONE,
-        .mailNum = 255,
-        .otName = _("TURNER"),
-        .otGender = MALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_NIDORINA
-#endif
-    }, 
-    [INGAME_TRADE_LICKITUNG] = 
-    {
-        .nickname = _("MARC"),
-        .species = SPECIES_LICKITUNG,
-        .ivs = {24, 19, 21, 15, 23, 21},
-        .abilityNum = 0,
-        .otId = 1239,
-        .conditions = {5, 5, 5, 5, 30},
-        .personality = 0x451308ab,
-        .heldItem = ITEM_NONE,
-        .mailNum = 255,
-        .otName = _("HADEN"),
-        .otGender = MALE,
-        .sheen = 10,
-#if defined(FIRERED)
-        .requestedSpecies = SPECIES_GOLDUCK
-#elif defined(LEAFGREEN)
-        .requestedSpecies = SPECIES_SLOWBRO
-#endif
-    }, 
-    [INGAME_TRADE_ELECTRODE] = 
-    {
-        .nickname = _("ESPHERE"),
-        .species = SPECIES_ELECTRODE,
-        .ivs = {19, 16, 18, 25, 25, 19},
-        .abilityNum = 1,
-        .otId = 50298,
-        .conditions = {30, 5, 5, 5, 5},
-        .personality = 0x06341016,
-        .heldItem = ITEM_NONE,
-        .mailNum = 255,
-        .otName = _("CLIFTON"),
-        .otGender = MALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_RAICHU
-    }, 
-    [INGAME_TRADE_TANGELA] = 
-    {
-        .nickname = _("TANGENY"),
-        .species = SPECIES_TANGELA,
-        .ivs = {22, 17, 25, 16, 23, 20},
-        .abilityNum = 0,
-        .otId = 60042,
-        .conditions = {5, 5, 30, 5, 5},
-        .personality = 0x5c77ecfa,
-        .heldItem = ITEM_STARDUST,
-        .mailNum = 255,
-        .otName = _("NORMA"),
-        .otGender = FEMALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_VENONAT
+        .requestedSpecies = SPECIES_CLEFAIRY,
     },
-    [INGAME_TRADE_SEEL] = 
+    [INGAME_TRADE_KITSUNE] =
     {
-        .nickname = _("SEELOR"),
-        .species = SPECIES_SEEL,
-        .ivs = {24, 15, 22, 16, 23, 22},
-        .abilityNum = 0,
-        .otId = 9853,
-        .conditions = {5, 5, 5, 5, 30},
-        .personality = 0x482cac89,
+        .nickname = _("KITSUNE"),
+        .species = SPECIES_NINETALES,
+        .level = 24,
+        .gender = MON_FEMALE,
+        .nature = NATURE_TIMID,
+        .otId = OTID_NPC_TRADE_REINA,
+        .moves = {MOVE_EMBER, MOVE_QUICK_ATTACK, MOVE_CONFUSE_RAY, MOVE_WILL_O_WISP},
+        .heldItem = ITEM_CHARCOAL,
+        .mailNum = 255,
+        .otName = _("REINA"),
+        .otGender = FEMALE,
+        .requestedSpecies = SPECIES_CLEFABLE,
+    },
+    [INGAME_TRADE_SCORIA] =
+    {
+        .nickname = _("SCORIA"),
+        .species = SPECIES_MAGMAR,
+        .level = 22,
+        .gender = MON_MALE,
+        .nature = NATURE_TIMID,
+        .otId = OTID_NPC_TRADE_DEXTER,
+        .moves = {MOVE_FIRE_PUNCH, MOVE_SMOG, MOVE_LEER, MOVE_EMBER},
         .heldItem = ITEM_NONE,
         .mailNum = 255,
-        .otName = _("GARETT"),
+        .otName = _("DEXTER"),
         .otGender = MALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_PONYTA
-    }
+        .requestedSpecies = SPECIES_PIKACHU,
+    },
+    [INGAME_TRADE_IMUGI] =
+    {
+        .nickname = _("IMUGI"),
+        .species = SPECIES_BAGON,
+        .level = 20,
+        .gender = MON_MALE,
+        .nature = NATURE_JOLLY,
+        .otId = OTID_NPC_TRADE_MIN,
+        .moves = {MOVE_BITE, MOVE_HEADBUTT, MOVE_FOCUS_ENERGY, MOVE_DRAGON_BREATH},
+        .heldItem = ITEM_DRAGON_FANG,
+        .mailNum = 255,
+        .otName = _("MIN"),
+        .otGender = MALE,
+        .requestedSpecies = SPECIES_EKANS,
+    },
+    [INGAME_TRADE_TALUS] =
+    {
+        .nickname = _("TALUS"),
+        .species = SPECIES_GRAVELER,
+        .level = 25,
+        .gender = MON_MALE,
+        .nature = NATURE_ADAMANT,
+        .otId = OTID_NPC_TRADE_CLAY,
+        .moves = {MOVE_ROCK_THROW, MOVE_MAGNITUDE, MOVE_BRICK_BREAK, MOVE_DEFENSE_CURL},
+        .heldItem = ITEM_QUICK_CLAW,
+        .mailNum = 255,
+        .otName = _("CLAY"),
+        .otGender = MALE,
+        .requestedSpecies = SPECIES_PARASECT,
+    },
+    [INGAME_TRADE_BRINE] =
+    {
+        .nickname = _("BRINE"),
+        .species = SPECIES_CLOYSTER,
+        .level = 32,
+        .gender = MON_FEMALE,
+        .nature = NATURE_IMPISH,
+        .otId = OTID_NPC_TRADE_MARIS,
+        .moves = {MOVE_AURORA_BEAM, MOVE_CLAMP, MOVE_SUPERSONIC, MOVE_PROTECT},
+        .heldItem = ITEM_NEVER_MELT_ICE,
+        .mailNum = 255,
+        .otName = _("MARIS"),
+        .otGender = FEMALE,
+        .requestedSpecies = SPECIES_RAPIDASH,
+    },
+    [INGAME_TRADE_MATRON] =
+    {
+        .nickname = _("MATRON"),
+        .species = SPECIES_KANGASKHAN,
+        .level = 35,
+        .gender = MON_FEMALE,
+        .nature = NATURE_ADAMANT,
+        .otId = OTID_NPC_TRADE_HELEN,
+        .moves = {MOVE_MEGA_PUNCH, MOVE_BITE, MOVE_FAKE_OUT, MOVE_BRICK_BREAK},
+        .heldItem = ITEM_SILK_SCARF,
+        .mailNum = 255,
+        .otName = _("HELEN"),
+        .otGender = FEMALE,
+        .requestedSpecies = SPECIES_MAGNETON,
+    },
+    [INGAME_TRADE_STRATA] =
+    {
+        .nickname = _("STRATA"),
+        .species = SPECIES_RHYDON,
+        .level = 36,
+        .gender = MON_MALE,
+        .nature = NATURE_BRAVE,
+        .otId = OTID_NPC_TRADE_GEOFF,
+        .moves = {MOVE_ROCK_SLIDE, MOVE_DIG, MOVE_STOMP, MOVE_SCARY_FACE},
+        .heldItem = ITEM_SOFT_SAND,
+        .mailNum = 255,
+        .otName = _("GEOFF"),
+        .otGender = MALE,
+        .requestedSpecies = SPECIES_SEADRA,
+    },
+    [INGAME_TRADE_SELKIE] =
+    {
+        .nickname = _("SELKIE"),
+        .species = SPECIES_DEWGONG,
+        .level = 37,
+        .gender = MON_FEMALE,
+        .nature = NATURE_CALM,
+        .otId = OTID_NPC_TRADE_INGRID,
+        .moves = {MOVE_AURORA_BEAM, MOVE_BUBBLE_BEAM, MOVE_ENCORE, MOVE_REST},
+        .heldItem = ITEM_CHESTO_BERRY,
+        .mailNum = 255,
+        .otName = _("INGRID"),
+        .otGender = FEMALE,
+        .requestedSpecies = SPECIES_WEEZING,
+    },
 };
 
 static const u16 sInGameTradeMailMessages[][10] = {
-    {
-        EC_WORD_THAT_S,
-        EC_WORD_A,
-        EC_WORD_HEALTHY,
-        EC_POKEMON(JYNX),
-        EC_WORD_EXCL,
-        EC_WORD_BE,
-        EC_WORD_KIND,
-        EC_WORD_TO,
-        EC_WORD_IT
-    }
+    {0},
 };

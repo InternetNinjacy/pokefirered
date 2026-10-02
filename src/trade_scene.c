@@ -33,6 +33,7 @@
 #include "constants/songs.h"
 #include "constants/region_map_sections.h"
 #include "constants/moves.h"
+#include "constants/pokemon.h"
 #include "sloopsvc.h"
 
 // Values for signaling to/from the link partner
@@ -55,19 +56,18 @@ enum {
 };
 
 struct InGameTrade {
-    /*0x00*/ u8 nickname[POKEMON_NAME_LENGTH + 1];
-    /*0x0C*/ u16 species;
-    /*0x0E*/ u8 ivs[NUM_STATS];
-    /*0x14*/ u8 abilityNum;
-    /*0x18*/ u32 otId;
-    /*0x1C*/ u8 conditions[CONTEST_CATEGORIES_COUNT];
-    /*0x24*/ u32 personality;
-    /*0x28*/ u16 heldItem;
-    /*0x2A*/ u8 mailNum;
-    /*0x2B*/ u8 otName[11];
-    /*0x36*/ u8 otGender;
-    /*0x37*/ u8 sheen;
-    /*0x38*/ u16 requestedSpecies;
+    u8 nickname[POKEMON_NAME_LENGTH + 1];
+    u16 species;
+    u8 level;
+    u8 gender;
+    u8 nature;
+    u32 otId;
+    u16 moves[MAX_MON_MOVES];
+    u16 heldItem;
+    u8 mailNum;
+    u8 otName[PLAYER_NAME_LENGTH + 1];
+    u8 otGender;
+    u16 requestedSpecies;
 };
 
 struct {
@@ -1775,7 +1775,14 @@ static bool8 DoTradeAnim_Cable(void)
     case STATE_TRY_EVOLUTION: // Only if in-game trade, link trades use CB2_TryLinkTradeEvolution
         TradeMons(gSpecialVar_0x8005, 0);
         gCB2_AfterEvolution = CB2_InGameTrade;
-        evoTarget = GetEvolutionTargetSpecies(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], EVO_MODE_TRADE, ITEM_NONE);
+        // TALUS is explicitly received as Graveler. Sam Edition replaces its
+        // pure trade evolution with the project-wide Lv. 42 rule, so do not
+        // let the vanilla in-game trade scene immediately turn it into Golem
+        // while EVOL-001 is integrated separately.
+        if (gSpecialVar_0x8004 == INGAME_TRADE_TALUS)
+            evoTarget = SPECIES_NONE;
+        else
+            evoTarget = GetEvolutionTargetSpecies(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], EVO_MODE_TRADE, ITEM_NONE);
         if (evoTarget != SPECIES_NONE)
             TradeEvolutionScene(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], evoTarget, sTradeAnim->monSpriteIds[1], gSelectedTradeMonPositions[TRADE_PLAYER]);
         sTradeAnim->state++;
@@ -2275,7 +2282,12 @@ static bool8 DoTradeAnim_Wireless(void)
     case STATE_TRY_EVOLUTION: // Only if in-game trade, link trades use CB2_TryLinkTradeEvolution
         TradeMons(gSpecialVar_0x8005, 0);
         gCB2_AfterEvolution = CB2_InGameTrade;
-        evoTarget = GetEvolutionTargetSpecies(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], EVO_MODE_TRADE, ITEM_NONE);
+        // Preserve the locked TALUS / Graveler receive package until the
+        // project-wide Lv. 42 pure-trade evolution replacement owns this path.
+        if (gSpecialVar_0x8004 == INGAME_TRADE_TALUS)
+            evoTarget = SPECIES_NONE;
+        else
+            evoTarget = GetEvolutionTargetSpecies(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], EVO_MODE_TRADE, ITEM_NONE);
         if (evoTarget != SPECIES_NONE)
             TradeEvolutionScene(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], evoTarget, sTradeAnim->monSpriteIds[TRADE_PARTNER], gSelectedTradeMonPositions[TRADE_PLAYER]);
         sTradeAnim->state++;
@@ -2455,30 +2467,43 @@ static void BufferInGameTradeMonName(void)
 
 static void CreateInGameTradePokemonInternal(u8 playerSlot, u8 inGameTradeIdx)
 {
-    const struct InGameTrade * inGameTrade = &sInGameTrades[inGameTradeIdx];
-    u8 level = GetMonData(&gPlayerParty[playerSlot], MON_DATA_LEVEL);
+    const struct InGameTrade *inGameTrade = &sInGameTrades[inGameTradeIdx];
     struct Mail mail;
     u8 metLocation = METLOC_IN_GAME_TRADE;
-    struct Pokemon * tradeMon = &gEnemyParty[0];
+    struct Pokemon *tradeMon = &gEnemyParty[0];
+    u32 personality;
     u8 mailNum;
-    CreateMon(tradeMon, inGameTrade->species, level, USE_RANDOM_IVS, TRUE, inGameTrade->personality, TRUE, inGameTrade->otId);
-    SetMonData(tradeMon, MON_DATA_HP_IV, &inGameTrade->ivs[0]);
-    SetMonData(tradeMon, MON_DATA_ATK_IV, &inGameTrade->ivs[1]);
-    SetMonData(tradeMon, MON_DATA_DEF_IV, &inGameTrade->ivs[2]);
-    SetMonData(tradeMon, MON_DATA_SPEED_IV, &inGameTrade->ivs[3]);
-    SetMonData(tradeMon, MON_DATA_SPATK_IV, &inGameTrade->ivs[4]);
-    SetMonData(tradeMon, MON_DATA_SPDEF_IV, &inGameTrade->ivs[5]);
+    u8 i;
+
+    // Sam Edition NPC trades use fixed package levels, gender and nature,
+    // while IVs and ability remain normal generated values unless a source
+    // package explicitly fixes them. The authored OT ID must be supplied
+    // when the mon is created because Gen III encrypts boxed data using the
+    // personality ^ OT ID key; changing OT ID afterward corrupts that data.
+    do
+    {
+        personality = Random32();
+    } while (personality % NUM_NATURES != inGameTrade->nature
+          || GetGenderFromSpeciesAndPersonality(inGameTrade->species, personality) != inGameTrade->gender);
+
+    CreateMon(
+        tradeMon,
+        inGameTrade->species,
+        inGameTrade->level,
+        USE_RANDOM_IVS,
+        TRUE,
+        personality,
+        OT_ID_PRESET,
+        inGameTrade->otId);
+
     SetMonData(tradeMon, MON_DATA_NICKNAME, inGameTrade->nickname);
     SetMonData(tradeMon, MON_DATA_OT_NAME, inGameTrade->otName);
     SetMonData(tradeMon, MON_DATA_OT_GENDER, &inGameTrade->otGender);
-    SetMonData(tradeMon, MON_DATA_ABILITY_NUM, &inGameTrade->abilityNum);
-    SetMonData(tradeMon, MON_DATA_BEAUTY, &inGameTrade->conditions[1]);
-    SetMonData(tradeMon, MON_DATA_CUTE, &inGameTrade->conditions[2]);
-    SetMonData(tradeMon, MON_DATA_COOL, &inGameTrade->conditions[0]);
-    SetMonData(tradeMon, MON_DATA_SMART, &inGameTrade->conditions[3]);
-    SetMonData(tradeMon, MON_DATA_TOUGH, &inGameTrade->conditions[4]);
-    SetMonData(tradeMon, MON_DATA_SHEEN, &inGameTrade->sheen);
     SetMonData(tradeMon, MON_DATA_MET_LOCATION, &metLocation);
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        SetMonMoveSlot(tradeMon, inGameTrade->moves[i], i);
+
     mailNum = 0;
     if (inGameTrade->heldItem != ITEM_NONE)
     {
@@ -2487,14 +2512,11 @@ static void CreateInGameTradePokemonInternal(u8 playerSlot, u8 inGameTradeIdx)
             GetInGameTradeMail(&mail, inGameTrade);
             gLinkPartnerMail[0] = mail;
             SetMonData(tradeMon, MON_DATA_MAIL, &mailNum);
-            SetMonData(tradeMon, MON_DATA_HELD_ITEM, &inGameTrade->heldItem);
         }
-        else
-        {
-            SetMonData(tradeMon, MON_DATA_HELD_ITEM, &inGameTrade->heldItem);
-        }
+        SetMonData(tradeMon, MON_DATA_HELD_ITEM, &inGameTrade->heldItem);
     }
-    CalculateMonStats(&gEnemyParty[0]);
+
+    CalculateMonStats(tradeMon);
 }
 
 static void GetInGameTradeMail(struct Mail * mail, const struct InGameTrade * inGameTrade)
