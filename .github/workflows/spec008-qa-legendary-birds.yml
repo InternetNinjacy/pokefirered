@@ -85,8 +85,8 @@ jobs:
           a=block(tmhm,"[SPECIES_ARTICUNO] =","[SPECIES_ZAPDOS] =")
           z=block(tmhm,"[SPECIES_ZAPDOS] =","[SPECIES_MOLTRES] =")
           m=block(tmhm,"[SPECIES_MOLTRES] =","[SPECIES_DRATINI] =")
-          assert "TMHM(TM12)" in a
-          assert "TMHM(TM39)" in m
+          assert "TMHM0(TM12_DRILL_PECK)" in a
+          assert "TMHM1(TM39_WILL_O_WISP)" in m
           print("SPEC008 STATIC PASS exact learnsets breeding metadata and specialist TM deltas")
           PY
 
