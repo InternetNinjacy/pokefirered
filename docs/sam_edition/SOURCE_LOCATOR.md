@@ -28,19 +28,21 @@ Verified on: `sam-edition-dev`
 
 Production branch:
 
-- `sam/enc-001-nosepass-feebas-final-tables`
-- production head: `9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a`
-- draft PR: #69
-- base branch: `sam/enc-001-ralts-natu-final-tables` / draft PR #67
+- `sam/enc-003-surf-fishing-finalization`
+- production head: `6e84b85cf47ad76fe81bf5d27a5aac1da127d79a`
+- draft PR: #72
+- base branch: `sam/enc-001-nosepass-feebas-final-tables` / draft PR #69
 
 Focused QA branch:
 
-- `qa/enc-001-nosepass-feebas-final-tables`
-- QA source: `c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8`
-- successful run: `37005383850`
-- QA ROM SHA-1: `32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9`
+- `qa/enc-003-surf-fishing-finalization`
+- QA source: `58cce3b6f53505bba929f07179cf23917694e844`
+- successful run: `37006884530`
+- QA ROM SHA-1: `0a02ff27d52fdf6e7100178de438dd10d61ecfdd`
 
-This is the current delta-only production continuation point. PR #69 is stacked on verified PR #67, which is stacked on verified EVOL PR #65. QA branches are evidence/instrumentation only and must not be used as production ancestors. BREED PR #66 is explicitly blocked and is not a valid production continuation point.
+This is the current delta-only production continuation point. PR #72 is stacked on verified ENC-001 PR #69. QA branches are evidence/instrumentation only and must not be used as production ancestors. BREED PR #66 is explicitly blocked and is not a valid production continuation point.
+
+ENC-003 is verified partial: 20 source-supported FireRed Surf/fishing tables are implemented and QA-passed. The remaining Seven Island shoreline entry is blocked because FireRed has no existing `MAP_SEVEN_ISLAND` wild header and current authority supplies no encounter-rate value; do not infer one.
 
 ### TM-003 Signal Beam move-class override
 
@@ -128,6 +130,22 @@ Successful run: `37005383850`
 QA ROM SHA-1: `32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9`
 
 ENC-001 is COMPLETE for the current Ralts/Natu/Nosepass/Feebas packet. Broader encounter implementation remains under ENC-002/ENC-003 and QA-013.
+
+### ENC-003 Surf/fishing verified partial
+
+Production branch: `sam/enc-003-surf-fishing-finalization`  
+Draft PR: #72  
+Production head: `6e84b85cf47ad76fe81bf5d27a5aac1da127d79a`
+
+Verified production surface:
+
+- `src/data/wild_encounters.json`
+
+Twenty FireRed Sevii/Cerulean water/fishing entries are encoded from Surf/Fishing Finalization v1.0. Existing land tables, per-map encounter rates, LeafGreen entries, Route 6's local exact-rate selector, and global native slot logic are preserved.
+
+Production CI `37006480220`; isolated runtime QA `37006884530`, QA source `58cce3b6f53505bba929f07179cf23917694e844`, ROM SHA-1 `0a02ff27d52fdf6e7100178de438dd10d61ecfdd`. Runtime QA inspected compiled `gWildMonHeaders` and verified all 20 implemented tables.
+
+No `MAP_SEVEN_ISLAND` wild header was created because its encounter-rate value is not present in FireRed source or current authority. ENC-003 remains IN PROGRESS for that single shoreline gap.
 
 ### Starter System
 
