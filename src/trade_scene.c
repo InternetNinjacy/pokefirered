@@ -1775,7 +1775,14 @@ static bool8 DoTradeAnim_Cable(void)
     case STATE_TRY_EVOLUTION: // Only if in-game trade, link trades use CB2_TryLinkTradeEvolution
         TradeMons(gSpecialVar_0x8005, 0);
         gCB2_AfterEvolution = CB2_InGameTrade;
-        evoTarget = GetEvolutionTargetSpecies(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], EVO_MODE_TRADE, ITEM_NONE);
+        // TALUS is explicitly received as Graveler. Sam Edition replaces its
+        // pure trade evolution with the project-wide Lv. 42 rule, so do not
+        // let the vanilla in-game trade scene immediately turn it into Golem
+        // while EVOL-001 is integrated separately.
+        if (gSpecialVar_0x8004 == INGAME_TRADE_TALUS)
+            evoTarget = SPECIES_NONE;
+        else
+            evoTarget = GetEvolutionTargetSpecies(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], EVO_MODE_TRADE, ITEM_NONE);
         if (evoTarget != SPECIES_NONE)
             TradeEvolutionScene(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], evoTarget, sTradeAnim->monSpriteIds[1], gSelectedTradeMonPositions[TRADE_PLAYER]);
         sTradeAnim->state++;
@@ -2275,7 +2282,12 @@ static bool8 DoTradeAnim_Wireless(void)
     case STATE_TRY_EVOLUTION: // Only if in-game trade, link trades use CB2_TryLinkTradeEvolution
         TradeMons(gSpecialVar_0x8005, 0);
         gCB2_AfterEvolution = CB2_InGameTrade;
-        evoTarget = GetEvolutionTargetSpecies(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], EVO_MODE_TRADE, ITEM_NONE);
+        // Preserve the locked TALUS / Graveler receive package until the
+        // project-wide Lv. 42 pure-trade evolution replacement owns this path.
+        if (gSpecialVar_0x8004 == INGAME_TRADE_TALUS)
+            evoTarget = SPECIES_NONE;
+        else
+            evoTarget = GetEvolutionTargetSpecies(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], EVO_MODE_TRADE, ITEM_NONE);
         if (evoTarget != SPECIES_NONE)
             TradeEvolutionScene(&gPlayerParty[gSelectedTradeMonPositions[TRADE_PLAYER]], evoTarget, sTradeAnim->monSpriteIds[TRADE_PARTNER], gSelectedTradeMonPositions[TRADE_PLAYER]);
         sTradeAnim->state++;
