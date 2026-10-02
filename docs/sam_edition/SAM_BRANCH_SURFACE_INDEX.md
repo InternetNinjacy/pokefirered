@@ -8,14 +8,43 @@ This file records verified Sam-specific implementation surfaces. It is not a sta
 
 ## Current verified production continuation tip
 
-Branch: `sam/enc-003-surf-fishing-finalization`  
-Draft PR: #72  
-Production head: `6e84b85cf47ad76fe81bf5d27a5aac1da127d79a`  
-Base: `sam/enc-001-nosepass-feebas-final-tables` / draft PR #69
+Branch: `sam/train-002-003-focused-corrections`  
+Draft PR: #73  
+Production head: `5b1bde65e321f09a5895a8a4b99f26cd7784d359`  
+Base: `sam/enc-003-surf-fishing-finalization` / draft PR #72
 
-Production work should continue delta-only from this head or a later documented verified production descendant. The isolated QA branch `qa/enc-003-surf-fishing-finalization` is evidence/instrumentation only and is not a production ancestor. BREED PR #66 is blocked and must not become production ancestry.
+Production work should continue delta-only from this head or a later documented verified production descendant. The isolated QA branch `qa/train-002-003-focused-corrections` / draft QA PR #74 is evidence/instrumentation only and is not a production ancestor. BREED PR #66 remains blocked and must not become production ancestry.
 
-ENC-003 is verified partial rather than COMPLETE: 20 source-supported FireRed Surf/fishing tables are implemented and QA-passed, while Seven Island shoreline remains blocked because FireRed has no existing `MAP_SEVEN_ISLAND` wild header and current authority supplies no encounter-rate value.
+TRAIN-002 and TRAIN-003 are COMPLETE at this tip. ENC-003 remains verified partial: its 20 source-supported FireRed Surf/fishing tables remain inherited and QA-passed, while Seven Island shoreline remains blocked because FireRed has no existing `MAP_SEVEN_ISLAND` wild header and current authority supplies no encounter-rate value.
+
+## TRAIN-002/003 focused corrections — complete
+
+Production branch: `sam/train-002-003-focused-corrections`  
+Draft PR: #73  
+Production head: `5b1bde65e321f09a5895a8a4b99f26cd7784d359`  
+Parent: `sam/enc-003-surf-fishing-finalization` / draft PR #72
+
+Unique production surfaces:
+
+- `src/data/trainer_parties.h`
+- `src/data/trainers.h`
+
+Verified scope:
+
+- S.S. Anne Gentleman Thomas compiles as Growlithe Lv18 / Lickitung Lv18 / Persian Lv20 and remains a Single Battle.
+- Mt. Moon Bug Catcher Kent compiles as a Double Battle with Weedle Lv11 / Kakuna Lv11 and the exact approved custom moves, including Fury Cutter.
+- Bug Bite is not introduced by the production delta.
+- Adjacent Bug Catcher Robby remains a Single/default-moves regression control.
+
+Production CI: `37008464595` — compile/link/ELF/GBA/SYM succeeded; only stock-ROM SHA comparison failed.
+
+QA branch: `qa/train-002-003-focused-corrections`  
+Draft QA PR: #74  
+QA source: `aef75c74110bc6ecb7608d50a9d3353ed708943b`  
+Run: `37016542530`  
+QA ROM SHA-1: `33f7f9c71db9347328d7e2cbcaf1526ad0374fe9`
+
+The first QA attempt failed only in a QA-side source-parser boundary before build/runtime. The harness was corrected on the QA branch; production PR #73 was unchanged. QA PR #74 is evidence only and must never be used as production ancestry.
 
 ## ENC-001 completed locked packet
 
