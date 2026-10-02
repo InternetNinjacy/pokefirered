@@ -64,7 +64,8 @@ Verified against production tip `7ec21e900341b91b50df618a89f39cd9e4a6da92` / dra
 - Dusknoir remains unauthorized and absent.
 - SPEC-005 Early Bug Final Evolutions is POC COMPLETE with no new production patch. Current source matches the locked 450-BST stats and exact post-redesign natural learnsets/TM rows for Butterfree, Beedrill, Beautifly, and Dustox; TM-003 supplies the already-complete Signal Beam Special-class override.
 - QA-004 evolution remains PASS. QA-005 final TM/HM matrix remains PASS on run `36962584342`, including representative Ghost-family and Early-Bug rows.
-- SPEC-006 Nosepass / Generation-I pure-Rock cleanup is the next incomplete Species task. Production source already has Nosepass and the six pure-Rock type changes; `QA-ROCK-001` runtime battle/UI/type regression remains outstanding.
+- SPEC-006 Nosepass / Generation-I pure-Rock cleanup is POC COMPLETE. Evidence-only draft PR #80, `qa/spec-006-rock-runtime` @ `e297c5242b10b12fe4651e6af4b7c42f2c552bd5`, passed QA-ROCK-001 on run `37036207034`; QA ROM SHA-1 `ea945aeeb4d24b37a25e81e789ff02efae8ff11e`. Runtime proved the six targets are pure Rock, Steelix remains Steel/Ground, Ground STAB and Electric immunity are gone, Water/Grass are exactly 2x, and AI type calculation agrees. No production defect was found; QA PR #80 is not production ancestry.
+- The next incomplete Species task is SPEC-007 Feebas / Milotic current-stack focused QA. Production source already matches the locked core package and the Route 6 encounter packet has independent runtime proof; remaining closure should focus on species/evolution/machine/Pokédex/battle behavior.
 
 ### TM-003 Signal Beam move-class override
 
