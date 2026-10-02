@@ -6,6 +6,15 @@ Live `sam-edition-dev` head at framework initialization: `1ac7382fd5ecb34cb2de6b
 
 This file records verified Sam-specific implementation surfaces. It is not a status authority and does not replace the Programming Readiness Registry.
 
+## Current verified production continuation tip
+
+Branch: `sam/evol-001-003-accessibility`  
+Draft PR: #65  
+Production head: `60caa7ffdf2730bcd75c630c2f421cc30b554711`  
+Base: `sam/tm-003-signal-beam-special-class` / draft PR #64
+
+Production work should continue delta-only from this head or a later documented verified production descendant. The isolated QA branch `qa/evol-001-003-accessibility` is evidence/instrumentation only and is not a production ancestor.
+
 ## Starter System production bundle
 
 Branch: `sam/start-001-004-starter-system`
@@ -202,7 +211,7 @@ QA ROM SHA-1: `54b28df3645156de944f983864111633b0c7868a`
 
 The runtime QA passed all nine fixed packages, invalid/egg/empty selection rejection, six-Pokémon full-party replacement, all nine one-time flags, real save/reload, and outsider ownership through IMUGI evolution. QA also exposed a real Gen III encryption-key defect in authored-OT creation; the verified production fix creates the Pokémon with the authored OT ID from the start rather than overwriting OT ID after encrypted substructure creation.
 
-PR #62 remains draft/open/unmerged. Treat this head as the known-good gameplay-stack tip for delta-only continuation unless a later verified descendant supersedes it.
+PR #62 remains draft/open/unmerged. It is an earlier verified gameplay-stack layer; the current continuation tip is the verified PR #65 production head documented above.
 
 ## Encounter distribution
 
@@ -212,6 +221,55 @@ Narrow verified surface:
 - `src/data/wild_encounters.json`
 
 This is a useful pattern: ordinary Sam encounter-distribution changes should generally stay data-only unless behavior changes.
+
+## TM-003 Signal Beam special-class override
+
+Production branch: `sam/tm-003-signal-beam-special-class`  
+Draft PR: #64  
+Production head: `fb9ba45065d6e87b28db24d76e800e57f72a7594`  
+Base: `sam/core-001-004-current-stack-integration` / draft PR #63
+
+Verified unique production surfaces:
+
+- `src/pokemon.c`
+- `src/battle_script_commands.c`
+
+The delta extends the existing Ghostly Wail move-level Special-class pattern to Signal Beam. Signal Beam remains Bug-type; other Bug moves remain Gen III physical. Production CI run `36960016126` generated the modified ROM before the expected stock-ROM SHA mismatch.
+
+Runtime QA branch: `qa/tm-003-signal-beam-special-class`  
+QA source: `a724e917f639e1cb19e67a3e8909f1f926def0be`  
+Runtime run: `36960213040`  
+QA ROM SHA-1: `791c217ab9a6596e3447a910f1ad61a9d93b26c5`
+
+## EVOL-001–003 evolution accessibility
+
+Production branch: `sam/evol-001-003-accessibility`  
+Draft PR: #65  
+Production head: `60caa7ffdf2730bcd75c630c2f421cc30b554711`  
+Base: `sam/tm-003-signal-beam-special-class` / draft PR #64
+
+Verified production surfaces:
+
+- `include/constants/items.h`
+- `src/data/item_icon_table.h`
+- `src/data/items.json`
+- `src/data/pokemon/evolution.h`
+- `src/data/pokemon/item_effects.h`
+- `src/party_menu.c`
+
+Verified implementation:
+- EVOL-001: pure-trade Kadabra/Machoke/Graveler routes are Lv42; the already-correct Haunter Lv42 route is preserved.
+- EVOL-002: authorized King's Rock, Metal Coat, Dragon Scale, Up-Grade, and Protector routes use the ordinary item-evolution path; `ITEM_PROTECTOR=246` is the allocated item; stock National-Dex blocking is removed for these deterministic Sam routes.
+- EVOL-003: current fixed-level friendship/Beauty replacements are encoded. Conditional Clamperl methods remain untouched.
+
+Production CI run `36961159729` generated the modified ROM before the expected stock-ROM SHA mismatch.
+
+Runtime QA branch: `qa/evol-001-003-accessibility`  
+QA source: `fdc3b14b0551772ba8b32d96324e7faa32bdaf8c`  
+Runtime run: `36961288046`  
+QA ROM SHA-1: `5c1c083070867654ae5625bcdb15c0e161242582`
+
+The QA branch is one instrumentation-only commit ahead of production and is not a production ancestor. QA-004 is PASS for the current authority/roster scope.
 
 ## TM core and compatibility
 
