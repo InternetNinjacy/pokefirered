@@ -8,12 +8,12 @@ This file records verified Sam-specific implementation surfaces. It is not a sta
 
 ## Current verified production continuation tip
 
-Branch: `sam/evol-001-003-accessibility`  
-Draft PR: #65  
-Production head: `60caa7ffdf2730bcd75c630c2f421cc30b554711`  
-Base: `sam/tm-003-signal-beam-special-class` / draft PR #64
+Branch: `sam/enc-001-ralts-natu-final-tables`  
+Draft PR: #67  
+Production head: `1e03ef56cc063e3f9a2888640ec760e4d23d4c8a`  
+Base: `sam/evol-001-003-accessibility` / draft PR #65
 
-Production work should continue delta-only from this head or a later documented verified production descendant. The isolated QA branch `qa/evol-001-003-accessibility` is evidence/instrumentation only and is not a production ancestor.
+Production work should continue delta-only from this head or a later documented verified production descendant. The isolated QA branch `qa/enc-001-ralts-natu-final-tables` is evidence/instrumentation only and is not a production ancestor. BREED PR #66 is blocked and must not become production ancestry.
 
 ## Starter System production bundle
 
@@ -215,12 +215,32 @@ PR #62 remains draft/open/unmerged. It is an earlier verified gameplay-stack lay
 
 ## Encounter distribution
 
-Branch: `sam/enc-001-nosepass-rock-tunnel`
+### Current verified Ralts/Natu packet
 
-Narrow verified surface:
+Production branch: `sam/enc-001-ralts-natu-final-tables`  
+Draft PR: #67  
+Production head: `1e03ef56cc063e3f9a2888640ec760e4d23d4c8a`  
+Base: `sam/evol-001-003-accessibility` / draft PR #65
+
+Unique production surface:
 - `src/data/wild_encounters.json`
 
-This is a useful pattern: ordinary Sam encounter-distribution changes should generally stay data-only unless behavior changes.
+Focused QA branch: `qa/enc-001-ralts-natu-final-tables`  
+QA source: `08533e014c8040502ed6f3aa5e5e3f3943562ac0`  
+Run: `37004528658`  
+QA ROM SHA-1: `e554917c75f6500a919e2f1862598340b70b7f65`
+
+Verified tables:
+- Route 5: Ralts 10% at the current-authority level range.
+- Route 16: Natu 8% and Eevee 2%.
+- Berry Forest: Kirlia 5% preserved in the native-slot realization.
+- Ruin Valley: Natu 10%, Nosepass 5%, Xatu 5% preserved in the native-slot realization.
+
+The production delta is exactly one encounter data file. Focused QA validates native slot weights/rates/levels and a clean modified-ROM build.
+
+ENC-001 remains IN PROGRESS. Feebas and Rock Tunnel Nosepass still require reconciliation. The historical branch `sam/enc-001-nosepass-rock-tunnel` contains an older 4% Rock Tunnel realization and must not be merged verbatim because current authority requires 5% Lv24–26.
+
+Ordinary Sam encounter-distribution changes should generally remain data-only unless the governing authority requires behavior changes.
 
 ## TM-003 Signal Beam special-class override
 
