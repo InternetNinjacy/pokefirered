@@ -42,14 +42,16 @@ live_state:
   last_refresh_date: "2026-10-02"
   integration_head: 1ac7382fd5ecb34cb2de6bdf5bba8e7fcf08e869
   known_good_gameplay_tip:
-    branch: sam/gift-001-npc-trades
-    pr: 62
-    production_head: 76ed58d096e88f4beb898c944d69c61760f15d35
+    branch: sam/core-001-004-current-stack-integration
+    pr: 63
+    production_head: 0b7f1481134d13fbcdea90b7fb99edb01ce3b639
     state: "draft / open / unmerged"
-    runtime_qa_branch: qa/gift-001-npc-trades-runtime
-    runtime_qa_source: c0dbfdc18492a8893aa10a28ca549cea079c3841
-    runtime_qa_run: 36956041525
-    runtime_qa_rom_sha1: 54b28df3645156de944f983864111633b0c7868a
+    parent_branch: sam/gift-001-npc-trades
+    parent_pr: 62
+    runtime_qa_branch: qa/core-001-004-current-stack-runtime
+    runtime_qa_source: 59ce704108a16559047737d25723c663a6dc3188
+    runtime_qa_run: 36958060624
+    runtime_qa_rom_sha1: a55794ae62ed5295a3c0bd2baf22e9ca10918d40
   notes:
     - "Live GitHub state must be refreshed before implementation."
     - "Pokemon: Weather branches are a separate project and are not Sam implementation evidence."
@@ -91,6 +93,21 @@ source_locator:
     parent_branch: sam/gift-001-002-special-acquisition-core
     runtime_qa_branch: qa/gift-001-npc-trades-runtime
 
+  core_001_004_current_stack:
+    notes:
+      - "Verified delta-only reconciliation of existing CORE-001 through CORE-004 onto the current gameplay stack."
+      - "CORE-001 remains QA pending one real human interactive selector smoke; CORE-002/003/004 remain COMPLETE."
+      - "Do not use the QA branch as a production ancestor."
+    branch: sam/core-001-004-current-stack-integration
+    pr: 63
+    production_head: 0b7f1481134d13fbcdea90b7fb99edb01ce3b639
+    parent_branch: sam/gift-001-npc-trades
+    parent_pr: 62
+    runtime_qa_branch: qa/core-001-004-current-stack-runtime
+    runtime_qa_source: 59ce704108a16559047737d25723c663a6dc3188
+    runtime_qa_run: 36958060624
+    runtime_qa_rom_sha1: a55794ae62ed5295a3c0bd2baf22e9ca10918d40
+
 work_item_policy:
   stable_ids: true
   create_parallel_numbering_system: false
@@ -115,6 +132,19 @@ qa_policy:
   evidence_rule: "Record source commit used for QA separately from implementation branch state."
 
 known_good_builds:
+  core_001_004_current_stack_runtime_qa:
+    production_source_commit: 0b7f1481134d13fbcdea90b7fb99edb01ce3b639
+    qa_source_commit: 59ce704108a16559047737d25723c663a6dc3188
+    workflow_run: 36958060624
+    rom_sha1: a55794ae62ed5295a3c0bd2baf22e9ca10918d40
+    production_ci_run: 36957629488
+    notes:
+      - "Production compiled, linked, generated ELF/GBA/SYM, then failed only the expected stock FireRed SHA comparison."
+      - "Runtime QA passed all six Eevee/Pichu/Ditto x Standard/Permanent state paths."
+      - "Both mode states survived real save and fresh-process reload."
+      - "Exact individual starter protection/death, evolution retention, Adaptive Gene, PC round-trip, healing/revival restrictions, Standard regression, and IMUGI integrity passed."
+      - "QA branch is evidence/instrumentation only and is not in production ancestry."
+      - "PR #63 remains draft/open/unmerged; CORE-001 still needs one human interactive selector smoke."
   gift_npc_trades_runtime_qa:
     production_source_commit: 76ed58d096e88f4beb898c944d69c61760f15d35
     qa_source_commit: c0dbfdc18492a8893aa10a28ca549cea079c3841
@@ -128,7 +158,7 @@ known_good_builds:
       - "All nine one-time flags survived real flash save/fresh-process reload."
       - "IMUGI retained outsider ownership through evolution."
       - "QA found and verified the fix for authored-OT encryption-key corruption."
-      - "PR #62 remains draft/open/unmerged and is the current known-good gameplay-stack tip."
+      - "PR #62 remains draft/open/unmerged and is the verified parent of the current PR #63 gameplay-stack tip."
   starter_runtime_qa:
     source_commit: bc7cd174744532360df1170db9b7f7cfcd262b97
     workflow_run: 36903953035
