@@ -296,6 +296,10 @@ static const u8 sItemEffect_Brick[6] = {
     [4] = ITEM4_EVO_STONE,
 };
 
+static const u8 sItemEffect_TradeEvolutionItem[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
 static const u8 sItemEffect_CheriBerry[6] = {
     [3] = ITEM3_PARALYSIS,
 };
@@ -394,6 +398,10 @@ const u8 *const gItemEffectTable[] =
     [ITEM_THUNDER_STONE - ITEM_POTION] = sItemEffect_ThunderStone,
     [ITEM_WATER_STONE - ITEM_POTION]   = sItemEffect_WaterStone,
     [ITEM_LEAF_STONE - ITEM_POTION]    = sItemEffect_LeafStone,
+    [ITEM_KINGS_ROCK - ITEM_POTION]     = sItemEffect_TradeEvolutionItem,
+    [ITEM_METAL_COAT - ITEM_POTION]     = sItemEffect_TradeEvolutionItem,
+    [ITEM_DRAGON_SCALE - ITEM_POTION]   = sItemEffect_TradeEvolutionItem,
+    [ITEM_UP_GRADE - ITEM_POTION]       = sItemEffect_TradeEvolutionItem,
     [ITEM_CHERI_BERRY - ITEM_POTION]   = sItemEffect_CheriBerry,
     [ITEM_CHESTO_BERRY - ITEM_POTION]  = sItemEffect_ChestoBerry,
     [ITEM_PECHA_BERRY - ITEM_POTION]   = sItemEffect_PechaBerry,
@@ -406,4 +414,5 @@ const u8 *const gItemEffectTable[] =
     [ITEM_SITRUS_BERRY - ITEM_POTION]  = sItemEffect_SitrusBerry,
     [LAST_BERRY_INDEX - ITEM_POTION]   = NULL,
     [ITEM_BRICK - ITEM_POTION]         = sItemEffect_Brick,
+    [ITEM_PROTECTOR - ITEM_POTION]     = sItemEffect_TradeEvolutionItem,
 };
