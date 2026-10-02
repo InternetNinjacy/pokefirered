@@ -1,0 +1,122 @@
+name: GIFT-001 Remaining Special Acquisitions Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/gift-001-remaining-special-acquisitions-runtime
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  remaining-gift-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/gift-001-remaining-special-acquisitions-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and source packet
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import pathlib, subprocess
+          prod="b1427e3700dc34514cfd134aaa14d82d2c651e72"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+          flags=pathlib.Path("include/constants/flags.h").read_text()
+          trade=pathlib.Path("include/constants/trade.h").read_text()
+          util=pathlib.Path("src/script_pokemon_util.c").read_text()
+          assert "FLAG_GIFT_LUNA_CLEFFA_CLAIMED         0x373" in flags
+          assert "FLAG_GIFT_MELODY_IGGLYBUFF_CLAIMED    0x374" in flags
+          for token in [
+              "OTID_GIFT_LUNA   52005","OTID_GIFT_MELODY 52006","OTID_SILPH       52007",
+              "OTID_PURCHASE_MAGIKARP_VENDOR 52008","OTID_GAME_CORNER_CELADON      52009",
+              "OTID_FOSSIL_CINNABAR_LAB      52010"
+          ]:
+              assert token in trade
+          for token in [
+              "SPECIES_CLEFFA","NATURE_CALM","MOVE_ENCORE","SPECIES_IGGLYBUFF","ITEM_SOOTHE_BELL",
+              "SAM_PREOWNED_OT_VENDOR","SAM_PREOWNED_OT_GAME_CORNER","SAM_PREOWNED_OT_FOSSIL_LAB",
+              "SAM_PREOWNED_OT_SILPH","GivePreOwnedMonToPlayer"
+          ]:
+              assert token in util
+
+          route4=pathlib.Path("data/maps/Route4_PokemonCenter_1F/scripts.inc").read_text()
+          lavender=pathlib.Path("data/maps/LavenderTown_PokemonCenter_1F/scripts.inc").read_text()
+          gamecorner=pathlib.Path("data/maps/CeladonCity_GameCorner_PrizeRoom/scripts.inc").read_text()
+          fossils=pathlib.Path("data/maps/CinnabarIsland_PokemonLab_ExperimentRoom/scripts.inc").read_text()
+          silph=pathlib.Path("data/maps/SilphCo_7F/scripts.inc").read_text()
+          assert "Route4_PokemonCenter_1F_EventScript_Luna" in route4
+          assert "FLAG_GIFT_LUNA_CLEFFA_CLAIMED" in route4
+          assert "SAM_PREOWNED_OT_VENDOR" in route4
+          assert "LavenderTown_PokemonCenter_1F_EventScript_Melody" in lavender
+          assert "FLAG_GIFT_MELODY_IGGLYBUFF_CLAIMED" in lavender
+          assert gamecorner.count("SAM_PREOWNED_OT_GAME_CORNER") >= 5
+          assert fossils.count("SAM_PREOWNED_OT_FOSSIL_LAB") == 3
+          assert "SAM_PREOWNED_OT_SILPH" in silph
+
+          daycare=pathlib.Path("src/daycare.c").read_text()
+          assert "CreateMon(mon, species, EGG_HATCH_LEVEL, USE_RANDOM_IVS, TRUE, GenerateSamEggPersonality(FALSE)" in daycare
+          print("GIFT REMAIN STATIC PASS")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee GIFT_REMAIN_ROM_SHA1.txt
+          git rev-parse HEAD | tee GIFT_REMAIN_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 30s mgba -l 31 pokefirered.gba > gift_remain_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat gift_remain_phase1.log
+          grep -q "GIFT REMAIN QA PHASE1 PASS packages storage and save" gift_remain_phase1.log
+          ! grep -q "GIFT REMAIN QA FAIL" gift_remain_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > gift_remain_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat gift_remain_phase2.log
+          grep -q "GIFT REMAIN QA PASS save reload persistence" gift_remain_phase2.log
+          ! grep -q "GIFT REMAIN QA FAIL" gift_remain_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gift-001-remaining-special-acquisitions-runtime-qa
+          path: |
+            pokefirered.gba
+            GIFT_REMAIN_ROM_SHA1.txt
+            GIFT_REMAIN_SOURCE_SHA.txt
+            gift_remain_phase1.log
+            gift_remain_phase2.log
+            pokefirered.sav
+          if-no-files-found: error
