@@ -61,10 +61,11 @@ PR #88 currently touches:
 - `data/maps/CinnabarIsland_PokemonLab_ExperimentRoom/scripts.inc`
 - `data/maps/SilphCo_7F/scripts.inc`
 
-Implemented on PR #88:
+Implemented and focused-runtime-QA-proven on PR #88 / QA #89:
 - LUNA Cleffa Lv8 one-time Gift at Route 4 / Mt. Moon Pokémon Center
 - MELODY Igglybuff Lv18 one-time Gift at Lavender Pokémon Center
 - authored outsider OT conversion for purchased Magikarp, all current FireRed Game Corner Pokémon prizes, Cinnabar fossil revivals, and Silph 7F Lapras
+- party delivery, full-party PC fallback, full party + full storage rejection, no false Pokédex caught state on failure, and real save/fresh-process reload persistence
 
 Not yet placed in source:
 - Celadon Elekid Egg: package/event authority is closed; exact exterior Surf-house warp tile is still a source-map geometry mapping task and must not be invented
