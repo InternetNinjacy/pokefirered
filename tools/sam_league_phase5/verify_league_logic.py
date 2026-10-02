@@ -51,6 +51,33 @@ for path in league_scripts:
     forbid(path, "FLAG_SYS_CAN_LINK_WITH_RS", f"{path}: stale vanilla rematch gate remains")
     require(path, "FLAG_SYS_GAME_CLEAR", f"{path}: Hall-of-Fame rematch gate missing")
 
+# League room progression must remain strictly Lorelei -> Blue -> Agatha -> Lance -> Green.
+# These scene-state checks protect against accidental room-order regressions while preserving
+# the vanilla League door architecture.
+scene_expectations = [
+    ("data/maps/PokemonLeague_LoreleisRoom/scripts.inc", 0, 1, "FLAG_DEFEATED_LORELEI"),
+    ("data/maps/PokemonLeague_BrunosRoom/scripts.inc", 1, 2, "FLAG_DEFEATED_BRUNO"),
+    ("data/maps/PokemonLeague_AgathasRoom/scripts.inc", 2, 3, "FLAG_DEFEATED_AGATHA"),
+    ("data/maps/PokemonLeague_LancesRoom/scripts.inc", 3, 4, "FLAG_DEFEATED_LANCE"),
+]
+for path, enter_scene, exit_scene, defeated_flag in scene_expectations:
+    require(path,
+            f"map_script_2 VAR_MAP_SCENE_POKEMON_LEAGUE, {enter_scene},",
+            f"{path}: wrong League room-entry scene gate; expected {enter_scene}")
+    require(path,
+            f"setvar VAR_MAP_SCENE_POKEMON_LEAGUE, {exit_scene}",
+            f"{path}: wrong League room-exit scene state; expected {exit_scene}")
+    script = read(path)
+    battle_pos = script.find("trainerbattle_no_intro")
+    flag_pos = script.find(f"setflag {defeated_flag}")
+    if battle_pos < 0 or flag_pos < 0 or flag_pos < battle_pos:
+        errors.append(f"{path}: {defeated_flag} must be set only after the trainer battle returns victorious")
+
+# Champion room is only reachable after Lance advances the shared League scene to 4.
+require("data/maps/PokemonLeague_ChampionsRoom/scripts.inc",
+        "map_script_2 VAR_MAP_SCENE_POKEMON_LEAGUE, 4,",
+        "Champion room must remain gated behind completed Lance-room progression")
+
 # Per-run Elite Four state must still reset for a new League challenge.
 hof = read("data/scripts/hall_of_fame.inc")
 for flag in ["FLAG_DEFEATED_LORELEI", "FLAG_DEFEATED_BRUNO", "FLAG_DEFEATED_AGATHA", "FLAG_DEFEATED_LANCE"]:
