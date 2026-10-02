@@ -1,0 +1,122 @@
+name: TRAIN-002-003 Focused Runtime QA v3
+
+on:
+  push:
+    branches:
+      - qa/train-002-003-focused-corrections-v3
+  pull_request:
+    branches:
+      - sam/train-002-003-focused-corrections
+  workflow_dispatch:
+
+jobs:
+  train-focused-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/train-002-003-focused-corrections-v3
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production and QA isolation
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import subprocess
+          base="6e84b85cf47ad76fe81bf5d27a5aac1da127d79a"
+          prod="7b6e3c29e593cb43878cc2ef9fbc70ce741d7689"
+
+          prod_changed={x for x in subprocess.check_output(
+              ["git","diff","--name-only",f"{base}..{prod}"], text=True
+          ).splitlines() if x}
+          assert prod_changed=={
+              "data/maps/MtMoon_1F/scripts.inc",
+              "data/maps/MtMoon_1F/text.inc",
+              "src/data/trainer_parties.h",
+              "src/data/trainers.h",
+          }, prod_changed
+
+          qa_changed={x for x in subprocess.check_output(
+              ["git","diff","--name-only",f"{prod}..HEAD"], text=True
+          ).splitlines() if x}
+          assert qa_changed=={
+              ".github/workflows/train-002-003-focused-qa-v3.yml",
+              "include/config.h",
+              "src/main.c",
+              "src/train_002_003_qa.c",
+          }, qa_changed
+
+          parties=subprocess.check_output(["git","show",f"{prod}:src/data/trainer_parties.h"],text=True)
+          trainers=subprocess.check_output(["git","show",f"{prod}:src/data/trainers.h"],text=True)
+          script=subprocess.check_output(["git","show",f"{prod}:data/maps/MtMoon_1F/scripts.inc"],text=True)
+          text=subprocess.check_output(["git","show",f"{prod}:data/maps/MtMoon_1F/text.inc"],text=True)
+
+          thomas=parties.split("sParty_GentlemanThomas[] = {",1)[1].split("};",1)[0]
+          assert thomas.count("SPECIES_")==3
+          assert "SPECIES_GROWLITHE" in thomas and "SPECIES_LICKITUNG" in thomas and "SPECIES_PERSIAN" in thomas
+          assert "SPECIES_HOUNDOUR" not in thomas and "SPECIES_HOUNDOOM" not in thomas
+
+          kent=parties.split("sParty_BugCatcherKent[] = {",1)[1].split("};",1)[0]
+          assert "MOVE_POISON_STING, MOVE_STRING_SHOT, MOVE_FURY_CUTTER, MOVE_SECRET_POWER" in kent
+          assert "MOVE_HARDEN, MOVE_IRON_DEFENSE, MOVE_POISON_STING, MOVE_PROTECT" in kent
+          assert "MOVE_BUG_BITE" not in kent
+
+          kent_record=trainers.split("[TRAINER_BUG_CATCHER_KENT] = {",1)[1].split("[TRAINER_BUG_CATCHER_ROBBY]",1)[0]
+          assert ".doubleBattle = TRUE" in kent_record
+          assert "NO_ITEM_CUSTOM_MOVES(sParty_BugCatcherKent)" in kent_record
+
+          assert "trainerbattle_double TRAINER_BUG_CATCHER_KENT" in script
+          assert "MtMoon_1F_Text_KentNotEnoughMons" in script
+          assert "MtMoon_1F_Text_KentNotEnoughMons::" in text
+
+          diff=subprocess.check_output(["git","diff",f"{base}..{prod}"],text=True)
+          assert "MOVE_BUG_BITE" not in diff
+          print("TRAIN002003 STATIC PASS data + map-event delta")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee TRAIN002003_ROM_SHA1.txt
+          git rev-parse HEAD | tee TRAIN002003_SOURCE_SHA.txt
+
+      - name: Runtime compiled validation
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > train002003_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat train002003_runtime.log
+          grep -q "TRAIN002003 QA PASS compiled data and Kent Double event" train002003_runtime.log
+          ! grep -q "TRAIN QA FAIL" train002003_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: train-002-003-focused-runtime-qa-v3
+          path: |
+            pokefirered.gba
+            TRAIN002003_ROM_SHA1.txt
+            TRAIN002003_SOURCE_SHA.txt
+            train002003_runtime.log
+          if-no-files-found: error
