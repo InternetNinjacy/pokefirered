@@ -428,3 +428,22 @@ session_refresh:
     - major source-tree reorganization
     - architecture refactor affecting indexed systems
     - stale or contradictory audit/index state
+
+  enc_readiness_gym_audit_001:
+    notes:
+      - "Readiness checkpoint SYNC-2026-10-02-020 is persisted in the Programming Readiness Registry."
+      - "GYM-AUDIT-001 classifications: Gym1 READY; Gym3 READY; Gym5 READY; Gym6/Gym7/Gym8 READY WITH DOCUMENTED IMPLEMENTATION DISCRETION; Gym4 PARTIALLY READY."
+      - "Gym4 major map/event implementation is blocked by BLK-GYM4-MAP pending a literal Cerulean-depth Field/Lab topology handoff. Existing trainer-data PR #77 remains valid."
+      - "ENC-002 resource strategy is now explicit: exact native species overworld graphics when present, otherwise centrally allocated approved custom graphics. Machoke reuses native OBJ_EVENT_GFX_MACHOKE=134."
+      - "FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE is centrally allocated at 0x367; remaining encounter flag headroom is 0x368-0x36F."
+      - "Seven other ENC-002 statics remain blocked by BLK-ENC-002-GFX because no exact native species overworld graphics or approved substitute policy exists."
+      - "ENC-003 intends a new MAP_SEVEN_ISLAND shoreline header using locked Table Family F contents, but authoritative water/fishing encounter-rate values remain open under BLK-ENC-003-RATE. Peer 2/20 values were observed but not promoted to canon."
+      - "QA branches remain excluded from production ancestry."
+    branch: sam/enc-readiness-gym-audit-001
+    pr: 91
+    production_head: a216854718a21cf1af940f4b933841485d02ff45
+    parent_branch: sam/gift-001-remaining-special-acquisitions
+    parent_pr: 88
+    parent_head: 9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0
+    production_ci_run: 37074194967
+    production_ci_result: "Compare FireRed failed at expected stock-ROM comparison; no runtime QA claimed."
