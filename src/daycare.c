@@ -52,10 +52,25 @@ struct EggHatchData
     u8 textColor[3];
 };
 
+// Sam Edition freezes each pending Egg when it is generated so withdrawing
+// either parent cannot reroll species, personality/shininess, IVs, or moves.
+struct SamPendingEggData
+{
+    u32 personality;
+    u16 species;
+    u16 moves[MAX_MON_MOVES];
+    u8 ivs[NUM_STATS];
+};
+
 // this file's functions
 static void ClearDaycareMonMail(struct DayCareMail *mail);
-static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *daycare);
+static void SetInitialEggDataWithPersonality(struct Pokemon *mon, u16 species, u32 personality);
 static u8 GetDaycareCompatibilityScore(struct DayCare *daycare);
+static u16 DetermineEggSpeciesAndParentSlots(struct DayCare *daycare, u8 *parentSlots);
+static void AlterEggSpeciesWithIncenseItem(u16 *species, struct DayCare *daycare);
+static void InheritIVs(struct Pokemon *egg, struct DayCare *daycare);
+static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, struct BoxPokemon *mother);
+static void BuildSamPendingEgg(struct DayCare *daycare, bool8 route5, bool8 forceMale);
 static void _GetDaycareMonNicknames(struct DayCare *daycare);
 static u16 TakeSelectedPokemonMonFromDaycareShiftSlots(struct DayCare *daycare, u8 slotId);
 static u16 GetDaycareCostForMon(struct DayCare *daycare, u8 slotId);
@@ -90,6 +105,11 @@ STATIC_ASSERT(sizeof(struct DaycareMon) == 0x8C, Route5DaycareMonExpectedSize);
 STATIC_ASSERT(sizeof(struct RecordMixingGift) == 0x10, Route5DaycareRecordMixingGiftExpectedSize);
 STATIC_ASSERT(sizeof(((struct SaveBlock1 *)0)->unused_3A94) == 0x40, Route5DaycareUnusedBlockExpectedSize);
 STATIC_ASSERT(ROUTE5_DAYCARE_MON_SEGMENT_GLOBAL_AUX == 0x3C, Route5DaycareGlobalAuxAllocationExpectedSize);
+STATIC_ASSERT(sizeof(struct SamPendingEggData) == 0x14, SamPendingEggDataExpectedSize);
+STATIC_ASSERT(sizeof(((struct SamEditionSaveData *)0)->futureExpansion) >= sizeof(struct SamPendingEggData) * 2, SamPendingEggReserveFits);
+
+#define SAM_PENDING_EGG_FOUR_ISLAND_OFFSET 0
+#define SAM_PENDING_EGG_ROUTE5_OFFSET       (sizeof(struct SamPendingEggData))
 
 // RAM buffers used to assist with BuildEggMoveset()
 EWRAM_DATA static u16 sHatchedEggLevelUpMoves[EGG_LVL_UP_MOVES_ARRAY_COUNT] = {0};
@@ -392,6 +412,75 @@ static void CopyDaycareBytes(u8 *dst, const u8 *src, u32 size)
         dst[i] = src[i];
 }
 
+static u32 GetSamEggOtId(void)
+{
+    return gSaveBlock2Ptr->playerTrainerId[0]
+         | (gSaveBlock2Ptr->playerTrainerId[1] << 8)
+         | (gSaveBlock2Ptr->playerTrainerId[2] << 16)
+         | (gSaveBlock2Ptr->playerTrainerId[3] << 24);
+}
+
+static bool8 IsSamEggPersonalityShiny(u32 personality)
+{
+    return GET_SHINY_VALUE(GetSamEggOtId(), personality) < SHINY_ODDS;
+}
+
+// The first RNG decision is the locked exact 50/50 shiny choice. Personality
+// generation then stays inside that chosen shiny/non-shiny class. Low 16 bits
+// are kept nonzero because the stock DayCare field uses zero as "no Egg".
+static u32 GenerateSamEggPersonality(bool8 forceMale)
+{
+    bool8 shouldBeShiny = (Random() & 1);
+    u32 personality;
+
+    do
+    {
+        personality = Random32();
+        if (forceMale)
+            personality |= EGG_GENDER_MALE;
+    } while ((personality & 0xFFFF) == 0
+          || IsSamEggPersonalityShiny(personality) != shouldBeShiny);
+
+    return personality;
+}
+
+static u32 GetPendingEggOffset(bool8 route5)
+{
+    if (route5)
+        return SAM_PENDING_EGG_ROUTE5_OFFSET;
+    return SAM_PENDING_EGG_FOUR_ISLAND_OFFSET;
+}
+
+static void LoadSamPendingEgg(bool8 route5, struct SamPendingEggData *pending)
+{
+    CopyDaycareBytes((u8 *)pending,
+                     &gSaveBlock1Ptr->samEdition.futureExpansion[GetPendingEggOffset(route5)],
+                     sizeof(*pending));
+}
+
+static void SaveSamPendingEgg(bool8 route5, const struct SamPendingEggData *pending)
+{
+    CopyDaycareBytes(&gSaveBlock1Ptr->samEdition.futureExpansion[GetPendingEggOffset(route5)],
+                     (const u8 *)pending,
+                     sizeof(*pending));
+}
+
+static void ClearSamPendingEgg(bool8 route5)
+{
+    struct SamPendingEggData pending;
+
+    CpuFill16(0, &pending, sizeof(pending));
+    SaveSamPendingEgg(route5, &pending);
+}
+
+static bool8 HasSamPendingEgg(bool8 route5)
+{
+    struct SamPendingEggData pending;
+
+    LoadSamPendingEgg(route5, &pending);
+    return pending.species != SPECIES_NONE;
+}
+
 // Route 5 retains the stock first DaycareMon at 0x3C98. Its second full
 // DaycareMon is serialized across three verified-unused/reserved save regions
 // without moving any existing SaveBlock1 offsets:
@@ -412,6 +501,14 @@ static void LoadRoute5Daycare(struct DayCare *daycare)
     CopyDaycareBytes(dst + offset, gSaveBlock1Ptr->unused_3A94, ROUTE5_DAYCARE_MON_SEGMENT_UNUSED);
     offset += ROUTE5_DAYCARE_MON_SEGMENT_UNUSED;
     CopyDaycareBytes(dst + offset, gSaveBlock1Ptr->samEdition.globalMechanicAux, ROUTE5_DAYCARE_MON_SEGMENT_GLOBAL_AUX);
+
+    if (HasSamPendingEgg(TRUE))
+    {
+        struct SamPendingEggData pending;
+
+        LoadSamPendingEgg(TRUE, &pending);
+        daycare->offspringPersonality = pending.personality & 0xFFFF;
+    }
 }
 
 static void SaveRoute5Daycare(const struct DayCare *daycare)
