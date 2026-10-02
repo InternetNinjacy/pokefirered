@@ -1,0 +1,155 @@
+name: ENC-001 Ralts Natu Encounter QA
+
+on:
+  push:
+    branches:
+      - qa/enc-001-ralts-natu-final-tables
+  workflow_dispatch:
+
+jobs:
+  encounter-table-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/enc-001-ralts-natu-final-tables
+          fetch-depth: 0
+
+      - name: Install build dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production and QA isolation
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import subprocess
+
+          base = "60caa7ffdf2730bcd75c630c2f421cc30b554711"
+          prod = "1e03ef56cc063e3f9a2888640ec760e4d23d4c8a"
+
+          prod_changed = {x for x in subprocess.check_output(
+              ["git","diff","--name-only",f"{base}..{prod}"], text=True
+          ).splitlines() if x}
+          assert prod_changed == {"src/data/wild_encounters.json"}, prod_changed
+
+          qa_changed = {x for x in subprocess.check_output(
+              ["git","diff","--name-only",f"{prod}..HEAD"], text=True
+          ).splitlines() if x}
+          assert qa_changed == {".github/workflows/enc001-ralts-natu-table-qa.yml"}, qa_changed
+
+          print("ENC001 ISOLATION PASS one production data file one QA workflow")
+          PY
+
+      - name: Validate final native-slot tables
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          SLOT_WEIGHTS = [20,20,10,10,10,10,5,5,4,4,1,1]
+          data=json.loads(Path("src/data/wild_encounters.json").read_text())
+
+          encounters=[]
+          def walk(obj):
+              if isinstance(obj, dict):
+                  if "map" in obj and "land_mons" in obj:
+                      encounters.append(obj)
+                  for v in obj.values(): walk(v)
+              elif isinstance(obj, list):
+                  for v in obj: walk(v)
+          walk(data)
+
+          by_map={x["map"]:x for x in encounters}
+
+          expected={
+            "MAP_ROUTE5":[
+              ("SPECIES_MEOWTH",14,17),("SPECIES_ODDISH",14,17),
+              ("SPECIES_MEOWTH",14,17),("SPECIES_BELLSPROUT",14,17),
+              ("SPECIES_BELLSPROUT",14,17),("SPECIES_VENONAT",15,18),
+              ("SPECIES_VENONAT",15,18),("SPECIES_VENONAT",15,18),
+              ("SPECIES_RALTS",16,18),("SPECIES_RALTS",16,18),
+              ("SPECIES_RALTS",16,18),("SPECIES_RALTS",16,18),
+            ],
+            "MAP_ROUTE16":[
+              ("SPECIES_DODUO",22,25),("SPECIES_DODUO",22,25),
+              ("SPECIES_RATICATE",23,26),("SPECIES_RATICATE",23,26),
+              ("SPECIES_RATICATE",23,26),("SPECIES_PERSIAN",24,27),
+              ("SPECIES_TANGELA",23,26),("SPECIES_TANGELA",23,26),
+              ("SPECIES_NATU",24,26),("SPECIES_NATU",24,26),
+              ("SPECIES_EEVEE",25,27),("SPECIES_EEVEE",25,27),
+            ],
+            "MAP_THREE_ISLAND_BERRY_FOREST":[
+              ("SPECIES_GLOOM",34,37),("SPECIES_WEEPINBELL",34,37),
+              ("SPECIES_PIDGEOTTO",35,38),("SPECIES_VENONAT",33,36),
+              ("SPECIES_DROWZEE",33,36),("SPECIES_EXEGGCUTE",34,37),
+              ("SPECIES_KIRLIA",34,37),("SPECIES_TANGELA",35,38),
+              ("SPECIES_VENOMOTH",37,40),("SPECIES_HYPNO",37,40),
+              ("SPECIES_VENOMOTH",37,40),("SPECIES_HYPNO",37,40),
+            ],
+            "MAP_SIX_ISLAND_RUIN_VALLEY":[
+              ("SPECIES_CUBONE",42,45),("SPECIES_RHYHORN",43,46),
+              ("SPECIES_GRAVELER",43,46),("SPECIES_MACHOKE",43,46),
+              ("SPECIES_SANDSLASH",43,46),("SPECIES_NATU",42,45),
+              ("SPECIES_GRAVELER",43,46),("SPECIES_ONIX",44,47),
+              ("SPECIES_NOSEPASS",44,47),("SPECIES_XATU",44,47),
+              ("SPECIES_NOSEPASS",44,47),("SPECIES_XATU",44,47),
+            ],
+          }
+
+          expected_rates={
+            "MAP_ROUTE5":{"SPECIES_MEOWTH":30,"SPECIES_ODDISH":20,"SPECIES_BELLSPROUT":20,"SPECIES_VENONAT":20,"SPECIES_RALTS":10},
+            "MAP_ROUTE16":{"SPECIES_DODUO":40,"SPECIES_RATICATE":30,"SPECIES_NATU":8,"SPECIES_PERSIAN":10,"SPECIES_TANGELA":10,"SPECIES_EEVEE":2},
+            "MAP_THREE_ISLAND_BERRY_FOREST":{"SPECIES_GLOOM":20,"SPECIES_WEEPINBELL":20,"SPECIES_PIDGEOTTO":10,"SPECIES_VENONAT":10,"SPECIES_DROWZEE":10,"SPECIES_EXEGGCUTE":10,"SPECIES_VENOMOTH":5,"SPECIES_HYPNO":5,"SPECIES_KIRLIA":5,"SPECIES_TANGELA":5},
+            "MAP_SIX_ISLAND_RUIN_VALLEY":{"SPECIES_CUBONE":20,"SPECIES_RHYHORN":20,"SPECIES_GRAVELER":15,"SPECIES_MACHOKE":10,"SPECIES_SANDSLASH":10,"SPECIES_ONIX":5,"SPECIES_NATU":10,"SPECIES_NOSEPASS":5,"SPECIES_XATU":5},
+          }
+
+          for map_name, slots in expected.items():
+              got=by_map[map_name]["land_mons"]["mons"]
+              compact=[(x["species"],x["min_level"],x["max_level"]) for x in got]
+              assert compact == slots, (map_name,compact)
+
+              rates={}
+              for weight,x in zip(SLOT_WEIGHTS,got):
+                  rates[x["species"]]=rates.get(x["species"],0)+weight
+              assert rates == expected_rates[map_name], (map_name,rates)
+
+          # New September 27 final tables supersede the older working handoff.
+          assert expected_rates["MAP_ROUTE5"]["SPECIES_RALTS"] == 10
+          assert expected_rates["MAP_ROUTE16"]["SPECIES_NATU"] == 8
+          assert expected_rates["MAP_ROUTE16"]["SPECIES_EEVEE"] == 2
+
+          print("ENC001 TABLE PASS Route5 Route16 BerryForest RuinValley native-slot rates levels")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ENC001_ROM_SHA1.txt
+          git rev-parse HEAD | tee ENC001_SOURCE_SHA.txt
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: enc-001-ralts-natu-table-qa
+          path: |
+            pokefirered.gba
+            ENC001_ROM_SHA1.txt
+            ENC001_SOURCE_SHA.txt
+          if-no-files-found: error
