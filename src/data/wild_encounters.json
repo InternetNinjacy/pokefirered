@@ -2670,6 +2670,11 @@
                 "species": "SPECIES_MANKEY"
               },
               {
+                "min_level": 24,
+                "max_level": 26,
+                "species": "SPECIES_NOSEPASS"
+              },
+              {
                 "min_level": 13,
                 "max_level": 13,
                 "species": "SPECIES_ONIX"
@@ -2677,17 +2682,12 @@
               {
                 "min_level": 15,
                 "max_level": 15,
-                "species": "SPECIES_GEODUDE"
-              },
-              {
-                "min_level": 15,
-                "max_level": 15,
                 "species": "SPECIES_ONIX"
               },
               {
-                "min_level": 15,
-                "max_level": 15,
-                "species": "SPECIES_GEODUDE"
+                "min_level": 13,
+                "max_level": 13,
+                "species": "SPECIES_ONIX"
               },
               {
                 "min_level": 17,
@@ -8801,19 +8801,19 @@
                 "species": "SPECIES_POLIWAG"
               },
               {
-                "min_level": 5,
-                "max_level": 15,
-                "species": "SPECIES_MAGIKARP"
+                "min_level": 18,
+                "max_level": 19,
+                "species": "SPECIES_FEEBAS"
               },
               {
-                "min_level": 5,
-                "max_level": 15,
-                "species": "SPECIES_GOLDEEN"
+                "min_level": 18,
+                "max_level": 19,
+                "species": "SPECIES_FEEBAS"
               },
               {
-                "min_level": 15,
-                "max_level": 25,
-                "species": "SPECIES_POLIWAG"
+                "min_level": 18,
+                "max_level": 19,
+                "species": "SPECIES_FEEBAS"
               },
               {
                 "min_level": 20,
