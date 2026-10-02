@@ -124,7 +124,7 @@ source_locator:
       - "PR #88 implements LUNA Cleffa, MELODY Igglybuff, Route 4 purchased Magikarp OT VENDOR, Celadon Game Corner OT CELADON, Cinnabar fossil OT LAB, Silph 7F Lapras OT SILPH, and the Celadon Surf House NORA Elekid Egg."
       - "Elekid placement was derived from the actual Celadon 60x40 block data; MAP_CELADON_CITY_SURF_HOUSE uses LAYOUT_HOUSE5 and player-owned giveegg behavior with the global exact 50% shiny Egg path."
       - "Final production integration fix 9ff410a1 registers the new map scripts/text in data/event_scripts.s."
-      - "Cinnabar Magby Egg is OWNER-SYSTEM READY under Town Side Quests; Rock Tunnel Porygon is OWNER-SYSTEM READY under Thomas/Team Rocket. Neither is unresolved Group 2 work."
+      - "Cinnabar Magby Egg is OWNER-SYSTEM READY under Town Side Quests; Rock Tunnel Porygon is OWNER-SYSTEM READY under Thomas/Team Rocket; later P5 Oak Research Milestones is owner-system work that consumes the completed Gift system and remains blocked only by TM-001. None is unresolved Group 2 work."
       - "Evidence-only QA PR #90 passed final static/runtime/save-reload validation and must never become production ancestry."
     verified_parent_tip: be0c6ab2500f188ce20d49ae69b66f028dea332b
     production_branch: sam/gift-001-remaining-special-acquisitions
