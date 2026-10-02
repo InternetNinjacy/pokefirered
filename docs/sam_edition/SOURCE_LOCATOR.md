@@ -34,7 +34,7 @@ Production branch:
 - direct base: `sam/gift-001-starter-family-gifts` / draft PR #86 @ `be0c6ab2500f188ce20d49ae69b66f028dea332b`
 - QA PR #87 remains evidence-only and is not production ancestry
 
-PR #88 is the current delta-only production continuation. CI run `37066177714` was started for this head and must be checked before claiming build completion.
+PR #88 is the current delta-only production continuation. CI run `37066177714` compiled, linked, generated ELF/GBA/SYM, and stopped only at the expected stock FireRed SHA comparison; this matches the project’s existing modified-ROM production criterion.
 
 ### Group 2 — Special Acquisitions current source-routing state
 
