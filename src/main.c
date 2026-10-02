@@ -17,7 +17,7 @@
 #include "quest_log.h"
 #include "sloopsvc.h"
 
-extern u32 intr_main[];
+extern u32 intr_main[];\nvoid Spec003QaRn001_RunRuntimeQa(void);
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
