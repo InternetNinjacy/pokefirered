@@ -23,6 +23,8 @@ FourIsland_PokemonDayCare_GiveMonToRaise::
 	special ChooseSendDaycareMon
 	waitstate
 	goto_if_ge VAR_0x8004, PARTY_SIZE, FourIsland_PokemonDayCare_ComeAgain
+	specialvar VAR_RESULT, CanSelectedMonEnterDaycare
+	goto_if_eq VAR_RESULT, FALSE, FourIsland_PokemonDayCare_ComeAgain
 	specialvar VAR_RESULT, CountPartyAliveNonEggMons_IgnoreVar0x8004Slot
 	goto_if_eq VAR_RESULT, 0, FourIsland_PokemonDayCare_OnlyOneAliveMonInParty
 	specialvar VAR_0x8005, GetSelectedMonNicknameAndSpecies
