@@ -283,7 +283,10 @@ source_locator:
       - "FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE is centrally allocated at 0x367; prior encounter headroom now resumes at 0x368-0x36F."
       - "PR #91 implements Machoke Lv29 @ Black Belt with Karate Chop / Seismic Toss / Foresight / Revenge in the optional southwest Rock Tunnel B1F dead-end chamber, with capture/defeat completion and flee/teleport persistence."
       - "A reusable SetEnemyEventMonMoveSlot special was added for fixed-move scripted wild encounters."
-      - "PR #91 remains draft/open/unmerged. Runtime QA has not yet been claimed."
+      - "PR #91 remains draft/open/unmerged. Production CI 37075239129 compiled/linked/generated ELF/GBA/SYM and stopped only at the expected stock-ROM SHA comparison."
+      - "Evidence-only QA PR #92 / qa/enc-002-machoke-static-runtime @ c45d0a490d316233a50e5dedffc778a5f0b42dc8 passed workflow run 37075861109; QA ROM SHA-1 8f1b5aa1efc7a1f9800275564b0b591e551959c1."
+      - "Focused QA verified exact source contract, runtime Machoke level/item/four-move package, central flag set, and real save/fresh-process reload persistence. It did not substitute for later human-played field capture/flee integration smoke."
+      - "QA PR #92 is evidence only and must never become production ancestry."
 
   enc_003_seven_island_readiness:
     status: "BLOCKED ON AUTHORITATIVE RATE VALUES"
@@ -319,6 +322,21 @@ qa_policy:
   evidence_rule: "Record source commit used for QA separately from implementation branch state."
 
 known_good_builds:
+  enc_002_machoke_static_runtime_qa:
+    production_source_commit: 41d3177981037fe2dc0a47b9ddb560b05ea3ff95
+    production_branch: sam/enc-readiness-gym-audit-001
+    production_pr: 91
+    qa_branch: qa/enc-002-machoke-static-runtime
+    qa_pr: 92
+    qa_source_commit: c45d0a490d316233a50e5dedffc778a5f0b42dc8
+    workflow_run: 37075861109
+    rom_sha1: 8f1b5aa1efc7a1f9800275564b0b591e551959c1
+    notes:
+      - "Production CI 37075239129 compiled/linked/generated ELF/GBA/SYM and stopped only at expected stock-ROM SHA comparison."
+      - "Static QA verified central flag 0x367, native Machoke object resource, B1F object at (7,36), exact script outcome routing and reusable move-slot helper."
+      - "Runtime QA verified Machoke Lv29 @ Black Belt with Karate Chop / Seismic Toss / Foresight / Revenge and persistent completion flag through real save/fresh-process reload."
+      - "Human-played field capture/flee interaction smoke remains later integration QA."
+      - "QA PR #92 is evidence/instrumentation only and must never be used as production ancestry."
   spec_003_ralts_natu_current_stack_qa:
     production_source_commit: 7b6e3c29e593cb43878cc2ef9fbc70ce741d7689
     production_branch: sam/train-002-003-focused-corrections
