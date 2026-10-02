@@ -46,7 +46,10 @@ Route4_PokemonCenter_1F_EventScript_TryBuyMagikarp::
 	goto_if_eq VAR_RESULT, FALSE, Route4_PokemonCenter_1F_EventScript_NotEnoughMoney
 	textcolor NPC_TEXT_COLOR_NEUTRAL
 	setvar VAR_TEMP_1, SPECIES_MAGIKARP
-	givemon SPECIES_MAGIKARP, 5
+	setvar VAR_0x8004, SPECIES_MAGIKARP
+	setvar VAR_0x8005, 5
+	setvar VAR_0x8006, SAM_PREOWNED_OT_VENDOR
+	special GiveSamPreOwnedMon
 	goto_if_eq VAR_RESULT, 0, Route4_PokemonCenter_1F_EventScript_BuyMagikarpParty
 	goto_if_eq VAR_RESULT, 1, Route4_PokemonCenter_1F_EventScript_BuyMagikarpPC
 	goto_if_eq VAR_RESULT, 2, Route4_PokemonCenter_1F_EventScript_NoRoomForMagikarp
@@ -145,5 +148,34 @@ Route4_PokemonCenter_1F_EventScript_Youngster::
 Route4_PokemonCenter_1F_EventScript_Newspaper::
 	lock
 	msgbox Route4_PokemonCenter_1F_Text_ItsANewspaper
+	release
+	end
+
+Route4_PokemonCenter_1F_EventScript_Luna::
+	lock
+	faceplayer
+	goto_if_set FLAG_GIFT_LUNA_CLEFFA_CLAIMED, Route4_PokemonCenter_1F_EventScript_LunaPostGift
+	msgbox Route4_PokemonCenter_1F_Text_LunaOfferCleffa, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, Route4_PokemonCenter_1F_EventScript_LunaDecline
+	setvar VAR_0x8004, 3
+	special GiveSamStarterFamilyGift
+	goto_if_eq VAR_RESULT, 2, Route4_PokemonCenter_1F_EventScript_LunaNoRoom
+	setflag FLAG_GIFT_LUNA_CLEFFA_CLAIMED
+	msgbox Route4_PokemonCenter_1F_Text_LunaGiftReceived
+	release
+	end
+
+Route4_PokemonCenter_1F_EventScript_LunaDecline::
+	msgbox Route4_PokemonCenter_1F_Text_LunaDecline
+	release
+	end
+
+Route4_PokemonCenter_1F_EventScript_LunaNoRoom::
+	msgbox Route4_PokemonCenter_1F_Text_LunaNoRoom
+	release
+	end
+
+Route4_PokemonCenter_1F_EventScript_LunaPostGift::
+	msgbox Route4_PokemonCenter_1F_Text_LunaPostGift
 	release
 	end
