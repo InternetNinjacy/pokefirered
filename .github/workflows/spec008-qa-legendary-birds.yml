@@ -52,7 +52,7 @@ jobs:
           levels=pathlib.Path("src/data/pokemon/level_up_learnsets.h").read_text()
           tmhm=pathlib.Path("src/data/pokemon/tmhm_learnsets.h").read_text()
           daycare=pathlib.Path("src/daycare.c").read_text()
-          constants=pathlib.Path("include/constants/pokemon.h").read_text()
+          constants=pathlib.Path("include/constants/daycare.h").read_text()
 
           def block(text,start_marker,end_marker):
               s=text.index(start_marker)
