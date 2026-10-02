@@ -30,6 +30,8 @@ static void OpponentHandleSwitchInAnim(void);
 static void OpponentHandleReturnMonToBall(void);
 static void OpponentHandleDrawTrainerPic(void);
 static void OpponentHandleTrainerSlide(void);
+static bool8 IsSamLeagueTrainerForPairedPic(u16 trainerId);
+static u32 GetSamLeagueDefeatTrainerPic(u16 trainerId);
 static void OpponentHandleTrainerSlideBack(void);
 static void OpponentHandleFaintAnimation(void);
 static void OpponentHandlePaletteFade(void);
@@ -1131,7 +1133,7 @@ static void OpponentHandleDrawTrainerPic(void)
     else if (gBattleTypeFlags & BATTLE_TYPE_EREADER_TRAINER)
         trainerPicId = GetEreaderTrainerFrontSpriteId();
     else
-        trainerPicId = gTrainers[gTrainerBattleOpponent_A].trainerPic;
+        trainerPicId = GetSamLeagueDefeatTrainerPic(gTrainerBattleOpponent_A);
     DecompressTrainerFrontPic(trainerPicId, gActiveBattler);
     SetMultiuseSpriteTemplateToTrainerBack(trainerPicId, GetBattlerPosition(gActiveBattler));
     gBattlerSpriteIds[gActiveBattler] = CreateSprite(&gMultiuseSpriteTemplate,
@@ -1146,6 +1148,47 @@ static void OpponentHandleDrawTrainerPic(void)
     gSprites[gBattlerSpriteIds[gActiveBattler]].oam.affineParam = trainerPicId;
     gSprites[gBattlerSpriteIds[gActiveBattler]].callback = SpriteCB_TrainerSlideIn;
     gBattlerControllerFuncs[gActiveBattler] = CompleteOnBattlerSpriteCallbackDummy;
+}
+
+static bool8 IsSamLeagueTrainerForPairedPic(u16 trainerId)
+{
+    switch (trainerId)
+    {
+    case TRAINER_ELITE_FOUR_LORELEI:
+    case TRAINER_ELITE_FOUR_LORELEI_2:
+    case TRAINER_ELITE_FOUR_BRUNO:
+    case TRAINER_ELITE_FOUR_BRUNO_2:
+    case TRAINER_ELITE_FOUR_AGATHA:
+    case TRAINER_ELITE_FOUR_AGATHA_2:
+    case TRAINER_ELITE_FOUR_LANCE:
+    case TRAINER_ELITE_FOUR_LANCE_2:
+    case TRAINER_ELITE_FOUR_BLUE_WATER:
+    case TRAINER_ELITE_FOUR_BLUE_ELECTRIC:
+    case TRAINER_ELITE_FOUR_BLUE_WATER_2:
+    case TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2:
+    case TRAINER_CHAMPION_FIRST_SQUIRTLE:
+    case TRAINER_CHAMPION_FIRST_BULBASAUR:
+    case TRAINER_CHAMPION_FIRST_CHARMANDER:
+    case TRAINER_CHAMPION_REMATCH_SQUIRTLE:
+    case TRAINER_CHAMPION_REMATCH_BULBASAUR:
+    case TRAINER_CHAMPION_REMATCH_CHARMANDER:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
+// Local trainer victories use OpponentHandleTrainerSlide after the last opposing
+// Pokemon faints. Keeping the paired-pose selection here leaves the ordinary
+// opening portrait path untouched. Until approved League defeat art receives
+// registered TRAINER_PIC_* symbols, the safe fallback is the opening portrait.
+// Asset integration should replace only the League cases in this helper.
+static u32 GetSamLeagueDefeatTrainerPic(u16 trainerId)
+{
+    if (IsSamLeagueTrainerForPairedPic(trainerId))
+        return gTrainers[trainerId].trainerPic;
+
+    return gTrainers[trainerId].trainerPic;
 }
 
 static void OpponentHandleTrainerSlide(void)
