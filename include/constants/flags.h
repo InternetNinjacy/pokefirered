@@ -956,9 +956,12 @@
 #define FLAG_0x36D               0x36D
 #define FLAG_0x36E               0x36E
 #define FLAG_0x36F               0x36F
-#define FLAG_0x370               0x370
-#define FLAG_0x371               0x371
-#define FLAG_0x372               0x372
+#define FLAG_GIFT_FERN_BULBASAUR_CLAIMED      0x370
+#define FLAG_0x370               FLAG_GIFT_FERN_BULBASAUR_CLAIMED
+#define FLAG_GIFT_ASHER_CHARMANDER_CLAIMED    0x371
+#define FLAG_0x371               FLAG_GIFT_ASHER_CHARMANDER_CLAIMED
+#define FLAG_GIFT_MARINA_SQUIRTLE_CLAIMED     0x372
+#define FLAG_0x372               FLAG_GIFT_MARINA_SQUIRTLE_CLAIMED
 #define FLAG_0x373               0x373
 #define FLAG_0x374               0x374
 #define FLAG_0x375               0x375
