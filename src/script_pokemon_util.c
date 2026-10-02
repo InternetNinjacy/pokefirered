@@ -10,6 +10,7 @@
 #include "script_pokemon_util.h"
 #include "constants/items.h"
 #include "constants/pokemon.h"
+#include "constants/vars.h"
 
 static void CB2_ReturnFromChooseHalfParty(void);
 static void CB2_ReturnFromChooseBattleTowerParty(void);
@@ -23,7 +24,13 @@ void HealPlayerParty(void)
     // restore HP.
     for(i = 0; i < gPlayerPartyCount; i++)
     {
-        u16 maxHP = GetMonData(&gPlayerParty[i], MON_DATA_MAX_HP);
+        u16 maxHP;
+
+        if (VarGet(VAR_SAM_GAME_MODE) == 1
+            && GetMonData(&gPlayerParty[i], MON_DATA_SAM_PERMANENT_DEAD))
+            continue;
+
+        maxHP = GetMonData(&gPlayerParty[i], MON_DATA_MAX_HP);
         arg[0] = maxHP;
         arg[1] = maxHP >> 8;
         SetMonData(&gPlayerParty[i], MON_DATA_HP, arg);
@@ -165,6 +172,14 @@ u8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 otName, u32 otId, u8 otGen
 
     Free(mon);
     return sentToPc;
+}
+
+void MarkSamOriginalStarter(void)
+{
+    bool8 isOriginalStarter = TRUE;
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1 && gPlayerPartyCount != 0)
+        SetMonData(&gPlayerParty[0], MON_DATA_SAM_ORIGINAL_STARTER, &isOriginalStarter);
 }
 
 u8 ScriptGiveEgg(u16 species)
