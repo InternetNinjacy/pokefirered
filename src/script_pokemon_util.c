@@ -172,7 +172,7 @@ static u8 ScriptGiveSamStarterFamilyGift(u8 giftId)
     do
     {
         personality = Random32();
-    } while (GetNatureFromPersonality(personality) != gift->nature
+    } while ((personality % NUM_NATURES) != gift->nature
           || GetGenderFromSpeciesAndPersonality(gift->species, personality) != gift->monGender);
 
     mon = AllocZeroed(sizeof(*mon));
