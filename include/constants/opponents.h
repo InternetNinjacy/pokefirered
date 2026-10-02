@@ -781,6 +781,14 @@
 #define TRAINER_LEADER_BAZ                        767
 #define TRAINER_LEADER_BAZ_REMATCH                768
 
+// Celadon Gym central allocations: 769-774.
+#define TRAINER_BUG_CATCHER_OWEN_CELADON         769
+#define TRAINER_BUG_CATCHER_MAYA_CELADON         770
+#define TRAINER_SCIENTIST_ELIAS_CELADON           771
+#define TRAINER_SCIENTIST_NORA_CELADON            772
+#define TRAINER_LEADER_ERIKA_CELADON              773
+#define TRAINER_LEADER_ERIKA_REMATCH_CELADON      774
+
 // Blue League branch allocations: 800-803.
 #define TRAINER_ELITE_FOUR_BLUE_WATER             800
 #define TRAINER_ELITE_FOUR_BLUE_ELECTRIC          801
@@ -795,7 +803,7 @@
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             743
+#define NUM_TRAINERS                             775
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H

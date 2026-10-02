@@ -5654,6 +5654,142 @@ static const struct TrainerMonNoItemCustomMoves sParty_LeaderLtSurge[] = {
     },
 };
 
+static const struct TrainerMonNoItemCustomMoves sParty_BugCatcherOwenCeladon[] = {
+    {
+        .iv = 0,
+        .lvl = 26,
+        .species = SPECIES_BEEDRILL,
+        .moves = {MOVE_TWINEEDLE, MOVE_AERIAL_ACE, MOVE_FOCUS_ENERGY, MOVE_PURSUIT},
+    },
+    {
+        .iv = 0,
+        .lvl = 28,
+        .species = SPECIES_SCYTHER,
+        .moves = {MOVE_WING_ATTACK, MOVE_SLASH, MOVE_QUICK_ATTACK, MOVE_FOCUS_ENERGY},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_BugCatcherMayaCeladon[] = {
+    {
+        .iv = 0,
+        .lvl = 27,
+        .species = SPECIES_BEEDRILL,
+        .moves = {MOVE_TWINEEDLE, MOVE_SLUDGE_BOMB, MOVE_BRICK_BREAK, MOVE_AGILITY},
+    },
+    {
+        .iv = 0,
+        .lvl = 29,
+        .species = SPECIES_PINSIR,
+        .moves = {MOVE_FURY_CUTTER, MOVE_BRICK_BREAK, MOVE_ROCK_TOMB, MOVE_SWORDS_DANCE},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_ScientistEliasCeladon[] = {
+    {
+        .iv = 0,
+        .lvl = 26,
+        .species = SPECIES_BUTTERFREE,
+        .moves = {MOVE_PSYBEAM, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER, MOVE_STUN_SPORE},
+    },
+    {
+        .iv = 0,
+        .lvl = 28,
+        .species = SPECIES_PARASECT,
+        .moves = {MOVE_GIGA_DRAIN, MOVE_SPORE, MOVE_TOXIC, MOVE_PROTECT},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_ScientistNoraCeladon[] = {
+    {
+        .iv = 0,
+        .lvl = 27,
+        .species = SPECIES_BUTTERFREE,
+        .moves = {MOVE_PSYCHIC, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER, MOVE_WHIRLWIND},
+    },
+    {
+        .iv = 0,
+        .lvl = 29,
+        .species = SPECIES_VENOMOTH,
+        .moves = {MOVE_PSYCHIC, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER, MOVE_SUPERSONIC},
+    },
+};
+
+static const struct TrainerMonItemCustomMoves sParty_LeaderErikaCeladon[] = {
+    {
+        .iv = 0,
+        .lvl = 29,
+        .species = SPECIES_PARASECT,
+        .heldItem = ITEM_QUICK_CLAW,
+        .moves = {MOVE_FURY_CUTTER, MOVE_SPORE, MOVE_GIGA_DRAIN, MOVE_SLASH},
+    },
+    {
+        .iv = 0,
+        .lvl = 30,
+        .species = SPECIES_VENOMOTH,
+        .heldItem = ITEM_TWISTED_SPOON,
+        .moves = {MOVE_SIGNAL_BEAM, MOVE_PSYCHIC, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER},
+    },
+    {
+        .iv = 0,
+        .lvl = 31,
+        .species = SPECIES_SCYTHER,
+        .heldItem = ITEM_SCOPE_LENS,
+        .moves = {MOVE_FURY_CUTTER, MOVE_WING_ATTACK, MOVE_SLASH, MOVE_AGILITY},
+    },
+    {
+        .iv = 0,
+        .lvl = 33,
+        .species = SPECIES_PINSIR,
+        .heldItem = ITEM_SILVER_POWDER,
+        .moves = {MOVE_MEGAHORN, MOVE_BRICK_BREAK, MOVE_ROCK_TOMB, MOVE_SWORDS_DANCE},
+    },
+};
+
+static const struct TrainerMonItemCustomMoves sParty_LeaderErikaRematchCeladon[] = {
+    {
+        .iv = 250,
+        .lvl = 58,
+        .species = SPECIES_BUTTERFREE,
+        .heldItem = ITEM_LUM_BERRY,
+        .moves = {MOVE_SIGNAL_BEAM, MOVE_SLEEP_POWDER, MOVE_PSYCHIC, MOVE_GIGA_DRAIN},
+    },
+    {
+        .iv = 250,
+        .lvl = 59,
+        .species = SPECIES_BEEDRILL,
+        .heldItem = ITEM_CHOICE_BAND,
+        .moves = {MOVE_MEGAHORN, MOVE_SLUDGE_BOMB, MOVE_BRICK_BREAK, MOVE_AERIAL_ACE},
+    },
+    {
+        .iv = 250,
+        .lvl = 60,
+        .species = SPECIES_PARASECT,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_FURY_CUTTER, MOVE_SPORE, MOVE_GIGA_DRAIN, MOVE_PROTECT},
+    },
+    {
+        .iv = 250,
+        .lvl = 61,
+        .species = SPECIES_VENOMOTH,
+        .heldItem = ITEM_TWISTED_SPOON,
+        .moves = {MOVE_SIGNAL_BEAM, MOVE_PSYCHIC, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER},
+    },
+    {
+        .iv = 250,
+        .lvl = 62,
+        .species = SPECIES_SCYTHER,
+        .heldItem = ITEM_SCOPE_LENS,
+        .moves = {MOVE_FURY_CUTTER, MOVE_WING_ATTACK, MOVE_SLASH, MOVE_SWORDS_DANCE},
+    },
+    {
+        .iv = 250,
+        .lvl = 63,
+        .species = SPECIES_PINSIR,
+        .heldItem = ITEM_SILVER_POWDER,
+        .moves = {MOVE_MEGAHORN, MOVE_BRICK_BREAK, MOVE_ROCK_TOMB, MOVE_SWORDS_DANCE},
+    },
+};
+
 static const struct TrainerMonNoItemCustomMoves sParty_LeaderErika[] = {
     {
         .iv = 0,
