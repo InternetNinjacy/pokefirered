@@ -1,0 +1,108 @@
+name: SPEC-006 QA-ROCK-001 Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/spec-006-rock-runtime
+  workflow_dispatch:
+
+jobs:
+  qa-rock-001:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/spec-006-rock-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and QA isolation
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import pathlib
+          import subprocess
+
+          prod = "7ec21e900341b91b50df618a89f39cd9e4a6da92"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+          changed={x for x in subprocess.check_output(
+              ["git","diff","--name-only",f"{prod}..HEAD"], text=True
+          ).splitlines() if x}
+          assert changed == {
+              ".github/workflows/spec006-qa-rock-001.yml",
+              "include/config.h",
+              "src/main.c",
+              "src/spec006_qa_rock001.c",
+          }, changed
+
+          species = pathlib.Path("src/data/pokemon/species_info.h").read_text()
+
+          def block(name):
+              start=species.index(f"[SPECIES_{name}] =")
+              end=species.find("\n    [SPECIES_", start + 1)
+              return species[start:] if end < 0 else species[start:end]
+
+          for name in ("GEODUDE","GRAVELER","GOLEM","ONIX","RHYHORN","RHYDON"):
+              assert ".types = {TYPE_ROCK, TYPE_ROCK}" in block(name), name
+          assert ".types = {TYPE_STEEL, TYPE_GROUND}" in block("STEELIX")
+          nose=block("NOSEPASS")
+          for expected in (
+              ".baseHP = 30", ".baseAttack = 45", ".baseDefense = 135",
+              ".baseSpeed = 30", ".baseSpAttack = 45", ".baseSpDefense = 90",
+              ".types = {TYPE_ROCK, TYPE_ROCK}",
+              ".abilities = {ABILITY_STURDY, ABILITY_MAGNET_PULL}",
+          ):
+              assert expected in nose, expected
+
+          battle = pathlib.Path("src/battle_script_commands.c").read_text()
+          assert "u8 TypeCalc(u16 move, u8 attacker, u8 defender)" in battle
+          assert "u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)" in battle
+          assert "gSpeciesInfo[targetSpecies].types[0]" in battle
+          print("ROCK001 STATIC PASS production ancestry species and AI type source")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ROCK001_ROM_SHA1.txt
+          git rev-parse HEAD | tee ROCK001_SOURCE_SHA.txt
+
+      - name: Runtime type regression
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > rock001_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat rock001_runtime.log
+          grep -q "ROCK001 QA PASS pure Rock runtime type math and AI" rock001_runtime.log
+          ! grep -q "ROCK001 FAIL" rock001_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-006-qa-rock-001
+          path: |
+            pokefirered.gba
+            ROCK001_ROM_SHA1.txt
+            ROCK001_SOURCE_SHA.txt
+            rock001_runtime.log
+          if-no-files-found: error
