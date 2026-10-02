@@ -1,0 +1,137 @@
+name: SPEC-003 QA-RN-001 Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/spec-003-qa-rn-001
+  workflow_dispatch:
+
+jobs:
+  qa-rn-001:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/spec-003-qa-rn-001
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify current-stack inheritance and QA isolation
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json
+          import pathlib
+          import subprocess
+
+          prod = "7b6e3c29e593cb43878cc2ef9fbc70ce741d7689"
+          rn_prod = "1e03ef56cc063e3f9a2888640ec760e4d23d4c8a"
+
+          subprocess.check_call(["git","merge-base","--is-ancestor",rn_prod,prod])
+          changed={x for x in subprocess.check_output(
+              ["git","diff","--name-only",f"{prod}..HEAD"], text=True
+          ).splitlines() if x}
+          assert changed == {
+              ".github/workflows/spec003-qa-rn-001.yml",
+              "include/config.h",
+              "src/main.c",
+              "src/spec003_qa_rn001.c",
+          }, changed
+
+          species = pathlib.Path("src/data/pokemon/species_info.h").read_text()
+          evo = pathlib.Path("src/data/pokemon/evolution.h").read_text()
+          wild = pathlib.Path("src/data/wild_encounters.json").read_text()
+          tmhm = pathlib.Path("src/data/pokemon/tmhm_learnsets.h").read_text()
+
+          for name in ("RALTS","KIRLIA","GARDEVOIR"):
+              block=species.split(f"[SPECIES_{name}] =",1)[1].split("},",1)[0]
+              assert ".types = {TYPE_PSYCHIC, TYPE_PSYCHIC}" in block
+          for name in ("NATU","XATU"):
+              block=species.split(f"[SPECIES_{name}] =",1)[1].split("},",1)[0]
+              assert ".types = {TYPE_PSYCHIC, TYPE_FLYING}" in block
+
+          assert "[SPECIES_RALTS]      = {{EVO_LEVEL, 20, SPECIES_KIRLIA}}" in evo
+          assert "[SPECIES_KIRLIA]     = {{EVO_LEVEL, 30, SPECIES_GARDEVOIR}}" in evo
+          assert "[SPECIES_NATU]       = {{EVO_LEVEL, 25, SPECIES_XATU}}" in evo
+          assert "SPECIES_GALLADE" not in evo
+          assert "TYPE_FAIRY" not in "\n".join(
+              species.split(f"[SPECIES_{name}] =",1)[1].split("},",1)[0]
+              for name in ("RALTS","KIRLIA","GARDEVOIR")
+          )
+
+          data=json.loads(wild)
+          text=json.dumps(data)
+          assert "SPECIES_GARDEVOIR" not in text
+          assert "SPECIES_RALTS" in text and "SPECIES_KIRLIA" in text
+          assert "SPECIES_NATU" in text and "SPECIES_XATU" in text
+
+          for name in ("RALTS","KIRLIA","GARDEVOIR","NATU","XATU"):
+              assert f"[SPECIES_{name}] = TMHM_LEARNSET(" in tmhm
+
+          stale=subprocess.run(
+              ["git","grep","-nE",r"\b(TM|ITEM_TM)(69|7[0-9])\b","--","src","include","data","scripts"],
+              text=True,capture_output=True
+          )
+          assert stale.returncode == 1, stale.stdout
+          print("RN001 STATIC PASS current stack species evolution encounter TM architecture")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee RN001_ROM_SHA1.txt
+          git rev-parse HEAD | tee RN001_SOURCE_SHA.txt
+
+      - name: Runtime phase 1 — validate and save
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > rn001_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat rn001_phase1.log
+          grep -q "RN001 PHASE1 PASS species evolution machines party PC dex saved" rn001_phase1.log
+          ! grep -q "RN001 FAIL" rn001_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2 — fresh-process reload
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > rn001_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat rn001_phase2.log
+          grep -q "RN001 QA PASS reload party PC dex evolution exact TMHM" rn001_phase2.log
+          ! grep -q "RN001 FAIL" rn001_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-003-qa-rn-001
+          path: |
+            pokefirered.gba
+            pokefirered.sav
+            RN001_ROM_SHA1.txt
+            RN001_SOURCE_SHA.txt
+            rn001_phase1.log
+            rn001_phase2.log
+          if-no-files-found: error
