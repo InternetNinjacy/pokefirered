@@ -9,16 +9,28 @@
 
 #define LINK_TRADE_TIMEOUT 300
 
-// In-game Trade IDs
-#define INGAME_TRADE_MR_MIME   0
-#define INGAME_TRADE_JYNX      1
-#define INGAME_TRADE_NIDORAN   2  // M or F depending on version
-#define INGAME_TRADE_FARFETCHD 3
-#define INGAME_TRADE_NIDORINOA 4  // Nidorino or Nidorina depending on version
-#define INGAME_TRADE_LICKITUNG 5
-#define INGAME_TRADE_ELECTRODE 6
-#define INGAME_TRADE_TANGELA   7
-#define INGAME_TRADE_SEEL      8
+// Sam Edition in-game Trade IDs, ordered by progression.
+#define INGAME_TRADE_JOULE   0
+#define INGAME_TRADE_KITSUNE 1
+#define INGAME_TRADE_SCORIA  2
+#define INGAME_TRADE_IMUGI   3
+#define INGAME_TRADE_TALUS   4
+#define INGAME_TRADE_BRINE   5
+#define INGAME_TRADE_MATRON  6
+#define INGAME_TRADE_STRATA  7
+#define INGAME_TRADE_SELKIE  8
+
+// Pokémon Original Trainer IDs for the nine standard Sam Edition NPC trades.
+// These are monster OT IDs, not TRAINER_* battle-table IDs.
+#define OTID_NPC_TRADE_MARA   51001
+#define OTID_NPC_TRADE_REINA  51002
+#define OTID_NPC_TRADE_DEXTER 51003
+#define OTID_NPC_TRADE_MIN    51004
+#define OTID_NPC_TRADE_CLAY   51005
+#define OTID_NPC_TRADE_MARIS  51006
+#define OTID_NPC_TRADE_HELEN  51007
+#define OTID_NPC_TRADE_GEOFF  51008
+#define OTID_NPC_TRADE_INGRID 51009
 
 // Return values for CanTradeSelectedMon and CanSpinTradeMon
 #define CAN_TRADE_MON              0
