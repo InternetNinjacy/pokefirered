@@ -38,7 +38,25 @@ PR #88 is the current delta-only production continuation. CI run `37066177714` c
 
 ### Group 2 — Special Acquisitions current source-routing state
 
-Authority/resource closure is synchronized through Programming Readiness checkpoint `SYNC-2026-10-02-015`.
+Status: **POC COMPLETE**. Synchronized through Programming Readiness checkpoint `SYNC-2026-10-02-018`.
+
+Production:
+- branch: `sam/gift-001-remaining-special-acquisitions`
+- draft PR: #88
+- production head: `9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0`
+- base: `sam/gift-001-starter-family-gifts` / draft PR #86
+- production CI: `37069196924`
+- result: compile/link/ELF/GBA/SYM succeeded; only the expected modified-ROM stock FireRed SHA comparison failed
+- PR #88 remains draft/open/unmerged
+
+Final evidence-only QA:
+- branch: `qa/gift-001-group2-final-runtime`
+- draft PR: #90
+- QA source: `26c2ed84ef6a486a91679f103a6de7e50ee3f483`
+- run: `37069227822` — PASS
+- QA ROM SHA-1: `d59142366a786b9a04c22e877bfb6a58a6456c6d`
+- QA PR #90 must never become production ancestry
+- earlier QA PRs #87/#89 remain evidence-only and must never become production ancestry
 
 Current central resources:
 - OT 52005 LUNA — Cleffa
@@ -47,9 +65,10 @@ Current central resources:
 - OT 52008 VENDOR — Route 4 purchased Magikarp
 - OT 52009 CELADON — Game Corner Pokémon prizes
 - OT 52010 LAB — Cinnabar fossil revivals
+- next free authored Gift OT ID: 52011
 - flags 0x373 / 0x374 / 0x375 / 0x376 — Cleffa / Igglybuff / Elekid Egg / Rock Tunnel Porygon
 
-PR #88 currently touches:
+Verified production source surfaces:
 - `include/constants/trade.h`
 - `include/constants/flags.h`
 - `include/script_pokemon_util.h`
@@ -60,19 +79,32 @@ PR #88 currently touches:
 - `data/maps/CeladonCity_GameCorner_PrizeRoom/scripts.inc`
 - `data/maps/CinnabarIsland_PokemonLab_ExperimentRoom/scripts.inc`
 - `data/maps/SilphCo_7F/scripts.inc`
+- `data/layouts/CeladonCity/map.bin`
+- `data/maps/CeladonCity/map.json`
+- `data/maps/CeladonCity_SurfHouse/map.json`
+- `data/maps/CeladonCity_SurfHouse/scripts.inc`
+- `data/maps/CeladonCity_SurfHouse/text.inc`
+- `data/maps/map_groups.json`
+- `data/event_scripts.s`
 
-Implemented and focused-runtime-QA-proven on PR #88 / QA #89:
-- LUNA Cleffa Lv8 one-time Gift at Route 4 / Mt. Moon Pokémon Center
-- MELODY Igglybuff Lv18 one-time Gift at Lavender Pokémon Center
-- authored outsider OT conversion for purchased Magikarp, all current FireRed Game Corner Pokémon prizes, Cinnabar fossil revivals, and Silph 7F Lapras
-- party delivery, full-party PC fallback, full party + full storage rejection, no false Pokédex caught state on failure, and real save/fresh-process reload persistence
+Implemented and QA-proven:
+- LUNA Cleffa Lv8 one-time authored outsider Gift
+- MELODY Igglybuff Lv18 one-time authored outsider Gift with Soothe Bell
+- NORA Elekid one-time player-owned Gift Egg in a Surf-only Celadon house
+- authored outsider conversion for purchased Magikarp, all current FireRed Game Corner prizes, Cinnabar fossil revivals, and Silph 7F Lapras
+- party delivery, PC fallback, full-storage retry/failure safety, claim persistence and duplicate prevention
+- success-only money/coin transaction ordering
+- no false Pokédex caught state on failed outsider delivery
+- Elekid player OT/ownership path and global exact 50% shiny Egg source path
+- actual Celadon block-data geometry/warp registration for the Surf House
+- real save/fresh-process reload persistence
 
-Not yet placed in source:
-- Celadon Elekid Egg: package/event authority is closed; exact exterior Surf-house warp tile is still a source-map geometry mapping task and must not be invented
-- Cinnabar Magby Egg: owner-system ready under Town Side Quests
-- Rock Tunnel Porygon: acquisition contract/resource closed; visible event belongs to Thomas/Team Rocket
+Owner-system handoffs:
+- Cinnabar Magby Egg: acquisition contract/mechanics are closed; final reward hookup remains under Town Side Quests/Cinnabar.
+- Rock Tunnel Porygon: package/resources are closed; final visible recovery event remains under Thomas/Team Rocket.
+- Neither is a remaining Group 2 blocker.
 
-Group 1 — Breeding remains POC COMPLETE. Group 2 remains permanently numbered Group 2 — Special Acquisitions. Do not use QA PR #87 or any other QA branch as production ancestry.
+Group 1 — Breeding remains POC COMPLETE. Group 2 remains permanently numbered Group 2 — Special Acquisitions and is now POC COMPLETE.
 
 ### Group 3 — Species current-stack reconciliation
 
