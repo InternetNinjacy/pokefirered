@@ -45,7 +45,7 @@ live_state:
     branch: sam/gift-001-remaining-special-acquisitions
     pr: 88
     production_head: b1427e3700dc34514cfd134aaa14d82d2c651e72
-    state: "draft / open / unmerged; CI pending"
+    state: "draft / open / unmerged; production CI build-clean through expected stock SHA gate"
     parent_branch: sam/gift-001-starter-family-gifts
     parent_pr: 86
     parent_head: be0c6ab2500f188ce20d49ae69b66f028dea332b
@@ -129,7 +129,7 @@ source_locator:
     production_pr: 88
     production_head: b1427e3700dc34514cfd134aaa14d82d2c651e72
     production_ci_run: 37066177714
-    runtime_qa_status: "not yet run for PR #88"
+    runtime_qa_status: "not yet run for PR #88; production CI 37066177714 compiled/linked/generated ELF/GBA/SYM and stopped only at expected stock SHA comparison"
     registry_checkpoint: SYNC-2026-10-02-015
 
   group3_species_current_stack_reconciliation:
