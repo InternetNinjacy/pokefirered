@@ -64,6 +64,43 @@ jobs:
           timeout --signal=TERM 30s mgba -l 31 pokefirered.gba > npc_trade_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
           cat npc_trade_phase1.log
 
+      - name: Diagnostic — requested species
+        if: always()
+        run: grep -q "NPC TRADE QA CREATE requested PASS" npc_trade_phase1.log
+      - name: Diagnostic — generated mon
+        if: always()
+        run: grep -q "NPC TRADE QA CREATE generated PASS" npc_trade_phase1.log
+      - name: Diagnostic — species
+        if: always()
+        run: grep -q "NPC TRADE QA FIELD species PASS" npc_trade_phase1.log
+      - name: Diagnostic — level
+        if: always()
+        run: grep -q "NPC TRADE QA FIELD level PASS" npc_trade_phase1.log
+      - name: Diagnostic — gender
+        if: always()
+        run: grep -q "NPC TRADE QA FIELD gender PASS" npc_trade_phase1.log
+      - name: Diagnostic — nature
+        if: always()
+        run: grep -q "NPC TRADE QA FIELD nature PASS" npc_trade_phase1.log
+      - name: Diagnostic — item
+        if: always()
+        run: grep -q "NPC TRADE QA FIELD item PASS" npc_trade_phase1.log
+      - name: Diagnostic — OT ID
+        if: always()
+        run: grep -q "NPC TRADE QA FIELD otid PASS" npc_trade_phase1.log
+      - name: Diagnostic — nickname
+        if: always()
+        run: grep -q "NPC TRADE QA FIELD nickname PASS" npc_trade_phase1.log
+      - name: Diagnostic — OT name
+        if: always()
+        run: grep -q "NPC TRADE QA FIELD otname PASS" npc_trade_phase1.log
+      - name: Diagnostic — moves
+        if: always()
+        run: grep -q "NPC TRADE QA FIELD moves PASS" npc_trade_phase1.log
+      - name: Diagnostic — outsider
+        if: always()
+        run: grep -q "NPC TRADE QA FIELD outsider PASS" npc_trade_phase1.log
+
       - name: JOULE runtime package
         if: always()
         run: grep -q "NPC TRADE QA JOULE PASS" npc_trade_phase1.log
