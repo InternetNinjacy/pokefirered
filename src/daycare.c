@@ -1039,6 +1039,15 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
     u32 numLevelUpMoves;
     u16 numEggMoves;
     u16 i, j;
+    u16 eggSpecies = GetMonData(egg, MON_DATA_SPECIES);
+
+    // Sam Edition legendary birds use their exact natural Lv. 5 opening sets.
+    // Suppress normal father-side Egg/TM inheritance so a captured Lv. 50 bird
+    // cannot pass later moves into Articuno/Zapdos/Moltres Eggs.
+    if (eggSpecies == SPECIES_ARTICUNO
+     || eggSpecies == SPECIES_ZAPDOS
+     || eggSpecies == SPECIES_MOLTRES)
+        return;
 
     numSharedParentMoves = 0;
     for (i = 0; i < MAX_MON_MOVES; i++)
