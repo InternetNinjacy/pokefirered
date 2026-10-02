@@ -8,12 +8,30 @@ This file records verified Sam-specific implementation surfaces. It is not a sta
 
 ## Current verified production continuation tip
 
-Branch: `sam/enc-001-ralts-natu-final-tables`  
-Draft PR: #67  
-Production head: `1e03ef56cc063e3f9a2888640ec760e4d23d4c8a`  
-Base: `sam/evol-001-003-accessibility` / draft PR #65
+Branch: `sam/enc-001-nosepass-feebas-final-tables`  
+Draft PR: #69  
+Production head: `9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a`  
+Base: `sam/enc-001-ralts-natu-final-tables` / draft PR #67
 
-Production work should continue delta-only from this head or a later documented verified production descendant. The isolated QA branch `qa/enc-001-ralts-natu-final-tables` is evidence/instrumentation only and is not a production ancestor. BREED PR #66 is blocked and must not become production ancestry.
+Production work should continue delta-only from this head or a later documented verified production descendant. The isolated QA branch `qa/enc-001-nosepass-feebas-final-tables` is evidence/instrumentation only and is not a production ancestor. BREED PR #66 is blocked and must not become production ancestry.
+
+## ENC-001 completed locked packet
+
+Production chain:
+
+- PR #67: `sam/enc-001-ralts-natu-final-tables` @ `1e03ef56cc063e3f9a2888640ec760e4d23d4c8a`
+- PR #69: `sam/enc-001-nosepass-feebas-final-tables` @ `9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a`
+
+Verified production surfaces:
+
+- `src/data/wild_encounters.json`
+- `src/wild_encounter.c` (Route 6-only exact Surf/fishing selector; global weights unchanged)
+
+PR #67 QA: run `37004528658`, QA source `08533e014c8040502ed6f3aa5e5e3f3943562ac0`, ROM `e554917c75f6500a919e2f1862598340b70b7f65`.
+
+PR #69 QA: run `37005383850`, QA source `c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8`, ROM `32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9`.
+
+Current locked packet result: Ralts/Natu/Nosepass/Feebas focused encounter programming is complete. Route 6 requires the local selector because native Good Rod has only three 60/20/20 slots and cannot directly express the locked four-species 40/30/20/10 table. This exception is Route 6-only.
 
 ## Starter System production bundle
 
