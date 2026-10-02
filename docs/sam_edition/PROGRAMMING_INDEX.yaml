@@ -233,6 +233,22 @@ qa_policy:
   evidence_rule: "Record source commit used for QA separately from implementation branch state."
 
 known_good_builds:
+  spec_003_ralts_natu_current_stack_qa:
+    production_source_commit: 7b6e3c29e593cb43878cc2ef9fbc70ce741d7689
+    production_branch: sam/train-002-003-focused-corrections
+    production_pr: 73
+    qa_branch: qa/spec-003-qa-rn-001
+    qa_pr: 78
+    qa_source_commit: 511adaa66b2adeffa6832bf6c7be73f96fed26bb
+    workflow_run: 37027682738
+    rom_sha1: 967eaabdd0861714ec4846b9fd8c5f832db82f85
+    notes:
+      - "No new production delta was required: the current verified PR #73 stack already contains the approved SPEC-003 Ralts/Natu source packet."
+      - "Runtime QA passed Ralts->Kirlia Lv20, Kirlia->Gardevoir Lv30 and Natu->Xatu Lv25 with immediately-below negative controls."
+      - "Exact positive and negative TM01-TM68 / HM01-HM08 compatibility passed for Ralts, Kirlia, Gardevoir, Natu and Xatu."
+      - "Party/PC round-trip, Pokedex species mapping plus seen/caught flags, real flash save and fresh-process reload passed."
+      - "Static/runtime checks confirmed Psychic-only Ralts line, Psychic/Flying Natu line, locked abilities, no Fairy typing, no Gallade evolution and no wild Gardevoir."
+      - "QA PR #78 is evidence/instrumentation only and must never be used as production ancestry."
   enc_003_partial_runtime_qa:
     production_source_commit: 6e84b85cf47ad76fe81bf5d27a5aac1da127d79a
     qa_source_commit: 58cce3b6f53505bba929f07179cf23917694e844
