@@ -72,6 +72,30 @@ Verified production surfaces:
 
 Production CI `36961159729`; isolated runtime QA `36961288046`, QA source `fdc3b14b0551772ba8b32d96324e7faa32bdaf8c`, ROM SHA-1 `5c1c083070867654ae5625bcdb15c0e161242582`. QA-004 is PASS for the current authority/roster scope. Conditional Clamperl trade-item methods remain intentionally untouched.
 
+### TM-004–005 compatibility matrix
+
+Canonical implementation branches:
+
+- `sam/tmcomp-part1-kanto-final-matrix` / draft PR #47
+- `sam/tmcomp-part2-final-roster-extensions` / draft PR #48
+- canonical TM-COMP tip: `10e48e687a414f621a554796aaff2c277d935b1f`
+
+Primary data/runtime surfaces:
+
+- `src/data/pokemon/tmhm_learnsets.h`
+- `src/pokemon.c` → `CanMonLearnTMHM()`
+- `src/party_menu.c` → TM/HM logical-index/item/move mapping helpers
+- `include/constants/global.h` → 68 TM / 8 HM capacity
+
+Current production PR #65 inherits PR #48 and retains the exact canonical compatibility blob `38e36d942662a38c864cf99c270fd64ede18490d`; no forward production transplant is required.
+
+Focused QA branch: `qa/tm-004-005-compatibility`  
+QA source: `b8a6dc980bbe306d4b49724f55561069ca807bdc`  
+Successful run: `36962584342`  
+QA ROM SHA-1: `28e65e065e466a0973843bc6985eeaa2fb6b8f69`
+
+QA-005 is PASS: all 68 TM mappings and all 8 HM indexes were exercised at runtime, exact representative later-specialist rows were checked, bounds were checked, and active source contains no TM69–TM79 numbering.
+
 ### Starter System
 
 Production branch:
