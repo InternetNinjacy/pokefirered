@@ -130,27 +130,27 @@ VermilionCity_Text_Route2AideHasPackageForYou::
     .string "please look for him.$"
 
 VermilionCity_Text_MarinaOfferSquirtle::
-	.string "I help look after POKéMON around\\n"
-	.string "the harbor.\\p"
-	.string "This SQUIRTLE has outgrown the\\n"
-	.string "docks. She needs to see more of the\\n"
-	.string "world.\\p"
+	.string "I help look after POKéMON around\n"
+	.string "the harbor.\p"
+	.string "This SQUIRTLE has outgrown the\n"
+	.string "docks. She needs to see more of the\n"
+	.string "world.\p"
 	.string "Would you take her with you?$"
 
 VermilionCity_Text_MarinaDecline::
-	.string "That's all right. Come back if you\\n"
+	.string "That's all right. Come back if you\n"
 	.string "change your mind.$"
 
 VermilionCity_Text_MarinaNoRoom::
-	.string "It looks like you can't take her\\n"
-	.string "right now.\\p"
+	.string "It looks like you can't take her\n"
+	.string "right now.\p"
 	.string "Come back after making some room.$"
 
 VermilionCity_Text_MarinaGiftReceived::
-	.string "Perfect. She's steady even when the\\n"
-	.string "water gets rough.\\p"
+	.string "Perfect. She's steady even when the\n"
+	.string "water gets rough.\p"
 	.string "Take care of each other.$"
 
 VermilionCity_Text_MarinaPostGift::
-	.string "If SQUIRTLE ever misses the harbor,\\n"
+	.string "If SQUIRTLE ever misses the harbor,\n"
 	.string "bring her back for a visit.$"
