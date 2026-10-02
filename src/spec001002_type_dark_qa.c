@@ -105,19 +105,21 @@ static void CheckTypeFields(void)
 static void CheckPureFlyingBattleRules(void)
 {
     u8 flags;
+    u8 ghostFlags;
+    u8 groundFlags;
     s32 flyingStab = TypeDamage(MOVE_AERIAL_ACE, SPECIES_PIDGEY, SPECIES_CASTFORM, &flags);
     s32 normalNoStab = TypeDamage(MOVE_QUICK_ATTACK, SPECIES_PIDGEY, SPECIES_CASTFORM, &flags);
     s32 fighting = TypeDamage(MOVE_BRICK_BREAK, SPECIES_PSYDUCK, SPECIES_PIDGEY, &flags);
-    s32 ghost = TypeDamage(MOVE_SHADOW_BALL, SPECIES_PSYDUCK, SPECIES_PIDGEY, &flags);
-    s32 ground = TypeDamage(MOVE_EARTHQUAKE, SPECIES_PSYDUCK, SPECIES_PIDGEY, &flags);
+    s32 ghost = TypeDamage(MOVE_SHADOW_BALL, SPECIES_PSYDUCK, SPECIES_PIDGEY, &ghostFlags);
+    s32 ground = TypeDamage(MOVE_EARTHQUAKE, SPECIES_PSYDUCK, SPECIES_PIDGEY, &groundFlags);
 
     if (flyingStab != 150 || normalNoStab != 100)
         Fail("SPEC001002 FAIL Flying STAB regression");
     if (fighting != 50)
         Fail("SPEC001002 FAIL Flying Fighting resist");
-    if (ghost != 100 || (flags & MOVE_RESULT_DOESNT_AFFECT_FOE))
+    if (ghost != 100 || (ghostFlags & MOVE_RESULT_DOESNT_AFFECT_FOE))
         Fail("SPEC001002 FAIL obsolete Normal Ghost immunity");
-    if (ground != 0 || !(flags & MOVE_RESULT_DOESNT_AFFECT_FOE))
+    if (ground != 0 || !(groundFlags & MOVE_RESULT_DOESNT_AFFECT_FOE))
         Fail("SPEC001002 FAIL Flying Ground immunity");
 }
 
