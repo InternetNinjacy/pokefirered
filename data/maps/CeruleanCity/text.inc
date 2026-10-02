@@ -180,3 +180,27 @@ CeruleanCity_Text_GymSign::
     .string "LEADER: MISTY\l"
     .string "The Tomboyish Mermaid!$"
 
+CeruleanCity_Text_AsherOfferCharmander::
+	.string "People around here think raising\n"
+	.string "Fire POKéMON is all about power.\p"
+	.string "It isn't. This CHARMANDER needs a\n"
+	.string "TRAINER with some patience.\p"
+	.string "Would you take him?$"
+
+CeruleanCity_Text_AsherDecline::
+	.string "That's all right. Come back if you\n"
+	.string "change your mind.$"
+
+CeruleanCity_Text_AsherNoRoom::
+	.string "It looks like you can't take him\n"
+	.string "right now.\p"
+	.string "Come back after making some room.$"
+
+CeruleanCity_Text_AsherGiftReceived::
+	.string "Good. Take care of him.\p"
+	.string "A strong flame starts with trust.$"
+
+CeruleanCity_Text_AsherPostGift::
+	.string "Keep an eye on that tail flame.\p"
+	.string "It'll tell you a lot about how he's\n"
+	.string "doing.$"

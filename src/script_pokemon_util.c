@@ -7,9 +7,13 @@
 #include "overworld.h"
 #include "party_menu.h"
 #include "pokedex.h"
+#include "pokemon.h"
+#include "random.h"
 #include "script_pokemon_util.h"
 #include "constants/items.h"
 #include "constants/pokemon.h"
+#include "constants/moves.h"
+#include "constants/trade.h"
 #include "constants/vars.h"
 
 static void CB2_ReturnFromChooseHalfParty(void);
@@ -84,6 +88,117 @@ u8 ScriptGiveSamStarter(u16 species)
 void GiveSamStarter(void)
 {
     gSpecialVar_Result = ScriptGiveSamStarter(gSpecialVar_0x8004);
+}
+
+enum
+{
+    SAM_STARTER_FAMILY_GIFT_FERN_BULBASAUR,
+    SAM_STARTER_FAMILY_GIFT_ASHER_CHARMANDER,
+    SAM_STARTER_FAMILY_GIFT_MARINA_SQUIRTLE,
+    SAM_STARTER_FAMILY_GIFT_COUNT
+};
+
+struct SamStarterFamilyGift
+{
+    u16 species;
+    u8 level;
+    u8 monGender;
+    u8 nature;
+    u16 heldItem;
+    u32 otId;
+    const u8 *otName;
+    u8 otGender;
+    u16 moves[MAX_MON_MOVES];
+};
+
+static const u8 sSamGiftOtFern[] = _("FERN");
+static const u8 sSamGiftOtAsher[] = _("ASHER");
+static const u8 sSamGiftOtMarina[] = _("MARINA");
+
+static const struct SamStarterFamilyGift sSamStarterFamilyGifts[SAM_STARTER_FAMILY_GIFT_COUNT] =
+{
+    [SAM_STARTER_FAMILY_GIFT_FERN_BULBASAUR] =
+    {
+        .species = SPECIES_BULBASAUR,
+        .level = 10,
+        .monGender = MON_FEMALE,
+        .nature = NATURE_CALM,
+        .heldItem = ITEM_MIRACLE_SEED,
+        .otId = OTID_GIFT_FERN,
+        .otName = sSamGiftOtFern,
+        .otGender = FEMALE,
+        .moves = {MOVE_TACKLE, MOVE_GROWL, MOVE_LEECH_SEED, MOVE_VINE_WHIP},
+    },
+    [SAM_STARTER_FAMILY_GIFT_ASHER_CHARMANDER] =
+    {
+        .species = SPECIES_CHARMANDER,
+        .level = 15,
+        .monGender = MON_MALE,
+        .nature = NATURE_MODEST,
+        .heldItem = ITEM_CHARCOAL,
+        .otId = OTID_GIFT_ASHER,
+        .otName = sSamGiftOtAsher,
+        .otGender = MALE,
+        .moves = {MOVE_EMBER, MOVE_METAL_CLAW, MOVE_SMOKESCREEN, MOVE_DRAGON_RAGE},
+    },
+    [SAM_STARTER_FAMILY_GIFT_MARINA_SQUIRTLE] =
+    {
+        .species = SPECIES_SQUIRTLE,
+        .level = 18,
+        .monGender = MON_FEMALE,
+        .nature = NATURE_BOLD,
+        .heldItem = ITEM_MYSTIC_WATER,
+        .otId = OTID_GIFT_MARINA,
+        .otName = sSamGiftOtMarina,
+        .otGender = FEMALE,
+        .moves = {MOVE_WATER_GUN, MOVE_BITE, MOVE_WITHDRAW, MOVE_RAPID_SPIN},
+    },
+};
+
+static u8 ScriptGiveSamStarterFamilyGift(u8 giftId)
+{
+    const struct SamStarterFamilyGift *gift;
+    struct Pokemon *mon;
+    u32 personality;
+    u16 nationalDexNum;
+    u8 sentToPc;
+    u8 i;
+
+    if (giftId >= SAM_STARTER_FAMILY_GIFT_COUNT)
+        return MON_CANT_GIVE;
+
+    gift = &sSamStarterFamilyGifts[giftId];
+
+    do
+    {
+        personality = Random32();
+    } while ((personality % NUM_NATURES) != gift->nature
+          || GetGenderFromSpeciesAndPersonality(gift->species, personality) != gift->monGender);
+
+    mon = AllocZeroed(sizeof(*mon));
+    CreateMon(mon, gift->species, gift->level, USE_RANDOM_IVS, TRUE, personality, OT_ID_PRESET, gift->otId);
+    SetMonData(mon, MON_DATA_OT_NAME, gift->otName);
+    SetMonData(mon, MON_DATA_OT_GENDER, &gift->otGender);
+    SetMonData(mon, MON_DATA_HELD_ITEM, &gift->heldItem);
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        SetMonMoveSlot(mon, gift->moves[i], i);
+
+    sentToPc = GivePreOwnedMonToPlayer(mon);
+    if (sentToPc == MON_GIVEN_TO_PARTY || sentToPc == MON_GIVEN_TO_PC)
+    {
+        nationalDexNum = SpeciesToNationalPokedexNum(gift->species);
+        GetSetPokedexFlag(nationalDexNum, FLAG_SET_SEEN);
+        GetSetPokedexFlag(nationalDexNum, FLAG_SET_CAUGHT);
+    }
+
+    Free(mon);
+    return sentToPc;
+}
+
+void GiveSamStarterFamilyGift(void)
+{
+    gSpecialVar_Result = ScriptGiveSamStarterFamilyGift(gSpecialVar_0x8004);
 }
 
 static u16 GetSamRivalStarterSpecies(bool8 green)

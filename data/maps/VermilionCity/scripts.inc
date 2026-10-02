@@ -264,3 +264,32 @@ VermilionCity_EventScript_GymSign::
 VermilionCity_EventScript_HarborSign::
 	msgbox VermilionCity_Text_VermilionHarbor, MSGBOX_SIGN
 	end
+
+VermilionCity_EventScript_Marina::
+	lock
+	faceplayer
+	goto_if_set FLAG_GIFT_MARINA_SQUIRTLE_CLAIMED, VermilionCity_EventScript_MarinaPostGift
+	msgbox VermilionCity_Text_MarinaOfferSquirtle, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, VermilionCity_EventScript_MarinaDecline
+	setvar VAR_0x8004, 2
+	special GiveSamStarterFamilyGift
+	goto_if_eq VAR_RESULT, 2, VermilionCity_EventScript_MarinaNoRoom
+	setflag FLAG_GIFT_MARINA_SQUIRTLE_CLAIMED
+	msgbox VermilionCity_Text_MarinaGiftReceived
+	release
+	end
+
+VermilionCity_EventScript_MarinaDecline::
+	msgbox VermilionCity_Text_MarinaDecline
+	release
+	end
+
+VermilionCity_EventScript_MarinaNoRoom::
+	msgbox VermilionCity_Text_MarinaNoRoom
+	release
+	end
+
+VermilionCity_EventScript_MarinaPostGift::
+	msgbox VermilionCity_Text_MarinaPostGift
+	release
+	end

@@ -365,6 +365,7 @@ gSpecials::
 	def_special GetStarterSpecies
 	def_special MarkSamOriginalStarter
 	def_special GiveSamStarter
+	def_special GiveSamStarterFamilyGift
 	def_special GetSamBlueStarterSpecies
 	def_special GetSamGreenStarterSpecies
 	def_special GetSamBlueStarterEndpointSpecies
