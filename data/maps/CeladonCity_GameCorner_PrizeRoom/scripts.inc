@@ -121,10 +121,16 @@ CeladonCity_GameCorner_PrizeRoom_EventScript_ConfirmPrizeMon::
 
 CeladonCity_GameCorner_PrizeRoom_EventScript_GiveAbra::
 	.ifdef FIRERED
-	givemon VAR_TEMP_1, 9
+	setvar VAR_0x8004, VAR_TEMP_1
+	setvar VAR_0x8005, 9
+	setvar VAR_0x8006, SAM_PREOWNED_OT_GAME_CORNER
+	special GiveSamPreOwnedMon
 	.else
 	.ifdef LEAFGREEN
-	givemon VAR_TEMP_1, 7
+	setvar VAR_0x8004, VAR_TEMP_1
+	setvar VAR_0x8005, 7
+	setvar VAR_0x8006, SAM_PREOWNED_OT_GAME_CORNER
+	special GiveSamPreOwnedMon
 	.endif
 	.endif
 	goto CeladonCity_GameCorner_PrizeRoom_EventScript_CheckReceivedMon
@@ -132,10 +138,16 @@ CeladonCity_GameCorner_PrizeRoom_EventScript_GiveAbra::
 
 CeladonCity_GameCorner_PrizeRoom_EventScript_GiveClefairy::
 	.ifdef FIRERED
-	givemon VAR_TEMP_1, 8
+	setvar VAR_0x8004, VAR_TEMP_1
+	setvar VAR_0x8005, 8
+	setvar VAR_0x8006, SAM_PREOWNED_OT_GAME_CORNER
+	special GiveSamPreOwnedMon
 	.else
 	.ifdef LEAFGREEN
-	givemon VAR_TEMP_1, 12
+	setvar VAR_0x8004, VAR_TEMP_1
+	setvar VAR_0x8005, 12
+	setvar VAR_0x8006, SAM_PREOWNED_OT_GAME_CORNER
+	special GiveSamPreOwnedMon
 	.endif
 	.endif
 	goto CeladonCity_GameCorner_PrizeRoom_EventScript_CheckReceivedMon
@@ -143,33 +155,51 @@ CeladonCity_GameCorner_PrizeRoom_EventScript_GiveClefairy::
 
 CeladonCity_GameCorner_PrizeRoom_EventScript_GiveDratini::
 	.ifdef FIRERED
-	givemon VAR_TEMP_1, 18
+	setvar VAR_0x8004, VAR_TEMP_1
+	setvar VAR_0x8005, 18
+	setvar VAR_0x8006, SAM_PREOWNED_OT_GAME_CORNER
+	special GiveSamPreOwnedMon
 	.else
 	.ifdef LEAFGREEN
-	givemon VAR_TEMP_1, 24
+	setvar VAR_0x8004, VAR_TEMP_1
+	setvar VAR_0x8005, 24
+	setvar VAR_0x8006, SAM_PREOWNED_OT_GAME_CORNER
+	special GiveSamPreOwnedMon
 	.endif
 	.endif
 	goto CeladonCity_GameCorner_PrizeRoom_EventScript_CheckReceivedMon
 	end
 
 CeladonCity_GameCorner_PrizeRoom_EventScript_GiveScyther::
-	givemon VAR_TEMP_1, 25
+	setvar VAR_0x8004, VAR_TEMP_1
+	setvar VAR_0x8005, 25
+	setvar VAR_0x8006, SAM_PREOWNED_OT_GAME_CORNER
+	special GiveSamPreOwnedMon
 	goto CeladonCity_GameCorner_PrizeRoom_EventScript_CheckReceivedMon
 	end
 
 CeladonCity_GameCorner_PrizeRoom_EventScript_GivePorygon::
 	.ifdef FIRERED
-	givemon VAR_TEMP_1, 26
+	setvar VAR_0x8004, VAR_TEMP_1
+	setvar VAR_0x8005, 26
+	setvar VAR_0x8006, SAM_PREOWNED_OT_GAME_CORNER
+	special GiveSamPreOwnedMon
 	.else
 	.ifdef LEAFGREEN
-	givemon VAR_TEMP_1, 18
+	setvar VAR_0x8004, VAR_TEMP_1
+	setvar VAR_0x8005, 18
+	setvar VAR_0x8006, SAM_PREOWNED_OT_GAME_CORNER
+	special GiveSamPreOwnedMon
 	.endif
 	.endif
 	goto CeladonCity_GameCorner_PrizeRoom_EventScript_CheckReceivedMon
 	end
 
 CeladonCity_GameCorner_PrizeRoom_EventScript_GivePinsir::
-	givemon VAR_TEMP_1, 18
+	setvar VAR_0x8004, VAR_TEMP_1
+	setvar VAR_0x8005, 18
+	setvar VAR_0x8006, SAM_PREOWNED_OT_GAME_CORNER
+	special GiveSamPreOwnedMon
 	goto CeladonCity_GameCorner_PrizeRoom_EventScript_CheckReceivedMon
 	end
 

@@ -95,6 +95,8 @@ enum
     SAM_STARTER_FAMILY_GIFT_FERN_BULBASAUR,
     SAM_STARTER_FAMILY_GIFT_ASHER_CHARMANDER,
     SAM_STARTER_FAMILY_GIFT_MARINA_SQUIRTLE,
+    SAM_GIFT_LUNA_CLEFFA,
+    SAM_GIFT_MELODY_IGGLYBUFF,
     SAM_STARTER_FAMILY_GIFT_COUNT
 };
 
@@ -114,6 +116,12 @@ struct SamStarterFamilyGift
 static const u8 sSamGiftOtFern[] = _("FERN");
 static const u8 sSamGiftOtAsher[] = _("ASHER");
 static const u8 sSamGiftOtMarina[] = _("MARINA");
+static const u8 sSamGiftOtLuna[] = _("LUNA");
+static const u8 sSamGiftOtMelody[] = _("MELODY");
+static const u8 sSamGiftOtVendor[] = _("VENDOR");
+static const u8 sSamGiftOtCeladon[] = _("CELADON");
+static const u8 sSamGiftOtLab[] = _("LAB");
+static const u8 sSamGiftOtSilph[] = _("SILPH");
 
 static const struct SamStarterFamilyGift sSamStarterFamilyGifts[SAM_STARTER_FAMILY_GIFT_COUNT] =
 {
@@ -152,6 +160,30 @@ static const struct SamStarterFamilyGift sSamStarterFamilyGifts[SAM_STARTER_FAMI
         .otName = sSamGiftOtMarina,
         .otGender = FEMALE,
         .moves = {MOVE_WATER_GUN, MOVE_BITE, MOVE_WITHDRAW, MOVE_RAPID_SPIN},
+    },
+    [SAM_GIFT_LUNA_CLEFFA] =
+    {
+        .species = SPECIES_CLEFFA,
+        .level = 8,
+        .monGender = MON_FEMALE,
+        .nature = NATURE_CALM,
+        .heldItem = ITEM_NONE,
+        .otId = OTID_GIFT_LUNA,
+        .otName = sSamGiftOtLuna,
+        .otGender = FEMALE,
+        .moves = {MOVE_POUND, MOVE_CHARM, MOVE_ENCORE, MOVE_SWEET_KISS},
+    },
+    [SAM_GIFT_MELODY_IGGLYBUFF] =
+    {
+        .species = SPECIES_IGGLYBUFF,
+        .level = 18,
+        .monGender = MON_FEMALE,
+        .nature = NATURE_BOLD,
+        .heldItem = ITEM_SOOTHE_BELL,
+        .otId = OTID_GIFT_MELODY,
+        .otName = sSamGiftOtMelody,
+        .otGender = FEMALE,
+        .moves = {MOVE_SING, MOVE_DEFENSE_CURL, MOVE_POUND, MOVE_SWEET_KISS},
     },
 };
 
@@ -199,6 +231,44 @@ static u8 ScriptGiveSamStarterFamilyGift(u8 giftId)
 void GiveSamStarterFamilyGift(void)
 {
     gSpecialVar_Result = ScriptGiveSamStarterFamilyGift(gSpecialVar_0x8004);
+}
+
+void GiveSamPreOwnedMon(void)
+{
+    const u8 *otName;
+    u32 otId;
+    u8 otGender = MALE;
+
+    switch (gSpecialVar_0x8006)
+    {
+    case SAM_PREOWNED_OT_VENDOR:
+        otName = sSamGiftOtVendor;
+        otId = OTID_PURCHASE_MAGIKARP_VENDOR;
+        break;
+    case SAM_PREOWNED_OT_GAME_CORNER:
+        otName = sSamGiftOtCeladon;
+        otId = OTID_GAME_CORNER_CELADON;
+        break;
+    case SAM_PREOWNED_OT_FOSSIL_LAB:
+        otName = sSamGiftOtLab;
+        otId = OTID_FOSSIL_CINNABAR_LAB;
+        break;
+    case SAM_PREOWNED_OT_SILPH:
+        otName = sSamGiftOtSilph;
+        otId = OTID_SILPH;
+        break;
+    default:
+        gSpecialVar_Result = MON_CANT_GIVE;
+        return;
+    }
+
+    gSpecialVar_Result = ScriptGiveMon(
+        gSpecialVar_0x8004,
+        gSpecialVar_0x8005,
+        ITEM_NONE,
+        (u32)otName,
+        otId,
+        otGender);
 }
 
 static u16 GetSamRivalStarterSpecies(bool8 green)

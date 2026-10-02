@@ -52,3 +52,32 @@ Route4_PokemonCenter_1F_Text_ShouldStoreMonsUsingPC::
 Route4_PokemonCenter_1F_Text_ItsANewspaper::
     .string "It's a newspaper.$"
 
+
+Route4_PokemonCenter_1F_Text_LunaOfferCleffa::
+    .string "I came to MT. MOON to watch how\n"
+    .string "POKéMON react to the moonlight.\p"
+    .string "This CLEFFA likes people more than\n"
+    .string "caves. I think she'd be happier\n"
+    .string "seeing the world.\p"
+    .string "Would you take care of her?$"
+
+Route4_PokemonCenter_1F_Text_LunaDecline::
+    .string "That's okay. We'll stay here a\n"
+    .string "while if you change your mind.$"
+
+Route4_PokemonCenter_1F_Text_LunaNoRoom::
+    .string "There isn't anywhere safe to send\n"
+    .string "her right now.\p"
+    .string "Make some room in your party or PC,\n"
+    .string "then come back.$"
+
+Route4_PokemonCenter_1F_Text_LunaGiftReceived::
+    .string "Thank you. She's curious about\n"
+    .string "everything.\p"
+    .string "Show her more of KANTO than I ever\n"
+    .string "could.$"
+
+Route4_PokemonCenter_1F_Text_LunaPostGift::
+    .string "CLEFFA always looked happiest when\n"
+    .string "the road was ahead of her.\p"
+    .string "Take good care of her.$"

@@ -4,6 +4,7 @@
 bool8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 otName, u32 otId, u8 otGender);
 bool8 ScriptGiveSamStarter(u16 species);
 void GiveSamStarterFamilyGift(void);
+void GiveSamPreOwnedMon(void);
 void GetSamBlueStarterSpecies(void);
 void GetSamGreenStarterSpecies(void);
 void GetSamBlueStarterEndpointSpecies(void);
