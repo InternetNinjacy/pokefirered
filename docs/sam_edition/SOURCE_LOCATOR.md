@@ -38,7 +38,7 @@ This is the current delta-only production continuation point. Group 1 — Breedi
 
 ### Group 2 — Special Acquisitions current source-routing state
 
-Verified against production tip `7ec21e900341b91b50df618a89f39cd9e4a6da92` and Programming Readiness checkpoint `SYNC-2026-10-02-007`.
+Verified against production tip `7ec21e900341b91b50df618a89f39cd9e4a6da92` and Programming Readiness checkpoint `SYNC-2026-10-02-009`.
 
 - GIFT-002 safe one-time/full-party delivery remains COMPLETE.
 - GIFT-001 shared authored-pre-owned delivery core and all nine NPC trades remain implemented/runtime-proven; do not recreate them.
@@ -54,6 +54,17 @@ Verified against production tip `7ec21e900341b91b50df618a89f39cd9e4a6da92` and P
 - Stock Purchase, Game Corner, Fossil Revival and Silph Gift paths do not yet have complete authored non-player OT name + numeric OT-ID packages for outsider treatment.
 - Rock Tunnel Porygon is SILPH-owned and otherwise package-closed, but its numeric Pokémon OT ID is not centrally allocated and the source event remains Thomas/Rocket-owned.
 - No new Group 2 production branch should be created until one independent packet is implementation-ready without inventing player-visible content or numeric resources.
+
+### Group 3 — Species current-stack reconciliation
+
+Verified against production tip `7ec21e900341b91b50df618a89f39cd9e4a6da92` / draft PR #79.
+
+- SPEC-004 Ghost Families is POC COMPLETE with no new production patch. The current stack already contains the approved Duskull/Dusclops and Shuppet/Banette packages and the later Design Closure Gastly/Haunter/Gengar package.
+- For Gastly/Haunter/Gengar, the later supersession inside the current species authority controls over stale roadmap prose: baseline Attack values, shared natural progression, Lv25/Lv42 evolutions, exact Design Closure final-68 TM rows, no TM39 Will-O-Wisp, and no HM compatibility.
+- Dusknoir remains unauthorized and absent.
+- SPEC-005 Early Bug Final Evolutions is POC COMPLETE with no new production patch. Current source matches the locked 450-BST stats and exact post-redesign natural learnsets/TM rows for Butterfree, Beedrill, Beautifly, and Dustox; TM-003 supplies the already-complete Signal Beam Special-class override.
+- QA-004 evolution remains PASS. QA-005 final TM/HM matrix remains PASS on run `36962584342`, including representative Ghost-family and Early-Bug rows.
+- SPEC-006 Nosepass / Generation-I pure-Rock cleanup is the next incomplete Species task. Production source already has Nosepass and the six pure-Rock type changes; `QA-ROCK-001` runtime battle/UI/type regression remains outstanding.
 
 ### TM-003 Signal Beam move-class override
 
