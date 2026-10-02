@@ -392,7 +392,9 @@ gSpecials::
 	def_special GetCostToWithdrawRoute5DaycareMon
 	def_special IsThereMonInRoute5Daycare
 	def_special GetRoute5DaycareState
+	def_special GetRoute5DaycarePokemonCount
 	def_special GetRoute5DaycareMonNicknames
+	def_special GiveEggFromRoute5Daycare
 	def_special SetRoute5DaycareCompatibilityString
 	def_special ShowRoute5DaycareLevelMenu
 	def_special CanSelectedMonEnterDaycare
