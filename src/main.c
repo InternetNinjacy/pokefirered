@@ -18,6 +18,7 @@
 #include "sloopsvc.h"
 
 extern u32 intr_main[];
+void Enc003SurfFishing_RunRuntimeQa(void);
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -167,6 +168,8 @@ void AgbMain()
     AGBPrintInit();
 #endif
 #endif
+
+    Enc003SurfFishing_RunRuntimeQa();
 
 #if REVISION >= 1
     if (gFlashMemoryPresent != TRUE)
