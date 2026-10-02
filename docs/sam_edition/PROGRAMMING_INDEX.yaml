@@ -124,6 +124,8 @@ source_locator:
       - "Elekid authority is closed but exact Celadon exterior warp tile remains source-map geometry work; do not guess the coordinate from raw event JSON."
       - "Magby Egg is OWNER-SYSTEM READY under Town Side Quests. Rock Tunnel Porygon is OWNER-SYSTEM READY under Thomas/Team Rocket event placement."
       - "Evidence-only QA PR #87 must never become production ancestry."
+      - "Evidence-only QA PR #89 passed runtime QA for PR #88 and must never become production ancestry."
+      - "QA #89 verified Cleffa/Igglybuff exact packages, stock VENDOR/CELADON/LAB/SILPH authored OTs, party/PC/full-storage safety, and save/fresh-process reload persistence."
     verified_parent_tip: be0c6ab2500f188ce20d49ae69b66f028dea332b
     production_branch: sam/gift-001-remaining-special-acquisitions
     production_pr: 88
