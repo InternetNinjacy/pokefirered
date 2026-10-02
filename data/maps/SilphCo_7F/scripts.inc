@@ -118,7 +118,10 @@ SilphCo_7F_EventScript_LaprasGuy::
 	goto_if_set FLAG_GOT_LAPRAS_FROM_SILPH, SilphCo_7F_EventScript_AlreadyGotLapras
 	msgbox SilphCo_7F_Text_HaveMonForSavingUs
 	setvar VAR_TEMP_1, SPECIES_LAPRAS
-	givemon SPECIES_LAPRAS, 25
+	setvar VAR_0x8004, SPECIES_LAPRAS
+	setvar VAR_0x8005, 25
+	setvar VAR_0x8006, SAM_PREOWNED_OT_SILPH
+	special GiveSamPreOwnedMon
 	goto_if_eq VAR_RESULT, 0, SilphCo_7F_EventScript_ReceiveLaprasParty
 	goto_if_eq VAR_RESULT, 1, SilphCo_7F_EventScript_ReceiveLaprasPC
 	goto_if_eq VAR_RESULT, 2, EventScript_NoMoreRoomForPokemon
