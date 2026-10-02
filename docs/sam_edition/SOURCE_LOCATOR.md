@@ -102,7 +102,8 @@ Implemented and QA-proven:
 Owner-system handoffs:
 - Cinnabar Magby Egg: acquisition contract/mechanics are closed; final reward hookup remains under Town Side Quests/Cinnabar.
 - Rock Tunnel Porygon: package/resources are closed; final visible recovery event remains under Thomas/Team Rocket.
-- Neither is a remaining Group 2 blocker.
+- Oak Research Milestones: Chansey/Dratini Gift contracts and OT OAK / 52004 are closed, but the milestone ladder/151 unlock remains later P5 Oak-system implementation and is blocked by TM-001; it consumes SYS-GIFT but is not Group 2 work.
+- None of these owner-system items is a remaining Group 2 blocker.
 
 Group 1 — Breeding remains POC COMPLETE. Group 2 remains permanently numbered Group 2 — Special Acquisitions and is now POC COMPLETE.
 
