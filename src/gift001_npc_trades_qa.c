@@ -140,32 +140,42 @@ static void CheckMon(struct Pokemon *mon, const struct NpcTradeQaExpected *expec
 
     if (GetMonData(mon, MON_DATA_SPECIES) != expected->receivedSpecies)
         NpcTradeQaFail("NPC TRADE QA FAIL received species");
+    NpcTradeQaLog("NPC TRADE QA FIELD species PASS");
     if (GetMonData(mon, MON_DATA_LEVEL) != expected->level)
         NpcTradeQaFail("NPC TRADE QA FAIL fixed level");
+    NpcTradeQaLog("NPC TRADE QA FIELD level PASS");
     if (GetMonGender(mon) != expected->gender)
         NpcTradeQaFail("NPC TRADE QA FAIL gender");
+    NpcTradeQaLog("NPC TRADE QA FIELD gender PASS");
     if (GetNature(mon) != expected->nature)
         NpcTradeQaFail("NPC TRADE QA FAIL nature");
+    NpcTradeQaLog("NPC TRADE QA FIELD nature PASS");
     if (GetMonData(mon, MON_DATA_HELD_ITEM) != expected->heldItem)
         NpcTradeQaFail("NPC TRADE QA FAIL held item");
+    NpcTradeQaLog("NPC TRADE QA FIELD item PASS");
     if (GetMonData(mon, MON_DATA_OT_ID) != expected->otId)
         NpcTradeQaFail("NPC TRADE QA FAIL OT ID");
+    NpcTradeQaLog("NPC TRADE QA FIELD otid PASS");
 
     GetMonData(mon, MON_DATA_NICKNAME, nickname);
     if (StringCompare(nickname, expected->nickname))
         NpcTradeQaFail("NPC TRADE QA FAIL nickname");
+    NpcTradeQaLog("NPC TRADE QA FIELD nickname PASS");
     GetMonData(mon, MON_DATA_OT_NAME, otName);
     if (StringCompare(otName, expected->otName))
         NpcTradeQaFail("NPC TRADE QA FAIL OT name");
+    NpcTradeQaLog("NPC TRADE QA FIELD otname PASS");
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (GetMonData(mon, MON_DATA_MOVE1 + i) != expected->moves[i])
             NpcTradeQaFail("NPC TRADE QA FAIL moves");
     }
+    NpcTradeQaLog("NPC TRADE QA FIELD moves PASS");
 
     if (!IsTradedMon(mon))
         NpcTradeQaFail("NPC TRADE QA FAIL outsider ownership");
+    NpcTradeQaLog("NPC TRADE QA FIELD outsider PASS");
 }
 
 static void LogTradePass(u8 tradeId)
@@ -195,10 +205,13 @@ static void CreateAndCheckTrade(u8 tradeId)
     gSpecialVar_0x8004 = tradeId;
     gSpecialVar_0x8005 = 0;
 
+    NpcTradeQaLog("NPC TRADE QA CREATE start");
     if (GetInGameTradeSpeciesInfo() != expected->requestedSpecies)
         NpcTradeQaFail("NPC TRADE QA FAIL requested species");
+    NpcTradeQaLog("NPC TRADE QA CREATE requested PASS");
 
     CreateInGameTradePokemon();
+    NpcTradeQaLog("NPC TRADE QA CREATE generated PASS");
     CheckMon(&gEnemyParty[0], expected);
     LogTradePass(tradeId);
 }
