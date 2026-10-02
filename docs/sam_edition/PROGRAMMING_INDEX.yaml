@@ -137,13 +137,14 @@ source_locator:
       - "SPEC-005 Early Bug Final Evolutions is POC COMPLETE on the same production tip; exact 450-BST stats, post-redesign learnsets, final TM rows, and the TM-003 Signal Beam Special-class override are already inherited."
       - "QA-004 evolution and QA-005 final TM/HM matrix are PASS."
       - "SPEC-006 Nosepass / Gen-I pure-Rock cleanup is POC COMPLETE. Evidence-only draft PR #80 / qa/spec-006-rock-runtime @ e297c5242b10b12fe4651e6af4b7c42f2c552bd5 passed QA-ROCK-001 on Actions run 37036207034; ROM SHA-1 ea945aeeb4d24b37a25e81e789ff02efae8ff11e. Runtime verified the six pure-Rock targets, Steelix control, loss of Ground STAB/Electric immunity, exact 2x Water/Grass weakness, and matching AI type calculation. No production defect or gameplay delta was found."
+      - "SPEC-007 Feebas / Milotic is POC COMPLETE with no production patch. Evidence-only draft PR #81 / qa/spec-007-feebas-milotic-runtime @ 61580f505211e3900e6f59c48b9c5b67082c7dd1 passed Actions run 37045556350; ROM SHA-1 c05cc4fe6bb5052806e8d75ab20c03bdd4473538. QA covered species data, Lv20 evolution, Water Pulse timing, exact TM/HM, Milotic Water/Psychic battle behavior, Pokédex mapping/metadata, and inherited Route 6 acquisition surfaces."
       - "No QA branch is production ancestry."
     verified_production_branch: sam/breed-001-003-route5-breeding-v2
     verified_production_head: 7ec21e900341b91b50df618a89f39cd9e4a6da92
     production_pr: 79
     spec_004_status: "POC COMPLETE"
     spec_005_status: "POC COMPLETE"
-    next_species_task: "SPEC-007 / Feebas-Milotic current-stack focused QA"
+    next_species_task: "SPEC-008 / Legendary Birds current-stack breeding and learnset QA"
 
   core_001_004_current_stack:
     notes:
