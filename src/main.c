@@ -17,7 +17,8 @@
 #include "quest_log.h"
 #include "sloopsvc.h"
 
-extern u32 intr_main[];\nvoid Spec003QaRn001_RunRuntimeQa(void);
+extern u32 intr_main[];
+void Spec003QaRn001_RunRuntimeQa(void);
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -167,6 +168,8 @@ void AgbMain()
     AGBPrintInit();
 #endif
 #endif
+
+Spec003QaRn001_RunRuntimeQa();
 
 #if REVISION >= 1
     if (gFlashMemoryPresent != TRUE)
