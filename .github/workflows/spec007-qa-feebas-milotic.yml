@@ -1,0 +1,228 @@
+name: SPEC-007 Feebas Milotic Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/spec-007-feebas-milotic-runtime
+  workflow_dispatch:
+
+jobs:
+  spec007-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/spec-007-feebas-milotic-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and SPEC-007 source
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import pathlib
+          import subprocess
+
+          prod = "7ec21e900341b91b50df618a89f39cd9e4a6da92"
+          route6_tested_prod = "9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a"
+
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+          assert int(subprocess.check_output(["git","rev-list","--count",f"{prod}..HEAD"], text=True).strip()) == 1
+
+          changed={x for x in subprocess.check_output(
+              ["git","diff","--name-only",f"{prod}..HEAD"], text=True
+          ).splitlines() if x}
+          assert changed == {
+              ".github/workflows/spec007-qa-feebas-milotic.yml",
+              "include/config.h",
+              "src/main.c",
+              "src/spec007_qa_feebas_milotic.c",
+          }, changed
+
+          species = pathlib.Path("src/data/pokemon/species_info.h").read_text()
+          evo = pathlib.Path("src/data/pokemon/evolution.h").read_text()
+          levels = pathlib.Path("src/data/pokemon/level_up_learnsets.h").read_text()
+          tmhm = pathlib.Path("src/data/pokemon/tmhm_learnsets.h").read_text()
+          eggs = pathlib.Path("src/data/pokemon/egg_moves.h").read_text()
+          dex_entries = pathlib.Path("src/data/pokemon/pokedex_entries.h").read_text()
+          dex_fr = pathlib.Path("src/data/pokemon/pokedex_text_fr.h").read_text()
+          dex_lg = pathlib.Path("src/data/pokemon/pokedex_text_lg.h").read_text()
+          wild = pathlib.Path("src/data/wild_encounters.json").read_text()
+          selector = pathlib.Path("src/wild_encounter.c").read_text()
+
+          def species_block(name):
+              start=species.index(f"[SPECIES_{name}] =")
+              end=species.find("\n    [SPECIES_", start + 1)
+              return species[start:] if end < 0 else species[start:end]
+
+          fb=species_block("FEEBAS")
+          ml=species_block("MILOTIC")
+          for needle in (
+              ".baseHP = 20", ".baseAttack = 15", ".baseDefense = 20",
+              ".baseSpeed = 80", ".baseSpAttack = 10", ".baseSpDefense = 55",
+              ".types = {TYPE_WATER, TYPE_WATER}", ".catchRate = 255", ".expYield = 61",
+              ".evYield_Speed = 1", ".genderRatio = PERCENT_FEMALE(50)",
+              ".eggCycles = 20", ".friendship = 70", ".growthRate = GROWTH_ERRATIC",
+              ".eggGroups = {EGG_GROUP_WATER_1, EGG_GROUP_DRAGON}",
+              ".abilities = {ABILITY_SWIFT_SWIM, ABILITY_NONE}", ".bodyColor = BODY_COLOR_BROWN"
+          ):
+              assert needle in fb, needle
+          for needle in (
+              ".baseHP = 95", ".baseAttack = 60", ".baseDefense = 79",
+              ".baseSpeed = 81", ".baseSpAttack = 100", ".baseSpDefense = 125",
+              ".types = {TYPE_WATER, TYPE_PSYCHIC}", ".catchRate = 60", ".expYield = 213",
+              ".evYield_SpDefense = 2", ".genderRatio = PERCENT_FEMALE(50)",
+              ".eggCycles = 20", ".friendship = 70", ".growthRate = GROWTH_ERRATIC",
+              ".eggGroups = {EGG_GROUP_WATER_1, EGG_GROUP_DRAGON}",
+              ".abilities = {ABILITY_MARVEL_SCALE, ABILITY_NONE}", ".bodyColor = BODY_COLOR_PINK"
+          ):
+              assert needle in ml, needle
+
+          assert "[SPECIES_FEEBAS]     = {{EVO_LEVEL, 20, SPECIES_MILOTIC}}" in evo
+          assert "EVO_BEAUTY" not in evo
+
+          fstart=levels.index("static const u16 sFeebasLevelUpLearnset[]")
+          fend=levels.index("};", fstart)+2
+          fblock=levels[fstart:fend]
+          expected_feebas=[
+              "LEVEL_UP_MOVE(1, MOVE_SPLASH)",
+              "LEVEL_UP_MOVE(5, MOVE_TACKLE)",
+              "LEVEL_UP_MOVE(10, MOVE_WATER_GUN)",
+              "LEVEL_UP_MOVE(15, MOVE_FLAIL)",
+              "LEVEL_UP_MOVE(20, MOVE_WATER_PULSE)",
+          ]
+          assert fblock.count("LEVEL_UP_MOVE(") == len(expected_feebas)
+          for needle in expected_feebas:
+              assert needle in fblock, needle
+
+          mstart=levels.index("static const u16 sMiloticLevelUpLearnset[]")
+          mend=levels.index("};", mstart)+2
+          mblock=levels[mstart:mend]
+          expected_milotic=[
+              "LEVEL_UP_MOVE(1, MOVE_WATER_GUN)",
+              "LEVEL_UP_MOVE(1, MOVE_WRAP)",
+              "LEVEL_UP_MOVE(1, MOVE_REFRESH)",
+              "LEVEL_UP_MOVE(21, MOVE_PSYBEAM)",
+              "LEVEL_UP_MOVE(25, MOVE_TWISTER)",
+              "LEVEL_UP_MOVE(30, MOVE_RECOVER)",
+              "LEVEL_UP_MOVE(35, MOVE_RAIN_DANCE)",
+              "LEVEL_UP_MOVE(40, MOVE_PSYCHIC)",
+              "LEVEL_UP_MOVE(45, MOVE_HYDRO_PUMP)",
+              "LEVEL_UP_MOVE(50, MOVE_SAFEGUARD)",
+              "LEVEL_UP_MOVE(55, MOVE_MIRROR_COAT)",
+          ]
+          assert mblock.count("LEVEL_UP_MOVE(") == len(expected_milotic)
+          for needle in expected_milotic:
+              assert needle in mblock, needle
+
+          estart=eggs.index("egg_moves(FEEBAS,")
+          eend=eggs.index("),", estart)+2
+          eblock=eggs[estart:eend]
+          expected_eggs=[
+              "MOVE_MIRROR_COAT", "MOVE_DRAGON_BREATH", "MOVE_MUD_SPORT",
+              "MOVE_HYPNOSIS", "MOVE_LIGHT_SCREEN", "MOVE_CONFUSE_RAY"
+          ]
+          for needle in expected_eggs:
+              assert needle in eblock, needle
+          assert sum(eblock.count(x) for x in expected_eggs) == 6
+
+          def dex_block(name):
+              start=dex_entries.index(f"[NATIONAL_DEX_{name}] =")
+              end=dex_entries.find("\n    [NATIONAL_DEX_", start + 1)
+              return dex_entries[start:] if end < 0 else dex_entries[start:end]
+
+          fdb=dex_block("FEEBAS")
+          mdb=dex_block("MILOTIC")
+          for needle in ('.categoryName = _("FISH")', '.height = 6', '.weight = 74', '.description = gFeebasPokedexText'):
+              assert needle in fdb, needle
+          for needle in ('.categoryName = _("TENDER")', '.height = 62', '.weight = 1620', '.description = gMiloticPokedexText'):
+              assert needle in mdb, needle
+
+          feebas_lines=[
+              '"It survives in stagnant ponds that\\n"',
+              '"other Pokemon avoid. Though weak and\\n"',
+              '"ragged, its stubborn vitality lets it\\n"',
+              '"endure almost any water."',
+          ]
+          milotic_lines=[
+              '"Its serene mind reaches through the\\n"',
+              '"water and stills violent emotions. Even\\n"',
+              '"enraged Pokemon are said to grow calm\\n"',
+              '"beneath its gaze."',
+          ]
+          for dex in (dex_fr, dex_lg):
+              for needle in feebas_lines + milotic_lines:
+                  assert needle in dex, needle
+
+          assert "static const u32 sTMHMLearnsets[][3]" in tmhm
+
+          historical = subprocess.check_output(
+              ["git","show",f"{route6_tested_prod}:src/data/wild_encounters.json"], text=True
+          )
+          def route6_block(text):
+              start=text.index('"map": "MAP_ROUTE6"')
+              end=text.index('\n        {\n          "map": "MAP_ROUTE7"', start)
+              return text[start:end]
+          assert route6_block(wild) == route6_block(historical)
+          assert subprocess.check_output(
+              ["git","hash-object","src/wild_encounter.c"], text=True
+          ).strip() == "27ca3f79d66991f6d8bc3c560420eec5ec9ecac0"
+          assert '"species": "SPECIES_MILOTIC"' not in wild
+          r6=route6_block(wild)
+          assert r6.count('"species": "SPECIES_FEEBAS"') == 1
+          assert '"min_level": 18' in r6 and '"max_level": 19' in r6
+          assert "Slots 2-5: Magikarp 30%, Poliwag 20%, Goldeen 10%, Feebas 40%." in selector
+          assert "Slots 5-9: Feebas 40%, Magikarp 20%, Poliwag 20%, Goldeen 10%, Poliwhirl 10%." in selector
+
+          print("SPEC007 STATIC PASS authority source exact; Route6 prior-QA surfaces unchanged")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee SPEC007_ROM_SHA1.txt
+          git rev-parse HEAD | tee SPEC007_SOURCE_SHA.txt
+
+      - name: Runtime Feebas Milotic validation
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          set +e
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > spec007_runtime.log 2>&1
+          rc=$?
+          set -e
+          test "$rc" -eq 124 -o "$rc" -eq 143
+          cat spec007_runtime.log
+          grep -q "SPEC007 QA PASS species lv20 typing machines dex" spec007_runtime.log
+          ! grep -q "SPEC007 FAIL" spec007_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-007-feebas-milotic-runtime-qa
+          path: |
+            pokefirered.gba
+            SPEC007_ROM_SHA1.txt
+            SPEC007_SOURCE_SHA.txt
+            spec007_runtime.log
+          if-no-files-found: error
