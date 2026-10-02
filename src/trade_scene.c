@@ -1083,6 +1083,15 @@ static void TradeMons(u8 playerPartyIdx, u8 partnerPartyIdx)
         TryEnableNationalDexFromLinkPartner();
 }
 
+// QA-branch-only entry point used to validate the real in-game trade swap
+// path with a full six-Pokemon party without driving the visual trade scene.
+void Gift001NpcTradesQaSwap(u8 playerPartyIdx)
+{
+    sTradeAnim = AllocZeroed(sizeof(*sTradeAnim));
+    TradeMons(playerPartyIdx, 0);
+    FREE_AND_SET_NULL(sTradeAnim);
+}
+
 static void HandleLinkDataSend(void)
 {
     switch (sTradeAnim->scheduleLinkTransfer)

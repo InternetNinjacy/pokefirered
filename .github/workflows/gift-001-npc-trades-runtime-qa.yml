@@ -46,6 +46,21 @@ jobs:
           test "$(grep -c 'gSpecialVar_0x8004 == INGAME_TRADE_TALUS' src/trade_scene.c)" -eq 2
           grep -q "VermilionCity_House2_Text_ImugiPreTrade" data/maps/VermilionCity_House2/scripts.inc
           grep -q "Someday, that little dragon's going" data/maps/VermilionCity_House2/text.inc
+          assert_trade_flag() {
+            file="$1"
+            flag="$2"
+            grep -q "goto_if_set $flag" "$file"
+            grep -q "setflag $flag" "$file"
+          }
+          assert_trade_flag data/maps/Route2_House/scripts.inc FLAG_DID_MIMIEN_TRADE
+          assert_trade_flag data/maps/CeruleanCity_House3/scripts.inc FLAG_DID_ZYNX_TRADE
+          assert_trade_flag data/maps/UndergroundPath_NorthEntrance/scripts.inc FLAG_DID_MS_NIDO_TRADE
+          assert_trade_flag data/maps/VermilionCity_House2/scripts.inc FLAG_DID_CH_DING_TRADE
+          assert_trade_flag data/maps/Route11_EastEntrance_2F/scripts.inc FLAG_DID_NINA_TRADE
+          assert_trade_flag data/maps/Route18_EastEntrance_2F/scripts.inc FLAG_DID_MARC_TRADE
+          assert_trade_flag data/maps/CinnabarIsland_PokemonLab_Lounge/scripts.inc FLAG_DID_ESPHERE_TRADE
+          assert_trade_flag data/maps/CinnabarIsland_PokemonLab_Lounge/scripts.inc FLAG_DID_TANGENY_TRADE
+          assert_trade_flag data/maps/CinnabarIsland_PokemonLab_ExperimentRoom/scripts.inc FLAG_DID_SEELOR_TRADE
 
       - name: Build QA ROM
         run: |
@@ -128,10 +143,19 @@ jobs:
       - name: SELKIE runtime package
         if: always()
         run: grep -q "NPC TRADE QA SELKIE PASS" npc_trade_phase1.log
+      - name: Diagnostic — rejected selections
+        if: always()
+        run: grep -q "NPC TRADE QA REJECTION PASS wrong egg empty" npc_trade_phase1.log
+      - name: Diagnostic — full party swap
+        if: always()
+        run: grep -q "NPC TRADE QA FULL PARTY PASS swap slot5 no overflow" npc_trade_phase1.log
+      - name: Diagnostic — all one-time flags set
+        if: always()
+        run: grep -q "NPC TRADE QA FLAGS PASS all nine set" npc_trade_phase1.log
       - name: Phase 1 final marker and save
         if: always()
         run: |
-          grep -q "NPC TRADE QA PHASE1 PASS nine packages and save" npc_trade_phase1.log
+          grep -q "NPC TRADE QA PHASE1 PASS nine packages gating fullparty flags save" npc_trade_phase1.log
           ! grep -q "NPC TRADE QA FAIL" npc_trade_phase1.log
           test -s pokefirered.sav
 
@@ -143,7 +167,8 @@ jobs:
           export SDL_AUDIODRIVER=dummy
           timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > npc_trade_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
           cat npc_trade_phase2.log
-          grep -q "NPC TRADE QA PASS nine packages reload evolution ownership" npc_trade_phase2.log
+          grep -q "NPC TRADE QA FLAGS RELOAD PASS all nine" npc_trade_phase2.log
+          grep -q "NPC TRADE QA PASS nine packages flags reload evolution ownership" npc_trade_phase2.log
           ! grep -q "NPC TRADE QA FAIL" npc_trade_phase2.log
 
       - name: Upload evidence

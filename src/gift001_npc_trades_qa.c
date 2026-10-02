@@ -6,6 +6,7 @@
 #include "save.h"
 #include "string_util.h"
 #include "trade_scene.h"
+#include "constants/flags.h"
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
@@ -48,6 +49,19 @@ static const u8 sStrata[] = _("STRATA");
 static const u8 sGeoff[] = _("GEOFF");
 static const u8 sSelkie[] = _("SELKIE");
 static const u8 sIngrid[] = _("INGRID");
+
+static const u16 sTradeFlags[] =
+{
+    FLAG_DID_MIMIEN_TRADE,
+    FLAG_DID_ZYNX_TRADE,
+    FLAG_DID_MS_NIDO_TRADE,
+    FLAG_DID_CH_DING_TRADE,
+    FLAG_DID_NINA_TRADE,
+    FLAG_DID_MARC_TRADE,
+    FLAG_DID_ESPHERE_TRADE,
+    FLAG_DID_TANGENY_TRADE,
+    FLAG_DID_SEELOR_TRADE,
+};
 
 static const struct NpcTradeQaExpected sExpected[] =
 {
@@ -194,6 +208,102 @@ static void LogTradePass(u8 tradeId)
     }
 }
 
+extern void Gift001NpcTradesQaSwap(u8 playerPartyIdx);
+
+static void CheckRejectedSelections(void)
+{
+    u8 i;
+    bool8 isEgg = TRUE;
+
+    for (i = 0; i < ARRAY_COUNT(sExpected); i++)
+    {
+        ResetState();
+        CreateMon(&gPlayerParty[0], SPECIES_BULBASAUR, 5, 20, FALSE, 0, OT_ID_PLAYER_ID, 0);
+        gPlayerPartyCount = 1;
+        gSpecialVar_0x8004 = i;
+        gSpecialVar_0x8005 = 0;
+        if (GetTradeSpecies() == GetInGameTradeSpeciesInfo())
+            NpcTradeQaFail("NPC TRADE QA FAIL wrong species accepted");
+
+        ResetState();
+        CreateMon(&gPlayerParty[0], sExpected[i].requestedSpecies, 5, 20, FALSE, 0, OT_ID_PLAYER_ID, 0);
+        SetMonData(&gPlayerParty[0], MON_DATA_IS_EGG, &isEgg);
+        gPlayerPartyCount = 1;
+        gSpecialVar_0x8004 = i;
+        gSpecialVar_0x8005 = 0;
+        if (GetTradeSpecies() != SPECIES_NONE)
+            NpcTradeQaFail("NPC TRADE QA FAIL egg accepted");
+
+        ResetState();
+        gSpecialVar_0x8004 = i;
+        gSpecialVar_0x8005 = 0;
+        if (GetTradeSpecies() != SPECIES_NONE)
+            NpcTradeQaFail("NPC TRADE QA FAIL empty selection accepted");
+    }
+
+    NpcTradeQaLog("NPC TRADE QA REJECTION PASS wrong egg empty");
+}
+
+static void CheckFullPartyTrade(void)
+{
+    const struct NpcTradeQaExpected *expected = &sExpected[INGAME_TRADE_JOULE];
+    u8 i;
+
+    ResetState();
+    for (i = 0; i < PARTY_SIZE - 1; i++)
+        CreateMon(&gPlayerParty[i], SPECIES_RATTATA, 5, 20, FALSE, 0, OT_ID_PLAYER_ID, 0);
+    CreateMon(&gPlayerParty[PARTY_SIZE - 1], expected->requestedSpecies, 5, 20, FALSE, 0, OT_ID_PLAYER_ID, 0);
+    gPlayerPartyCount = PARTY_SIZE;
+
+    gSpecialVar_0x8004 = INGAME_TRADE_JOULE;
+    gSpecialVar_0x8005 = PARTY_SIZE - 1;
+
+    if (GetTradeSpecies() != GetInGameTradeSpeciesInfo())
+        NpcTradeQaFail("NPC TRADE QA FAIL full party requested species");
+    CreateInGameTradePokemon();
+    CheckMon(&gEnemyParty[0], expected);
+    Gift001NpcTradesQaSwap(PARTY_SIZE - 1);
+
+    if (gPlayerPartyCount != PARTY_SIZE)
+        NpcTradeQaFail("NPC TRADE QA FAIL full party count");
+    CheckMon(&gPlayerParty[PARTY_SIZE - 1], expected);
+    for (i = 0; i < PARTY_SIZE - 1; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) != SPECIES_RATTATA)
+            NpcTradeQaFail("NPC TRADE QA FAIL full party neighbor changed");
+    }
+
+    NpcTradeQaLog("NPC TRADE QA FULL PARTY PASS swap slot5 no overflow");
+}
+
+static void SetAndCheckTradeFlags(void)
+{
+    u8 i;
+
+    for (i = 0; i < ARRAY_COUNT(sTradeFlags); i++)
+    {
+        FlagClear(sTradeFlags[i]);
+        if (FlagGet(sTradeFlags[i]))
+            NpcTradeQaFail("NPC TRADE QA FAIL trade flag clear");
+        FlagSet(sTradeFlags[i]);
+        if (!FlagGet(sTradeFlags[i]))
+            NpcTradeQaFail("NPC TRADE QA FAIL trade flag set");
+    }
+    NpcTradeQaLog("NPC TRADE QA FLAGS PASS all nine set");
+}
+
+static void CheckTradeFlagsPersisted(void)
+{
+    u8 i;
+
+    for (i = 0; i < ARRAY_COUNT(sTradeFlags); i++)
+    {
+        if (!FlagGet(sTradeFlags[i]))
+            NpcTradeQaFail("NPC TRADE QA FAIL trade flag reload");
+    }
+    NpcTradeQaLog("NPC TRADE QA FLAGS RELOAD PASS all nine");
+}
+
 static void CreateAndCheckTrade(u8 tradeId)
 {
     const struct NpcTradeQaExpected *expected = &sExpected[tradeId];
@@ -224,15 +334,20 @@ static void RunFresh(void)
     for (i = 0; i < ARRAY_COUNT(sExpected); i++)
         CreateAndCheckTrade(i);
 
-    // Persist one representative authored trade through a real flash save.
+    CheckRejectedSelections();
+    CheckFullPartyTrade();
+
+    // Persist one representative authored trade plus every one-time trade
+    // completion flag through a real flash save.
     CreateAndCheckTrade(INGAME_TRADE_IMUGI);
     CopyMon(&gPlayerParty[0], &gEnemyParty[0], sizeof(struct Pokemon));
     gPlayerPartyCount = 1;
+    SetAndCheckTradeFlags();
 
     if (TrySavingData(SAVE_NORMAL) != SAVE_STATUS_OK)
         NpcTradeQaFail("NPC TRADE QA FAIL save");
 
-    NpcTradeQaLog("NPC TRADE QA PHASE1 PASS nine packages and save");
+    NpcTradeQaLog("NPC TRADE QA PHASE1 PASS nine packages gating fullparty flags save");
     for (;;);
 }
 
@@ -243,6 +358,7 @@ static void RunReload(void)
     if (gPlayerPartyCount != 1)
         NpcTradeQaFail("NPC TRADE QA FAIL reload party");
     CheckMon(&gPlayerParty[0], &sExpected[INGAME_TRADE_IMUGI]);
+    CheckTradeFlagsPersisted();
 
     // Ownership behavior must survive species evolution because it is stored
     // in authored OT metadata, not in the species.
@@ -255,7 +371,7 @@ static void RunReload(void)
     if (!IsTradedMon(&gPlayerParty[0]))
         NpcTradeQaFail("NPC TRADE QA FAIL outsider lost at Salamence");
 
-    NpcTradeQaLog("NPC TRADE QA PASS nine packages reload evolution ownership");
+    NpcTradeQaLog("NPC TRADE QA PASS nine packages flags reload evolution ownership");
     for (;;);
 }
 
