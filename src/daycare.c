@@ -1606,13 +1606,13 @@ static void Task_HandleDaycareLevelMenuInput(u8 taskId)
 static void ShowDaycareLevelMenuForFacility(bool8 route5)
 {
     struct ListMenuTemplate menuTemplate;
+    u8 windowId;
+    u8 listMenuTaskId;
+    u8 daycareMenuTaskId;
 
     sDaycareLevelMenuUsesRoute5 = route5;
     if (route5)
         LoadRoute5Daycare(&sRoute5DaycareMenuCache);
-    u8 windowId;
-    u8 listMenuTaskId;
-    u8 daycareMenuTaskId;
 
     windowId = AddWindow(&sDaycareLevelMenuWindowTemplate);
     DrawStdWindowFrame(windowId, FALSE);
