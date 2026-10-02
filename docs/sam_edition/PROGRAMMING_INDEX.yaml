@@ -127,7 +127,22 @@ source_locator:
       - "Rock Tunnel Porygon is SILPH-owned and otherwise package-closed, but its numeric Pokémon OT ID is not allocated and the event remains Thomas/Rocket-owned."
       - "No Group 2 gameplay branch should be created until an independent source packet is implementation-ready without invention."
     verified_against_production_tip: 7ec21e900341b91b50df618a89f39cd9e4a6da92
-    registry_checkpoint: SYNC-2026-10-02-007
+    registry_checkpoint: SYNC-2026-10-02-009
+
+  group3_species_current_stack_reconciliation:
+    notes:
+      - "Group 3 — Species work follows blocked Group 2 without renumbering either group."
+      - "SPEC-004 Ghost Families is POC COMPLETE on the verified PR #79 production tip; no new gameplay delta was required because historical Parts 11–13 and final TM/HM compatibility are already inherited."
+      - "Gastly/Haunter/Gengar must be read against the later Design Closure supersession inside the current Gastly authority: baseline Attack values, shared natural progression, exact final-68 Design Closure TM rows, no TM39 Will-O-Wisp, and no HMs."
+      - "SPEC-005 Early Bug Final Evolutions is POC COMPLETE on the same production tip; exact 450-BST stats, post-redesign learnsets, final TM rows, and the TM-003 Signal Beam Special-class override are already inherited."
+      - "QA-004 evolution and QA-005 final TM/HM matrix are PASS; SPEC-006 Nosepass / Gen-I pure-Rock cleanup is the next incomplete Species task because QA-ROCK-001 runtime regression remains unrun."
+      - "No QA branch is production ancestry."
+    verified_production_branch: sam/breed-001-003-route5-breeding-v2
+    verified_production_head: 7ec21e900341b91b50df618a89f39cd9e4a6da92
+    production_pr: 79
+    spec_004_status: "POC COMPLETE"
+    spec_005_status: "POC COMPLETE"
+    next_species_task: "SPEC-006 / QA-ROCK-001 runtime regression"
 
   core_001_004_current_stack:
     notes:
