@@ -57,7 +57,7 @@ Verified against production tip `7ec21e900341b91b50df618a89f39cd9e4a6da92` and P
 
 ### Group 3 — Species current-stack reconciliation
 
-Verified against production tip `7ec21e900341b91b50df618a89f39cd9e4a6da92` / draft PR #79.
+Verified through production continuation `204fb8043736e20a45eaed5eff5a5e1fa8dac802` / draft PR #83.
 
 - SPEC-004 Ghost Families is POC COMPLETE with no new production patch. The current stack already contains the approved Duskull/Dusclops and Shuppet/Banette packages and the later Design Closure Gastly/Haunter/Gengar package.
 - For Gastly/Haunter/Gengar, the later supersession inside the current species authority controls over stale roadmap prose: baseline Attack values, shared natural progression, Lv25/Lv42 evolutions, exact Design Closure final-68 TM rows, no TM39 Will-O-Wisp, and no HM compatibility.
@@ -66,7 +66,8 @@ Verified against production tip `7ec21e900341b91b50df618a89f39cd9e4a6da92` / dra
 - QA-004 evolution remains PASS. QA-005 final TM/HM matrix remains PASS on run `36962584342`, including representative Ghost-family and Early-Bug rows.
 - SPEC-006 Nosepass / Generation-I pure-Rock cleanup is POC COMPLETE. Evidence-only draft PR #80, `qa/spec-006-rock-runtime` @ `e297c5242b10b12fe4651e6af4b7c42f2c552bd5`, passed QA-ROCK-001 on run `37036207034`; QA ROM SHA-1 `ea945aeeb4d24b37a25e81e789ff02efae8ff11e`. Runtime proved the six targets are pure Rock, Steelix remains Steel/Ground, Ground STAB and Electric immunity are gone, Water/Grass are exactly 2x, and AI type calculation agrees. No production defect was found; QA PR #80 is not production ancestry.
 - SPEC-007 Feebas / Milotic is POC COMPLETE with no production patch. Evidence-only draft PR #81, `qa/spec-007-feebas-milotic-runtime` @ `61580f505211e3900e6f59c48b9c5b67082c7dd1`, passed run `37045556350`; QA ROM SHA-1 `c05cc4fe6bb5052806e8d75ab20c03bdd4473538`. Static/runtime QA verified species data, Lv20 evolution and Water Pulse timing, exact TM/HM compatibility, Milotic Water/Psychic battle behavior, Pokédex mapping/metadata, and inherited Route 6 acquisition surfaces. No production defect was found; QA PR #81 is not production ancestry.
-- The next incomplete Species task is SPEC-008 Legendary Birds current-stack breeding/learnset QA.
+- SPEC-008 Legendary Birds is POC COMPLETE. Draft production PR #83, `sam/spec-008-legendary-birds-breeding-closure` @ `204fb8043736e20a45eaed5eff5a5e1fa8dac802`, fixes the one current-stack defect found by QA: father-side TM inheritance could contaminate the exact locked Lv5 bred opening sets. The fix suppresses inherited move additions only for Articuno/Zapdos/Moltres. Evidence-only draft PR #82 @ `df1ffbb678f0a99d598747845f2224c6d9e8df9e` passed run `37050108196`; QA ROM SHA-1 `d625890fc47f21127c41d50e0dc5c6f4e4e09229`. Runtime proved same-species bird Eggs from Ditto, bird/bird incompatibility, exact Lv5 bred sets and exact Lv50 static sets.
+- The next incomplete Species task is SPEC-009 custom species current-stack continuation from production PR #83.
 
 ### TM-003 Signal Beam move-class override
 
