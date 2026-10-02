@@ -1,0 +1,118 @@
+name: ENC-003 Surf Fishing Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/enc-003-surf-fishing-finalization
+  workflow_dispatch:
+
+jobs:
+  enc003-surf-fishing-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/enc-003-surf-fishing-finalization
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production and QA isolation
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import copy, json, subprocess
+          from pathlib import Path
+
+          base="9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a"
+          prod="6e84b85cf47ad76fe81bf5d27a5aac1da127d79a"
+          prod_changed={x for x in subprocess.check_output(["git","diff","--name-only",f"{base}..{prod}"],text=True).splitlines() if x}
+          assert prod_changed=={"src/data/wild_encounters.json"}, prod_changed
+
+          qa_changed={x for x in subprocess.check_output(["git","diff","--name-only",f"{prod}..HEAD"],text=True).splitlines() if x}
+          assert qa_changed=={
+            ".github/workflows/enc003-surf-fishing-qa.yml",
+            "include/config.h","src/enc003_surf_fishing_qa.c","src/main.c"
+          }, qa_changed
+
+          before=json.loads(subprocess.check_output(["git","show",f"{base}:src/data/wild_encounters.json"],text=True))
+          after=json.loads(Path("src/data/wild_encounters.json").read_text())
+          b=before["wild_encounter_groups"][0]["encounters"]
+          a=after["wild_encounter_groups"][0]["encounters"]
+          assert len(b)==len(a)
+          targets={
+            "MAP_ONE_ISLAND_TREASURE_BEACH","MAP_TWO_ISLAND_CAPE_BRINK","MAP_THREE_ISLAND_BOND_BRIDGE",
+            "MAP_THREE_ISLAND_BERRY_FOREST","MAP_FOUR_ISLAND","MAP_FOUR_ISLAND_ICEFALL_CAVE_ENTRANCE",
+            "MAP_FOUR_ISLAND_ICEFALL_CAVE_BACK","MAP_FIVE_ISLAND","MAP_FIVE_ISLAND_MEADOW",
+            "MAP_FIVE_ISLAND_RESORT_GORGEOUS","MAP_FIVE_ISLAND_MEMORIAL_PILLAR","MAP_FIVE_ISLAND_WATER_LABYRINTH",
+            "MAP_SIX_ISLAND_WATER_PATH","MAP_SIX_ISLAND_GREEN_PATH","MAP_SIX_ISLAND_RUIN_VALLEY",
+            "MAP_SIX_ISLAND_OUTCAST_ISLAND","MAP_SEVEN_ISLAND_TRAINER_TOWER","MAP_SEVEN_ISLAND_TANOBY_RUINS",
+            "MAP_CERULEAN_CAVE_1F","MAP_CERULEAN_CAVE_B1F"
+          }
+          key=lambda e:(e["map"],e.get("base_label",""))
+          bd={key(e):e for e in b}; ad={key(e):e for e in a}
+          assert bd.keys()==ad.keys()
+          touched=set()
+          for k,old in bd.items():
+            new=ad[k]
+            if k[0] in targets and k[1].endswith("_FireRed"):
+              touched.add(k[0])
+              old2=copy.deepcopy(old); new2=copy.deepcopy(new)
+              for block in ("water_mons","fishing_mons"):
+                assert old2[block]["encounter_rate"]==new2[block]["encounter_rate"]
+                old2[block]["mons"]=new2[block]["mons"]
+              assert old2==new2, k
+            else:
+              assert old==new, k
+          assert touched==targets
+          assert not any(e["map"]=="MAP_SEVEN_ISLAND" and e.get("base_label","").endswith("_FireRed") for e in a)
+          rb=[e for e in b if e["map"]=="MAP_ROUTE6" and e.get("base_label","").endswith("_FireRed")]
+          ra=[e for e in a if e["map"]=="MAP_ROUTE6" and e.get("base_label","").endswith("_FireRed")]
+          assert rb==ra
+          print("ENC003 STATIC PASS data-only 20 FireRed tables; rates land LeafGreen Route6 preserved")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ENC003_ROM_SHA1.txt
+          git rev-parse HEAD | tee ENC003_SOURCE_SHA.txt
+
+      - name: Runtime compiled-table validation
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > enc003_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc003_runtime.log
+          grep -q "ENC003 QA PASS 20 compiled surf fishing tables; Seven Island unresolved" enc003_runtime.log
+          ! grep -q "ENC003 FAIL" enc003_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: enc-003-surf-fishing-runtime-qa
+          path: |
+            pokefirered.gba
+            ENC003_ROM_SHA1.txt
+            ENC003_SOURCE_SHA.txt
+            enc003_runtime.log
+          if-no-files-found: error
