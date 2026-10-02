@@ -8,12 +8,14 @@ This file records verified Sam-specific implementation surfaces. It is not a sta
 
 ## Current verified production continuation tip
 
-Branch: `sam/enc-001-nosepass-feebas-final-tables`  
-Draft PR: #69  
-Production head: `9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a`  
-Base: `sam/enc-001-ralts-natu-final-tables` / draft PR #67
+Branch: `sam/enc-003-surf-fishing-finalization`  
+Draft PR: #72  
+Production head: `6e84b85cf47ad76fe81bf5d27a5aac1da127d79a`  
+Base: `sam/enc-001-nosepass-feebas-final-tables` / draft PR #69
 
-Production work should continue delta-only from this head or a later documented verified production descendant. The isolated QA branch `qa/enc-001-nosepass-feebas-final-tables` is evidence/instrumentation only and is not a production ancestor. BREED PR #66 is blocked and must not become production ancestry.
+Production work should continue delta-only from this head or a later documented verified production descendant. The isolated QA branch `qa/enc-003-surf-fishing-finalization` is evidence/instrumentation only and is not a production ancestor. BREED PR #66 is blocked and must not become production ancestry.
+
+ENC-003 is verified partial rather than COMPLETE: 20 source-supported FireRed Surf/fishing tables are implemented and QA-passed, while Seven Island shoreline remains blocked because FireRed has no existing `MAP_SEVEN_ISLAND` wild header and current authority supplies no encounter-rate value.
 
 ## ENC-001 completed locked packet
 
@@ -32,6 +34,36 @@ PR #67 QA: run `37004528658`, QA source `08533e014c8040502ed6f3aa5e5e3f3943562ac
 PR #69 QA: run `37005383850`, QA source `c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8`, ROM `32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9`.
 
 Current locked packet result: Ralts/Natu/Nosepass/Feebas focused encounter programming is complete. Route 6 requires the local selector because native Good Rod has only three 60/20/20 slots and cannot directly express the locked four-species 40/30/20/10 table. This exception is Route 6-only.
+
+## ENC-003 Surf/fishing finalization — verified partial
+
+Production branch: `sam/enc-003-surf-fishing-finalization`  
+Draft PR: #72  
+Production head: `6e84b85cf47ad76fe81bf5d27a5aac1da127d79a`  
+Parent: `sam/enc-001-nosepass-feebas-final-tables` / draft PR #69
+
+Unique production surface:
+
+- `src/data/wild_encounters.json`
+
+Verified scope:
+
+- 20 FireRed Sevii/Cerulean water/fishing entries encoded from Surf/Fishing Finalization v1.0.
+- Native slot ordering remains unchanged.
+- Existing per-map encounter-rate values are preserved.
+- Land tables, all LeafGreen entries, Route 6's PR #69 local Feebas selector and `src/wild_encounter.c` global/native selectors are unchanged.
+- No `MAP_SEVEN_ISLAND` wild header was created because no authoritative encounter-rate value exists for that missing source header.
+
+Production CI: `37006480220` — compile/link/ELF/GBA/SYM succeeded; only stock-ROM SHA comparison failed.
+
+QA branch: `qa/enc-003-surf-fishing-finalization`  
+QA source: `58cce3b6f53505bba929f07179cf23917694e844`  
+Run: `37006884530`  
+QA ROM SHA-1: `0a02ff27d52fdf6e7100178de438dd10d61ecfdd`
+
+Runtime QA inspected compiled `gWildMonHeaders` and verified exact species, levels, slot order and preserved encounter rates for all 20 implemented maps.
+
+ENC-003 remains IN PROGRESS pending Seven Island shoreline header/rate resolution.
 
 ## Starter System production bundle
 
