@@ -1,0 +1,116 @@
+name: TM-004-005 Compatibility QA
+
+on:
+  push:
+    branches:
+      - qa/tm-004-005-compatibility
+  workflow_dispatch:
+
+jobs:
+  tm-compatibility-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/tm-004-005-compatibility
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify canonical compatibility inheritance
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import pathlib
+          import re
+          import subprocess
+
+          production_head = "60caa7ffdf2730bcd75c630c2f421cc30b554711"
+          tmcomp_tip = "10e48e687a414f621a554796aaff2c277d935b1f"
+          expected_blob = "38e36d942662a38c864cf99c270fd64ede18490d"
+
+          subprocess.check_call(["git", "merge-base", "--is-ancestor", tmcomp_tip, production_head])
+          actual_blob = subprocess.check_output(
+              ["git", "hash-object", "src/data/pokemon/tmhm_learnsets.h"], text=True
+          ).strip()
+          assert actual_blob == expected_blob, (actual_blob, expected_blob)
+
+          qa_changed = set(filter(None, subprocess.check_output(
+              ["git", "diff", "--name-only", f"{production_head}..HEAD"], text=True
+          ).splitlines()))
+          assert qa_changed == {
+              ".github/workflows/tm004005-compatibility-qa.yml",
+              "include/config.h",
+              "src/main.c",
+              "src/tm004005_qa.c",
+          }, qa_changed
+
+          global_h = pathlib.Path("include/constants/global.h").read_text()
+          learnsets = pathlib.Path("src/data/pokemon/tmhm_learnsets.h").read_text()
+          assert "#define NUM_TECHNICAL_MACHINES 68" in global_h
+          assert "#define NUM_HIDDEN_MACHINES     8" in global_h
+          assert "static const u32 sTMHMLearnsets[][3]" in learnsets
+          assert "Bits 0-67 are TM01-TM68; bits 68-75 are HM01-HM08." in learnsets
+          assert "ITEM_TM51" in learnsets and "ITEM_TM68" in learnsets
+
+          # Active source/scripts must not revive abandoned TM69-TM77/TM79 numbering.
+          stale = subprocess.run(
+              ["git", "grep", "-nE", r"\b(TM|ITEM_TM)(69|7[0-9])\b",
+               "--", "src", "include", "data", "scripts"],
+              text=True, capture_output=True
+          )
+          if stale.returncode == 0:
+              raise AssertionError("stale TM69+ active reference:\n" + stale.stdout)
+          assert stale.returncode == 1, stale.stderr
+
+          print("TM004005 STATIC PASS canonical PR48 blob inherited unchanged; 68+8 architecture clean")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee TM004005_ROM_SHA1.txt
+          git rev-parse HEAD | tee TM004005_SOURCE_SHA.txt
+
+      - name: Runtime machine and compatibility validation
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          set +e
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > tm004005_runtime.log 2>&1
+          rc=$?
+          set -e
+          test "$rc" -eq 124 -o "$rc" -eq 143
+          cat tm004005_runtime.log
+          grep -q "TM004005 QA PASS all68 map all8hm exact specialist rows" tm004005_runtime.log
+          ! grep -q "TM004005 FAIL" tm004005_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tm-004-005-compatibility-qa
+          path: |
+            pokefirered.gba
+            TM004005_ROM_SHA1.txt
+            TM004005_SOURCE_SHA.txt
+            tm004005_runtime.log
+          if-no-files-found: error
