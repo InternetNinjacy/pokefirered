@@ -123,3 +123,34 @@ ViridianCity_Text_GymSign::
 ViridianCity_Text_GymDoorsAreLocked::
     .string "VIRIDIAN GYM's doors are locked…$"
 
+ViridianCity_Text_FernBeforePokedex::
+	.string "I'm helping raise POKéMON for\\n"
+	.string "conservation.\\p"
+	.string "Come see me once you've started\\n"
+	.string "recording your journey.$"
+
+ViridianCity_Text_FernOfferBulbasaur::
+	.string "I'm helping raise POKéMON for\\n"
+	.string "conservation.\\p"
+	.string "This BULBASAUR is healthy, but she\\n"
+	.string "needs a TRAINER who'll travel with\\n"
+	.string "her.\\p"
+	.string "Would you take her with you?$"
+
+ViridianCity_Text_FernDecline::
+	.string "That's all right. Come back if you\\n"
+	.string "change your mind.$"
+
+ViridianCity_Text_FernNoRoom::
+	.string "It looks like you can't take her\\n"
+	.string "right now.\\p"
+	.string "Come back after making some room.$"
+
+ViridianCity_Text_FernGiftReceived::
+	.string "Good. Don't rush her.\\n"
+	.string "Let her grow with you.$"
+
+ViridianCity_Text_FernPostGift::
+	.string "I hope BULBASAUR is enjoying the\\n"
+	.string "journey.\\p"
+	.string "She was always happiest outdoors.$"
