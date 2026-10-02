@@ -182,3 +182,12 @@ For a new project:
 6. Record resource allocations.
 7. Establish the integration branch and feature-branch convention.
 8. Begin implementation using delta verification rather than repeated discovery.
+
+
+## Reusable FireRed source map
+
+The verified baseline engine map is maintained in:
+
+- `docs/fire_red_framework/FIRERED_SOURCE_LOCATOR.md`
+
+Future FireRed projects should inherit that map first and record only project-specific deltas unless they use a materially different pokefirered baseline.
