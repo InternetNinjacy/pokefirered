@@ -264,30 +264,35 @@ Use the generic map for stable FireRed engine locations, then the Sam branch ind
 ### GYM-AUDIT-001 / ENC-002 / ENC-003 readiness checkpoint
 
 Checkpoint: `SYNC-2026-10-02-020`  
-Readiness branch: `sam/enc-readiness-gym-audit-001`  
-Draft PR: `#91`  
-Head: `a216854718a21cf1af940f4b933841485d02ff45`  
+Production readiness branch: `sam/enc-readiness-gym-audit-001`  
+Draft production PR: `#91`  
+Production head: `41d3177981037fe2dc0a47b9ddb560b05ea3ff95`  
 Parent production branch: `sam/gift-001-remaining-special-acquisitions` / draft PR `#88` @ `9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0`.
 
 Gym audit result:
-- Gym 1 Pewter — READY.
-- Gym 3 Vermilion — READY.
-- Gym 4 Celadon — PARTIALLY READY. Trainer/battle package work may proceed, but map/event work is blocked on `BLK-GYM4-MAP` until a literal Field/Lab topology handoff exists.
-- Gym 5 Fuchsia — READY.
-- Gym 6 Saffron — READY WITH DOCUMENTED IMPLEMENTATION DISCRETION because vanilla room/warp topology is intentionally retained.
-- Gym 7 Cinnabar — READY WITH DOCUMENTED IMPLEMENTATION DISCRETION because vanilla room/door/quiz topology is intentionally retained and the custom state machine is explicit.
-- Gym 8 Viridian — READY WITH DOCUMENTED IMPLEMENTATION DISCRETION because vanilla spinner geometry is intentionally retained and postgame object-state routing is explicit.
+- Gym 1 Pewter — **READY**.
+- Gym 3 Vermilion — **READY**; use the later canonical FINAL LAYOUT CLOSURE rather than stale earlier open-coordinate prose.
+- Gym 4 Celadon — **PARTIALLY READY**. Existing trainer/battle PR #77 remains valid, but major Field/Lab map/event implementation is blocked by `BLK-GYM4-MAP` pending a literal deterministic topology handoff.
+- Gym 5 Fuchsia — **READY**.
+- Gym 6 Saffron — **READY WITH DOCUMENTED IMPLEMENTATION DISCRETION**; preserve vanilla room/warp topology.
+- Gym 7 Cinnabar — **READY WITH DOCUMENTED IMPLEMENTATION DISCRETION**; preserve vanilla room/door/quiz topology and use the explicit six-station state contract.
+- Gym 8 Viridian — **READY WITH DOCUMENTED IMPLEMENTATION DISCRETION**; preserve vanilla spinner geometry and use the explicit first-clear/postgame object-state contract.
 
-ENC-002 resource state:
-- `include/constants/event_objects.h` confirms `OBJ_EVENT_GFX_MACHOKE=134`, so Rock Tunnel Machoke requires no new visual canon.
-- `include/constants/flags.h` now registers `FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE=0x367`; `FLAG_0x367` remains a compatibility alias.
-- The remaining encounter flag reserve is `0x368-0x36F`.
-- Scyther, Rhyhorn, Abra, Miltank, Lickitung, Onix, and Magneton have no exact native species overworld graphics in the current source. They remain blocked by `BLK-ENC-002-GFX`; do not substitute unrelated sprites without authority.
+ENC-002 production state:
+- `include/constants/event_objects.h`: `OBJ_EVENT_GFX_MACHOKE=134`; no new Machoke visual resource is needed.
+- `include/constants/flags.h`: `FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE=0x367`; `FLAG_0x367` remains an alias; encounter reserve resumes at `0x368-0x36F`.
+- `data/maps/RockTunnel_B1F/map.json`: native Machoke object at `(7,36)` in the optional southwest B1F dead-end chamber.
+- `data/maps/RockTunnel_B1F/scripts.inc`: Machoke Lv29 @ Black Belt; Karate Chop / Seismic Toss / Foresight / Revenge; capture/defeat completes; flee/player teleport preserves availability.
+- `src/pokemon.c` + `data/specials.inc`: reusable `SetEnemyEventMonMoveSlot` helper/special for fixed-move scripted wild encounters.
+- Production CI run `37075239129` compiled/linked/generated ELF/GBA/SYM and stopped only at the expected modified-ROM stock SHA comparison.
+- Focused evidence-only QA: branch `qa/enc-002-machoke-static-runtime`, draft PR `#92`, source `c45d0a490d316233a50e5dedffc778a5f0b42dc8`, run `37075861109` **PASS**, ROM SHA-1 `8f1b5aa1efc7a1f9800275564b0b591e551959c1`.
+- Focused QA proved exact source contract, runtime level/item/four-move package, and central completion-flag persistence through real save/fresh-process reload. It does not replace later human-played field capture/flee integration smoke.
+- PR #92 is evidence-only and must never be used as production ancestry.
+- Scyther, Rhyhorn, Abra, Miltank, Lickitung, Onix, and Magneton remain blocked by `BLK-ENC-002-GFX` because no exact native species overworld graphics or approved Sam replacement resources are present.
 
-ENC-003 resource state:
-- `src/data/wild_encounters.json` remains the ordinary data surface.
-- The intended missing resource is a new `MAP_SEVEN_ISLAND` shoreline wild header using locked Table Family F species/levels/slot ordering.
-- Existing Family F peers at Trainer Tower and Tanoby Ruins use water encounter rate `2` and fishing encounter rate `20`, but current authority does not authorize inheriting those values.
-- `BLK-ENC-003-RATE` is the exact remaining authority gap. Do not create the Seven Island header until explicit rates are supplied.
-
-PR #91 changes only the centrally registered Machoke flag. CI run `37074194967` reached the normal modified-ROM stock comparison and failed there; no runtime verification is claimed.
+ENC-003 Seven Island:
+- The missing source target is a new `MAP_SEVEN_ISLAND` FireRed wild header using locked Table Family F species/levels/slot ordering.
+- FireRed currently has no `MAP_SEVEN_ISLAND` wild header.
+- Existing Family F peers at Trainer Tower and Tanoby Ruins use water rate `2` and fishing rate `20`, but those values are evidence only and are not automatically Seven Island authority.
+- `BLK-ENC-003-RATE` requires explicit `water_mons.encounter_rate` and `fishing_mons.encounter_rate` values, or explicit authority to inherit a named peer pair.
+- No Seven Island header/rate was invented; draft PR #72 remains the verified partial implementation for the 20 source-supported Surf/fishing maps.
