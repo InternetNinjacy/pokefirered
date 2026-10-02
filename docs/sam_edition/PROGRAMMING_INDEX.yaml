@@ -42,16 +42,16 @@ live_state:
   last_refresh_date: "2026-10-02"
   integration_head: 1ac7382fd5ecb34cb2de6bdf5bba8e7fcf08e869
   known_good_gameplay_tip:
-    branch: sam/enc-001-nosepass-feebas-final-tables
-    pr: 69
-    production_head: 9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a
+    branch: sam/enc-003-surf-fishing-finalization
+    pr: 72
+    production_head: 6e84b85cf47ad76fe81bf5d27a5aac1da127d79a
     state: "draft / open / unmerged"
-    parent_branch: sam/enc-001-ralts-natu-final-tables
-    parent_pr: 67
-    runtime_qa_branch: qa/enc-001-nosepass-feebas-final-tables
-    runtime_qa_source: c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8
-    runtime_qa_run: 37005383850
-    runtime_qa_rom_sha1: 32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9
+    parent_branch: sam/enc-001-nosepass-feebas-final-tables
+    parent_pr: 69
+    runtime_qa_branch: qa/enc-003-surf-fishing-finalization
+    runtime_qa_source: 58cce3b6f53505bba929f07179cf23917694e844
+    runtime_qa_run: 37006884530
+    runtime_qa_rom_sha1: 0a02ff27d52fdf6e7100178de438dd10d61ecfdd
   notes:
     - "Live GitHub state must be refreshed before implementation."
     - "Pokemon: Weather branches are a separate project and are not Sam implementation evidence."
@@ -170,6 +170,22 @@ source_locator:
     runtime_qa_run: 37005383850
     runtime_qa_rom_sha1: 32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9
 
+  enc_003_surf_fishing_partial:
+    notes:
+      - "Verified partial ENC-003 implementation: 20 source-supported FireRed Surf/fishing tables are encoded and runtime-QA-passed."
+      - "Land tables, existing encounter-rate fields, LeafGreen data, Route 6 local selector and global slot-weight source are preserved."
+      - "ENC-003 remains IN PROGRESS because MAP_SEVEN_ISLAND has no existing wild header and current authority supplies no encounter-rate value; do not invent one."
+      - "QA branch is evidence/instrumentation only and is not a production ancestor."
+    branch: sam/enc-003-surf-fishing-finalization
+    pr: 72
+    production_head: 6e84b85cf47ad76fe81bf5d27a5aac1da127d79a
+    parent_branch: sam/enc-001-nosepass-feebas-final-tables
+    parent_pr: 69
+    runtime_qa_branch: qa/enc-003-surf-fishing-finalization
+    runtime_qa_source: 58cce3b6f53505bba929f07179cf23917694e844
+    runtime_qa_run: 37006884530
+    runtime_qa_rom_sha1: 0a02ff27d52fdf6e7100178de438dd10d61ecfdd
+
 work_item_policy:
   stable_ids: true
   create_parallel_numbering_system: false
@@ -194,6 +210,18 @@ qa_policy:
   evidence_rule: "Record source commit used for QA separately from implementation branch state."
 
 known_good_builds:
+  enc_003_partial_runtime_qa:
+    production_source_commit: 6e84b85cf47ad76fe81bf5d27a5aac1da127d79a
+    qa_source_commit: 58cce3b6f53505bba929f07179cf23917694e844
+    workflow_run: 37006884530
+    rom_sha1: 0a02ff27d52fdf6e7100178de438dd10d61ecfdd
+    production_ci_run: 37006480220
+    notes:
+      - "Production compiled, linked, generated ELF/GBA/SYM, then failed only the expected stock FireRed SHA comparison."
+      - "Static QA proved only 20 intended FireRed water/fishing mon arrays changed; land/rates/LeafGreen/Route6 remained unchanged."
+      - "Runtime QA inspected compiled gWildMonHeaders and verified exact species/level slot ordering plus preserved per-map encounter rates for all 20 tables."
+      - "No MAP_SEVEN_ISLAND header was invented; ENC-003 remains IN PROGRESS pending authoritative shoreline header/rate resolution."
+      - "PR #72 remains draft/open/unmerged and is the current verified production continuation tip."
   enc_001_final_runtime_qa:
     production_source_commit: 9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a
     qa_source_commit: c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8
