@@ -1,0 +1,146 @@
+name: CORE-001-004 Current Stack Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/core-001-004-current-stack-runtime
+  workflow_dispatch:
+
+jobs:
+  core-current-stack-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/core-001-004-current-stack-runtime
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Static reconciliation assertions
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          oak = Path("src/oak_speech.c").read_text()
+          assert "sSamModeText_Standard" in oak
+          assert "sSamModeText_Permanent" in oak
+          assert "VarSet(VAR_SAM_GAME_MODE, tSamModeChoice);" in oak
+          assert "Task_SamModeSelect_FadeToOak" in oak
+
+          lab = Path("data/maps/PalletTown_ProfessorOaksLab/scripts.inc").read_text()
+          assert "special GiveSamStarter\n\tspecial MarkSamOriginalStarter" in lab
+
+          mon_h = Path("include/pokemon.h").read_text()
+          assert "isSamPermanentDead:1" in mon_h
+          assert "isSamOriginalStarter:1" in mon_h
+          assert "TryMarkMonPermanentDead" in mon_h
+
+          mon_c = Path("src/pokemon.c").read_text()
+          assert "field != MON_DATA_SAM_PERMANENT_DEAD" in mon_c
+          assert "!GetMonData(mon, MON_DATA_SAM_ORIGINAL_STARTER)" in mon_c
+          assert "(itemEffect[4] & ITEM4_REVIVE)" in mon_c
+
+          battle = Path("src/battle_controller_player.c").read_text()
+          assert "TryMarkMonPermanentDead(&gPlayerParty[monId]);" in battle
+
+          util = Path("src/script_pokemon_util.c").read_text()
+          assert "void MarkSamOriginalStarter(void)" in util
+          assert "MON_DATA_SAM_PERMANENT_DEAD" in util
+          assert "ScriptGiveSamStarter" in util
+
+          trade = Path("src/trade_scene.c").read_text()
+          assert "OT_ID_PRESET" in trade
+          assert "inGameTrade->otId" in trade
+
+          print("CORECURRENT STATIC PASS selector state starter faint heal revive trade integration")
+          PY
+
+      - name: Verify QA-only branch delta
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import subprocess
+          allowed = {
+              ".github/workflows/core001004-current-stack-qa.yml",
+              "include/config.h",
+              "src/core001004_current_stack_qa.c",
+              "src/main.c",
+          }
+          out = subprocess.check_output(
+              ["git","diff","--name-only","0b7f1481134d13fbcdea90b7fb99edb01ce3b639..HEAD"],
+              text=True,
+          )
+          changed = {x for x in out.splitlines() if x}
+          assert changed == allowed, (changed, allowed)
+          print("CORECURRENT QA ISOLATION PASS")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee CORECURRENT_ROM_SHA1.txt
+          git rev-parse HEAD | tee CORECURRENT_SOURCE_SHA.txt
+
+      - name: Runtime phase 1 — six starter-mode paths and Standard save
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > corecurrent_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat corecurrent_phase1.log
+          grep -q "CORECURRENT PHASE1 PASS six starter-mode paths standard saved" corecurrent_phase1.log
+          ! grep -q "CORECURRENT FAIL" corecurrent_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2 — Standard reload then Permanent integration save
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > corecurrent_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat corecurrent_phase2.log
+          grep -q "CORECURRENT PHASE2 PASS standard reload permanent healing trade storage saved" corecurrent_phase2.log
+          ! grep -q "CORECURRENT FAIL" corecurrent_phase2.log
+
+      - name: Runtime phase 3 — Permanent reload regression
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > corecurrent_phase3.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat corecurrent_phase3.log
+          grep -q "CORECURRENT PASS permanent reload starter death healing trade storage" corecurrent_phase3.log
+          ! grep -q "CORECURRENT FAIL" corecurrent_phase3.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-001-004-current-stack-runtime-qa
+          path: |
+            pokefirered.gba
+            pokefirered.sav
+            CORECURRENT_ROM_SHA1.txt
+            CORECURRENT_SOURCE_SHA.txt
+            corecurrent_phase1.log
+            corecurrent_phase2.log
+            corecurrent_phase3.log
+          if-no-files-found: error
