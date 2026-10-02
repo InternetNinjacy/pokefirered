@@ -259,3 +259,35 @@ This makes each completed programming task improve the speed of the next one.
 - Sam implementation-branch surfaces: `docs/sam_edition/SAM_BRANCH_SURFACE_INDEX.md`
 
 Use the generic map for stable FireRed engine locations, then the Sam branch index for project-specific deltas.
+
+
+### GYM-AUDIT-001 / ENC-002 / ENC-003 readiness checkpoint
+
+Checkpoint: `SYNC-2026-10-02-020`  
+Readiness branch: `sam/enc-readiness-gym-audit-001`  
+Draft PR: `#91`  
+Head: `a216854718a21cf1af940f4b933841485d02ff45`  
+Parent production branch: `sam/gift-001-remaining-special-acquisitions` / draft PR `#88` @ `9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0`.
+
+Gym audit result:
+- Gym 1 Pewter — READY.
+- Gym 3 Vermilion — READY.
+- Gym 4 Celadon — PARTIALLY READY. Trainer/battle package work may proceed, but map/event work is blocked on `BLK-GYM4-MAP` until a literal Field/Lab topology handoff exists.
+- Gym 5 Fuchsia — READY.
+- Gym 6 Saffron — READY WITH DOCUMENTED IMPLEMENTATION DISCRETION because vanilla room/warp topology is intentionally retained.
+- Gym 7 Cinnabar — READY WITH DOCUMENTED IMPLEMENTATION DISCRETION because vanilla room/door/quiz topology is intentionally retained and the custom state machine is explicit.
+- Gym 8 Viridian — READY WITH DOCUMENTED IMPLEMENTATION DISCRETION because vanilla spinner geometry is intentionally retained and postgame object-state routing is explicit.
+
+ENC-002 resource state:
+- `include/constants/event_objects.h` confirms `OBJ_EVENT_GFX_MACHOKE=134`, so Rock Tunnel Machoke requires no new visual canon.
+- `include/constants/flags.h` now registers `FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE=0x367`; `FLAG_0x367` remains a compatibility alias.
+- The remaining encounter flag reserve is `0x368-0x36F`.
+- Scyther, Rhyhorn, Abra, Miltank, Lickitung, Onix, and Magneton have no exact native species overworld graphics in the current source. They remain blocked by `BLK-ENC-002-GFX`; do not substitute unrelated sprites without authority.
+
+ENC-003 resource state:
+- `src/data/wild_encounters.json` remains the ordinary data surface.
+- The intended missing resource is a new `MAP_SEVEN_ISLAND` shoreline wild header using locked Table Family F species/levels/slot ordering.
+- Existing Family F peers at Trainer Tower and Tanoby Ruins use water encounter rate `2` and fishing encounter rate `20`, but current authority does not authorize inheriting those values.
+- `BLK-ENC-003-RATE` is the exact remaining authority gap. Do not create the Seven Island header until explicit rates are supplied.
+
+PR #91 changes only the centrally registered Machoke flag. CI run `37074194967` reached the normal modified-ROM stock comparison and failed there; no runtime verification is claimed.
