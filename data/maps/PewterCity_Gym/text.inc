@@ -215,6 +215,24 @@ PewterCity_Gym_Text_SatoshiLose::
     .string "You can try me again\n"
     .string "whenever you're ready.$"
 
+PewterCity_Gym_Text_SatoshiBattleDefeatEmpty::
+    .string "$"
+
+PewterCity_Gym_Text_SatoshiRetry::
+    .string "Want another shot?$"
+
+PewterCity_Gym_Text_SatoshiRetryYes::
+    .string "Good.\p"
+    .string "Watch the Hail this time.\p"
+    .string "Let's go again.$"
+
+PewterCity_Gym_Text_SatoshiRetryNo::
+    .string "Fair enough.\p"
+    .string "I'll be right here.\p"
+    .string "Think about what the cold\n"
+    .string "did to your team, then try\l"
+    .string "again when you're ready.$"
+
 PewterCity_Gym_Text_SatoshiDecline::
     .string "Fair enough.\p"
     .string "Then remember this:\n"
