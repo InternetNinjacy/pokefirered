@@ -1,0 +1,125 @@
+name: SPEC-008 Legendary Birds Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/spec-008-legendary-birds-runtime
+  workflow_dispatch:
+
+jobs:
+  spec008-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/spec-008-legendary-birds-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and SPEC-008 source
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import pathlib, subprocess
+          prod="7ec21e900341b91b50df618a89f39cd9e4a6da92"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+          changed={x for x in subprocess.check_output(["git","diff","--name-only",f"{prod}..HEAD"],text=True).splitlines() if x}
+          assert changed == {
+            ".github/workflows/spec008-qa-legendary-birds.yml",
+            "include/config.h",
+            "src/daycare.c",
+            "src/main.c",
+            "src/spec008_qa_legendary_birds.c",
+          }, changed
+
+          species=pathlib.Path("src/data/pokemon/species_info.h").read_text()
+          levels=pathlib.Path("src/data/pokemon/level_up_learnsets.h").read_text()
+          tmhm=pathlib.Path("src/data/pokemon/tmhm_learnsets.h").read_text()
+          daycare=pathlib.Path("src/daycare.c").read_text()
+          constants=pathlib.Path("include/constants/daycare.h").read_text()
+
+          def block(text,start_marker,end_marker):
+              s=text.index(start_marker)
+              e=text.index(end_marker,s+len(start_marker))
+              return text[s:e]
+
+          for name,nextname in (("ARTICUNO","ZAPDOS"),("ZAPDOS","MOLTRES"),("MOLTRES","DRATINI")):
+              b=block(species,f"[SPECIES_{name}] =",f"[SPECIES_{nextname}] =")
+              assert ".genderRatio = MON_GENDERLESS" in b
+              assert ".eggGroups = {EGG_GROUP_FLYING, EGG_GROUP_FLYING}" in b
+              assert ".abilities = {ABILITY_PRESSURE, ABILITY_NONE}" in b
+
+          expected={
+            "Articuno":[(1,"GUST"),(1,"POWDER_SNOW"),(5,"HAZE"),(9,"MIST"),(13,"ICY_WIND"),(25,"AGILITY"),(37,"DRILL_PECK"),(49,"ICE_BEAM"),(61,"REFLECT"),(73,"BLIZZARD"),(85,"SHEER_COLD")],
+            "Zapdos":[(1,"PECK"),(1,"THUNDER_SHOCK"),(5,"SHOCK_WAVE"),(13,"THUNDER_WAVE"),(25,"AGILITY"),(37,"DRILL_PECK"),(49,"THUNDERBOLT"),(61,"RAIN_DANCE"),(73,"THUNDER"),(85,"LIGHT_SCREEN")],
+            "Moltres":[(1,"EMBER"),(1,"FIRE_SPIN"),(5,"PECK"),(9,"SMOKESCREEN"),(13,"WING_ATTACK"),(25,"AGILITY"),(37,"WILL_O_WISP"),(49,"FLAMETHROWER"),(61,"SUNNY_DAY"),(73,"HEAT_WAVE"),(85,"SKY_ATTACK")],
+          }
+          for name,rows in expected.items():
+              s=levels.index(f"s{name}LevelUpLearnset[]")
+              e=levels.index("};",s)
+              b=levels[s:e]
+              assert b.count("LEVEL_UP_MOVE(")==len(rows)
+              for lv,mv in rows:
+                  assert f"LEVEL_UP_MOVE({lv}, MOVE_{mv})" in b
+
+          assert "#define EGG_HATCH_LEVEL 5" in constants
+          assert "if (eggGroups[0][0] == EGG_GROUP_DITTO || eggGroups[1][0] == EGG_GROUP_DITTO)" in daycare
+          assert "if (genders[0] == MON_GENDERLESS || genders[1] == MON_GENDERLESS)" in daycare
+
+          a=block(tmhm,"[SPECIES_ARTICUNO] =","[SPECIES_ZAPDOS] =")
+          z=block(tmhm,"[SPECIES_ZAPDOS] =","[SPECIES_MOLTRES] =")
+          m=block(tmhm,"[SPECIES_MOLTRES] =","[SPECIES_DRATINI] =")
+          assert "TMHM0(TM12_DRILL_PECK)" in a
+          assert "TMHM1(TM39_WILL_O_WISP)" in m
+          print("SPEC008 STATIC PASS exact learnsets breeding metadata and specialist TM deltas")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee SPEC008_ROM_SHA1.txt
+          git rev-parse HEAD | tee SPEC008_SOURCE_SHA.txt
+
+      - name: Runtime Legendary Birds validation
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          set +e
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > spec008_runtime.log 2>&1
+          rc=$?
+          set -e
+          test "$rc" -eq 124 -o "$rc" -eq 143
+          cat spec008_runtime.log
+          grep -q "SPEC008 QA PASS bird Ditto eggs Lv5 and Lv50 moves" spec008_runtime.log
+          ! grep -q "SPEC008 FAIL" spec008_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-008-legendary-birds-runtime-qa
+          path: |
+            pokefirered.gba
+            SPEC008_ROM_SHA1.txt
+            SPEC008_SOURCE_SHA.txt
+            spec008_runtime.log
+          if-no-files-found: error
