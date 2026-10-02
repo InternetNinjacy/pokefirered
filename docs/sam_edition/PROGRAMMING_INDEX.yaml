@@ -162,6 +162,19 @@ qa_policy:
   evidence_rule: "Record source commit used for QA separately from implementation branch state."
 
 known_good_builds:
+  tm_004_005_compatibility_qa:
+    production_source_commit: 60caa7ffdf2730bcd75c630c2f421cc30b554711
+    canonical_tmcomp_source_commit: 10e48e687a414f621a554796aaff2c277d935b1f
+    compatibility_blob_sha: 38e36d942662a38c864cf99c270fd64ede18490d
+    qa_source_commit: b8a6dc980bbe306d4b49724f55561069ca807bdc
+    workflow_run: 36962584342
+    rom_sha1: 28e65e065e466a0973843bc6985eeaa2fb6b8f69
+    notes:
+      - "No production delta was required: canonical TM-COMP PR #47 -> PR #48 is already inherited by PR #65 and the compatibility blob is unchanged."
+      - "Static QA verified the 68-TM / 8-HM 96-bit architecture, exact canonical blob inheritance, and no active TM69-TM79 source references."
+      - "Runtime QA exercised every TM/HM logical index and exact representative current specialist compatibility rows."
+      - "TM-004 and TM-005 are COMPLETE; QA-005 is PASS."
+      - "QA branch qa/tm-004-005-compatibility is evidence/instrumentation only and is not a production ancestor."
   evol_001_003_runtime_qa:
     production_source_commit: 60caa7ffdf2730bcd75c630c2f421cc30b554711
     qa_source_commit: fdc3b14b0551772ba8b32d96324e7faa32bdaf8c
