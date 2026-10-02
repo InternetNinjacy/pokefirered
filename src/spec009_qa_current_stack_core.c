@@ -80,8 +80,10 @@ static void CheckSoulRot(void)
         Fail("SPEC009 FAIL Soul Rot poisoned");
 
     gCurrentMove = MOVE_BODY_SLAM;
-    if (CalculateBaseDamage(&attacker, &defender, MOVE_BODY_SLAM, 0, 80, TYPE_NORMAL, 0, 1)
-        == (130 * CalculateBaseDamage(&((struct BattlePokemon){.attack=100,.defense=100,.speed=100,.spAttack=100,.spDefense=100,.hp=100,.maxHP=100,.level=50,.item=ITEM_NONE}), &defender, MOVE_BODY_SLAM, 0, 80, TYPE_NORMAL, 0, 1)) / 100)
+    attacker.ability = ABILITY_NONE;
+    neutral = CalculateBaseDamage(&attacker, &defender, MOVE_BODY_SLAM, 0, 80, TYPE_NORMAL, 0, 1);
+    attacker.ability = ABILITY_SOUL_ROT;
+    if (CalculateBaseDamage(&attacker, &defender, MOVE_BODY_SLAM, 0, 80, TYPE_NORMAL, 0, 1) != neutral)
         Fail("SPEC009 FAIL Soul Rot non-Ghost");
 }
 
