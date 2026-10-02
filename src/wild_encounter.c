@@ -114,11 +114,61 @@ static u8 ChooseWildMonIndex_WaterRock(void)
         return 4;
 }
 
+static bool8 IsCurrentMapRoute6(void)
+{
+    return gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(MAP_ROUTE6)
+        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(MAP_ROUTE6);
+}
+
+static u8 ChooseWildMonIndex_Water(void)
+{
+    if (IsCurrentMapRoute6())
+    {
+        u8 rand = Random() % 100;
+
+        // Route 6 final Surf table: Psyduck 50%, Poliwag 30%, Slowpoke 20%.
+        if (rand < 50)
+            return 0;
+        if (rand < 80)
+            return 1;
+        return 2;
+    }
+
+    return ChooseWildMonIndex_WaterRock();
+}
+
 static u8 ChooseWildMonIndex_Fishing(u8 rod)
 {
     u8 wildMonIndex = 0;
     u8 rand = Random() % max(max(ENCOUNTER_CHANCE_FISHING_MONS_OLD_ROD_TOTAL, ENCOUNTER_CHANCE_FISHING_MONS_GOOD_ROD_TOTAL),
                              ENCOUNTER_CHANCE_FISHING_MONS_SUPER_ROD_TOTAL);
+
+    if (IsCurrentMapRoute6())
+    {
+        switch (rod)
+        {
+        case GOOD_ROD:
+            // Slots 2-5: Magikarp 30%, Poliwag 20%, Goldeen 10%, Feebas 40%.
+            if (rand < 30)
+                return 2;
+            if (rand < 50)
+                return 3;
+            if (rand < 60)
+                return 4;
+            return 5;
+        case SUPER_ROD:
+            // Slots 5-9: Feebas 40%, Magikarp 20%, Poliwag 20%, Goldeen 10%, Poliwhirl 10%.
+            if (rand < 40)
+                return 5;
+            if (rand < 60)
+                return 6;
+            if (rand < 80)
+                return 7;
+            if (rand < 90)
+                return 8;
+            return 9;
+        }
+    }
 
     switch (rod)
     {
@@ -276,7 +326,7 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo * info, u8 area, u8
         slot = ChooseWildMonIndex_Land();
         break;
     case WILD_AREA_WATER:
-        slot = ChooseWildMonIndex_WaterRock();
+        slot = ChooseWildMonIndex_Water();
         break;
     case WILD_AREA_ROCKS:
         slot = ChooseWildMonIndex_WaterRock();
@@ -545,7 +595,7 @@ u16 GetLocalWildMon(bool8 *isWaterMon)
     else if (landMonsInfo == NULL && waterMonsInfo != NULL)
     {
         *isWaterMon = TRUE;
-        return waterMonsInfo->wildPokemon[ChooseWildMonIndex_WaterRock()].species;
+        return waterMonsInfo->wildPokemon[ChooseWildMonIndex_Water()].species;
     }
     // Either land or water Pokemon
     if ((Random() % 100) < 80)
@@ -555,7 +605,7 @@ u16 GetLocalWildMon(bool8 *isWaterMon)
     else
     {
         *isWaterMon = TRUE;
-        return waterMonsInfo->wildPokemon[ChooseWildMonIndex_WaterRock()].species;
+        return waterMonsInfo->wildPokemon[ChooseWildMonIndex_Water()].species;
     }
 }
 
@@ -568,7 +618,7 @@ u16 GetLocalWaterMon(void)
         const struct WildPokemonInfo * waterMonsInfo = gWildMonHeaders[headerId].waterMonsInfo;
 
         if (waterMonsInfo)
-            return waterMonsInfo->wildPokemon[ChooseWildMonIndex_WaterRock()].species;
+            return waterMonsInfo->wildPokemon[ChooseWildMonIndex_Water()].species;
     }
     return SPECIES_NONE;
 }
