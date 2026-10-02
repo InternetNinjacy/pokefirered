@@ -432,14 +432,30 @@ static u32 GenerateSamEggPersonality(bool8 forceMale)
 {
     bool8 shouldBeShiny = (Random() & 1);
     u32 personality;
+    u16 personalityLo;
 
     do
     {
-        personality = Random32();
+        personalityLo = Random();
         if (forceMale)
-            personality |= EGG_GENDER_MALE;
-    } while ((personality & 0xFFFF) == 0
-          || IsSamEggPersonalityShiny(personality) != shouldBeShiny);
+            personalityLo |= EGG_GENDER_MALE;
+    } while (personalityLo == 0);
+
+    if (shouldBeShiny)
+    {
+        u32 otId = GetSamEggOtId();
+        u16 shinyValue = Random() % SHINY_ODDS;
+        u16 personalityHi = HIHALF(otId) ^ LOHALF(otId) ^ personalityLo ^ shinyValue;
+
+        personality = personalityLo | ((u32)personalityHi << 16);
+    }
+    else
+    {
+        do
+        {
+            personality = personalityLo | ((u32)Random() << 16);
+        } while (IsSamEggPersonalityShiny(personality));
+    }
 
     return personality;
 }
