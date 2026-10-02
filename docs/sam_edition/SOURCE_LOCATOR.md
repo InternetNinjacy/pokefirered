@@ -28,19 +28,19 @@ Verified on: `sam-edition-dev`
 
 Production branch:
 
-- `sam/enc-001-ralts-natu-final-tables`
-- production head: `1e03ef56cc063e3f9a2888640ec760e4d23d4c8a`
-- draft PR: #67
-- base branch: `sam/evol-001-003-accessibility` / draft PR #65
+- `sam/enc-001-nosepass-feebas-final-tables`
+- production head: `9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a`
+- draft PR: #69
+- base branch: `sam/enc-001-ralts-natu-final-tables` / draft PR #67
 
 Focused QA branch:
 
-- `qa/enc-001-ralts-natu-final-tables`
-- QA source: `08533e014c8040502ed6f3aa5e5e3f3943562ac0`
-- successful run: `37004528658`
-- QA ROM SHA-1: `e554917c75f6500a919e2f1862598340b70b7f65`
+- `qa/enc-001-nosepass-feebas-final-tables`
+- QA source: `c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8`
+- successful run: `37005383850`
+- QA ROM SHA-1: `32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9`
 
-This is the current delta-only production continuation point. PR #67 is stacked on verified EVOL PR #65. QA branches are evidence/instrumentation only and must not be used as production ancestors. BREED PR #66 is explicitly blocked and is not a valid production continuation point.
+This is the current delta-only production continuation point. PR #69 is stacked on verified PR #67, which is stacked on verified EVOL PR #65. QA branches are evidence/instrumentation only and must not be used as production ancestors. BREED PR #66 is explicitly blocked and is not a valid production continuation point.
 
 ### TM-003 Signal Beam move-class override
 
@@ -107,6 +107,27 @@ Verified unique production surface:
 - `src/data/wild_encounters.json`
 
 Focused QA `37004528658` validates current native-slot rates/levels for Route 5, Route 16, Berry Forest and Ruin Valley. Broader ENC-001 remains open for Feebas and Rock Tunnel Nosepass reconciliation. The older standalone Nosepass 4% branch is stale against the current 5% authority and must not be reused verbatim.
+
+
+### ENC-001 Nosepass / Feebas completion
+
+Production branch: `sam/enc-001-nosepass-feebas-final-tables`  
+Draft PR: #69  
+Production head: `9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a`
+
+Unique production surfaces:
+
+- `src/data/wild_encounters.json`
+- `src/wild_encounter.c`
+
+The source delta replaces stale deeper Rock Tunnel data with the current 5% Nosepass table and implements exact Route 6 Feebas Surf/fishing rates. Route 6 uses a map-local selection override because the global native Good Rod has only three slots; all non-Route-6 maps continue using native global weights.
+
+Focused QA branch: `qa/enc-001-nosepass-feebas-final-tables`  
+QA source: `c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8`  
+Successful run: `37005383850`  
+QA ROM SHA-1: `32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9`
+
+ENC-001 is COMPLETE for the current Ralts/Natu/Nosepass/Feebas packet. Broader encounter implementation remains under ENC-002/ENC-003 and QA-013.
 
 ### Starter System
 
