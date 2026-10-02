@@ -44,15 +44,15 @@ live_state:
   known_good_gameplay_tip:
     branch: sam/train-002-003-focused-corrections
     pr: 73
-    production_head: 5b1bde65e321f09a5895a8a4b99f26cd7784d359
+    production_head: 7b6e3c29e593cb43878cc2ef9fbc70ce741d7689
     state: "draft / open / unmerged"
     parent_branch: sam/enc-003-surf-fishing-finalization
     parent_pr: 72
-    runtime_qa_branch: qa/train-002-003-focused-corrections
-    runtime_qa_pr: 74
-    runtime_qa_source: aef75c74110bc6ecb7608d50a9d3353ed708943b
-    runtime_qa_run: 37016542530
-    runtime_qa_rom_sha1: 33f7f9c71db9347328d7e2cbcaf1526ad0374fe9
+    runtime_qa_branch: qa/train-002-003-focused-corrections-v3
+    runtime_qa_pr: 76
+    runtime_qa_source: ccf3911506afdb5feb105f6bb6a070fdf1f441b9
+    runtime_qa_run: 37018864159
+    runtime_qa_rom_sha1: ae4df7c1298ccb95c32cfeb49f0c4c2aadc086ef
   notes:
     - "Live GitHub state must be refreshed before implementation."
     - "Pokemon: Weather branches are a separate project and are not Sam implementation evidence."
@@ -61,22 +61,24 @@ source_locator:
   trainer_focused_corrections:
     notes:
       - "TRAIN-002 and TRAIN-003 are COMPLETE on the current verified production stack."
-      - "Production delta is limited to trainer party/record data; no global Bug Bite move was introduced."
-      - "QA PR #74 is evidence/instrumentation only and is not production ancestry."
+      - "Production delta includes trainer party/record data plus the Mt. Moon Kent event script/text required to invoke a real Double Battle; no global Bug Bite move was introduced."
+      - "Final QA PR #76 is evidence/instrumentation only and is not production ancestry; QA PRs #74/#75 are superseded."
     branch: sam/train-002-003-focused-corrections
     pr: 73
-    production_head: 5b1bde65e321f09a5895a8a4b99f26cd7784d359
+    production_head: 7b6e3c29e593cb43878cc2ef9fbc70ce741d7689
     parent_branch: sam/enc-003-surf-fishing-finalization
     parent_pr: 72
     files:
       - src/data/trainer_parties.h
       - src/data/trainers.h
-    production_ci_run: 37008464595
-    runtime_qa_branch: qa/train-002-003-focused-corrections
-    runtime_qa_pr: 74
-    runtime_qa_source: aef75c74110bc6ecb7608d50a9d3353ed708943b
-    runtime_qa_run: 37016542530
-    runtime_qa_rom_sha1: 33f7f9c71db9347328d7e2cbcaf1526ad0374fe9
+      - data/maps/MtMoon_1F/scripts.inc
+      - data/maps/MtMoon_1F/text.inc
+    production_ci_run: 37018740141
+    runtime_qa_branch: qa/train-002-003-focused-corrections-v3
+    runtime_qa_pr: 76
+    runtime_qa_source: ccf3911506afdb5feb105f6bb6a070fdf1f441b9
+    runtime_qa_run: 37018864159
+    runtime_qa_rom_sha1: ae4df7c1298ccb95c32cfeb49f0c4c2aadc086ef
 
   project_workflow:
     files:
