@@ -17,6 +17,30 @@ Production work should continue delta-only from this head or a later documented 
 
 TRAIN-002 and TRAIN-003 are COMPLETE at this tip. ENC-003 remains verified partial: its 20 source-supported FireRed Surf/fishing tables remain inherited and QA-passed, while Seven Island shoreline remains blocked because FireRed has no existing `MAP_SEVEN_ISLAND` wild header and current authority supplies no encounter-rate value.
 
+## SPEC-003 Ralts/Natu current-stack diagnostic QA — complete
+
+Production under test: `sam/train-002-003-focused-corrections` / draft PR #73  
+Production source: `7b6e3c29e593cb43878cc2ef9fbc70ce741d7689`  
+QA branch: `qa/spec-003-qa-rn-001`  
+Draft QA PR: #78  
+QA source: `511adaa66b2adeffa6832bf6c7be73f96fed26bb`  
+Run: `37027682738`  
+QA ROM SHA-1: `967eaabdd0861714ec4846b9fd8c5f832db82f85`
+
+No production files were changed for this checkpoint. The current production stack already contained the approved Ralts/Kirlia/Gardevoir and Natu/Xatu species, evolution, TM/HM and encounter data.
+
+Verified scope:
+
+- Ralts → Kirlia at Lv20, Kirlia → Gardevoir at Lv30, and Natu → Xatu at Lv25, including immediately-below negative controls.
+- Ralts/Kirlia/Gardevoir remain Psychic-only; Natu/Xatu remain Psychic/Flying; locked abilities remain intact.
+- Exhaustive positive and negative compatibility across TM01–TM68 and HM01–HM08 for all five species.
+- Party and PC round-trip plus real flash save and fresh-process reload.
+- Pokédex species mapping and seen/caught registration for all five species.
+- No Fairy typing, Gallade evolution or wild Gardevoir.
+- No production defect was found.
+
+QA PR #78 is evidence/instrumentation only and is not a production ancestor. The verified production continuation tip therefore remains PR #73 unless a later production descendant independently passes its required QA.
+
 ## TRAIN-002/003 focused corrections — complete
 
 Production branch: `sam/train-002-003-focused-corrections`  
