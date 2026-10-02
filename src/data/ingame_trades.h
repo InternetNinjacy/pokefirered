@@ -137,5 +137,5 @@ static const struct InGameTrade sInGameTrades[] = {
 };
 
 static const u16 sInGameTradeMailMessages[][10] = {
-    {EC_EMPTY_WORD},
+    {0},
 };
