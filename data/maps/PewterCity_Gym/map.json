@@ -18,86 +18,96 @@
     {
       "type": "object",
       "graphics_id": "OBJ_EVENT_GFX_BROCK",
-      "x": 6,
-      "y": 5,
+      "x": 9,
+      "y": 4,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 1,
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "PewterCity_Gym_EventScript_Brock",
+      "script": "PewterCity_Gym_EventScript_Boreal",
       "flag": "0"
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_CAMPER",
-      "x": 3,
-      "y": 8,
+      "graphics_id": "OBJ_EVENT_GFX_HIKER",
+      "x": 8,
+      "y": 14,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
       "movement_range_x": 1,
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NORMAL",
-      "trainer_sight_or_berry_tree_id": "4",
-      "script": "PewterCity_Gym_EventScript_Liam",
+      "trainer_sight_or_berry_tree_id": "1",
+      "script": "PewterCity_Gym_EventScript_Cliff",
       "flag": "0"
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_GYM_GUY",
-      "x": 7,
-      "y": 12,
+      "graphics_id": "OBJ_EVENT_GFX_HIKER",
+      "x": 8,
+      "y": 9,
       "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NORMAL",
+      "trainer_sight_or_berry_tree_id": "1",
+      "script": "PewterCity_Gym_EventScript_Miles",
+      "flag": "0"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SATOSHI",
+      "x": 6,
+      "y": 20,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
       "movement_range_x": 1,
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "PewterCity_Gym_EventScript_GymGuy",
+      "script": "PewterCity_Gym_EventScript_Satoshi",
       "flag": "0"
     }
   ],
   "warp_events": [
     {
-      "x": 5,
-      "y": 14,
-      "elevation": 3,
-      "dest_map": "MAP_PEWTER_CITY",
-      "dest_warp_id": "2"
-    },
-    {
-      "x": 6,
-      "y": 14,
-      "elevation": 3,
-      "dest_map": "MAP_PEWTER_CITY",
-      "dest_warp_id": "2"
-    },
-    {
-      "x": 7,
-      "y": 14,
+      "x": 9,
+      "y": 22,
       "elevation": 3,
       "dest_map": "MAP_PEWTER_CITY",
       "dest_warp_id": "2"
     }
   ],
-  "coord_events": [],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 9,
+      "y": 2,
+      "elevation": 3,
+      "var": "VAR_TEMP_2",
+      "var_value": "0",
+      "script": "PewterCity_Gym_EventScript_ReturnWarp"
+    }
+  ],
   "bg_events": [
     {
       "type": "sign",
-      "x": 4,
-      "y": 12,
+      "x": 6,
+      "y": 21,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "PewterCity_Gym_EventScript_GymStatue"
+      "script": "PewterCity_Gym_EventScript_MainSign"
     },
     {
       "type": "sign",
-      "x": 8,
-      "y": 12,
+      "x": 12,
+      "y": 20,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "PewterCity_Gym_EventScript_GymStatue"
+      "script": "PewterCity_Gym_EventScript_ThinIceSign"
     }
   ]
 }
