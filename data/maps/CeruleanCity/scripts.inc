@@ -356,3 +356,32 @@ CeruleanCity_EventScript_GymSign::
 	msgbox CeruleanCity_Text_GymSign
 	releaseall
 	end
+
+CeruleanCity_EventScript_Asher::
+	lock
+	faceplayer
+	goto_if_set FLAG_GIFT_ASHER_CHARMANDER_CLAIMED, CeruleanCity_EventScript_AsherPostGift
+	msgbox CeruleanCity_Text_AsherOfferCharmander, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, CeruleanCity_EventScript_AsherDecline
+	setvar VAR_0x8004, 1
+	special GiveSamStarterFamilyGift
+	goto_if_eq VAR_RESULT, 2, CeruleanCity_EventScript_AsherNoRoom
+	setflag FLAG_GIFT_ASHER_CHARMANDER_CLAIMED
+	msgbox CeruleanCity_Text_AsherGiftReceived
+	release
+	end
+
+CeruleanCity_EventScript_AsherDecline::
+	msgbox CeruleanCity_Text_AsherDecline
+	release
+	end
+
+CeruleanCity_EventScript_AsherNoRoom::
+	msgbox CeruleanCity_Text_AsherNoRoom
+	release
+	end
+
+CeruleanCity_EventScript_AsherPostGift::
+	msgbox CeruleanCity_Text_AsherPostGift
+	release
+	end
