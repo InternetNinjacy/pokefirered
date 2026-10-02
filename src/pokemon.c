@@ -6285,6 +6285,15 @@ void CreateEnemyEventMon(void)
     }
 }
 
+void SetEnemyEventMonMoveSlot(void)
+{
+    u8 slot = gSpecialVar_0x8005;
+    u16 move = gSpecialVar_0x8004;
+
+    if (slot < MAX_MON_MOVES)
+        SetMonMoveSlot(&gEnemyParty[0], move, slot);
+}
+
 void HandleSetPokedexFlag(u16 nationalNum, u8 caseId, u32 personality)
 {
     u8 getFlagCaseId = (caseId == FLAG_SET_SEEN) ? FLAG_GET_SEEN : FLAG_GET_CAUGHT;

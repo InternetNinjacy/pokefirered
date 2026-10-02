@@ -947,7 +947,8 @@
 #define FLAG_0x365               FLAG_STATIC_ROUTE11_ONIX_COMPLETE
 #define FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE           0x366
 #define FLAG_0x366               FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE
-#define FLAG_0x367               0x367
+#define FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE       0x367
+#define FLAG_0x367               FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE
 #define FLAG_0x368               0x368
 #define FLAG_0x369               0x369
 #define FLAG_0x36A               0x36A

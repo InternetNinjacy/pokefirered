@@ -40,3 +40,41 @@ RockTunnel_B1F_EventScript_Winston::
 	trainerbattle_single TRAINER_POKEMANIAC_WINSTON, RockTunnel_B1F_Text_WinstonIntro, RockTunnel_B1F_Text_WinstonDefeat
 	msgbox RockTunnel_B1F_Text_WinstonPostBattle, MSGBOX_AUTOCLOSE
 	end
+
+
+RockTunnel_B1F_EventScript_StaticMachoke::
+	goto_if_questlog EventScript_ReleaseEnd
+	lock
+	faceplayer
+	setwildbattle SPECIES_MACHOKE, 29, ITEM_BLACK_BELT
+	setvar VAR_0x8004, MOVE_KARATE_CHOP
+	setvar VAR_0x8005, 0
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_SEISMIC_TOSS
+	setvar VAR_0x8005, 1
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_FORESIGHT
+	setvar VAR_0x8005, 2
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_REVENGE
+	setvar VAR_0x8005, 3
+	special SetEnemyEventMonMoveSlot
+	waitse
+	playmoncry SPECIES_MACHOKE, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	dowildbattle
+	clearflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	special QuestLog_CutRecording
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, RockTunnel_B1F_EventScript_CompleteStaticMachoke
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, RockTunnel_B1F_EventScript_CompleteStaticMachoke
+	release
+	end
+
+RockTunnel_B1F_EventScript_CompleteStaticMachoke::
+	setflag FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE
+	removeobject VAR_LAST_TALKED
+	release
+	end
