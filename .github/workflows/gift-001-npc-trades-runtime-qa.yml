@@ -55,7 +55,7 @@ jobs:
           sha1sum pokefirered.gba | tee NPC_TRADE_ROM_SHA1.txt
           git rev-parse HEAD | tee NPC_TRADE_SOURCE_SHA.txt
 
-      - name: Runtime phase 1 — verify all nine and save IMUGI
+      - name: Runtime phase 1 — run all nine and save IMUGI
         run: |
           set -euxo pipefail
           rm -f pokefirered.sav
@@ -63,11 +63,43 @@ jobs:
           export SDL_AUDIODRIVER=dummy
           timeout --signal=TERM 30s mgba -l 31 pokefirered.gba > npc_trade_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
           cat npc_trade_phase1.log
+
+      - name: JOULE runtime package
+        if: always()
+        run: grep -q "NPC TRADE QA JOULE PASS" npc_trade_phase1.log
+      - name: KITSUNE runtime package
+        if: always()
+        run: grep -q "NPC TRADE QA KITSUNE PASS" npc_trade_phase1.log
+      - name: SCORIA runtime package
+        if: always()
+        run: grep -q "NPC TRADE QA SCORIA PASS" npc_trade_phase1.log
+      - name: IMUGI runtime package
+        if: always()
+        run: grep -q "NPC TRADE QA IMUGI PASS" npc_trade_phase1.log
+      - name: TALUS runtime package
+        if: always()
+        run: grep -q "NPC TRADE QA TALUS PASS" npc_trade_phase1.log
+      - name: BRINE runtime package
+        if: always()
+        run: grep -q "NPC TRADE QA BRINE PASS" npc_trade_phase1.log
+      - name: MATRON runtime package
+        if: always()
+        run: grep -q "NPC TRADE QA MATRON PASS" npc_trade_phase1.log
+      - name: STRATA runtime package
+        if: always()
+        run: grep -q "NPC TRADE QA STRATA PASS" npc_trade_phase1.log
+      - name: SELKIE runtime package
+        if: always()
+        run: grep -q "NPC TRADE QA SELKIE PASS" npc_trade_phase1.log
+      - name: Phase 1 final marker and save
+        if: always()
+        run: |
           grep -q "NPC TRADE QA PHASE1 PASS nine packages and save" npc_trade_phase1.log
           ! grep -q "NPC TRADE QA FAIL" npc_trade_phase1.log
           test -s pokefirered.sav
 
       - name: Runtime phase 2 — reload and evolution ownership
+        if: success()
         run: |
           set -euxo pipefail
           export SDL_VIDEODRIVER=dummy
@@ -78,6 +110,7 @@ jobs:
           ! grep -q "NPC TRADE QA FAIL" npc_trade_phase2.log
 
       - name: Upload evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: gift-001-npc-trades-runtime-qa
