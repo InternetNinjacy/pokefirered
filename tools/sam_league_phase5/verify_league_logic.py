@@ -110,6 +110,14 @@ for name, mons in expected.items():
     if found != mons:
         errors.append(f"{name}: expected {mons}, found {found}")
 
+# Paired League trainer-pic engine hook: opening portraits still use the ordinary
+# draw path, while the victory slide has one isolated place to substitute the
+# approved defeat portrait. Until final art is registered, the hook must safely
+# fall back rather than inventing resource IDs.
+require("src/battle_controller_opponent.c", "static bool8 IsSamLeagueTrainerForPairedPic(u16 trainerId)")
+require("src/battle_controller_opponent.c", "static u32 GetSamLeagueDefeatTrainerPic(u16 trainerId)")
+require("src/battle_controller_opponent.c", "trainerPicId = GetSamLeagueDefeatTrainerPic(gTrainerBattleOpponent_A);")
+
 # Blue branch IDs and exactly two Full Restores on specialist E4 records.
 opp = read("include/constants/opponents.h")
 for symbol in ["TRAINER_ELITE_FOUR_BLUE_WATER","TRAINER_ELITE_FOUR_BLUE_ELECTRIC",
@@ -118,14 +126,24 @@ for symbol in ["TRAINER_ELITE_FOUR_BLUE_WATER","TRAINER_ELITE_FOUR_BLUE_ELECTRIC
         errors.append(f"missing Blue trainer ID {symbol}")
 
 trainers = read("src/data/trainers.h")
-for symbol in ["TRAINER_ELITE_FOUR_LORELEI","TRAINER_ELITE_FOUR_BRUNO",
-               "TRAINER_ELITE_FOUR_AGATHA","TRAINER_ELITE_FOUR_LANCE",
-               "TRAINER_ELITE_FOUR_BLUE_WATER","TRAINER_ELITE_FOUR_BLUE_ELECTRIC"]:
+strong_ai = "AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_SETUP_FIRST_TURN | AI_SCRIPT_PREFER_STRONGEST_MOVE | AI_SCRIPT_HP_AWARE"
+for symbol in [
+    "TRAINER_ELITE_FOUR_LORELEI","TRAINER_ELITE_FOUR_LORELEI_2",
+    "TRAINER_ELITE_FOUR_BRUNO","TRAINER_ELITE_FOUR_BRUNO_2",
+    "TRAINER_ELITE_FOUR_AGATHA","TRAINER_ELITE_FOUR_AGATHA_2",
+    "TRAINER_ELITE_FOUR_LANCE","TRAINER_ELITE_FOUR_LANCE_2",
+    "TRAINER_ELITE_FOUR_BLUE_WATER","TRAINER_ELITE_FOUR_BLUE_WATER_2",
+    "TRAINER_ELITE_FOUR_BLUE_ELECTRIC","TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2",
+]:
     m = re.search(rf"\[{symbol}\] = \{{(.*?)\n    \}},", trainers, re.S)
     if not m:
         errors.append(f"missing trainer record {symbol}")
-    elif ".items = {ITEM_FULL_RESTORE, ITEM_FULL_RESTORE}" not in m.group(1):
+        continue
+    body = m.group(1)
+    if ".items = {ITEM_FULL_RESTORE, ITEM_FULL_RESTORE}" not in body:
         errors.append(f"{symbol}: expected exactly two Full Restores")
+    if f".aiFlags = {strong_ai}" not in body:
+        errors.append(f"{symbol}: strongest intended stock League AI flags drifted")
 
 # Central Sam resource allocations used by League integration.
 for symbol, value in [
