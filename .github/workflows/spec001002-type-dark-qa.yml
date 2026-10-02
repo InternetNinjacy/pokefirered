@@ -1,0 +1,139 @@
+name: SPEC-001-002 Type and Dark Retrofit QA
+
+on:
+  push:
+    branches:
+      - qa/spec-001-002-type-dark-current-stack
+  workflow_dispatch:
+
+jobs:
+  spec001002-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/spec-001-002-type-dark-current-stack
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Static inheritance and authority assertions
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import re, subprocess
+          from pathlib import Path
+
+          current_head = "60caa7ffdf2730bcd75c630c2f421cc30b554711"
+          type_head = "03d11c05bc7cc69a1a1b3ff8be9ff2730e3fbd5f"
+          dark_head = "4f48d53667ca9cab114b217ce41441ad89365b76"
+
+          subprocess.check_call(["git","merge-base","--is-ancestor",type_head,current_head])
+          subprocess.check_call(["git","merge-base","--is-ancestor",dark_head,current_head])
+
+          changed = {x for x in subprocess.check_output(["git","diff","--name-only",f"{current_head}..HEAD"],text=True).splitlines() if x}
+          assert changed == {
+              ".github/workflows/spec001002-type-dark-qa.yml",
+              "include/config.h",
+              "src/main.c",
+              "src/spec001002_type_dark_qa.c",
+          }, changed
+
+          species = Path("src/data/pokemon/species_info.h").read_text()
+          learn = Path("src/data/pokemon/level_up_learnsets.h").read_text()
+
+          def species_entry(text, name):
+              m = re.search(rf"\[SPECIES_{name}\]\s*=\s*\{{.*?\n\s*\}},", text, re.S)
+              assert m, name
+              return m.group(0)
+
+          expected_types = {
+              "PIDGEY": "{TYPE_FLYING, TYPE_FLYING}",
+              "PIDGEOTTO": "{TYPE_FLYING, TYPE_FLYING}",
+              "PIDGEOT": "{TYPE_FLYING, TYPE_FLYING}",
+              "SPEAROW": "{TYPE_FLYING, TYPE_FLYING}",
+              "FEAROW": "{TYPE_DARK, TYPE_FLYING}",
+              "FARFETCHD": "{TYPE_FLYING, TYPE_FLYING}",
+              "DODUO": "{TYPE_FLYING, TYPE_FLYING}",
+              "DODRIO": "{TYPE_FLYING, TYPE_FLYING}",
+              "PSYDUCK": "{TYPE_WATER, TYPE_PSYCHIC}",
+              "GOLDUCK": "{TYPE_WATER, TYPE_PSYCHIC}",
+              "RATTATA": "{TYPE_NORMAL, TYPE_DARK}",
+              "RATICATE": "{TYPE_NORMAL, TYPE_DARK}",
+              "MEOWTH": "{TYPE_NORMAL, TYPE_DARK}",
+              "PERSIAN": "{TYPE_NORMAL, TYPE_DARK}",
+              "EKANS": "{TYPE_POISON, TYPE_DARK}",
+              "ARBOK": "{TYPE_POISON, TYPE_DARK}",
+              "DROWZEE": "{TYPE_PSYCHIC, TYPE_PSYCHIC}",
+              "HYPNO": "{TYPE_PSYCHIC, TYPE_DARK}",
+              "CUBONE": "{TYPE_GROUND, TYPE_DARK}",
+              "MAROWAK": "{TYPE_GROUND, TYPE_DARK}",
+              "TAUROS": "{TYPE_NORMAL, TYPE_DARK}",
+          }
+          for name, types in expected_types.items():
+              assert f".types = {types}" in species_entry(species,name), name
+
+          old_type = subprocess.check_output(["git","show",f"{type_head}:src/data/pokemon/species_info.h"],text=True)
+          for name in ["PIDGEY","PIDGEOTTO","PIDGEOT","SPEAROW","FEAROW","FARFETCHD","DODUO","DODRIO","PSYDUCK","GOLDUCK"]:
+              assert species_entry(species,name) == species_entry(old_type,name), name
+
+          old_dark_species = subprocess.check_output(["git","show",f"{dark_head}:src/data/pokemon/species_info.h"],text=True)
+          for name in ["RATTATA","RATICATE","MEOWTH","PERSIAN","EKANS","ARBOK","DROWZEE","HYPNO","SPEAROW","FEAROW","CUBONE","MAROWAK","TAUROS"]:
+              assert species_entry(species,name) == species_entry(old_dark_species,name), name
+
+          def learnset(text, camel):
+              m = re.search(rf"static const u16 s{camel}LevelUpLearnset\[\]\s*=\s*\{{.*?LEVEL_UP_END\n\}};", text, re.S)
+              assert m, camel
+              return m.group(0)
+
+          old_dark_learn = subprocess.check_output(["git","show",f"{dark_head}:src/data/pokemon/level_up_learnsets.h"],text=True)
+          for camel in ["Rattata","Raticate","Meowth","Persian","Ekans","Arbok","Drowzee","Hypno","Spearow","Fearow","Cubone","Marowak","Tauros"]:
+              assert learnset(learn,camel) == learnset(old_dark_learn,camel), camel
+
+          print("SPEC001002 STATIC PASS exact inherited type and Dark learnset packets")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee SPEC001002_ROM_SHA1.txt
+          git rev-parse HEAD | tee SPEC001002_SOURCE_SHA.txt
+
+      - name: Runtime type behavior validation
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > spec001002_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat spec001002_runtime.log
+          grep -q "SPEC001002 QA PASS type fields STAB immunity weakness dark inheritance" spec001002_runtime.log
+          ! grep -q "SPEC001002 FAIL" spec001002_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-001-002-type-dark-current-stack-qa
+          path: |
+            pokefirered.gba
+            SPEC001002_ROM_SHA1.txt
+            SPEC001002_SOURCE_SHA.txt
+            spec001002_runtime.log
+          if-no-files-found: error
