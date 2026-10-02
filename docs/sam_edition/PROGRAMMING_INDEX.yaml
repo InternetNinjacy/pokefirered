@@ -42,16 +42,16 @@ live_state:
   last_refresh_date: "2026-10-02"
   integration_head: 1ac7382fd5ecb34cb2de6bdf5bba8e7fcf08e869
   known_good_gameplay_tip:
-    branch: sam/enc-001-ralts-natu-final-tables
-    pr: 67
-    production_head: 1e03ef56cc063e3f9a2888640ec760e4d23d4c8a
+    branch: sam/enc-001-nosepass-feebas-final-tables
+    pr: 69
+    production_head: 9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a
     state: "draft / open / unmerged"
-    parent_branch: sam/evol-001-003-accessibility
-    parent_pr: 65
-    runtime_qa_branch: qa/enc-001-ralts-natu-final-tables
-    runtime_qa_source: 08533e014c8040502ed6f3aa5e5e3f3943562ac0
-    runtime_qa_run: 37004528658
-    runtime_qa_rom_sha1: e554917c75f6500a919e2f1862598340b70b7f65
+    parent_branch: sam/enc-001-ralts-natu-final-tables
+    parent_pr: 67
+    runtime_qa_branch: qa/enc-001-nosepass-feebas-final-tables
+    runtime_qa_source: c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8
+    runtime_qa_run: 37005383850
+    runtime_qa_rom_sha1: 32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9
   notes:
     - "Live GitHub state must be refreshed before implementation."
     - "Pokemon: Weather branches are a separate project and are not Sam implementation evidence."
@@ -154,6 +154,22 @@ source_locator:
     runtime_qa_run: 37004528658
     runtime_qa_rom_sha1: e554917c75f6500a919e2f1862598340b70b7f65
 
+  enc_001_locked_packet:
+    notes:
+      - "ENC-001 is COMPLETE for the current Ralts/Natu/Nosepass/Feebas scope."
+      - "PR #67 verifies Ralts/Natu final land tables; PR #69 adds current 5% deeper-Rock-Tunnel Nosepass and exact Route 6 Feebas Surf/fishing."
+      - "Route 6 uses a local selector because the global native Good Rod has only three 60/20/20 slots; global weights remain unchanged."
+      - "Do not use either encounter QA branch as production ancestry."
+    branch: sam/enc-001-nosepass-feebas-final-tables
+    pr: 69
+    production_head: 9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a
+    parent_branch: sam/enc-001-ralts-natu-final-tables
+    parent_pr: 67
+    runtime_qa_branch: qa/enc-001-nosepass-feebas-final-tables
+    runtime_qa_source: c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8
+    runtime_qa_run: 37005383850
+    runtime_qa_rom_sha1: 32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9
+
 work_item_policy:
   stable_ids: true
   create_parallel_numbering_system: false
@@ -178,6 +194,19 @@ qa_policy:
   evidence_rule: "Record source commit used for QA separately from implementation branch state."
 
 known_good_builds:
+  enc_001_final_runtime_qa:
+    production_source_commit: 9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a
+    qa_source_commit: c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8
+    workflow_run: 37005383850
+    rom_sha1: 32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9
+    production_ci_run: 37005190293
+    notes:
+      - "Rock Tunnel B1F final 25/25/20/15/10/5 table passed, including Nosepass 5% Lv24-26."
+      - "Route 6 Surf 50/30/20 and Good/Super Rod Feebas tables passed exact runtime selector sampling."
+      - "Generic non-Route-6 native water and Good Rod weighting regression passed."
+      - "ENC-001 is COMPLETE; SYS-ENC remains IN PROGRESS for statics, remaining Surf/fishing and whole-game QA."
+      - "PR #69 remains draft/open/unmerged."
+
   enc_001_ralts_natu_table_qa:
     production_source_commit: 1e03ef56cc063e3f9a2888640ec760e4d23d4c8a
     qa_source_commit: 08533e014c8040502ed6f3aa5e5e3f3943562ac0
