@@ -3,12 +3,48 @@ Route5_PokemonDayCare_EventScript_DaycareMan::
 	lock
 	faceplayer
 	showmoneybox 0, 0
-	specialvar VAR_RESULT, IsThereMonInRoute5Daycare
-	goto_if_eq VAR_RESULT, TRUE, Route5_PokemonDayCare_EventScript_CheckOnMon
+	specialvar VAR_RESULT, GetRoute5DaycareState
+	goto_if_eq VAR_RESULT, DAYCARE_EGG_WAITING, Route5_PokemonDayCare_EventScript_EggWaiting
+	goto_if_eq VAR_RESULT, DAYCARE_ONE_MON, Route5_PokemonDayCare_EventScript_OneMon
+	goto_if_eq VAR_RESULT, DAYCARE_TWO_MONS, Route5_PokemonDayCare_EventScript_TwoMons
 	msgbox Route5_PokemonDayCare_Text_WantMeToRaiseMon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, Route5_PokemonDayCare_EventScript_TryGiveMon
 	msgbox Route5_PokemonDayCare_Text_ComeAgain
 	goto Route5_PokemonDayCare_EventScript_CloseMoneyBox
+	end
+
+Route5_PokemonDayCare_EventScript_EggWaiting::
+	msgbox DayCare_Text_DoYouWantEgg, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, Route5_PokemonDayCare_EventScript_AcceptEgg
+	msgbox DayCare_Text_IllKeepIt
+	goto Route5_PokemonDayCare_EventScript_ManagePendingParents
+	end
+
+Route5_PokemonDayCare_EventScript_AcceptEgg::
+	specialvar VAR_RESULT, CalculatePlayerPartyCount
+	goto_if_eq VAR_RESULT, PARTY_SIZE, Route5_PokemonDayCare_EventScript_EggNoRoom
+	hidemoneybox
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	message DayCare_Text_ReceivedEgg
+	call EventScript_RestorePrevTextColor
+	playfanfare MUS_LEVEL_UP
+	waitfanfare
+	waitbuttonpress
+	msgbox DayCare_Text_TakeGoodCareOfIt
+	special GiveEggFromRoute5Daycare
+	goto Route5_PokemonDayCare_EventScript_CloseMoneyBox
+	end
+
+Route5_PokemonDayCare_EventScript_EggNoRoom::
+	msgbox DayCare_Text_YouHaveNoRoomForIt
+	goto Route5_PokemonDayCare_EventScript_ManagePendingParents
+	end
+
+Route5_PokemonDayCare_EventScript_ManagePendingParents::
+	specialvar VAR_RESULT, GetRoute5DaycarePokemonCount
+	goto_if_eq VAR_RESULT, 1, Route5_PokemonDayCare_EventScript_OneMon
+	goto_if_eq VAR_RESULT, 2, Route5_PokemonDayCare_EventScript_TwoMons
+	goto Route5_PokemonDayCare_EventScript_ComeAgain
 	end
 
 Route5_PokemonDayCare_EventScript_TryGiveMon::
@@ -21,6 +57,8 @@ Route5_PokemonDayCare_EventScript_TryGiveMon::
 	waitstate
 	showmoneybox 0, 0
 	goto_if_ge VAR_0x8004, PARTY_SIZE, Route5_PokemonDayCare_EventScript_ComeAgain
+	specialvar VAR_RESULT, CanSelectedMonEnterDaycare
+	goto_if_eq VAR_RESULT, FALSE, Route5_PokemonDayCare_EventScript_ComeAgain
 	specialvar VAR_RESULT, CountPartyAliveNonEggMons_IgnoreVar0x8004Slot
 	goto_if_eq VAR_RESULT, 0, Route5_PokemonDayCare_EventScript_OnlyOneAliveMonInParty
 	specialvar VAR_0x8005, GetSelectedMonNicknameAndSpecies
@@ -49,17 +87,6 @@ Route5_PokemonDayCare_EventScript_OnlyOneAliveMonInParty::
 	goto Route5_PokemonDayCare_EventScript_CloseMoneyBox
 	end
 
-Route5_PokemonDayCare_EventScript_CheckOnMon::
-	setvar VAR_0x8004, 0
-	specialvar VAR_RESULT, GetNumLevelsGainedForRoute5DaycareMon
-	call_if_ne VAR_RESULT, 0, Route5_PokemonDayCare_EventScript_MonHasGrownByXLevels
-	call_if_eq VAR_RESULT, 0, Route5_PokemonDayCare_EventScript_NotEnoughTime
-	special GetCostToWithdrawRoute5DaycareMon
-	msgbox Route5_PokemonDayCare_Text_OweMeXForMonsReturn, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, YES, Route5_PokemonDayCare_EventScript_TryRetrieveMon
-	goto Route5_PokemonDayCare_EventScript_ComeAgain
-	end
-
 Route5_PokemonDayCare_EventScript_MonHasGrownByXLevels::
 	msgbox Route5_PokemonDayCare_Text_MonHasGrownByXLevels
 	return
@@ -68,9 +95,57 @@ Route5_PokemonDayCare_EventScript_NotEnoughTime::
 	msgbox Route5_PokemonDayCare_Text_MonNeedsToSpendMoreTime
 	return
 
+Route5_PokemonDayCare_EventScript_DisplaySelectedLevels::
+	specialvar VAR_RESULT, GetNumLevelsGainedForRoute5DaycareMon
+	call_if_ne VAR_RESULT, 0, Route5_PokemonDayCare_EventScript_MonHasGrownByXLevels
+	call_if_eq VAR_RESULT, 0, Route5_PokemonDayCare_EventScript_NotEnoughTime
+	return
+
+Route5_PokemonDayCare_EventScript_OneMon::
+	special GetRoute5DaycareMonNicknames
+	setvar VAR_0x8004, 0
+	call Route5_PokemonDayCare_EventScript_DisplaySelectedLevels
+	msgbox DayCare_Text_WeCanRaiseOneMore, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, Route5_PokemonDayCare_EventScript_TryGiveMon
+	msgbox DayCare_Text_TakeYourMonBack, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, Route5_PokemonDayCare_EventScript_TryRetrieveMon
+	goto Route5_PokemonDayCare_EventScript_ComeAgain
+	end
+
+Route5_PokemonDayCare_EventScript_TwoMons::
+	special GetRoute5DaycareMonNicknames
+	setvar VAR_0x8004, 0
+	call Route5_PokemonDayCare_EventScript_DisplaySelectedLevels
+	setvar VAR_0x8004, 1
+	call Route5_PokemonDayCare_EventScript_DisplaySelectedLevels
+	special SetRoute5DaycareCompatibilityString
+	special ShowFieldMessageStringVar4
+	waitmessage
+	waitbuttonpress
+	msgbox DayCare_Text_TakeYourMonBack, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, Route5_PokemonDayCare_EventScript_TryRetrieveMon
+	goto Route5_PokemonDayCare_EventScript_ComeAgain
+	end
+
 Route5_PokemonDayCare_EventScript_TryRetrieveMon::
 	specialvar VAR_RESULT, CalculatePlayerPartyCount
 	goto_if_eq VAR_RESULT, PARTY_SIZE, Route5_PokemonDayCare_EventScript_NoRoomInParty
+	specialvar VAR_RESULT, GetRoute5DaycarePokemonCount
+	setvar VAR_0x8004, 0
+	goto_if_eq VAR_RESULT, 1, Route5_PokemonDayCare_EventScript_CostPrompt
+	special ShowRoute5DaycareLevelMenu
+	waitstate
+	copyvar VAR_0x8004, VAR_RESULT
+	goto_if_eq VAR_RESULT, DAYCARE_EXITED_LEVEL_MENU, Route5_PokemonDayCare_EventScript_ComeAgain
+
+Route5_PokemonDayCare_EventScript_CostPrompt::
+	special GetCostToWithdrawRoute5DaycareMon
+	msgbox Route5_PokemonDayCare_Text_OweMeXForMonsReturn, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, Route5_PokemonDayCare_EventScript_CheckEnoughMoney
+	goto Route5_PokemonDayCare_EventScript_ComeAgain
+	end
+
+Route5_PokemonDayCare_EventScript_CheckEnoughMoney::
 	specialvar VAR_RESULT, IsEnoughForCostInVar0x8005
 	goto_if_eq VAR_RESULT, TRUE, Route5_PokemonDayCare_EventScript_RetrieveMon
 	msgbox Route5_PokemonDayCare_Text_DontHaveEnoughMoney
@@ -78,7 +153,6 @@ Route5_PokemonDayCare_EventScript_TryRetrieveMon::
 	end
 
 Route5_PokemonDayCare_EventScript_RetrieveMon::
-	setvar VAR_0x8004, 0
 	specialvar VAR_RESULT, TakePokemonFromRoute5Daycare
 	special SubtractMoneyFromVar0x8005
 	updatemoneybox

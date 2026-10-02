@@ -5,10 +5,9 @@ FourIsland_PokemonDayCare_EventScript_DaycareWoman::
 	goto_if_questlog EventScript_ReleaseEnd
 	lock
 	faceplayer
-	specialvar VAR_RESULT, GetDaycareState
-	goto_if_eq VAR_RESULT, DAYCARE_EGG_WAITING, FourIsland_PokemonDayCare_EggWaiting
-	goto_if_eq VAR_RESULT, DAYCARE_ONE_MON, FourIsland_PokemonDayCare_OneMonInDaycare
-	goto_if_eq VAR_RESULT, DAYCARE_TWO_MONS, FourIsland_PokemonDayCare_TwoMonsInDaycare
+	specialvar VAR_RESULT, GetDaycarePokemonCount
+	goto_if_eq VAR_RESULT, 1, FourIsland_PokemonDayCare_OneMonInDaycare
+	goto_if_eq VAR_RESULT, 2, FourIsland_PokemonDayCare_TwoMonsInDaycare
 	msgbox DayCare_Text_WouldYouLikeUsToRaiseMon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, FourIsland_PokemonDayCare_GiveMonToRaise
 	msgbox DayCare_Text_FineThenComeAgain
@@ -23,6 +22,8 @@ FourIsland_PokemonDayCare_GiveMonToRaise::
 	special ChooseSendDaycareMon
 	waitstate
 	goto_if_ge VAR_0x8004, PARTY_SIZE, FourIsland_PokemonDayCare_ComeAgain
+	specialvar VAR_RESULT, CanSelectedMonEnterDaycare
+	goto_if_eq VAR_RESULT, FALSE, FourIsland_PokemonDayCare_ComeAgain
 	specialvar VAR_RESULT, CountPartyAliveNonEggMons_IgnoreVar0x8004Slot
 	goto_if_eq VAR_RESULT, 0, FourIsland_PokemonDayCare_OnlyOneAliveMonInParty
 	specialvar VAR_0x8005, GetSelectedMonNicknameAndSpecies
