@@ -212,6 +212,7 @@ static void CreateAndCheckTrade(u8 tradeId)
 
     CreateInGameTradePokemon();
     NpcTradeQaLog("NPC TRADE QA CREATE generated PASS");
+    DebugPrintf("NPC TRADE QA VALUES trade=%u expectedSpecies=%u actualSpecies=%u level=%u", tradeId, expected->receivedSpecies, GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), GetMonData(&gEnemyParty[0], MON_DATA_LEVEL));
     CheckMon(&gEnemyParty[0], expected);
     LogTradePass(tradeId);
 }
