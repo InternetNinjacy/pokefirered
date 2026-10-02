@@ -1,0 +1,115 @@
+name: SPEC-009 Current Stack Core QA
+
+on:
+  push:
+    branches:
+      - qa/spec-009-current-stack-core
+  workflow_dispatch:
+
+jobs:
+  spec009-core-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/spec-009-current-stack-core
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and SPEC-009 core source
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import pathlib, subprocess
+          prod="9a8895162c5256d3a437180426da0b49ccc54575"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+
+          species=pathlib.Path("src/data/pokemon/species_info.h").read_text()
+          cries=pathlib.Path("src/data/pokemon/cry_ids.h").read_text()
+          evo=pathlib.Path("src/data/pokemon/evolution.h").read_text()
+          tmhm=pathlib.Path("src/data/pokemon/tmhm_learnsets.h").read_text()
+          ability=pathlib.Path("src/pokemon.c").read_text()
+
+          s=species.index("[SPECIES_ECTOCEON] =")
+          e=species.index("[SPECIES_RHYPERIOR] =",s)
+          ecto=species[s:e]
+          assert ".abilities = {ABILITY_SOUL_ROT, ABILITY_NONE}" in ecto
+          assert "damage = (130 * damage) / 100;" in ability
+          assert "attacker->ability == ABILITY_SOUL_ROT" in ability
+          assert "STATUS1_PSN_ANY" in ability
+
+          assert "[SPECIES_LEAFEON - HOENN_MON_SPECIES_START] = SPECIES_EEVEE" in cries
+          assert "[SPECIES_ECTOCEON - HOENN_MON_SPECIES_START] = SPECIES_VAPOREON" in cries
+          assert "[SPECIES_RHYPERIOR - HOENN_MON_SPECIES_START] = SPECIES_RHYDON" in cries
+
+          assert "{EVO_ITEM, ITEM_LEAF_STONE, SPECIES_LEAFEON}" in evo
+          assert "{EVO_ITEM, ITEM_BRICK, SPECIES_ECTOCEON}" in evo
+          assert "[SPECIES_RHYDON]     = {{EVO_ITEM, ITEM_PROTECTOR, SPECIES_RHYPERIOR}}" in evo
+
+          def block(name,nextname):
+              a=tmhm.index(f"[SPECIES_{name}] =")
+              b=tmhm.index(f"[SPECIES_{nextname}] =",a) if nextname else len(tmhm)
+              return tmhm[a:b]
+
+          l=block("LEAFEON","ECTOCEON")
+          e=block("ECTOCEON","RHYPERIOR")
+          r=block("RHYPERIOR",None)
+          for token in ["TM01_BODY_SLAM","TM14_TOXIC","TM43_GIGA_DRAIN","TM44_SEED_STRIKE","TM45_SOLAR_BEAM","TM53_REFLECT","TM68_HIDDEN_POWER"]:
+              assert token in l
+          for token in ["TM15_POISON_FANG","TM16_SLUDGE_BOMB","TM28_SHADOW_PUNCH","TM29_SHADOW_BALL","TM30_GHOSTLY_WAIL","TM64_THIEF","TM65_CRUNCH","TM67_TAUNT","HM02_FLY"]:
+              assert token in e
+          assert "TM39_WILL_O_WISP" not in e
+          assert "TM33_NIGHT_TERROR" not in e
+          assert r == block("RHYDON","CHANSEY").replace("[SPECIES_RHYDON]","[SPECIES_RHYPERIOR]").rstrip() + "\n\n};" or "TM27_MEGAHORN" in r
+          print("SPEC009 CORE STATIC PASS Soul Rot cries evolutions compatibility")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee SPEC009_CORE_ROM_SHA1.txt
+          git rev-parse HEAD | tee SPEC009_CORE_SOURCE_SHA.txt
+
+      - name: Runtime SPEC-009 core validation
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          set +e
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > spec009_core_runtime.log 2>&1
+          rc=$?
+          set -e
+          test "$rc" -eq 124 -o "$rc" -eq 143
+          cat spec009_core_runtime.log
+          grep -q "SPEC009 CORE QA PASS Soul Rot assignment effect and fixed cries" spec009_core_runtime.log
+          ! grep -q "SPEC009 FAIL" spec009_core_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-009-current-stack-core-qa
+          path: |
+            pokefirered.gba
+            SPEC009_CORE_ROM_SHA1.txt
+            SPEC009_CORE_SOURCE_SHA.txt
+            spec009_core_runtime.log
+          if-no-files-found: error
