@@ -78,7 +78,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Daisy;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lorelei;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MrFuji;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Bruno;
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Brock;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Brock;\nconst struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Boreal;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Misty;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_LtSurge;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Erika;
@@ -315,5 +315,5 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_BAZ]                      = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_M]             = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_F]             = &gObjectEventGraphicsInfo_ProfOak,
-    [OBJ_EVENT_GFX_BOREAL]                   = &gObjectEventGraphicsInfo_Brock,
+    [OBJ_EVENT_GFX_BOREAL]                   = &gObjectEventGraphicsInfo_Boreal,
 };
