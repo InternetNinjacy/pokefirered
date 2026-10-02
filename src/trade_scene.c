@@ -2471,22 +2471,31 @@ static void CreateInGameTradePokemonInternal(u8 playerSlot, u8 inGameTradeIdx)
     struct Mail mail;
     u8 metLocation = METLOC_IN_GAME_TRADE;
     struct Pokemon *tradeMon = &gEnemyParty[0];
+    u32 personality;
     u8 mailNum;
     u8 i;
 
     // Sam Edition NPC trades use fixed package levels, gender and nature,
     // while IVs and ability remain normal generated values unless a source
-    // package explicitly fixes them.
-    CreateMonWithGenderNatureLetter(
+    // package explicitly fixes them. The authored OT ID must be supplied
+    // when the mon is created because Gen III encrypts boxed data using the
+    // personality ^ OT ID key; changing OT ID afterward corrupts that data.
+    do
+    {
+        personality = Random32();
+    } while (GetNatureFromPersonality(personality) != inGameTrade->nature
+          || GetGenderFromSpeciesAndPersonality(inGameTrade->species, personality) != inGameTrade->gender);
+
+    CreateMon(
         tradeMon,
         inGameTrade->species,
         inGameTrade->level,
         USE_RANDOM_IVS,
-        inGameTrade->gender,
-        inGameTrade->nature,
-        0);
+        TRUE,
+        personality,
+        OT_ID_PRESET,
+        inGameTrade->otId);
 
-    SetMonData(tradeMon, MON_DATA_OT_ID, &inGameTrade->otId);
     SetMonData(tradeMon, MON_DATA_NICKNAME, inGameTrade->nickname);
     SetMonData(tradeMon, MON_DATA_OT_NAME, inGameTrade->otName);
     SetMonData(tradeMon, MON_DATA_OT_GENDER, &inGameTrade->otGender);
