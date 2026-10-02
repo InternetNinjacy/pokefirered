@@ -177,7 +177,10 @@ static void CheckBattleTyping(void)
 {
     u8 flags;
 
-    SetBattleMonTypes(0, SPECIES_RATTATA);
+    // Ditto is a pure-Normal neutral control on this production stack.
+    // Rattata is Normal/Dark in Sam Edition and is therefore unsuitable:
+    // it would add Dark STAB to Crunch and immunity against Psychic.
+    SetBattleMonTypes(0, SPECIES_DITTO);
     SetBattleMonTypes(1, SPECIES_MILOTIC);
 
     gBattleMoveDamage = 100;
@@ -185,12 +188,13 @@ static void CheckBattleTyping(void)
     if (gBattleMoveDamage != 50 || !(flags & MOVE_RESULT_NOT_VERY_EFFECTIVE))
         Fail("SPEC007 FAIL Psychic resistance");
 
-    // Psychic typing is already exercised on the player path by the
-    // Fighting resistance above. Use STAB below for both Milotic types;
-    // use AI_TypeCalc for the Dark -> Psychic weakness so this focused QA
-    // does not depend on unrelated transient player-battle state.
+    gBattleMoveDamage = 100;
+    flags = TypeCalc(MOVE_CRUNCH, 0, 1);
+    if (gBattleMoveDamage != 200 || !(flags & MOVE_RESULT_SUPER_EFFECTIVE))
+        Fail("SPEC007 FAIL Psychic weakness");
+
     SetBattleMonTypes(0, SPECIES_MILOTIC);
-    SetBattleMonTypes(1, SPECIES_RATTATA);
+    SetBattleMonTypes(1, SPECIES_DITTO);
 
     gBattleMoveDamage = 100;
     flags = TypeCalc(MOVE_SURF, 0, 1);
