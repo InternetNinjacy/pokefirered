@@ -13,7 +13,7 @@ PewterCity_Gym_OnLoad::
 	end
 
 PewterCity_Gym_OnLoad_PostVictory::
-	setobjectxy 1, 10, 4
+	setobjectxyperm 1, 10, 4
 	end
 
 PewterCity_Gym_OnFrame::
