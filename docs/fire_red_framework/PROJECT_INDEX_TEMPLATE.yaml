@@ -1,0 +1,101 @@
+framework:
+  name: firered-rom-hack-programming-framework
+  version: 1
+  target_engine: pret/pokefirered
+
+project:
+  name: ""
+  repository: ""
+  upstream_repository: pret/pokefirered
+  upstream_commit: ""
+  target_game: Pokemon FireRed
+  revision: ""
+  language: ""
+  expected_clean_rom_sha1: ""
+  baseline_branch: ""
+  integration_branch: ""
+
+authority:
+  order: []
+  registry:
+    name: ""
+    location: ""
+    status_authority: ""
+  notes: []
+
+live_state:
+  last_refresh_date: ""
+  integration_head: ""
+  known_open_prs: []
+  known_active_branches: []
+  stale_records: []
+
+source_locator:
+  # Keys are stable conceptual system names.
+  # Only include verified locations.
+  example_system:
+    files: []
+    symbols: []
+    tables: []
+    scripts: []
+    notes: []
+    last_verified_ref: ""
+
+resources:
+  authority: ""
+  species_ids: {}
+  move_ids: {}
+  item_ids: {}
+  ability_ids: {}
+  trainer_ids: {}
+  trainer_class_ids: {}
+  flags: {}
+  variables: {}
+  graphics: {}
+  notes: []
+
+work_items:
+  # TASK-ID:
+  #   title: ""
+  #   system: ""
+  #   priority: ""
+  #   status: READY|BLOCKED|IN_PROGRESS|QA|COMPLETE|DEFERRED
+  #   dependencies: []
+  #   blockers: []
+  #   authority: []
+  #   source_surfaces: []
+  #   branch: ""
+  #   pr: null
+  #   commits: []
+  #   acceptance_tests: []
+  #   build:
+  #     status: NOT_RUN|PASS|FAIL
+  #     commit: ""
+  #   runtime_qa:
+  #     status: NOT_RUN|PASS|FAIL|PARTIAL
+  #     commit: ""
+  #     evidence: []
+  #   artifact_hashes: {}
+  #   last_verified_ref: ""
+  #   last_verified_date: ""
+
+known_good_builds:
+  # label:
+  #   source_commit: ""
+  #   rom_sha1: ""
+  #   workflow_run: ""
+  #   notes: ""
+
+session_refresh:
+  verify_before_work:
+    - integration_branch_head
+    - selected_work_item_branch
+    - selected_work_item_pr
+    - selected_work_item_dependencies
+    - selected_work_item_authority
+    - selected_work_item_source_surfaces
+  full_rescan_triggers:
+    - upstream_baseline_changed
+    - major_engine_refactor
+    - integration_reorganization
+    - index_known_stale
