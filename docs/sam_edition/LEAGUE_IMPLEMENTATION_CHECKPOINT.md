@@ -58,11 +58,21 @@ Manual implementation blocks are the controlling workflow. There is no active co
 - the battle engine now has an isolated League defeat-pose trainer-pic selection hook on the existing post-victory trainer slide; ordinary opening portraits remain on the vanilla draw path;
 - the hook deliberately falls back to the opening portrait until approved League defeat art receives registered TRAINER_PIC_* resources. This fallback is NOT final-art closure.
 
-Final production closure is blocked by approved paired League battle art. Lorelei has a locked concept but no source binary; Agatha and Lance still require approved visual concepts/source art; Blue and Green require League-specific opening/defeat pairs. ROM conversion/insertion and runtime/visual QA follow those assets.
+Asset-recovery correction — 2026-10-02:
+- the previously reported missing-art blocker is superseded;
+- canonical paired opening/defeat source art has been recovered and stored in Drive for Lorelei, Blue, Agatha, Lance, and Green;
+- each character also has a recovered GBA working sheet with a 64×64 opening/defeat pair and shared palette reference;
+- Lorelei source: Lorelei_League_Battle_Sprite_Pair_Approved_Reference_v1.png; working sheet: Lorelei_League_Battle_Sprite_Pair_GBA_Working_v1.png;
+- Blue source/working: Blue_League_Battle_Sprite_Pair_Approved_Reference_v1.png / Blue_League_Battle_Sprite_Pair_GBA_Working_v1.png;
+- Agatha source/working: Agatha_League_Battle_Sprite_Pair_Approved_Reference_v1.png / Agatha_League_Battle_Sprite_Pair_GBA_Working_v1.png;
+- Lance source/working: Lance_League_Battle_Sprite_Pair_Approved_Reference_v1.png / Lance_League_Battle_Sprite_Pair_GBA_Working_v1.png;
+- Green source/working: Green_League_Battle_Sprite_Pair_Approved_Reference_v1.png / Green_League_Battle_Sprite_Pair_GBA_Working_v1.png.
+
+Remaining closure work is technical, not art creation: extract/normalize the recovered working sheets into true engine-ready indexed trainer-pic resources, register distinct opening/defeat TRAINER_PIC_* resources, map the defeat hook, compile, and complete runtime/visual QA.
 
 Latest source-safe code commit before this checkpoint update: `2461c6d4cee95a2c01a2cbdbb23de93b1786ba0c`. CI for the 2026-10-02 delta was not yet reported by GitHub at checkpoint update time; last verified green remains CI #177.
 
-Next work block: approved paired League art production/registration, then ROM conversion/insertion and final runtime/visual League QA.
+Next work block: League paired-sprite resource extraction/registration/insertion, then final runtime/visual League QA.
 
 ## NEXT — MANUAL 30–60 MINUTE WORK BLOCKS
 
@@ -78,11 +88,11 @@ Next work block: approved paired League art production/registration, then ROM co
 4. **SOURCE-LEVEL COMPLETE / RUNTIME PENDING — League state/progression regression.**  
    Static guards now enforce room scene order, victory-only defeated-flag ordering, Hall-of-Fame rematch gating/reset, and existing Green reveal/title-challenge state. Save/reload, blackout/retry, repeated-run, and full door/warp behavior still require final runtime gameplay QA.
 
-5. **ENGINE HOOK COMPLETE / ASSET MAPPING PENDING — League paired battle-sprite integration.**  
-   The existing post-victory opponent Trainer slide now has an isolated League defeat-pose selection hook. Opening portrait behavior and ordinary Trainer battles remain unchanged. Actual distinct defeat-pic mappings cannot be completed until approved assets receive registered TRAINER_PIC_* resources.
+5. **ENGINE HOOK COMPLETE / RESOURCE MAPPING PENDING — League paired battle-sprite integration.**  
+   The existing post-victory opponent Trainer slide now has an isolated League defeat-pose selection hook. Opening portrait behavior and ordinary Trainer battles remain unchanged. Distinct defeat-pic mappings now wait only on extraction/registration of the recovered working assets into real TRAINER_PIC_* resources.
 
-6. **League paired battle-sprite integration — assets/registries.**  
-   Convert/register the approved Lorelei, Blue, Agatha, Lance, and Green opening/defeat assets available in project authorities; use fallbacks only where explicitly permitted, identify any truly missing approved source art, and compile-test all five.
+6. **ASSET RECOVERY COMPLETE / ROM RESOURCE CONVERSION PENDING — League paired battle-sprite integration.**  
+   Canonical paired source art and GBA working sheets are now stored for Lorelei, Blue, Agatha, Lance, and Green. Do not regenerate the art. Extract/normalize the 64×64 opening/defeat sprites, produce valid indexed/paletted source resources, register the resource IDs/tables, wire the defeat mappings, and compile-test all five.
 
 7. **STATIC COMPLETE / RUNTIME AI BEHAVIOR PENDING — League combat/AI/healing verification.**  
    Existing exact party/level checks plus Green competitive construction/Hidden Power checks are retained; static guards now cover both first-clear and rematch two-Full-Restore records and the strongest intended stock AI flag set. Actual healing thresholds/switch decisions remain runtime behavior to smoke-test.
@@ -100,7 +110,7 @@ No user decision is currently required.
 Known implementation dependencies to resolve from source/authority:
 - The Sam starter trio itself is not yet integrated on `sam-edition-dev`; League branch routing currently follows the locked intended starter-slot contract. Do not rewrite unrelated starter work unless it becomes necessary to make League testing coherent.
 - Full player-facing Adaptive Gene acquisition/item presentation remains global starter/resource work; the League-side ID, held-item use, damage mechanic, and anti-farming behavior are complete.
-- Final paired opening/defeat battle-sprite integration must use approved project assets/registries; do not invent final character art.
+- Final paired opening/defeat battle-sprite integration must use the recovered canonical project assets/registries; do not regenerate or redesign the five League characters.
 
 ## DO NOT REDO
 
