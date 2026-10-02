@@ -59,21 +59,23 @@ jobs:
           wild = pathlib.Path("src/data/wild_encounters.json").read_text()
           tmhm = pathlib.Path("src/data/pokemon/tmhm_learnsets.h").read_text()
 
+          def species_block(name):
+              start=species.index(f"[SPECIES_{name}] =")
+              next_start=species.find("\n    [SPECIES_", start + 1)
+              return species[start:] if next_start < 0 else species[start:next_start]
+
           for name in ("RALTS","KIRLIA","GARDEVOIR"):
-              block=species.split(f"[SPECIES_{name}] =",1)[1].split("},",1)[0]
-              assert ".types = {TYPE_PSYCHIC, TYPE_PSYCHIC}" in block
+              block=species_block(name)
+              assert ".types = {TYPE_PSYCHIC, TYPE_PSYCHIC}" in block, name
+              assert "TYPE_FAIRY" not in block, name
           for name in ("NATU","XATU"):
-              block=species.split(f"[SPECIES_{name}] =",1)[1].split("},",1)[0]
-              assert ".types = {TYPE_PSYCHIC, TYPE_FLYING}" in block
+              block=species_block(name)
+              assert ".types = {TYPE_PSYCHIC, TYPE_FLYING}" in block, name
 
           assert "[SPECIES_RALTS]      = {{EVO_LEVEL, 20, SPECIES_KIRLIA}}" in evo
           assert "[SPECIES_KIRLIA]     = {{EVO_LEVEL, 30, SPECIES_GARDEVOIR}}" in evo
           assert "[SPECIES_NATU]       = {{EVO_LEVEL, 25, SPECIES_XATU}}" in evo
           assert "SPECIES_GALLADE" not in evo
-          assert "TYPE_FAIRY" not in "\n".join(
-              species.split(f"[SPECIES_{name}] =",1)[1].split("},",1)[0]
-              for name in ("RALTS","KIRLIA","GARDEVOIR")
-          )
 
           data=json.loads(wild)
           text=json.dumps(data)
