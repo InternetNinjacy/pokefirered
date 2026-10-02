@@ -75,7 +75,7 @@ jobs:
           assert "MOVE_HARDEN, MOVE_IRON_DEFENSE, MOVE_POISON_STING, MOVE_PROTECT" in kent
           assert "MOVE_BUG_BITE" not in kent
 
-          kent_record=trainers.split("[TRAINER_BUG_CATCHER_KENT] = {",1)[1].split("},",1)[0]
+          kent_record=trainers.split("[TRAINER_BUG_CATCHER_KENT] = {",1)[1].split("[TRAINER_BUG_CATCHER_ROBBY]",1)[0]
           assert ".doubleBattle = TRUE" in kent_record
           assert "NO_ITEM_CUSTOM_MOVES(sParty_BugCatcherKent)" in kent_record
 
