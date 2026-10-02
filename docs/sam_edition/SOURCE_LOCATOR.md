@@ -24,6 +24,24 @@ Verified on: `sam-edition-dev`
 - `docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-09-30.md`
 - `docs/sam_edition/BASELINE.md`
 
+### Current verified programming continuation tip
+
+Production branch:
+
+- `sam/core-001-004-current-stack-integration`
+- production head: `0b7f1481134d13fbcdea90b7fb99edb01ce3b639`
+- draft PR: #63
+- base branch: `sam/gift-001-npc-trades` / draft PR #62
+
+Runtime QA branch:
+
+- `qa/core-001-004-current-stack-runtime`
+- QA source: `59ce704108a16559047737d25723c663a6dc3188`
+- successful run: `36958060624`
+- QA ROM SHA-1: `a55794ae62ed5295a3c0bd2baf22e9ca10918d40`
+
+This is the current delta-only production continuation point. The QA branch is evidence/instrumentation only and must not be used as a production ancestor.
+
 ### Starter System
 
 Production branch:
