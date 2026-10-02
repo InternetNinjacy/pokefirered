@@ -38,7 +38,7 @@ jobs:
           set -euxo pipefail
           python3 - <<'PY'
           import json, pathlib, struct, subprocess
-          prod="a0260e22a2db65708024556915ee540add4cc96e"
+          prod="9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0"
           subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
 
           flags=pathlib.Path("include/constants/flags.h").read_text()
@@ -151,7 +151,7 @@ jobs:
           test -f pokefirered.gba
           sha1sum pokefirered.gba | tee GROUP2_FINAL_ROM_SHA1.txt
           git rev-parse HEAD | tee GROUP2_FINAL_QA_SOURCE_SHA.txt
-          echo a0260e22a2db65708024556915ee540add4cc96e | tee GROUP2_FINAL_PRODUCTION_SOURCE_SHA.txt
+          echo 9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0 | tee GROUP2_FINAL_PRODUCTION_SOURCE_SHA.txt
 
       - name: Runtime phase 1
         run: |
