@@ -57,7 +57,7 @@ Verified against production tip `7ec21e900341b91b50df618a89f39cd9e4a6da92` and P
 
 ### Group 3 — Species current-stack reconciliation
 
-Verified through production continuation `204fb8043736e20a45eaed5eff5a5e1fa8dac802` / draft PR #83.
+Verified through production continuation `d2b66dfee8cfe576ac2b12341f1ebd70f4a90ab3` / draft PR #84.
 
 - SPEC-004 Ghost Families is POC COMPLETE with no new production patch. The current stack already contains the approved Duskull/Dusclops and Shuppet/Banette packages and the later Design Closure Gastly/Haunter/Gengar package.
 - For Gastly/Haunter/Gengar, the later supersession inside the current species authority controls over stale roadmap prose: baseline Attack values, shared natural progression, Lv25/Lv42 evolutions, exact Design Closure final-68 TM rows, no TM39 Will-O-Wisp, and no HM compatibility.
@@ -67,7 +67,8 @@ Verified through production continuation `204fb8043736e20a45eaed5eff5a5e1fa8dac8
 - SPEC-006 Nosepass / Generation-I pure-Rock cleanup is POC COMPLETE. Evidence-only draft PR #80, `qa/spec-006-rock-runtime` @ `e297c5242b10b12fe4651e6af4b7c42f2c552bd5`, passed QA-ROCK-001 on run `37036207034`; QA ROM SHA-1 `ea945aeeb4d24b37a25e81e789ff02efae8ff11e`. Runtime proved the six targets are pure Rock, Steelix remains Steel/Ground, Ground STAB and Electric immunity are gone, Water/Grass are exactly 2x, and AI type calculation agrees. No production defect was found; QA PR #80 is not production ancestry.
 - SPEC-007 Feebas / Milotic is POC COMPLETE with no production patch. Evidence-only draft PR #81, `qa/spec-007-feebas-milotic-runtime` @ `61580f505211e3900e6f59c48b9c5b67082c7dd1`, passed run `37045556350`; QA ROM SHA-1 `c05cc4fe6bb5052806e8d75ab20c03bdd4473538`. Static/runtime QA verified species data, Lv20 evolution and Water Pulse timing, exact TM/HM compatibility, Milotic Water/Psychic battle behavior, Pokédex mapping/metadata, and inherited Route 6 acquisition surfaces. No production defect was found; QA PR #81 is not production ancestry.
 - SPEC-008 Legendary Birds is POC COMPLETE. Draft production PR #83, `sam/spec-008-legendary-birds-breeding-closure` @ `204fb8043736e20a45eaed5eff5a5e1fa8dac802`, fixes the one current-stack defect found by QA: father-side TM inheritance could contaminate the exact locked Lv5 bred opening sets. The fix suppresses inherited move additions only for Articuno/Zapdos/Moltres. Evidence-only draft PR #82 @ `df1ffbb678f0a99d598747845f2224c6d9e8df9e` passed run `37050108196`; QA ROM SHA-1 `d625890fc47f21127c41d50e0dc5c6f4e4e09229`. Runtime proved same-species bird Eggs from Ditto, bird/bird incompatibility, exact Lv5 bred sets and exact Lv50 static sets.
-- The next incomplete Species task is SPEC-009 custom species current-stack continuation from production PR #83.
+- SPEC-009 current-stack core advanced on draft production PR #84, `sam/spec-009-current-stack-core` @ `d2b66dfee8cfe576ac2b12341f1ebd70f4a90ab3`. Parts 1–4 remain inherited. Ectoceon now receives Soul Rot and custom cry placeholders now route Leafeon→Eevee, Ectoceon→Vaporeon and Rhyperior→Rhydon using the engine's zero-based cry IDs. Evidence-only draft PR #85 @ `9e1ad638030d21b2dbd76d3f961b452cf8b371e6` passed run `37051864520`; QA ROM SHA-1 `28ac40980514bc56668deabea9cabb3b1849290b`. Runtime proved the locked Soul Rot effect and all three cry routes. Overall SPEC-009 remains IN PROGRESS for Pokédex, ROM-ready assets, trade/transfer safety, bounds/save-load and final integrated QA.
+- The next source-ready Species task is SPEC-011 final 205-entry player-facing Pokédex source implementation from production PR #84.
 
 ### TM-003 Signal Beam move-class override
 
