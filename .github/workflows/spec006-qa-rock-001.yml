@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - qa/spec-006-rock-runtime
+  pull_request:
+    branches:
+      - sam/breed-001-003-route5-breeding-v2
   workflow_dispatch:
 
 jobs:
