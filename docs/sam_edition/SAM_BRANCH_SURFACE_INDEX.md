@@ -300,14 +300,24 @@ Adds/touches:
 
 ### Compatibility matrix
 
-Branches:
-- `sam/tmcomp-part1-kanto-final-matrix`
-- `sam/tmcomp-part2-final-roster-extensions`
+Canonical branches:
+- `sam/tmcomp-part1-kanto-final-matrix` / draft PR #47
+- `sam/tmcomp-part2-final-roster-extensions` / draft PR #48
+- canonical Part 2 head: `10e48e687a414f621a554796aaff2c277d935b1f`
 
 Primary compatibility data surface:
 - `src/data/pokemon/tmhm_learnsets.h`
 
-The branch lineage also contains broader TM/species integration changes. Isolate a compatibility-only change by comparing to its immediate parent rather than to `sam-edition-dev`.
+Current verified production PR #65 is a descendant of PR #48 and still contains the exact canonical compatibility blob `38e36d942662a38c864cf99c270fd64ede18490d`. Therefore TM-004/TM-005 required no additional production delta.
+
+Runtime/static QA branch: `qa/tm-004-005-compatibility`  
+QA source: `b8a6dc980bbe306d4b49724f55561069ca807bdc`  
+Run: `36962584342`  
+QA ROM SHA-1: `28e65e065e466a0973843bc6985eeaa2fb6b8f69`
+
+QA verified all 68 TM move mappings, all 8 HM indexes/boundaries, Ditto/Mew all-TM handling, exact representative current specialist rows, and no active-source TM69–TM79 numbering. TM-004 and TM-005 are COMPLETE; QA-005 is PASS. The QA branch is evidence-only.
+
+The branch lineage also contains broader TM/species integration changes. Isolate historical compatibility deltas by comparing each TM-COMP branch to its immediate parent rather than to `sam-edition-dev`.
 
 ## Opening / intro
 
