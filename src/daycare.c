@@ -29,6 +29,7 @@
 #include "trade.h"
 #include "constants/daycare.h"
 #include "constants/region_map_sections.h"
+#include "constants/vars.h"
 
 // Combination of RSE's Day-Care (re-used on Four Island), FRLG's Day-Care, and egg_hatch.c
 
@@ -55,7 +56,12 @@ struct EggHatchData
 static void ClearDaycareMonMail(struct DayCareMail *mail);
 static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *daycare);
 static u8 GetDaycareCompatibilityScore(struct DayCare *daycare);
+static void _GetDaycareMonNicknames(struct DayCare *daycare);
+static u16 TakeSelectedPokemonMonFromDaycareShiftSlots(struct DayCare *daycare, u8 slotId);
+static u16 GetDaycareCostForMon(struct DayCare *daycare, u8 slotId);
 static void DaycarePrintMonInfo(u8 windowId, u32 daycareSlotId, u8 y);
+static void LoadRoute5Daycare(struct DayCare *daycare);
+static void SaveRoute5Daycare(const struct DayCare *daycare);
 
 static void Task_EggHatch(u8 taskID);
 static void CB2_EggHatch_0(void);
@@ -73,6 +79,17 @@ static void CreateEggShardSprite(u8 x, u8 y, s16 data1, s16 data2, s16 data3, u8
 
 // IWRAM bss
 static struct EggHatchData *sEggHatchData;
+static bool8 sDaycareLevelMenuUsesRoute5;
+static struct DayCare sRoute5DaycareMenuCache;
+
+#define ROUTE5_DAYCARE_MON_SEGMENT_RECORD_MIXING_GIFT  sizeof(struct RecordMixingGift)
+#define ROUTE5_DAYCARE_MON_SEGMENT_UNUSED              sizeof(gSaveBlock1Ptr->unused_3A94)
+#define ROUTE5_DAYCARE_MON_SEGMENT_GLOBAL_AUX          (sizeof(struct DaycareMon) - ROUTE5_DAYCARE_MON_SEGMENT_RECORD_MIXING_GIFT - ROUTE5_DAYCARE_MON_SEGMENT_UNUSED)
+
+STATIC_ASSERT(sizeof(struct DaycareMon) == 0x8C, Route5DaycareMonExpectedSize);
+STATIC_ASSERT(sizeof(struct RecordMixingGift) == 0x10, Route5DaycareRecordMixingGiftExpectedSize);
+STATIC_ASSERT(sizeof(((struct SaveBlock1 *)0)->unused_3A94) == 0x40, Route5DaycareUnusedBlockExpectedSize);
+STATIC_ASSERT(ROUTE5_DAYCARE_MON_SEGMENT_GLOBAL_AUX == 0x3C, Route5DaycareGlobalAuxAllocationExpectedSize);
 
 // RAM buffers used to assist with BuildEggMoveset()
 EWRAM_DATA static u16 sHatchedEggLevelUpMoves[EGG_LVL_UP_MOVES_ARRAY_COUNT] = {0};
@@ -365,6 +382,50 @@ static u8 *DayCare_GetBoxMonNickname(struct BoxPokemon *mon, u8 *dest)
 
     GetBoxMonData(mon, MON_DATA_NICKNAME, nickname);
     return StringCopy_Nickname(dest, nickname);
+}
+
+static void CopyDaycareBytes(u8 *dst, const u8 *src, u32 size)
+{
+    u32 i;
+
+    for (i = 0; i < size; i++)
+        dst[i] = src[i];
+}
+
+// Route 5 retains the stock first DaycareMon at 0x3C98. Its second full
+// DaycareMon is serialized across three verified-unused/reserved save regions
+// without moving any existing SaveBlock1 offsets:
+//   0x10 bytes: recordMixingGift (stock FRLG field, unused here)
+//   0x40 bytes: unused_3A94
+//   0x3C bytes: SamEditionSaveData.globalMechanicAux[0..0x3B]
+// This preserves mail, BoxPokemon data and per-mon step/fee state.
+static void LoadRoute5Daycare(struct DayCare *daycare)
+{
+    u8 *dst = (u8 *)&daycare->mons[1];
+    u32 offset = 0;
+
+    CpuFill16(0, daycare, sizeof(*daycare));
+    daycare->mons[0] = gSaveBlock1Ptr->route5DayCareMon;
+
+    CopyDaycareBytes(dst + offset, (const u8 *)&gSaveBlock1Ptr->recordMixingGift, ROUTE5_DAYCARE_MON_SEGMENT_RECORD_MIXING_GIFT);
+    offset += ROUTE5_DAYCARE_MON_SEGMENT_RECORD_MIXING_GIFT;
+    CopyDaycareBytes(dst + offset, gSaveBlock1Ptr->unused_3A94, ROUTE5_DAYCARE_MON_SEGMENT_UNUSED);
+    offset += ROUTE5_DAYCARE_MON_SEGMENT_UNUSED;
+    CopyDaycareBytes(dst + offset, gSaveBlock1Ptr->samEdition.globalMechanicAux, ROUTE5_DAYCARE_MON_SEGMENT_GLOBAL_AUX);
+}
+
+static void SaveRoute5Daycare(const struct DayCare *daycare)
+{
+    const u8 *src = (const u8 *)&daycare->mons[1];
+    u32 offset = 0;
+
+    gSaveBlock1Ptr->route5DayCareMon = daycare->mons[0];
+
+    CopyDaycareBytes((u8 *)&gSaveBlock1Ptr->recordMixingGift, src + offset, ROUTE5_DAYCARE_MON_SEGMENT_RECORD_MIXING_GIFT);
+    offset += ROUTE5_DAYCARE_MON_SEGMENT_RECORD_MIXING_GIFT;
+    CopyDaycareBytes(gSaveBlock1Ptr->unused_3A94, src + offset, ROUTE5_DAYCARE_MON_SEGMENT_UNUSED);
+    offset += ROUTE5_DAYCARE_MON_SEGMENT_UNUSED;
+    CopyDaycareBytes(gSaveBlock1Ptr->samEdition.globalMechanicAux, src + offset, ROUTE5_DAYCARE_MON_SEGMENT_GLOBAL_AUX);
 }
 
 u8 CountPokemonInDaycare(struct DayCare *daycare)
@@ -1184,8 +1245,17 @@ static bool8 TryProduceOrHatchEgg(struct DayCare *daycare)
 
 bool8 ShouldEggHatch(void)
 {
-    if (GetBoxMonData(&gSaveBlock1Ptr->route5DayCareMon.mon, MON_DATA_SANITY_HAS_SPECIES))
-        gSaveBlock1Ptr->route5DayCareMon.steps++;
+    struct DayCare route5;
+    u8 i;
+
+    LoadRoute5Daycare(&route5);
+    for (i = 0; i < DAYCARE_MON_COUNT; i++)
+    {
+        if (GetBoxMonData(&route5.mons[i].mon, MON_DATA_SANITY_HAS_SPECIES))
+            route5.mons[i].steps++;
+    }
+    SaveRoute5Daycare(&route5);
+
     return TryProduceOrHatchEgg(&gSaveBlock1Ptr->daycare);
 }
 
@@ -1485,10 +1555,15 @@ static void DaycarePrintMonLvl(struct DayCare *daycare, u8 windowId, u32 daycare
 
 static void DaycarePrintMonInfo(u8 windowId, u32 daycareSlotId, u8 y)
 {
+    struct DayCare *daycare = &gSaveBlock1Ptr->daycare;
+
+    if (sDaycareLevelMenuUsesRoute5)
+        daycare = &sRoute5DaycareMenuCache;
+
     if (daycareSlotId < (unsigned) DAYCARE_MON_COUNT)
     {
-        DaycarePrintMonNickname(&gSaveBlock1Ptr->daycare, windowId, daycareSlotId, y);
-        DaycarePrintMonLvl(&gSaveBlock1Ptr->daycare, windowId, daycareSlotId, y);
+        DaycarePrintMonNickname(daycare, windowId, daycareSlotId, y);
+        DaycarePrintMonLvl(daycare, windowId, daycareSlotId, y);
     }
 }
 
@@ -1528,9 +1603,13 @@ static void Task_HandleDaycareLevelMenuInput(u8 taskId)
     }
 }
 
-void ShowDaycareLevelMenu(void)
+static void ShowDaycareLevelMenuForFacility(bool8 route5)
 {
     struct ListMenuTemplate menuTemplate;
+
+    sDaycareLevelMenuUsesRoute5 = route5;
+    if (route5)
+        LoadRoute5Daycare(&sRoute5DaycareMenuCache);
     u8 windowId;
     u8 listMenuTaskId;
     u8 daycareMenuTaskId;
@@ -1549,6 +1628,16 @@ void ShowDaycareLevelMenu(void)
     gTasks[daycareMenuTaskId].tWindowId = windowId;
 }
 
+void ShowDaycareLevelMenu(void)
+{
+    ShowDaycareLevelMenuForFacility(FALSE);
+}
+
+void ShowRoute5DaycareLevelMenu(void)
+{
+    ShowDaycareLevelMenuForFacility(TRUE);
+}
+
 #undef tMenuListTaskId
 #undef tWindowId
 
@@ -1560,34 +1649,110 @@ void ChooseSendDaycareMon(void)
 
 // Route 5 Daycare
 
-void PutMonInRoute5Daycare(void)
+bool8 CanSelectedMonEnterDaycare(void)
 {
     u8 monIdx = GetCursorSelectionMonId();
-    StorePokemonInDaycare(&gPlayerParty[monIdx], &gSaveBlock1Ptr->route5DayCareMon);
+
+    if (monIdx >= PARTY_SIZE)
+        return FALSE;
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1
+        && GetMonData(&gPlayerParty[monIdx], MON_DATA_SAM_PERMANENT_DEAD))
+        return FALSE;
+
+    return TRUE;
+}
+
+void PutMonInRoute5Daycare(void)
+{
+    struct DayCare daycare;
+    u8 monIdx = GetCursorSelectionMonId();
+
+    LoadRoute5Daycare(&daycare);
+    StorePokemonInEmptyDaycareSlot(&gPlayerParty[monIdx], &daycare);
+    SaveRoute5Daycare(&daycare);
 }
 
 void GetCostToWithdrawRoute5DaycareMon(void)
 {
-    u16 cost = GetDaycareCostForSelectedMon(&gSaveBlock1Ptr->route5DayCareMon);
-    gSpecialVar_0x8005 = cost;
+    struct DayCare daycare;
+
+    LoadRoute5Daycare(&daycare);
+    gSpecialVar_0x8005 = GetDaycareCostForMon(&daycare, gSpecialVar_0x8004);
 }
 
 bool8 IsThereMonInRoute5Daycare(void)
 {
-    if (GetBoxMonData(&gSaveBlock1Ptr->route5DayCareMon.mon, MON_DATA_SPECIES) != SPECIES_NONE)
-        return TRUE;
+    struct DayCare daycare;
 
-    return FALSE;
+    LoadRoute5Daycare(&daycare);
+    return CountPokemonInDaycare(&daycare) != 0;
+}
+
+u8 GetRoute5DaycareState(void)
+{
+    struct DayCare daycare;
+    u8 count;
+
+    LoadRoute5Daycare(&daycare);
+    count = CountPokemonInDaycare(&daycare);
+    if (count != 0)
+        return count + 1;
+
+    return DAYCARE_NO_MONS;
 }
 
 u8 GetNumLevelsGainedForRoute5DaycareMon(void)
 {
-    return GetNumLevelsGainedForDaycareMon(&gSaveBlock1Ptr->route5DayCareMon);
+    struct DayCare daycare;
+
+    LoadRoute5Daycare(&daycare);
+    if (gSpecialVar_0x8004 >= DAYCARE_MON_COUNT)
+        return 0;
+    return GetNumLevelsGainedForDaycareMon(&daycare.mons[gSpecialVar_0x8004]);
 }
 
 u16 TakePokemonFromRoute5Daycare(void)
 {
-    return TakeSelectedPokemonFromDaycare(&gSaveBlock1Ptr->route5DayCareMon);
+    struct DayCare daycare;
+    u16 species;
+
+    LoadRoute5Daycare(&daycare);
+    if (gSpecialVar_0x8004 >= DAYCARE_MON_COUNT)
+        return SPECIES_NONE;
+
+    species = TakeSelectedPokemonMonFromDaycareShiftSlots(&daycare, gSpecialVar_0x8004);
+    SaveRoute5Daycare(&daycare);
+    return species;
+}
+
+void GetRoute5DaycareMonNicknames(void)
+{
+    struct DayCare daycare;
+
+    LoadRoute5Daycare(&daycare);
+    _GetDaycareMonNicknames(&daycare);
+}
+
+void SetRoute5DaycareCompatibilityString(void)
+{
+    struct DayCare daycare;
+    u8 whichString;
+    u8 relationshipScore;
+
+    LoadRoute5Daycare(&daycare);
+    relationshipScore = GetDaycareCompatibilityScore(&daycare);
+    whichString = 0;
+    if (relationshipScore == PARENTS_INCOMPATIBLE)
+        whichString = 3;
+    if (relationshipScore == PARENTS_LOW_COMPATIBILITY)
+        whichString = 2;
+    if (relationshipScore == PARENTS_MED_COMPATIBILITY)
+        whichString = 1;
+    if (relationshipScore == PARENTS_MAX_COMPATIBILITY)
+        whichString = 0;
+
+    StringCopy(gStringVar4, sCompatibilityMessages[whichString]);
 }
 
 static void CreatedHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
