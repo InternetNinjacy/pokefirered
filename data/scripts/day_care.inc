@@ -4,12 +4,47 @@ Route5_PokemonDayCare_EventScript_DaycareMan::
 	faceplayer
 	showmoneybox 0, 0
 	specialvar VAR_RESULT, GetRoute5DaycareState
+	goto_if_eq VAR_RESULT, DAYCARE_EGG_WAITING, Route5_PokemonDayCare_EventScript_EggWaiting
 	goto_if_eq VAR_RESULT, DAYCARE_ONE_MON, Route5_PokemonDayCare_EventScript_OneMon
 	goto_if_eq VAR_RESULT, DAYCARE_TWO_MONS, Route5_PokemonDayCare_EventScript_TwoMons
 	msgbox Route5_PokemonDayCare_Text_WantMeToRaiseMon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, Route5_PokemonDayCare_EventScript_TryGiveMon
 	msgbox Route5_PokemonDayCare_Text_ComeAgain
 	goto Route5_PokemonDayCare_EventScript_CloseMoneyBox
+	end
+
+Route5_PokemonDayCare_EventScript_EggWaiting::
+	msgbox DayCare_Text_DoYouWantEgg, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, Route5_PokemonDayCare_EventScript_AcceptEgg
+	msgbox DayCare_Text_IllKeepIt
+	goto Route5_PokemonDayCare_EventScript_ManagePendingParents
+	end
+
+Route5_PokemonDayCare_EventScript_AcceptEgg::
+	specialvar VAR_RESULT, CalculatePlayerPartyCount
+	goto_if_eq VAR_RESULT, PARTY_SIZE, Route5_PokemonDayCare_EventScript_EggNoRoom
+	hidemoneybox
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	message DayCare_Text_ReceivedEgg
+	call EventScript_RestorePrevTextColor
+	playfanfare MUS_LEVEL_UP
+	waitfanfare
+	waitbuttonpress
+	msgbox DayCare_Text_TakeGoodCareOfIt
+	special GiveEggFromRoute5Daycare
+	goto Route5_PokemonDayCare_EventScript_CloseMoneyBox
+	end
+
+Route5_PokemonDayCare_EventScript_EggNoRoom::
+	msgbox DayCare_Text_YouHaveNoRoomForIt
+	goto Route5_PokemonDayCare_EventScript_ManagePendingParents
+	end
+
+Route5_PokemonDayCare_EventScript_ManagePendingParents::
+	specialvar VAR_RESULT, GetRoute5DaycarePokemonCount
+	goto_if_eq VAR_RESULT, 1, Route5_PokemonDayCare_EventScript_OneMon
+	goto_if_eq VAR_RESULT, 2, Route5_PokemonDayCare_EventScript_TwoMons
+	goto Route5_PokemonDayCare_EventScript_ComeAgain
 	end
 
 Route5_PokemonDayCare_EventScript_TryGiveMon::
@@ -95,9 +130,9 @@ Route5_PokemonDayCare_EventScript_TwoMons::
 Route5_PokemonDayCare_EventScript_TryRetrieveMon::
 	specialvar VAR_RESULT, CalculatePlayerPartyCount
 	goto_if_eq VAR_RESULT, PARTY_SIZE, Route5_PokemonDayCare_EventScript_NoRoomInParty
-	specialvar VAR_RESULT, GetRoute5DaycareState
+	specialvar VAR_RESULT, GetRoute5DaycarePokemonCount
 	setvar VAR_0x8004, 0
-	goto_if_eq VAR_RESULT, DAYCARE_ONE_MON, Route5_PokemonDayCare_EventScript_CostPrompt
+	goto_if_eq VAR_RESULT, 1, Route5_PokemonDayCare_EventScript_CostPrompt
 	special ShowRoute5DaycareLevelMenu
 	waitstate
 	copyvar VAR_0x8004, VAR_RESULT
