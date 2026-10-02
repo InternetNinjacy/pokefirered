@@ -2250,6 +2250,24 @@ static void BattleStartClearSetData(void)
     gBattlerTarget = 0;
     gBattleWeather = 0;
 
+    // Pewter Endurance Gym battles begin in normal-duration Hail.
+    // FireRed has no permanent Hail bit, so this uses the authority-approved fallback.
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+    {
+        switch (gTrainerBattleOpponent_A)
+        {
+        case TRAINER_SATOSHI_PEWTER_PRACTICE:
+        case TRAINER_SATOSHI_PEWTER_REMATCH:
+        case TRAINER_HIKER_CLIFF_PEWTER:
+        case TRAINER_HIKER_MILES_PEWTER:
+        case TRAINER_LEADER_BOREAL_PEWTER:
+        case TRAINER_LEADER_BOREAL_REMATCH_PEWTER:
+            gBattleWeather = B_WEATHER_HAIL;
+            gWishFutureKnock.weatherDuration = 5;
+            break;
+        }
+    }
+
     dataPtr = (u8 *)&gWishFutureKnock;
     for (i = 0; i < sizeof(struct WishFutureKnock); i++)
         dataPtr[i] = 0;
