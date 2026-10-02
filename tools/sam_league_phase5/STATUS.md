@@ -36,3 +36,23 @@ Base: `sam-edition-dev`
 ## Safety / integration rule
 
 Do not merge PR #12 into `sam-edition-dev` until the remaining League closure blocks are completed or explicitly split into tracked follow-up work and final CI is green.
+
+
+## ZI-01 closure delta — 2026-10-02
+
+Source-safe work completed in this pass:
+- added static guards for strict League room scene progression (Lorelei -> Blue -> Agatha -> Lance -> Green);
+- guarded Elite Four defeated flags so they remain victory-only state;
+- expanded first-clear/rematch Elite Four checks for exactly two Full Restores and the intended strongest stock AI flags;
+- added an isolated defeat-pose Trainer-pic hook to the existing post-victory Trainer slide. Ordinary opening portraits and non-League Trainer battles remain unchanged.
+
+Final production blocker:
+- required approved League-specific paired opening/defeat battle art is incomplete.
+- Lorelei: concept locked; no approved source binary currently registered.
+- Agatha: paired-sprite requirement locked; exact approved visual concept/source art still open.
+- Lance: paired-sprite requirement locked; exact approved visual concept/source art still open.
+- Blue and Green: approved general references exist, but League-specific opening/defeat pairs remain required.
+
+The defeat-pose hook intentionally falls back to the normal opening Trainer pic until dedicated approved resources are registered. That fallback is not final visual closure.
+
+After asset delivery: register/convert/insert the paired art, then run full runtime/visual QA for first clear, loss/retry, Hall of Fame, rematch, save/reload, room progression, dialogue, paired sprites, and Blue/Green starter branches.
