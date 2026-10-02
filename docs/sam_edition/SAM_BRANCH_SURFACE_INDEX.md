@@ -135,6 +135,41 @@ Verified additional/shared surfaces include:
 
 Because this branch is an integration descendant, changed-file lists include inherited work. Use per-commit or parent comparison when isolating only GIFT logic.
 
+### GIFT-001 nine standard NPC trades
+
+Branch: `sam/gift-001-npc-trades`  
+Draft PR: #62  
+Verified production head: `76ed58d096e88f4beb898c944d69c61760f15d35`  
+Parent: `sam/gift-001-002-special-acquisition-core`
+
+Verified unique production surfaces relative to PR #60:
+
+- trade package data:
+  - `include/constants/trade.h`
+  - `src/data/ingame_trades.h`
+- in-game trade runtime:
+  - `src/trade_scene.c`
+- nine trade-script bindings:
+  - `data/maps/Route2_House/scripts.inc`
+  - `data/maps/CeruleanCity_House3/scripts.inc`
+  - `data/maps/UndergroundPath_NorthEntrance/scripts.inc`
+  - `data/maps/VermilionCity_House2/scripts.inc`
+  - `data/maps/Route11_EastEntrance_2F/scripts.inc`
+  - `data/maps/Route18_EastEntrance_2F/scripts.inc`
+  - `data/maps/CinnabarIsland_PokemonLab_Lounge/scripts.inc`
+  - `data/maps/CinnabarIsland_PokemonLab_ExperimentRoom/scripts.inc`
+- IMUGI dialogue:
+  - `data/maps/VermilionCity_House2/text.inc`
+
+Runtime QA branch: `qa/gift-001-npc-trades-runtime`  
+QA source: `c0dbfdc18492a8893aa10a28ca549cea079c3841`  
+GitHub Actions run: `36956041525`  
+QA ROM SHA-1: `54b28df3645156de944f983864111633b0c7868a`
+
+The runtime QA passed all nine fixed packages, invalid/egg/empty selection rejection, six-Pokémon full-party replacement, all nine one-time flags, real save/reload, and outsider ownership through IMUGI evolution. QA also exposed a real Gen III encryption-key defect in authored-OT creation; the verified production fix creates the Pokémon with the authored OT ID from the start rather than overwriting OT ID after encrypted substructure creation.
+
+PR #62 remains draft/open/unmerged. Treat this head as the known-good gameplay-stack tip for delta-only continuation unless a later verified descendant supersedes it.
+
 ## Encounter distribution
 
 Branch: `sam/enc-001-nosepass-rock-tunnel`
