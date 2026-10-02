@@ -135,14 +135,15 @@ source_locator:
       - "SPEC-004 Ghost Families is POC COMPLETE on the verified PR #79 production tip; no new gameplay delta was required because historical Parts 11–13 and final TM/HM compatibility are already inherited."
       - "Gastly/Haunter/Gengar must be read against the later Design Closure supersession inside the current Gastly authority: baseline Attack values, shared natural progression, exact final-68 Design Closure TM rows, no TM39 Will-O-Wisp, and no HMs."
       - "SPEC-005 Early Bug Final Evolutions is POC COMPLETE on the same production tip; exact 450-BST stats, post-redesign learnsets, final TM rows, and the TM-003 Signal Beam Special-class override are already inherited."
-      - "QA-004 evolution and QA-005 final TM/HM matrix are PASS; SPEC-006 Nosepass / Gen-I pure-Rock cleanup is the next incomplete Species task because QA-ROCK-001 runtime regression remains unrun."
+      - "QA-004 evolution and QA-005 final TM/HM matrix are PASS."
+      - "SPEC-006 Nosepass / Gen-I pure-Rock cleanup is POC COMPLETE. Evidence-only draft PR #80 / qa/spec-006-rock-runtime @ e297c5242b10b12fe4651e6af4b7c42f2c552bd5 passed QA-ROCK-001 on Actions run 37036207034; ROM SHA-1 ea945aeeb4d24b37a25e81e789ff02efae8ff11e. Runtime verified the six pure-Rock targets, Steelix control, loss of Ground STAB/Electric immunity, exact 2x Water/Grass weakness, and matching AI type calculation. No production defect or gameplay delta was found."
       - "No QA branch is production ancestry."
     verified_production_branch: sam/breed-001-003-route5-breeding-v2
     verified_production_head: 7ec21e900341b91b50df618a89f39cd9e4a6da92
     production_pr: 79
     spec_004_status: "POC COMPLETE"
     spec_005_status: "POC COMPLETE"
-    next_species_task: "SPEC-006 / QA-ROCK-001 runtime regression"
+    next_species_task: "SPEC-007 / Feebas-Milotic current-stack focused QA"
 
   core_001_004_current_stack:
     notes:
@@ -277,6 +278,20 @@ known_good_builds:
       - "Party/PC round-trip, Pokedex species mapping plus seen/caught flags, real flash save and fresh-process reload passed."
       - "Static/runtime checks confirmed Psychic-only Ralts line, Psychic/Flying Natu line, locked abilities, no Fairy typing, no Gallade evolution and no wild Gardevoir."
       - "QA PR #78 is evidence/instrumentation only and must never be used as production ancestry."
+  spec_006_rock_runtime_qa:
+    production_source_commit: 7ec21e900341b91b50df618a89f39cd9e4a6da92
+    production_branch: sam/breed-001-003-route5-breeding-v2
+    production_pr: 79
+    qa_branch: qa/spec-006-rock-runtime
+    qa_pr: 80
+    qa_source_commit: e297c5242b10b12fe4651e6af4b7c42f2c552bd5
+    workflow_run: 37036207034
+    rom_sha1: ea945aeeb4d24b37a25e81e789ff02efae8ff11e
+    notes:
+      - "QA-ROCK-001 PASS. No gameplay production delta was required."
+      - "Runtime verified Geodude/Graveler/Golem/Onix/Rhyhorn/Rhydon are pure Rock, Steelix remains Steel/Ground, Ground STAB and Electric immunity are removed, Water/Grass are exactly 2x, and AI type calculation agrees."
+      - "QA PR #80 is evidence/instrumentation only and must never be used as production ancestry."
+
   enc_003_partial_runtime_qa:
     production_source_commit: 6e84b85cf47ad76fe81bf5d27a5aac1da127d79a
     qa_source_commit: 58cce3b6f53505bba929f07179cf23917694e844
