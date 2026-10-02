@@ -1,0 +1,191 @@
+name: GIFT-001 Group 2 Final Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/gift-001-group2-final-runtime
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  group2-final-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/gift-001-group2-final-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify exact production ancestry and Group 2 source
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, pathlib, struct, subprocess
+          prod="9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+
+          flags=pathlib.Path("include/constants/flags.h").read_text()
+          trade=pathlib.Path("include/constants/trade.h").read_text()
+          util=pathlib.Path("src/script_pokemon_util.c").read_text()
+          daycare=pathlib.Path("src/daycare.c").read_text()
+          for token in [
+              "FLAG_GIFT_LUNA_CLEFFA_CLAIMED         0x373",
+              "FLAG_GIFT_MELODY_IGGLYBUFF_CLAIMED    0x374",
+              "FLAG_GIFT_ELEKID_EGG_CLAIMED          0x375",
+              "FLAG_ROCK_TUNNEL_PORYGON_RECEIVED     0x376",
+          ]: assert token in flags
+          for token in [
+              "OTID_GIFT_LUNA   52005","OTID_GIFT_MELODY 52006","OTID_SILPH       52007",
+              "OTID_PURCHASE_MAGIKARP_VENDOR 52008","OTID_GAME_CORNER_CELADON      52009",
+              "OTID_FOSSIL_CINNABAR_LAB      52010"
+          ]: assert token in trade
+
+          # Exact locked fixed packages.
+          for token in ["SPECIES_CLEFFA",".level = 8","NATURE_CALM","MOVE_ENCORE","MOVE_SWEET_KISS",
+                        "SPECIES_IGGLYBUFF",".level = 18","NATURE_BOLD","ITEM_SOOTHE_BELL","MOVE_DEFENSE_CURL"]:
+              assert token in util
+
+          # Native player-owned Egg + exact global 50/50 selector.
+          assert "CreateEgg(mon, species, TRUE)" in util
+          assert "bool8 shouldBeShiny = (Random() & 1);" in daycare
+          assert "GenerateSamEggPersonality(FALSE)" in daycare
+          assert "OT_ID_PLAYER_ID" in daycare
+
+          route4=pathlib.Path("data/maps/Route4_PokemonCenter_1F/scripts.inc").read_text()
+          lavender=pathlib.Path("data/maps/LavenderTown_PokemonCenter_1F/scripts.inc").read_text()
+          gamecorner=pathlib.Path("data/maps/CeladonCity_GameCorner_PrizeRoom/scripts.inc").read_text()
+          fossils=pathlib.Path("data/maps/CinnabarIsland_PokemonLab_ExperimentRoom/scripts.inc").read_text()
+          silph=pathlib.Path("data/maps/SilphCo_7F/scripts.inc").read_text()
+          surf=pathlib.Path("data/maps/CeladonCity_SurfHouse/scripts.inc").read_text()
+          surftext=pathlib.Path("data/maps/CeladonCity_SurfHouse/text.inc").read_text()
+
+          # Retry/duplicate guards and exact NORA interaction.
+          assert surf.index("goto_if_set FLAG_GIFT_ELEKID_EGG_CLAIMED") < surf.index("giveegg SPECIES_ELEKID")
+          assert surf.index("giveegg SPECIES_ELEKID") < surf.index("setflag FLAG_GIFT_ELEKID_EGG_CLAIMED")
+          assert "goto_if_eq VAR_RESULT, 2, CeladonCity_SurfHouse_EventScript_NoraNoRoom" in surf
+          for token in [
+              "I keep Electric POKéMON where the city", "All right. The EGG is safe here until",
+              "Take good care of it. There's a lot of", "You don't have anywhere safe for the",
+              "When it hatches, let it see more than"
+          ]: assert token in surftext
+
+          # Transaction ordering: payment only after successful delivery branches.
+          give=route4.index("special GiveSamPreOwnedMon")
+          pay=route4.index("removemoney MAGIKARP_PRICE")
+          noroom=route4.index("Route4_PokemonCenter_1F_EventScript_NoRoomForMagikarp")
+          assert give < noroom < pay
+          assert route4.count("removemoney MAGIKARP_PRICE") == 1
+          assert "FLAG_BOUGHT_MAGIKARP" in route4
+
+          # Exact Game Corner roster/prices and success-only coin removal.
+          for species, level, price in [
+              ("SPECIES_ABRA","9","180"),("SPECIES_CLEFAIRY","8","500"),
+              ("SPECIES_DRATINI","18","2800"),("SPECIES_SCYTHER","25","5500"),
+              ("SPECIES_PORYGON","26","9999")]:
+              assert species in gamecorner and level in gamecorner and price in gamecorner
+          assert gamecorner.count("SAM_PREOWNED_OT_GAME_CORNER") >= 5
+          assert "CeladonCity_GameCorner_PrizeRoom_EventScript_PartyFull" in gamecorner
+          assert gamecorner.count("removecoins VAR_TEMP_2") >= 2
+
+          # Fossils and Silph only commit completion flags after successful delivery.
+          assert fossils.count("SAM_PREOWNED_OT_FOSSIL_LAB") == 3
+          for flag in ["FLAG_REVIVED_HELIX","FLAG_REVIVED_DOME","FLAG_REVIVED_AMBER"]:
+              assert fossils.index("goto_if_eq VAR_RESULT, 2", fossils.index("special GiveSamPreOwnedMon")) < fossils.index("setflag "+flag)
+          assert "SAM_PREOWNED_OT_SILPH" in silph
+          assert silph.index("special GiveSamPreOwnedMon") < silph.index("setflag FLAG_GOT_LAPRAS_FROM_SILPH")
+
+          # Existing Cleffa/Iggly duplicate and retry guards remain.
+          assert "FLAG_GIFT_LUNA_CLEFFA_CLAIMED" in route4
+          assert "FLAG_GIFT_MELODY_IGGLYBUFF_CLAIMED" in lavender
+
+          # New map registration and exact exterior hook.
+          city=json.loads(pathlib.Path("data/maps/CeladonCity/map.json").read_text())
+          assert city["warp_events"][13]["x"] == 26 and city["warp_events"][13]["y"] == 27
+          assert city["warp_events"][13]["dest_map"] == "MAP_CELADON_CITY_SURF_HOUSE"
+          groups=json.loads(pathlib.Path("data/maps/map_groups.json").read_text())
+          assert groups["gMapGroup_IndoorCeladon"][-1] == "CeladonCity_SurfHouse"
+          interior=json.loads(pathlib.Path("data/maps/CeladonCity_SurfHouse/map.json").read_text())
+          assert interior["layout"] == "LAYOUT_HOUSE5"
+          assert interior["warp_events"][0]["dest_warp_id"] == "13"
+
+          # Geometry proof from actual map block data: copied stock House1 door,
+          # unchanged original north pond, water-isolated front bank, no event collision.
+          raw=pathlib.Path("data/layouts/CeladonCity/map.bin").read_bytes()
+          def cell(x,y): return struct.unpack_from("<H",raw,2*(y*60+x))[0]
+          assert cell(26,27) == cell(41,29)  # exact stock Celadon door metatile
+          for y in range(24,29):
+              assert ((cell(24,y) >> 10) & 3) == 0 and ((cell(29,y) >> 10) & 3) == 0
+          # Bank at y28 is surrounded from ordinary southern walking by 3 water rows.
+          for y in (29,30,31):
+              for x in range(24,30):
+                  metatile=cell(x,y)&0x3ff
+                  assert metatile in {0x1a5,0x1a6,0x1a7,0x1ad,0x1ae,0x1af,0x2cb,0x2dd,0x2cc}
+          occupied={(o["x"],o["y"]) for o in city["object_events"]}
+          assert not any((x,y) in occupied for y in range(24,32) for x in range(24,30))
+          assert (30,24) in occupied  # nearby stock NPC preserved
+
+          print("GROUP2 FINAL STATIC PASS")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee GROUP2_FINAL_ROM_SHA1.txt
+          git rev-parse HEAD | tee GROUP2_FINAL_QA_SOURCE_SHA.txt
+          echo 9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0 | tee GROUP2_FINAL_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 35s mgba -l 31 pokefirered.gba > group2_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat group2_phase1.log
+          grep -q "GROUP2 QA PHASE1 PASS packages storage shiny save" group2_phase1.log
+          ! grep -q "GROUP2 QA FAIL" group2_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > group2_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat group2_phase2.log
+          grep -q "GROUP2 QA PASS save reload duplicate guards" group2_phase2.log
+          ! grep -q "GROUP2 QA FAIL" group2_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gift-001-group2-final-runtime-qa
+          path: |
+            pokefirered.gba
+            GROUP2_FINAL_ROM_SHA1.txt
+            GROUP2_FINAL_QA_SOURCE_SHA.txt
+            GROUP2_FINAL_PRODUCTION_SOURCE_SHA.txt
+            group2_phase1.log
+            group2_phase2.log
+            pokefirered.sav
+          if-no-files-found: error
