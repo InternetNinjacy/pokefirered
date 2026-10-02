@@ -39,8 +39,17 @@ authority:
     baseline: docs/sam_edition/BASELINE.md
 
 live_state:
-  last_refresh_date: "2026-10-01"
+  last_refresh_date: "2026-10-02"
   integration_head: 1ac7382fd5ecb34cb2de6bdf5bba8e7fcf08e869
+  known_good_gameplay_tip:
+    branch: sam/gift-001-npc-trades
+    pr: 62
+    production_head: 76ed58d096e88f4beb898c944d69c61760f15d35
+    state: "draft / open / unmerged"
+    runtime_qa_branch: qa/gift-001-npc-trades-runtime
+    runtime_qa_source: c0dbfdc18492a8893aa10a28ca549cea079c3841
+    runtime_qa_run: 36956041525
+    runtime_qa_rom_sha1: 54b28df3645156de944f983864111633b0c7868a
   notes:
     - "Live GitHub state must be refreshed before implementation."
     - "Pokemon: Weather branches are a separate project and are not Sam implementation evidence."
@@ -71,6 +80,17 @@ source_locator:
     branch: sam/spec-009-part4-evolution-integration
     head_at_framework_initialization: ba530e510fb8db6ea9eb7c4dd47388d0170faa40
 
+  gift_npc_trades:
+    notes:
+      - "Nine standard Sam Edition NPC trades are implemented and runtime-QA-passed."
+      - "GIFT-001 remains PARTIAL overall because other acquisition classes still have open source/package routing."
+      - "Do not recreate the nine-trade package; continue delta-only from the verified PR #62 head or a documented descendant."
+    branch: sam/gift-001-npc-trades
+    pr: 62
+    production_head: 76ed58d096e88f4beb898c944d69c61760f15d35
+    parent_branch: sam/gift-001-002-special-acquisition-core
+    runtime_qa_branch: qa/gift-001-npc-trades-runtime
+
 work_item_policy:
   stable_ids: true
   create_parallel_numbering_system: false
@@ -95,6 +115,20 @@ qa_policy:
   evidence_rule: "Record source commit used for QA separately from implementation branch state."
 
 known_good_builds:
+  gift_npc_trades_runtime_qa:
+    production_source_commit: 76ed58d096e88f4beb898c944d69c61760f15d35
+    qa_source_commit: c0dbfdc18492a8893aa10a28ca549cea079c3841
+    workflow_run: 36956041525
+    rom_sha1: 54b28df3645156de944f983864111633b0c7868a
+    production_ci_run: 36956020656
+    notes:
+      - "All nine fixed NPC-trade packages passed runtime validation."
+      - "Wrong-species, egg, and empty selections were rejected."
+      - "A six-Pokemon full-party trade replaced the selected slot without overflow."
+      - "All nine one-time flags survived real flash save/fresh-process reload."
+      - "IMUGI retained outsider ownership through evolution."
+      - "QA found and verified the fix for authored-OT encryption-key corruption."
+      - "PR #62 remains draft/open/unmerged and is the current known-good gameplay-stack tip."
   starter_runtime_qa:
     source_commit: bc7cd174744532360df1170db9b7f7cfcd262b97
     workflow_run: 36903953035
