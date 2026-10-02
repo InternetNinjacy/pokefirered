@@ -235,3 +235,38 @@ ViridianCity_EventScript_DoTutorialBattle::
 	giveitem ITEM_TEACHY_TV
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
 	return
+
+ViridianCity_EventScript_Fern::
+	lock
+	faceplayer
+	goto_if_set FLAG_GIFT_FERN_BULBASAUR_CLAIMED, ViridianCity_EventScript_FernPostGift
+	goto_if_unset FLAG_SYS_POKEDEX_GET, ViridianCity_EventScript_FernBeforePokedex
+	msgbox ViridianCity_Text_FernOfferBulbasaur, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, ViridianCity_EventScript_FernDecline
+	setvar VAR_0x8004, 0
+	special GiveSamStarterFamilyGift
+	goto_if_eq VAR_RESULT, 2, ViridianCity_EventScript_FernNoRoom
+	setflag FLAG_GIFT_FERN_BULBASAUR_CLAIMED
+	msgbox ViridianCity_Text_FernGiftReceived
+	release
+	end
+
+ViridianCity_EventScript_FernBeforePokedex::
+	msgbox ViridianCity_Text_FernBeforePokedex
+	release
+	end
+
+ViridianCity_EventScript_FernDecline::
+	msgbox ViridianCity_Text_FernDecline
+	release
+	end
+
+ViridianCity_EventScript_FernNoRoom::
+	msgbox ViridianCity_Text_FernNoRoom
+	release
+	end
+
+ViridianCity_EventScript_FernPostGift::
+	msgbox ViridianCity_Text_FernPostGift
+	release
+	end
