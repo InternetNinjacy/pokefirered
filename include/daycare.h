@@ -22,7 +22,12 @@ u8 GetDaycareState(void);
 void SetDaycareCompatibilityString(void);
 bool8 NameHasGenderSymbol(const u8 *name, u8 genderRatio);
 void ShowDaycareLevelMenu(void);
+void ShowRoute5DaycareLevelMenu(void);
 void ChooseSendDaycareMon(void);
+bool8 CanSelectedMonEnterDaycare(void);
+u8 GetRoute5DaycareState(void);
+void GetRoute5DaycareMonNicknames(void);
+void SetRoute5DaycareCompatibilityString(void);
 
 void ScriptHatchMon(void);
 void EggHatch(void);
