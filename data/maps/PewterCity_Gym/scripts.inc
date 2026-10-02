@@ -110,13 +110,29 @@ PewterCity_Gym_EventScript_Satoshi::
 	end
 
 PewterCity_Gym_EventScript_SatoshiPractice::
-	trainerbattle_single TRAINER_SATOSHI_PEWTER_PRACTICE, PewterCity_Gym_Text_SatoshiYes, PewterCity_Gym_Text_SatoshiLose, PewterCity_Gym_EventScript_SatoshiPracticeWon, NO_MUSIC
+	msgbox PewterCity_Gym_Text_SatoshiYes
+	goto PewterCity_Gym_EventScript_SatoshiPracticeBattle
 	end
 
-PewterCity_Gym_EventScript_SatoshiPracticeWon::
+PewterCity_Gym_EventScript_SatoshiPracticeBattle::
+	trainerbattle_earlyrival TRAINER_SATOSHI_PEWTER_PRACTICE, RIVAL_BATTLE_HEAL_AFTER, PewterCity_Gym_Text_SatoshiBattleDefeatEmpty, PewterCity_Gym_Text_SatoshiLose
+	goto_if_eq VAR_RESULT, TRUE, PewterCity_Gym_EventScript_SatoshiPracticeLost
 	setflag FLAG_SATOSHI_PEWTER_PRACTICE_WON
 	msgbox PewterCity_Gym_Text_SatoshiWin
 	release
+	end
+
+PewterCity_Gym_EventScript_SatoshiPracticeLost::
+	cleartrainerflag TRAINER_SATOSHI_PEWTER_PRACTICE
+	msgbox PewterCity_Gym_Text_SatoshiRetry, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, PewterCity_Gym_EventScript_SatoshiPracticeRetryYes
+	msgbox PewterCity_Gym_Text_SatoshiRetryNo
+	release
+	end
+
+PewterCity_Gym_EventScript_SatoshiPracticeRetryYes::
+	msgbox PewterCity_Gym_Text_SatoshiRetryYes
+	goto PewterCity_Gym_EventScript_SatoshiPracticeBattle
 	end
 
 PewterCity_Gym_EventScript_SatoshiBeforeBoreal::
