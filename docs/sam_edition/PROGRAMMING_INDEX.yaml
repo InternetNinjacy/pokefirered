@@ -42,15 +42,15 @@ live_state:
   last_refresh_date: "2026-10-02"
   integration_head: 1ac7382fd5ecb34cb2de6bdf5bba8e7fcf08e869
   known_good_gameplay_tip:
-    branch: sam/gift-001-starter-family-gifts
-    pr: 86
-    production_head: be0c6ab2500f188ce20d49ae69b66f028dea332b
-    state: "draft / open / unmerged"
-    parent_branch: sam/spec-009-current-stack-core
-    parent_pr: 84
-    parent_head: d2b66dfee8cfe576ac2b12341f1ebd70f4a90ab3
-    production_ancestry: "19 commits ahead / 0 behind parent head"
-    qa_policy: "Starter-family Gift packet runtime-QA-passed on isolated QA PR #87; QA branch is not production ancestry"
+    branch: sam/gift-001-remaining-special-acquisitions
+    pr: 88
+    production_head: b1427e3700dc34514cfd134aaa14d82d2c651e72
+    state: "draft / open / unmerged; CI pending"
+    parent_branch: sam/gift-001-starter-family-gifts
+    parent_pr: 86
+    parent_head: be0c6ab2500f188ce20d49ae69b66f028dea332b
+    production_ancestry: "direct descendant of verified PR #86 production head"
+    qa_policy: "QA PR #87 remains starter-family evidence only and is not production ancestry; PR #88 has not yet received isolated runtime QA"
   notes:
     - "Live GitHub state must be refreshed before implementation."
     - "Pokemon: Weather branches are a separate project and are not Sam implementation evidence."
@@ -116,29 +116,21 @@ source_locator:
 
   group2_special_acquisitions:
     notes:
-      - "Group 2 is the permanent next numbered remaining-work group after Group 1 Breeding POC completion."
-      - "GIFT-002 remains COMPLETE; the shared pre-owned delivery core and all nine NPC trades remain runtime-proven and must not be redone."
-      - "The starter-family source packet is COMPLETE for current scope on draft PR #86: Viridian FERN/52001 Bulbasaur, Cerulean ASHER/52002 Charmander, and Vermilion MARINA/52003 Squirtle now have exact visible source events, dialogue, availability, fixed packages, party/PC-safe delivery, and persistent one-time flags 0x370/0x371/0x372."
-      - "Production head be0c6ab2500f188ce20d49ae69b66f028dea332b compiled/linked/generated ELF/GBA/SYM on run 37059597239 and stopped only at the expected stock-ROM SHA comparison."
-      - "Evidence-only QA PR #87 / qa/gift-001-starter-family-runtime @ baa13fcb5fe119a6a812d2b5d836132f21d58bb9 passed run 37059643246; QA ROM SHA-1 b6676cfdd12b436a58b345d2ff034c7e35bd5771."
-      - "Mt. Moon Pokémon Center Cleffa remains blocked by missing central numeric Gift OT ID plus exact event closure."
-      - "Lavender Igglybuff remains blocked by missing central numeric Gift OT ID plus exact event closure."
-      - "Celadon Surf-house Elekid remains a player-owned Gift Egg with NPC/dialogue/non-species Egg package fields still open; do not force outsider ownership."
-      - "Cinnabar Magby Egg remains owned by the Town Side Quest implementation."
-      - "Stock Purchase/Game Corner/Fossil/Silph Gift routes still lack complete authored non-player OT name + numeric OT-ID packages required for outsider treatment."
-      - "Rock Tunnel Porygon is SILPH-owned and otherwise package-closed, but its numeric Pokémon OT ID is not allocated and the event remains Thomas/Rocket-owned."
-      - "Continue Group 2 delta-only from production PR #86. If no additional source packet clears authority/resource gates, preserve GIFT-001 as IN PROGRESS at that boundary rather than inventing content."
-      - "QA PR #87 is evidence/instrumentation only and must never be used as production ancestry."
-    verified_against_production_tip: be0c6ab2500f188ce20d49ae69b66f028dea332b
-    production_branch: sam/gift-001-starter-family-gifts
-    production_pr: 86
-    production_ci_run: 37059597239
-    runtime_qa_branch: qa/gift-001-starter-family-runtime
-    runtime_qa_pr: 87
-    runtime_qa_source: baa13fcb5fe119a6a812d2b5d836132f21d58bb9
-    runtime_qa_run: 37059643246
-    runtime_qa_rom_sha1: b6676cfdd12b436a58b345d2ff034c7e35bd5771
-    registry_checkpoint: SYNC-2026-10-02-014
+      - "Group 2 remains the permanent numbered Special Acquisitions group; Group 1 Breeding remains POC COMPLETE."
+      - "Authority/resource closure is complete for LUNA Cleffa, MELODY Igglybuff, Celadon Elekid Egg, Cinnabar Magby Egg delivery, stock Purchase/Game Corner/Fossil/Silph acquisitions, and Rock Tunnel SILPH Porygon."
+      - "Central Pokémon OT IDs now allocate 52005 LUNA, 52006 MELODY, 52007 SILPH, 52008 VENDOR, 52009 CELADON, 52010 LAB; next free authored Gift OT ID is 52011."
+      - "Central flags now allocate 0x373 Cleffa, 0x374 Igglybuff, 0x375 Elekid Egg, 0x376 Rock Tunnel Porygon; overflow headroom resumes at 0x377."
+      - "Draft production PR #88 descends directly from PR #86 and currently implements Cleffa, Igglybuff, Route 4 purchased Magikarp authored OT, Celadon Game Corner authored OT, Cinnabar fossil authored OT, and Silph 7F Lapras authored OT using the proven pre-owned delivery path."
+      - "Elekid authority is closed but exact Celadon exterior warp tile remains source-map geometry work; do not guess the coordinate from raw event JSON."
+      - "Magby Egg is OWNER-SYSTEM READY under Town Side Quests. Rock Tunnel Porygon is OWNER-SYSTEM READY under Thomas/Team Rocket event placement."
+      - "Evidence-only QA PR #87 must never become production ancestry."
+    verified_parent_tip: be0c6ab2500f188ce20d49ae69b66f028dea332b
+    production_branch: sam/gift-001-remaining-special-acquisitions
+    production_pr: 88
+    production_head: b1427e3700dc34514cfd134aaa14d82d2c651e72
+    production_ci_run: 37066177714
+    runtime_qa_status: "not yet run for PR #88"
+    registry_checkpoint: SYNC-2026-10-02-015
 
   group3_species_current_stack_reconciliation:
     notes:
