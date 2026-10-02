@@ -252,6 +252,49 @@ source_locator:
     runtime_qa_run: 37006884530
     runtime_qa_rom_sha1: 0a02ff27d52fdf6e7100178de438dd10d61ecfdd
 
+
+  gym_audit_001_readiness:
+    status: "PARTIAL — audit complete; one Gym authority blocker remains"
+    checkpoint: "SYNC-2026-10-02-020"
+    notes:
+      - "GYM-AUDIT-001 was run against every still-unimplemented Gym whose implementation handoff required Cerulean-depth verification."
+      - "Gym 1 Pewter: READY — literal 19x23 blueprint/state contract is sufficient; source IDs/metatiles and non-traversal dressing are implementation discretion."
+      - "Gym 3 Vermilion: READY — later FINAL LAYOUT CLOSURE supplies the deterministic canonical map handoff; stale earlier open-coordinate prose is superseded."
+      - "Gym 4 Celadon: PARTIALLY READY — trainer/battle/state logic is usable and PR #77 remains valid, but major Field/Lab map/event work is blocked by BLK-GYM4-MAP pending a literal deterministic topology handoff."
+      - "Gym 5 Fuchsia: READY — Map Blueprint v1.0 fixes the 15x70 gauntlet, anchors, collision and decorative/non-traversal rules."
+      - "Gym 6 Saffron: READY WITH DOCUMENTED IMPLEMENTATION DISCRETION — preserve vanilla room/warp topology; exact stock coordinate/ID mapping is technical implementation."
+      - "Gym 7 Cinnabar: READY WITH DOCUMENTED IMPLEMENTATION DISCRETION — preserve vanilla quiz-room/door topology; six-station state logic and retry/persistence contract are explicit."
+      - "Gym 8 Viridian: READY WITH DOCUMENTED IMPLEMENTATION DISCRETION — preserve vanilla spinner geometry; first-clear/postgame object-state replacement is explicit."
+      - "Cerulean Gym 2 remains the reference-depth benchmark and was not reopened."
+
+  enc_002_static_overworld_readiness:
+    status: "PARTIAL / BLOCKED FOR SEVEN NON-MACHOKE STATICS"
+    checkpoint: "SYNC-2026-10-02-020"
+    production_branch: sam/enc-readiness-gym-audit-001
+    production_pr: 91
+    current_head: 41d3177981037fe2dc0a47b9ddb560b05ea3ff95
+    base_branch: sam/gift-001-remaining-special-acquisitions
+    base_pr: 88
+    base_head: 9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0
+    notes:
+      - "Resource strategy is explicit: reuse an exact native species OBJ_EVENT_GFX when it exists; otherwise require approved species-specific overworld art and allocate it centrally. Do not substitute unrelated stock sprites by convenience."
+      - "Scyther, Rhyhorn, Abra, Miltank, Lickitung, Onix and Magneton remain blocked by BLK-ENC-002-GFX because no exact native species overworld graphics or approved Sam replacement resources are present."
+      - "Rock Tunnel Machoke is independently implementation-eligible because native OBJ_EVENT_GFX_MACHOKE=134 exists."
+      - "FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE is centrally allocated at 0x367; prior encounter headroom now resumes at 0x368-0x36F."
+      - "PR #91 implements Machoke Lv29 @ Black Belt with Karate Chop / Seismic Toss / Foresight / Revenge in the optional southwest Rock Tunnel B1F dead-end chamber, with capture/defeat completion and flee/teleport persistence."
+      - "A reusable SetEnemyEventMonMoveSlot special was added for fixed-move scripted wild encounters."
+      - "PR #91 remains draft/open/unmerged. Runtime QA has not yet been claimed."
+
+  enc_003_seven_island_readiness:
+    status: "BLOCKED ON AUTHORITATIVE RATE VALUES"
+    checkpoint: "SYNC-2026-10-02-020"
+    notes:
+      - "The intended missing source resource is a new MAP_SEVEN_ISLAND FireRed wild header using the already-locked Table Family F Surf/fishing species, levels and slot ordering."
+      - "Current FireRed source has no MAP_SEVEN_ISLAND wild header."
+      - "Existing Family F peer headers at Trainer Tower and Tanoby Ruins use water encounter_rate 2 and fishing encounter_rate 20, but this was treated only as source evidence, not authority."
+      - "BLK-ENC-003-RATE requires explicit MAP_SEVEN_ISLAND water_mons.encounter_rate and fishing_mons.encounter_rate values, or explicit authority to inherit a named peer pair."
+      - "No Seven Island header/rate was invented; PR #72 remains the verified partial ENC-003 implementation for the 20 source-supported tables."
+
 work_item_policy:
   stable_ids: true
   create_parallel_numbering_system: false
