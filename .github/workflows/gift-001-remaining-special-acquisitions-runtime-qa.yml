@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - qa/gift-001-remaining-special-acquisitions-runtime
+  pull_request:
   workflow_dispatch:
 
 jobs:
