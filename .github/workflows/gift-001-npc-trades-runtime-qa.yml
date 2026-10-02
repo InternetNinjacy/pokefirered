@@ -1,0 +1,91 @@
+name: GIFT-001 NPC Trades Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/gift-001-npc-trades-runtime
+  workflow_dispatch:
+
+jobs:
+  runtime-npc-trade-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/gift-001-npc-trades-runtime
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Source routing assertions
+        run: |
+          set -euxo pipefail
+          grep -q "INGAME_TRADE_JOULE" data/maps/Route2_House/scripts.inc
+          grep -q "INGAME_TRADE_KITSUNE" data/maps/CeruleanCity_House3/scripts.inc
+          grep -q "INGAME_TRADE_SCORIA" data/maps/UndergroundPath_NorthEntrance/scripts.inc
+          grep -q "INGAME_TRADE_IMUGI" data/maps/VermilionCity_House2/scripts.inc
+          grep -q "INGAME_TRADE_TALUS" data/maps/Route11_EastEntrance_2F/scripts.inc
+          grep -q "INGAME_TRADE_BRINE" data/maps/Route18_EastEntrance_2F/scripts.inc
+          grep -q "INGAME_TRADE_MATRON" data/maps/CinnabarIsland_PokemonLab_Lounge/scripts.inc
+          grep -q "INGAME_TRADE_STRATA" data/maps/CinnabarIsland_PokemonLab_Lounge/scripts.inc
+          grep -q "INGAME_TRADE_SELKIE" data/maps/CinnabarIsland_PokemonLab_ExperimentRoom/scripts.inc
+          test "$(grep -c 'gSpecialVar_0x8004 == INGAME_TRADE_TALUS' src/trade_scene.c)" -eq 2
+          grep -q "VermilionCity_House2_Text_ImugiPreTrade" data/maps/VermilionCity_House2/scripts.inc
+          grep -q "Someday, that little dragon's going" data/maps/VermilionCity_House2/text.inc
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee NPC_TRADE_ROM_SHA1.txt
+          git rev-parse HEAD | tee NPC_TRADE_SOURCE_SHA.txt
+
+      - name: Runtime phase 1 — verify all nine and save IMUGI
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 30s mgba -l 31 pokefirered.gba > npc_trade_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat npc_trade_phase1.log
+          grep -q "NPC TRADE QA PHASE1 PASS nine packages and save" npc_trade_phase1.log
+          ! grep -q "NPC TRADE QA FAIL" npc_trade_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2 — reload and evolution ownership
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 15s mgba -l 31 pokefirered.gba > npc_trade_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat npc_trade_phase2.log
+          grep -q "NPC TRADE QA PASS nine packages reload evolution ownership" npc_trade_phase2.log
+          ! grep -q "NPC TRADE QA FAIL" npc_trade_phase2.log
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: gift-001-npc-trades-runtime-qa
+          path: |
+            pokefirered.gba
+            NPC_TRADE_ROM_SHA1.txt
+            NPC_TRADE_SOURCE_SHA.txt
+            npc_trade_phase1.log
+            npc_trade_phase2.log
+            pokefirered.sav
+          if-no-files-found: error
