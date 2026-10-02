@@ -60,7 +60,7 @@ Manual implementation blocks are the controlling workflow. There is no active co
 
 Final production closure is blocked by approved paired League battle art. Lorelei has a locked concept but no source binary; Agatha and Lance still require approved visual concepts/source art; Blue and Green require League-specific opening/defeat pairs. ROM conversion/insertion and runtime/visual QA follow those assets.
 
-Latest source-safe code commit before this checkpoint update: `d56d18ab4caa37cb88b2d657c3bf379663418120`. CI for the 2026-10-02 delta was not yet reported by GitHub at checkpoint update time; last verified green remains CI #177.
+Latest source-safe code commit before this checkpoint update: `2461c6d4cee95a2c01a2cbdbb23de93b1786ba0c`. CI for the 2026-10-02 delta was not yet reported by GitHub at checkpoint update time; last verified green remains CI #177.
 
 Next work block: approved paired League art production/registration, then ROM conversion/insertion and final runtime/visual League QA.
 
