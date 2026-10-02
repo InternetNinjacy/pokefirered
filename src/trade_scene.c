@@ -2492,7 +2492,7 @@ static void CreateInGameTradePokemonInternal(u8 playerSlot, u8 inGameTradeIdx)
     do
     {
         personality = Random32();
-    } while (GetNatureFromPersonality(personality) != inGameTrade->nature
+    } while (personality % NUM_NATURES != inGameTrade->nature
           || GetGenderFromSpeciesAndPersonality(inGameTrade->species, personality) != inGameTrade->gender);
 
     CreateMon(
