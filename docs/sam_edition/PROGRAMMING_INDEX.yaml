@@ -42,17 +42,15 @@ live_state:
   last_refresh_date: "2026-10-02"
   integration_head: 1ac7382fd5ecb34cb2de6bdf5bba8e7fcf08e869
   known_good_gameplay_tip:
-    branch: sam/train-002-003-focused-corrections
-    pr: 73
-    production_head: 7b6e3c29e593cb43878cc2ef9fbc70ce741d7689
+    branch: sam/breed-001-003-route5-breeding-v2
+    pr: 79
+    production_head: 7ec21e900341b91b50df618a89f39cd9e4a6da92
     state: "draft / open / unmerged"
-    parent_branch: sam/enc-003-surf-fishing-finalization
-    parent_pr: 72
-    runtime_qa_branch: qa/train-002-003-focused-corrections-v3
-    runtime_qa_pr: 76
-    runtime_qa_source: ccf3911506afdb5feb105f6bb6a070fdf1f441b9
-    runtime_qa_run: 37018864159
-    runtime_qa_rom_sha1: ae4df7c1298ccb95c32cfeb49f0c4c2aadc086ef
+    parent_branch: sam/train-002-003-focused-corrections
+    parent_pr: 73
+    parent_head: 7b6e3c29e593cb43878cc2ef9fbc70ce741d7689
+    production_ancestry: "6 commits ahead / 0 behind parent head"
+    qa_policy: "Group 1 breeding is POC COMPLETE; manual emulator diagnostics deferred by POC policy"
   notes:
     - "Live GitHub state must be refreshed before implementation."
     - "Pokemon: Weather branches are a separate project and are not Sam implementation evidence."
@@ -115,6 +113,21 @@ source_locator:
     production_head: 76ed58d096e88f4beb898c944d69c61760f15d35
     parent_branch: sam/gift-001-002-special-acquisition-core
     runtime_qa_branch: qa/gift-001-npc-trades-runtime
+
+  group2_special_acquisitions:
+    notes:
+      - "Group 2 is the permanent next numbered remaining-work group after Group 1 Breeding POC completion."
+      - "GIFT-002 remains COMPLETE; shared pre-owned delivery core and all nine NPC trades remain runtime-proven and must not be redone."
+      - "Starter-family packages FERN/52001 Bulbasaur, ASHER/52002 Charmander, and MARINA/52003 Squirtle are Pokémon-data closed but source-event incomplete: exact approved NPC/object, trigger/prerequisite, persistent one-time state, required dialogue, successful-claim flow, and post-claim behavior are not closed."
+      - "Cleffa is package-closed at Mt. Moon Pokémon Center with OT LUNA but has no centrally allocated numeric Gift OT ID and exact NPC/dialogue remains open."
+      - "Lavender Igglybuff is package-closed with OT MELODY but has no centrally allocated numeric Gift OT ID and source-event closure is incomplete."
+      - "Celadon Surf-house Elekid is a player-owned Gift Egg, but exact NPC/dialogue and non-species Egg package fields remain open; do not force outsider ownership."
+      - "Cinnabar Magby Egg remains owned by the Town Side Quest implementation."
+      - "Stock Purchase/Game Corner/Fossil/Silph Gift routes still lack complete authored non-player OT name + numeric OT-ID packages required for outsider treatment."
+      - "Rock Tunnel Porygon is SILPH-owned and otherwise package-closed, but its numeric Pokémon OT ID is not allocated and the event remains Thomas/Rocket-owned."
+      - "No Group 2 gameplay branch should be created until an independent source packet is implementation-ready without invention."
+    verified_against_production_tip: 7ec21e900341b91b50df618a89f39cd9e4a6da92
+    registry_checkpoint: SYNC-2026-10-02-007
 
   core_001_004_current_stack:
     notes:
