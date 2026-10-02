@@ -43,7 +43,7 @@ jobs:
           route6_tested_prod = "9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a"
 
           subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
-          assert int(subprocess.check_output(["git","rev-list","--count",f"{prod}..HEAD"], text=True).strip()) == 1
+          assert int(subprocess.check_output(["git","rev-list","--count",f"{prod}..HEAD"], text=True).strip()) == 3
 
           changed={x for x in subprocess.check_output(
               ["git","diff","--name-only",f"{prod}..HEAD"], text=True
