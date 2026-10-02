@@ -28,19 +28,19 @@ Verified on: `sam-edition-dev`
 
 Production branch:
 
-- `sam/evol-001-003-accessibility`
-- production head: `60caa7ffdf2730bcd75c630c2f421cc30b554711`
-- draft PR: #65
-- base branch: `sam/tm-003-signal-beam-special-class` / draft PR #64
+- `sam/enc-001-ralts-natu-final-tables`
+- production head: `1e03ef56cc063e3f9a2888640ec760e4d23d4c8a`
+- draft PR: #67
+- base branch: `sam/evol-001-003-accessibility` / draft PR #65
 
-Runtime QA branch:
+Focused QA branch:
 
-- `qa/evol-001-003-accessibility`
-- QA source: `fdc3b14b0551772ba8b32d96324e7faa32bdaf8c`
-- successful run: `36961288046`
-- QA ROM SHA-1: `5c1c083070867654ae5625bcdb15c0e161242582`
+- `qa/enc-001-ralts-natu-final-tables`
+- QA source: `08533e014c8040502ed6f3aa5e5e3f3943562ac0`
+- successful run: `37004528658`
+- QA ROM SHA-1: `e554917c75f6500a919e2f1862598340b70b7f65`
 
-This is the current delta-only production continuation point. PR #65 is stacked on verified TM-003 PR #64, which is stacked on CORE PR #63. QA branches are evidence/instrumentation only and must not be used as production ancestors.
+This is the current delta-only production continuation point. PR #67 is stacked on verified EVOL PR #65. QA branches are evidence/instrumentation only and must not be used as production ancestors. BREED PR #66 is explicitly blocked and is not a valid production continuation point.
 
 ### TM-003 Signal Beam move-class override
 
@@ -95,6 +95,18 @@ Successful run: `36962584342`
 QA ROM SHA-1: `28e65e065e466a0973843bc6985eeaa2fb6b8f69`
 
 QA-005 is PASS: all 68 TM mappings and all 8 HM indexes were exercised at runtime, exact representative later-specialist rows were checked, bounds were checked, and active source contains no TM69–TM79 numbering.
+
+### Ralts / Natu focused encounter packet
+
+Production branch: `sam/enc-001-ralts-natu-final-tables`  
+Draft PR: #67  
+Production head: `1e03ef56cc063e3f9a2888640ec760e4d23d4c8a`
+
+Verified unique production surface:
+
+- `src/data/wild_encounters.json`
+
+Focused QA `37004528658` validates current native-slot rates/levels for Route 5, Route 16, Berry Forest and Ruin Valley. Broader ENC-001 remains open for Feebas and Rock Tunnel Nosepass reconciliation. The older standalone Nosepass 4% branch is stale against the current 5% authority and must not be reused verbatim.
 
 ### Starter System
 
