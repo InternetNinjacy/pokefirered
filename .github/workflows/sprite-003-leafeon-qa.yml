@@ -1,0 +1,111 @@
+name: SPRITE-003 Leafeon QA
+
+on:
+  push:
+    branches:
+      - qa/sprite-003-leafeon-v1
+  workflow_dispatch:
+
+jobs:
+  leafeon-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/sprite-003-leafeon-v1
+          fetch-depth: 0
+
+      - name: Install build dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify Leafeon asset contract
+        run: |
+          set -euxo pipefail
+          git merge-base --is-ancestor 18f012168433591969f326bb9b59df62b8eb304c HEAD
+          python3 - <<'PY'
+          import struct
+          from pathlib import Path
+
+          def png_size(path):
+              data = Path(path).read_bytes()
+              assert data[:8] == b'\x89PNG\r\n\x1a\n'
+              return struct.unpack('>II', data[16:24])
+
+          assert png_size('graphics/pokemon/leafeon/front.png') == (64, 64)
+          assert png_size('graphics/pokemon/leafeon/back.png') == (64, 64)
+          assert png_size('graphics/pokemon/leafeon/icon.png') == (32, 64)
+          assert png_size('graphics/pokemon/leafeon/footprint.png') == (16, 16)
+
+          for pal in ('normal.pal', 'shiny.pal'):
+              lines = Path('graphics/pokemon/leafeon/' + pal).read_text().splitlines()
+              assert lines[:3] == ['JASC-PAL', '0100', '16']
+              assert len(lines[3:]) == 16
+
+          gfx = Path('src/sam_leafeon_graphics.c').read_text()
+          for token in (
+              'gMonFrontPic_Leafeon', 'gMonPalette_Leafeon', 'gMonBackPic_Leafeon',
+              'gMonShinyPalette_Leafeon', 'gMonIcon_Leafeon', 'gMonFootprint_Leafeon'
+          ):
+              assert token in gfx
+
+          checks = {
+              'src/data/pokemon_graphics/front_pic_table.h': 'SPECIES_SPRITE(LEAFEON, gMonFrontPic_Leafeon)',
+              'src/data/pokemon_graphics/back_pic_table.h': 'SPECIES_SPRITE(LEAFEON, gMonBackPic_Leafeon)',
+              'src/data/pokemon_graphics/palette_table.h': 'SPECIES_PAL(LEAFEON, gMonPalette_Leafeon)',
+              'src/data/pokemon_graphics/shiny_palette_table.h': 'SPECIES_SHINY_PAL(LEAFEON, gMonShinyPalette_Leafeon)',
+              'src/data/pokemon_graphics/footprint_table.h': '[SPECIES_LEAFEON] = gMonFootprint_Leafeon',
+              'src/pokemon_icon.c': '[SPECIES_LEAFEON]     = gMonIcon_Leafeon',
+              'src/data/pokemon/cry_ids.h': '[SPECIES_LEAFEON - HOENN_MON_SPECIES_START] = SPECIES_EEVEE - 1',
+          }
+          for path, token in checks.items():
+              assert token in Path(path).read_text(), (path, token)
+
+          front = Path('src/data/pokemon_graphics/front_pic_coordinates.h').read_text()
+          block = front.split('[SPECIES_LEAFEON] =',1)[1].split('[SPECIES_ECTOCEON]',1)[0]
+          assert 'MON_COORDS_SIZE(56, 56)' in block and '.y_offset = 6' in block
+
+          back = Path('src/data/pokemon_graphics/back_pic_coordinates.h').read_text()
+          block = back.split('[SPECIES_LEAFEON] =',1)[1].split('[SPECIES_ECTOCEON]',1)[0]
+          assert 'MON_COORDS_SIZE(48, 40)' in block and '.y_offset = 8' in block
+
+          icon = Path('src/pokemon_icon.c').read_text()
+          pal_block = icon.split('const u8 gMonIconPaletteIndices[]',1)[1]
+          assert '[SPECIES_LEAFEON]     = 1' in pal_block
+
+          print('SPRITE-003 LEAFEON ASSET CONTRACT PASS')
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make 2>&1 | tee SPRITE003_LEAFEON_BUILD.log
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee SPRITE003_LEAFEON_QA_ROM_SHA1.txt
+          git rev-parse HEAD | tee SPRITE003_LEAFEON_QA_SOURCE_SHA.txt
+          echo 18f012168433591969f326bb9b59df62b8eb304c | tee SPRITE003_LEAFEON_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sprite-003-leafeon-qa
+          path: |
+            pokefirered.gba
+            SPRITE003_LEAFEON_BUILD.log
+            SPRITE003_LEAFEON_QA_ROM_SHA1.txt
+            SPRITE003_LEAFEON_QA_SOURCE_SHA.txt
+            SPRITE003_LEAFEON_PRODUCTION_SOURCE_SHA.txt
+          if-no-files-found: warn
