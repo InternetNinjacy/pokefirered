@@ -18,6 +18,7 @@
 #include "sloopsvc.h"
 
 extern u32 intr_main[];
+void Enc002ScytherQa_RunRuntimeQa(void);
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -158,6 +159,8 @@ void AgbMain()
     gHelpSystemEnabled = FALSE;
 
     SetNotInSaveFailedScreen();
+
+    Enc002ScytherQa_RunRuntimeQa();
 
     // Revision 10 has no calls into libisagbprn except this one.
 #if !defined(NDEBUG) || REVISION >= 0xA
