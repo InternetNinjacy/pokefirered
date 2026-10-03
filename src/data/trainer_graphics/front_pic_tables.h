@@ -148,6 +148,7 @@ const struct MonCoords gTrainerFrontPicCoords[] =
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
     // ARCH-006 allocation-only trainer-picture placeholders (148-154).
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
@@ -155,6 +156,8 @@ const struct MonCoords gTrainerFrontPicCoords[] =
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    // Boreal (155).
     {.size = 8, .y_offset = 1},
 };
 
@@ -317,6 +320,7 @@ const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
     TRAINER_SPRITE(BAZ, gTrainerFrontPic_ProfessorOak, 0x800),
     TRAINER_SPRITE(BUSHRANGER_M, gTrainerFrontPic_ProfessorOak, 0x800),
     TRAINER_SPRITE(BUSHRANGER_F, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(BOREAL, gTrainerFrontPic_Boreal, 0x800),
 };
 
 const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
@@ -477,4 +481,5 @@ const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
     TRAINER_PAL(BAZ, gTrainerPalette_ProfessorOak),
     TRAINER_PAL(BUSHRANGER_M, gTrainerPalette_ProfessorOak),
     TRAINER_PAL(BUSHRANGER_F, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(BOREAL, gTrainerPalette_Boreal),
 };
