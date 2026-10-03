@@ -95,3 +95,43 @@ Route24_Movement_RocketWalkBackToPos::
 Route24_Movement_WalkDown::
 	walk_down
 	step_end
+
+Route24_EventScript_StaticAbra::
+	goto_if_questlog EventScript_ReleaseEnd
+	lock
+	faceplayer
+	checkitemspace ITEM_TWISTED_SPOON
+	goto_if_eq VAR_RESULT, FALSE, Route24_EventScript_StaticAbraNoRoom
+	setwildbattle SPECIES_ABRA, 10, ITEM_TWISTED_SPOON
+	setvar VAR_0x8004, MOVE_CONFUSION
+	setvar VAR_0x8005, 0
+	special SetEnemyEventMonMoveSlot
+	waitse
+	playmoncry SPECIES_ABRA, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	dowildbattle
+	clearflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	special QuestLog_CutRecording
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, Route24_EventScript_DefeatedStaticAbra
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, Route24_EventScript_CompleteStaticAbra
+	release
+	end
+
+Route24_EventScript_DefeatedStaticAbra::
+	giveitem ITEM_TWISTED_SPOON
+	goto Route24_EventScript_CompleteStaticAbra
+	end
+
+Route24_EventScript_CompleteStaticAbra::
+	setflag FLAG_STATIC_ROUTE24_ABRA_COMPLETE
+	removeobject VAR_LAST_TALKED
+	release
+	end
+
+Route24_EventScript_StaticAbraNoRoom::
+	msgbox Route24_Text_YouDontHaveAnyRoom
+	release
+	end
