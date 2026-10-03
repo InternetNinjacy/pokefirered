@@ -413,7 +413,7 @@ const struct CompressedSpriteSheet gMonBackPicTable[] =
     SPECIES_SPRITE(DEOXYS, gMonBackPic_Deoxys),
     SPECIES_SPRITE(CHIMECHO, gMonBackPic_Chimecho),
     // ARCH-004 placeholders; SPEC-009 supplies final custom species art.
-    SPECIES_SPRITE(LEAFEON, gMonBackPic_CircledQuestionMark),
+    SPECIES_SPRITE(LEAFEON, gMonBackPic_Leafeon),
     SPECIES_SPRITE(ECTOCEON, gMonBackPic_CircledQuestionMark),
     SPECIES_SPRITE(RHYPERIOR, gMonBackPic_CircledQuestionMark),
     SPECIES_SPRITE(EGG, gMonFrontPic_Egg),
