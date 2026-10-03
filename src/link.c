@@ -350,6 +350,9 @@ static void InitLocalLinkPlayer(void)
     gLocalLinkPlayer.version = gGameVersion + 0x4000;
     gLocalLinkPlayer.lp_field_2 = 0x8000;
     gLocalLinkPlayer.progressFlags = IsNationalPokedexEnabled();
+    // Stock FRLG never writes this field. Sam uses TRUE as a capability bit so
+    // custom species are only transferred to another Sam-compatible peer.
+    gLocalLinkPlayer.neverRead = TRUE;
     if (FlagGet(FLAG_SYS_CAN_LINK_WITH_RS))
     {
         gLocalLinkPlayer.progressFlags |= 0x10;
