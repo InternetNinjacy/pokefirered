@@ -69,8 +69,8 @@ jobs:
         run: |
           set -euxo pipefail
           make modern 2>&1 | tee SPRITE003_LEAFEON_BUILD.log
-          test -f pokefirered.gba
-          sha1sum pokefirered.gba | tee SPRITE003_LEAFEON_QA_ROM_SHA1.txt
+          test -f pokefirered_modern.gba
+          sha1sum pokefirered_modern.gba | tee SPRITE003_LEAFEON_QA_ROM_SHA1.txt
           git rev-parse HEAD | tee SPRITE003_LEAFEON_QA_SOURCE_SHA.txt
       - name: Upload evidence
         if: always()
@@ -78,7 +78,7 @@ jobs:
         with:
           name: sprite-003-leafeon-qa-v3
           path: |
-            pokefirered.gba
+            pokefirered_modern.gba
             SPRITE003_LEAFEON_BUILD.log
             SPRITE003_LEAFEON_QA_ROM_SHA1.txt
             SPRITE003_LEAFEON_QA_SOURCE_SHA.txt
