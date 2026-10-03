@@ -1,0 +1,112 @@
+name: SPEC-011 Pokedex Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/spec-011-pokedex-runtime
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  spec011-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/spec-011-pokedex-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and SPEC-011 UI wiring
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import pathlib, re, subprocess
+
+          prod = "f2a1c0757040979ec3ab7c469d9b7f8a18a6f7c5"
+          subprocess.check_call(["git", "merge-base", "--is-ancestor", prod, "HEAD"])
+
+          const = pathlib.Path("include/constants/sam_pokedex.h").read_text()
+          order = pathlib.Path("src/data/pokemon/sam_pokedex_order.h").read_text()
+          pokemon = pathlib.Path("src/pokemon.c").read_text()
+          screen = pathlib.Path("src/pokedex_screen.c").read_text()
+
+          assert "#define SAM_DEX_COUNT       205" in const
+          for token in [
+              "#define SAM_DEX_RHYPERIOR   146",
+              "#define SAM_DEX_LEAFEON     183",
+              "#define SAM_DEX_ECTOCEON    184",
+              "#define SAM_DEX_MEWTWO      204",
+              "#define SAM_DEX_MEW         205",
+          ]:
+              assert token in const
+
+          entries = re.findall(r"^\s*SPECIES_[A-Z0-9_]+,\s*//\s*(\d{3})\s*$", order, re.M)
+          assert len(entries) == 205
+          assert [int(x) for x in entries] == list(range(1, 206))
+          assert "SPECIES_RHYPERIOR, // 146" in order
+          assert "SPECIES_LEAFEON, // 183" in order
+          assert "SPECIES_ECTOCEON, // 184" in order
+          assert "SPECIES_MEWTWO, // 204" in order
+          assert "SPECIES_MEW, // 205" in order
+
+          assert "return sSamPokedexOrder[samDexNum - 1];" in pokemon
+          assert "u16 samDexNum = SpeciesToSamPokedexNum(species);" in pokemon
+          assert "return samDexNum;" in pokemon
+
+          assert "Alloc(SAM_DEX_COUNT * sizeof(struct ListMenuItem))" in screen
+          assert "species = SamPokedexNumToSpecies(i + 1);" in screen
+          assert "u16 dexNum = SpeciesToPokedexNum(species);" in screen
+          assert "DexScreen_PrintNum3LeadingZeroes(windowId, fontId, dexNum" in screen
+          assert "if (nationalDexNo == 0)" in screen
+
+          print("SPEC011 STATIC PASS")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee SPEC011_QA_ROM_SHA1.txt
+          git rev-parse HEAD | tee SPEC011_QA_SOURCE_SHA.txt
+          echo f2a1c0757040979ec3ab7c469d9b7f8a18a6f7c5 | tee SPEC011_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Run focused runtime QA
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 25s mgba -l 31 pokefirered.gba > spec011_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat spec011_runtime.log
+          grep -q "SPEC011 QA PASS 205-entry display mapping" spec011_runtime.log
+          ! grep -q "SPEC011 QA FAIL" spec011_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-011-pokedex-runtime-qa
+          path: |
+            pokefirered.gba
+            SPEC011_QA_ROM_SHA1.txt
+            SPEC011_QA_SOURCE_SHA.txt
+            SPEC011_PRODUCTION_SOURCE_SHA.txt
+            spec011_runtime.log
+          if-no-files-found: error
