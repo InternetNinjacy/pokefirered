@@ -166,6 +166,7 @@ const u16 gObjectEventPic_Fearow[] = INCBIN_U16("graphics/object_events/pics/pok
 const u16 gObjectEventPic_Kabuto[] = INCBIN_U16("graphics/object_events/pics/pokemon/kabuto.4bpp");
 const u16 gObjectEventPic_Machoke[] = INCBIN_U16("graphics/object_events/pics/pokemon/machoke.4bpp");
 const u16 gObjectEventPic_Abra[] = INCBIN_U16("graphics/object_events/pics/pokemon/abra.4bpp");
+const u16 gObjectEventPic_Miltank[] = INCBIN_U16("graphics/object_events/pics/pokemon/miltank.4bpp");
 const u32 gObjectEventPic_Rhyhorn[] = {
     0x00000000, 0x00000000, 0x11000000, 0x11100000, 0x11110000, 0x76161000, 0x77161000, 0x77161000,
     0x00000001, 0x00000008, 0x00000118, 0x00001188, 0x00011188, 0x00161671, 0x00161777, 0x00161776,
