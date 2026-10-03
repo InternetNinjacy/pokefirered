@@ -28,7 +28,7 @@ jobs:
           git merge --no-edit origin/sam/enc-002-gfx-miltank-assets
 
       - name: Update focused QA source contract
-        shell: python
+        shell: python {0}
         run: |
           from pathlib import Path
           p = Path('.github/workflows/enc-002-miltank-static-runtime-qa.yml')
