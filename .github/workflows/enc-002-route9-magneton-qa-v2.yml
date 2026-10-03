@@ -91,8 +91,6 @@ jobs:
           for token in required:
               assert token in scripts, token
 
-          # A flee/other non-win/non-catch outcome must fall through to release/end
-          # without setting the completion flag or removing the object.
           battle_tail = scripts.split('specialvar VAR_RESULT, GetBattleOutcome', 1)[1].split('Route9_EventScript_DefeatedStaticMagneton::', 1)[0]
           assert 'B_OUTCOME_WON' in battle_tail and 'B_OUTCOME_CAUGHT' in battle_tail
           assert '\trelease\n\tend' in battle_tail
@@ -103,12 +101,11 @@ jobs:
           for token in ['iv = 28;', 'iv = 29;', 'iv = 30;', 'iv = 31;', 'MON_DATA_HP_IV', 'MON_DATA_ATK_IV', 'MON_DATA_DEF_IV', 'MON_DATA_SPEED_IV', 'MON_DATA_SPATK_IV', 'MON_DATA_SPDEF_IV']:
               assert token in ivsrc
 
-          ivs = [28, 28, 29, 29, 30, 31]  # HP, Atk, Def, Speed, SpAtk, SpDef
+          ivs = [28, 28, 29, 29, 30, 31]
           type_bits = sum((iv & 1) << i for i, iv in enumerate(ivs))
           power_bits = sum(((iv >> 1) & 1) << i for i, iv in enumerate(ivs))
           hidden_power_type_index = type_bits * 15 // 63
           hidden_power_power = power_bits * 40 // 63 + 30
-          # Gen III index 10 is Grass: Fighting/Flying/Poison/Ground/Rock/Bug/Ghost/Steel/Fire/Water/Grass/...
           assert hidden_power_type_index == 10
           assert hidden_power_power == 60
 
@@ -122,7 +119,7 @@ jobs:
       - name: Build QA ROM
         run: |
           set -euxo pipefail
-          make
+          make 2>&1 | tee ENC002_MAGNETON_BUILD.log
           test -f pokefirered.gba
           sha1sum pokefirered.gba | tee ENC002_MAGNETON_QA_ROM_SHA1.txt
           git rev-parse HEAD | tee ENC002_MAGNETON_QA_SOURCE_SHA.txt
@@ -135,6 +132,7 @@ jobs:
           name: enc-002-route9-magneton-qa
           path: |
             pokefirered.gba
+            ENC002_MAGNETON_BUILD.log
             ENC002_MAGNETON_QA_ROM_SHA1.txt
             ENC002_MAGNETON_QA_SOURCE_SHA.txt
             ENC002_MAGNETON_PRODUCTION_SOURCE_SHA.txt
