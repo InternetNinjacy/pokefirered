@@ -2239,10 +2239,10 @@ s8 DexScreen_GetSetPokedexFlag(u16 nationalDexNo, u8 caseId, bool8 indexIsSpecie
     if (indexIsSpecies)
         nationalDexNo = SpeciesToNationalPokedexNum(nationalDexNo);
 
-    // Custom species can have a Sam display number before a separate internal
-    // seen/owned backing slot is assigned. Never let an unmapped species
-    // underflow into the save-data flag arrays.
-    if (nationalDexNo == 0)
+    // Keep flag access inside the actual save-data bitfield. Custom species use
+    // hidden backing numbers 412-414; their player-facing Sam Dex numbers are
+    // resolved independently.
+    if (nationalDexNo == 0 || nationalDexNo > DEX_FLAGS_NO * 8)
         return FALSE;
 
     nationalDexNo--;

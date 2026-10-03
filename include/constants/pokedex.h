@@ -425,6 +425,14 @@ enum {
 #define JOHTO_DEX_COUNT     NATIONAL_DEX_CELEBI
 #define NATIONAL_DEX_COUNT  NATIONAL_DEX_DEOXYS
 
+// Sam Edition custom species use hidden seen/owned backing numbers that are
+// deliberately separate from both species IDs and player-facing Sam Dex numbers.
+// 387-411 remain occupied by the legacy Old Unown National mappings.
+#define SAM_DEX_FLAG_LEAFEON    412
+#define SAM_DEX_FLAG_ECTOCEON   413
+#define SAM_DEX_FLAG_RHYPERIOR  414
+#define SAM_DEX_FLAG_MAX        SAM_DEX_FLAG_RHYPERIOR
+
 // Hoenn Pokedex order
 enum {
     HOENN_DEX_NONE,
