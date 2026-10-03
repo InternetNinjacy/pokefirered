@@ -134,3 +134,41 @@ MtMoon_B2F_EventScript_Grunt4::
 	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_4, MtMoon_B2F_Text_Grunt4Intro, MtMoon_B2F_Text_Grunt4Defeat
 	msgbox MtMoon_B2F_Text_Grunt4PostBattle, MSGBOX_AUTOCLOSE
 	end
+
+
+MtMoon_B2F_EventScript_StaticRhyhorn::
+	goto_if_questlog EventScript_ReleaseEnd
+	lock
+	faceplayer
+	setwildbattle SPECIES_RHYHORN, 16, ITEM_HARD_STONE
+	setvar VAR_0x8004, MOVE_ROCK_THROW
+	setvar VAR_0x8005, 0
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_HORN_ATTACK
+	setvar VAR_0x8005, 1
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_STOMP
+	setvar VAR_0x8005, 2
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_TAIL_WHIP
+	setvar VAR_0x8005, 3
+	special SetEnemyEventMonMoveSlot
+	waitse
+	playmoncry SPECIES_RHYHORN, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	dowildbattle
+	clearflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	special QuestLog_CutRecording
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, MtMoon_B2F_EventScript_CompleteStaticRhyhorn
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, MtMoon_B2F_EventScript_CompleteStaticRhyhorn
+	release
+	end
+
+MtMoon_B2F_EventScript_CompleteStaticRhyhorn::
+	setflag FLAG_STATIC_MT_MOON_RHYHORN_COMPLETE
+	removeobject VAR_LAST_TALKED
+	release
+	end
