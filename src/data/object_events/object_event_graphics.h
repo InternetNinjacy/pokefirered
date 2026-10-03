@@ -54,10 +54,6 @@ const u16 gObjectEventPal_Rhyhorn[] = {
     0x0000, 0x1083, 0x20E6, 0x2D49, 0x3DAC, 0x4A30, 0x5AB4, 0x6B38,
     0x77BC, 0x62F6, 0x41EE, 0x316A, 0x2138, 0x4F5C, 0x6F7B, 0x7FFF,
 };
-const u16 gObjectEventPal_Rhyhorn[] = {
-    0x0000, 0x1083, 0x20E6, 0x2D49, 0x3DAC, 0x4A30, 0x5AB4, 0x6B38,
-    0x77BC, 0x62F6, 0x41EE, 0x316A, 0x2138, 0x4F5C, 0x6F7B, 0x7FFF,
-};
 const u16 gObjectEventPal_NpcWhite[] = INCBIN_U16("graphics/object_events/palettes/npc_white.gbapal");
 const u16 gObjectEventPal_NpcBlueReflection[] = INCBIN_U16("graphics/object_events/palettes/npc_blue_reflection.gbapal");
 const u16 gObjectEventPal_NpcPinkReflection[] = INCBIN_U16("graphics/object_events/palettes/npc_pink_reflection.gbapal");
