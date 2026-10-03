@@ -101,11 +101,17 @@ PewterCity_Gym_EventScript_BorealRematchWon::
 PewterCity_Gym_EventScript_Satoshi::
 	lock
 	faceplayer
-	goto_if_set FLAG_BADGE01_GET, PewterCity_Gym_EventScript_SatoshiAfterBoreal
-	goto_if_set FLAG_SATOSHI_PEWTER_PRACTICE_WON, PewterCity_Gym_EventScript_SatoshiBeforeBoreal
+	satoshi_route_by_state PewterCity_Gym_EventScript_SatoshiPostgameTextPending, FLAG_BADGE01_GET, PewterCity_Gym_EventScript_SatoshiAfterBoreal, FLAG_SATOSHI_PEWTER_PRACTICE_WON, PewterCity_Gym_EventScript_SatoshiBeforeBoreal
 	msgbox PewterCity_Gym_Text_SatoshiFirst, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, PewterCity_Gym_EventScript_SatoshiPractice
 	msgbox PewterCity_Gym_Text_SatoshiDecline
+	release
+	end
+
+PewterCity_Gym_EventScript_SatoshiPostgameTextPending::
+	@ The rematch trainer is data-ready, but approved Pewter rematch offer/result
+	@ text has not been recovered. Postgame must still supersede every main-story
+	@ Satoshi state, so fail safe without launching a placeholder battle.
 	release
 	end
 
