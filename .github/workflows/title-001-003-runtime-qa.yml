@@ -141,12 +141,12 @@ jobs:
           git rev-parse HEAD | tee TITLE_QA_SOURCE_SHA.txt
           echo 22f7f806b8016832b0be1d9580d2432dc7cef29c > TITLE_PRODUCTION_SOURCE_SHA.txt
 
-      - name: Runtime START and A
+      - name: Runtime START A and idle START
         run: |
           set -euxo pipefail
           run_test() {
-            DISP="$1"; KEY="$2"; P="$3"
-            export DISPLAY="$DISP" SDL_VIDEODRIVER=x11
+            DISP="$1"; KEY="$2"; P="$3"; DELAY="${4:-0}"
+            export DISPLAY="$DISP" SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=dummy
             Xvfb "$DISP" -screen 0 960x640x24 > "${P}_xvfb.log" 2>&1 & XP=$!
             sleep 2
             mgba pokefirered.gba > "${P}.log" 2>&1 & MP=$!
@@ -154,20 +154,22 @@ jobs:
             grep -q 'TITLEQA RUN' "${P}.log"
             W=$(xdotool search --onlyvisible --class mgba 2>/dev/null | tail -n1)
             test -n "$W"
+            sleep "$DELAY"
             xdotool key --window "$W" "$KEY"
             for i in $(seq 1 25); do grep -q 'TITLEQA MAINMENU NOCRY' "${P}.log" && break; sleep 1; done
             grep -q 'TITLEQA INPUT ACCEPTED' "${P}.log"
             grep -q 'TITLEQA MAINMENU NOCRY' "${P}.log"
             kill "$MP" || true; kill "$XP" || true
           }
-          run_test :99 Return title_start
-          run_test :98 x title_a
-          echo 'TITLE QA START/A PASS'
+          run_test :99 Return title_start 0
+          run_test :98 x title_a 0
+          run_test :95 Return title_idle_start 5
+          echo 'TITLE QA START/A/IDLE-START PASS'
 
       - name: Runtime save-clear
         run: |
           set -euxo pipefail
-          export DISPLAY=:97 SDL_VIDEODRIVER=x11
+          export DISPLAY=:97 SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=dummy
           Xvfb :97 -screen 0 960x640x24 > saveclear_xvfb.log 2>&1 & XP=$!
           sleep 2
           mgba pokefirered.gba > title_saveclear.log 2>&1 & MP=$!
@@ -189,7 +191,7 @@ jobs:
       - name: Runtime timeout restart
         run: |
           set -euxo pipefail
-          export DISPLAY=:96 SDL_VIDEODRIVER=x11
+          export DISPLAY=:96 SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=dummy
           Xvfb :96 -screen 0 960x640x24 > timeout_xvfb.log 2>&1 & XP=$!
           sleep 2
           mgba pokefirered.gba > title_timeout.log 2>&1 & MP=$!
@@ -213,6 +215,7 @@ jobs:
             title_native_exact.png
             title_start.log
             title_a.log
+            title_idle_start.log
             title_saveclear.log
             title_timeout.log
           if-no-files-found: warn
