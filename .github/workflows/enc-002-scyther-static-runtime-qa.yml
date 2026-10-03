@@ -63,9 +63,9 @@ jobs:
           info=pathlib.Path("src/data/object_events/object_event_graphics_info.h").read_text()
           assert ".paletteTag = OBJ_EVENT_PAL_TAG_SCYTHER" in info
           assert ".paletteSlot = PALSLOT_NPC_SPECIAL" in info
-          png=pathlib.Path("graphics/object_events/pics/pokemon/scyther.png").read_bytes()
-          assert png[:8]==b"\x89PNG\r\n\x1a\n"
-          w,h=struct.unpack(">II",png[16:24]); assert (w,h)==(16,144)
+          gfx=pathlib.Path("src/data/object_events/object_event_graphics.h").read_text()
+          assert "const u32 gObjectEventPic_Scyther[] = {" in gfx
+          assert gfx.count("0x") >= 288
           pal=pathlib.Path("graphics/object_events/palettes/scyther.pal").read_text().splitlines()
           assert pal[:3]==["JASC-PAL","0100","16"] and len(pal[3:])==16
           print("ENC002 SCYTHER STATIC SOURCE PASS")
