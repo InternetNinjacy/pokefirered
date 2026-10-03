@@ -177,8 +177,9 @@
 #define OBJ_EVENT_GFX_ABRA               162
 #define OBJ_EVENT_GFX_MILTANK            163
 #define OBJ_EVENT_GFX_MAGNETON           164
+#define OBJ_EVENT_GFX_ONIX               165
 
-#define NUM_OBJ_EVENT_GFX                165
+#define NUM_OBJ_EVENT_GFX                166
 
 // These are dynamic object gfx ids.
 // They correspond with the values of the VAR_OBJ_GFX_ID_X vars.
@@ -213,7 +214,7 @@
 #if OBJ_EVENT_GFX_VARS != 240 || OBJ_EVENT_GFX_VAR_F != 255
 #error "ARCH-006: dynamic OBJ graphics range must remain 240-255"
 #endif
-#if OBJ_EVENT_GFX_MAGNETON >= OBJ_EVENT_GFX_VARS || NUM_OBJ_EVENT_GFX > OBJ_EVENT_GFX_VARS
+#if OBJ_EVENT_GFX_ONIX >= OBJ_EVENT_GFX_VARS || NUM_OBJ_EVENT_GFX > OBJ_EVENT_GFX_VARS
 #error "ARCH-006: fixed Sam OBJ graphics crossed into the dynamic range"
 #endif
 

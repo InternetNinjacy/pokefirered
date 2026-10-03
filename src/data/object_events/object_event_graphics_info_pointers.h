@@ -139,6 +139,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Rhyhorn;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Abra;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Miltank;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Magneton;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Onix;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lapras;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Zapdos;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Moltres;
@@ -326,4 +327,5 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_ABRA]                     = &gObjectEventGraphicsInfo_Abra,
     [OBJ_EVENT_GFX_MILTANK]                  = &gObjectEventGraphicsInfo_Miltank,
     [OBJ_EVENT_GFX_MAGNETON]                 = &gObjectEventGraphicsInfo_Magneton,
+    [OBJ_EVENT_GFX_ONIX]                     = &gObjectEventGraphicsInfo_Onix,
 };
