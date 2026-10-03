@@ -439,7 +439,7 @@ const u8 *const gMonIconTable[] = {
     [SPECIES_DEOXYS]      = gMonIcon_Deoxys,
     [SPECIES_CHIMECHO]    = gMonIcon_Chimecho,
     // ARCH-004 placeholders; SPEC-009 supplies final custom species icons.
-    [SPECIES_LEAFEON]     = gMonIcon_QuestionMark,
+    [SPECIES_LEAFEON]     = gMonIcon_Leafeon,
     [SPECIES_ECTOCEON]    = gMonIcon_QuestionMark,
     [SPECIES_RHYPERIOR]   = gMonIcon_QuestionMark,
     [SPECIES_EGG]         = gMonIcon_Egg,
@@ -885,7 +885,7 @@ const u8 gMonIconPaletteIndices[] = {
     [SPECIES_JIRACHI]     = 0,
     [SPECIES_DEOXYS]      = 0,
     [SPECIES_CHIMECHO]    = 0,
-    [SPECIES_LEAFEON]     = 0,
+    [SPECIES_LEAFEON]     = 1,
     [SPECIES_ECTOCEON]    = 0,
     [SPECIES_RHYPERIOR]   = 0,
     [SPECIES_EGG]         = 1,
