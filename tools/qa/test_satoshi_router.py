@@ -1,7 +1,7 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-macro = (ROOT / "asm/macros/satoshi.inc").read_text()
+macro = (ROOT / "asm/macros.inc").read_text()
 pewter = (ROOT / "data/maps/PewterCity_Gym/scripts.inc").read_text()
 
 
