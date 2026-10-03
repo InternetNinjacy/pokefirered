@@ -5,12 +5,16 @@
 #include "constants/pokedex.h"
 #include "constants/species.h"
 
+#define QA_MGBA_DEBUG_ENABLE ((vu16 *)0x4FFF780)
 #define QA_MGBA_DEBUG_FLAGS  ((vu16 *)0x4FFF700)
 #define QA_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)
 
 static void Log(const char *text)
 {
     u32 i = 0;
+
+    // mGBA ignores the debug string/flags registers until the API is enabled.
+    *QA_MGBA_DEBUG_ENABLE = 0xC0DE;
     while (text[i] != '\0' && i < 255)
     {
         QA_MGBA_DEBUG_STRING[i] = text[i];
