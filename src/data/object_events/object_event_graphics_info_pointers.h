@@ -135,6 +135,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Doduo;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Fearow;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Machoke;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Scyther;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Rhyhorn;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lapras;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Zapdos;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Moltres;
@@ -319,4 +320,5 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_BUSHRANGER_F]             = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BOREAL]                   = &gObjectEventGraphicsInfo_Boreal,
     [OBJ_EVENT_GFX_SCYTHER]                  = &gObjectEventGraphicsInfo_Scyther,
+    [OBJ_EVENT_GFX_RHYHORN]                  = &gObjectEventGraphicsInfo_Rhyhorn,
 };
