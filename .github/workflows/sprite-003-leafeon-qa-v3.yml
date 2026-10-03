@@ -17,7 +17,7 @@ jobs:
         run: |
           set -euxo pipefail
           timeout 300s sudo apt-get update
-          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev
+          timeout 900s sudo apt-get install -y build-essential gcc-arm-none-eabi binutils-arm-none-eabi git libpng-dev
       - name: Build and install agbcc
         run: |
           set -euxo pipefail
