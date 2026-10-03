@@ -1,0 +1,43 @@
+name: Green Part 2A source staging retry
+
+on:
+  push:
+    branches:
+      - sam/green-part2a-naming-flow
+
+permissions:
+  contents: write
+
+jobs:
+  stage:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply validated transformation
+        shell: bash
+        run: |
+          awk '/^[[:space:]]*python - <<'\''PY'\''/{capture=1; next} capture && /^[[:space:]]*PY$/{exit} capture{sub(/^[[:space:]]{10}/, ""); print}' .github/workflows/green_part2a_port.yml > /tmp/apply_green_2a.py
+          python /tmp/apply_green_2a.py
+      - name: Verify naming contract
+        run: |
+          grep -q 'sGreenNameChoice_Green\[\].*GREEN' src/oak_speech.c
+          grep -q 'sGreenNameChoice_Susan\[\].*SUSAN' src/oak_speech.c
+          grep -q 'sGreenNameChoice_Amy\[\].*AMY' src/oak_speech.c
+          grep -q 'sGreenNameChoice_Jess\[\].*JESS' src/oak_speech.c
+          grep -q 'gSaveBlock1Ptr->sam.greenName' src/oak_speech.c
+          grep -q 'gSaveBlock1Ptr->rivalName' src/oak_speech.c
+          grep -q 'NAME_TARGET_GREEN' src/oak_speech.c
+          grep -q 'gOakSpeech_Text_WhatWasHerName' data/text/new_game_intro.inc
+          grep -q 'u8 greenName\[PLAYER_NAME_LENGTH + 1\]' include/global.h
+          test "$(grep -c 'static const u8 sGreenNameChoice_' src/oak_speech.c)" -eq 4
+      - name: Commit production source
+        run: |
+          rm .github/workflows/green_part2a_port.yml .github/workflows/green_part2a_commit_retry.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/oak_speech.c data/text/new_game_intro.inc .github/workflows/green_part2a_port.yml .github/workflows/green_part2a_commit_retry.yml
+          git commit -m 'RIV-003/RIV-013: implement Green opening naming flow'
+          git push origin HEAD:sam/green-part2a-naming-flow
