@@ -4,6 +4,7 @@
 #include "constants/event_objects.h"
 
 #define OBJ_EVENT_PAL_TAG_NPC_BLUE 0x1103
+#define OBJ_EVENT_PAL_TAG_NONE 0x11FF
 #define MAGNETON_FRAME_SIZE 128
 
 extern const struct OamData gObjectEventBaseOam_16x16;
