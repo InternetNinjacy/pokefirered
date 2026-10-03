@@ -1,6 +1,6 @@
 # ENC-002 GFX — Miltank asset checkpoint
 
-Status: art direction approved; engine source asset created.
+Status: art direction approved; engine source asset created and re-indexed to an existing native object-event palette.
 
 Authority:
 - species-specific Option A overworld graphic
@@ -12,7 +12,7 @@ Engine asset contract:
 - nine logical frames
 - east-facing frames mirrored from west by engine behavior
 - indexed 4bpp
-- 16 palette entries
+- maximum 16 palette entries
 - palette index 0 reserved for transparency
 - no alpha, anti-aliasing, or gradients
 
@@ -36,26 +36,31 @@ Recognition priorities:
 6. readable tail in side/back frames
 7. dark hooves
 
-Generated engine resources:
+Generated engine resource:
 - `graphics/object_events/pics/pokemon/miltank.4bpp`
-- `graphics/object_events/palettes/miltank.pal`
+
+Palette routing:
+- the artwork is indexed directly against FireRed's already-registered `gObjectEventPal_NpcPink` / `OBJ_EVENT_PAL_TAG_NPC_PINK` palette
+- this preserves the required pink/cream/dark/white read while avoiding a new global object-palette allocation
+- no unrelated sprite is substituted; only the palette resource is reused
 
 Validation:
 - 9 frames x 16x16
 - 128 bytes per 4bpp frame
 - total graphics payload: 1152 bytes
-- palette entries: 16
 - transparency index: 0
 
 SHA-256:
-- miltank.4bpp: `c88053b8ea11a45f551c8af8dfb0ce4f5f1c78c36798a1c8ab69f2c548a45600`
-- miltank.pal: `3a6c9a1a33fa3a0885973e2a5e7c92b77a56fe0a094cf520b5cc866e0801befa`
+- miltank.4bpp: `a22af6358c8e8025f67b0d4311ae4f940eee086cc24fa7c7d24065db334fd473`
 
-Next implementation steps:
-- allocate `OBJ_EVENT_GFX_MILTANK = 163`
-- register dedicated object-event palette tag
-- register nine-frame pic table / graphics info / pointer
-- implement Route 5 Lv.18 Miltank @ Silk Scarf with Tackle / Rollout / Defense Curl / Stomp
-- use `FLAG_STATIC_ROUTE5_MILTANK_COMPLETE = 0x363`
+Implementation state:
+- `OBJ_EVENT_GFX_MILTANK = 163` allocated
+- Route 5 object placed at implementation-owned coordinate `(27,24)`, in the open grass immediately east of the Day Care and away from the door/mandatory route
+- Route 5 Lv.18 Miltank @ Silk Scarf scripted with Tackle / Rollout / Defense Curl / Stomp
+- `FLAG_STATIC_ROUTE5_MILTANK_COMPLETE = 0x363`
 - capture/defeat complete and remove; flee preserves
-- focused build/runtime QA
+
+Remaining steps:
+- register nine-frame pic table / graphics info / pointer using the existing native pink palette tag
+- build verification
+- focused runtime/save-load QA
