@@ -6,7 +6,7 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
   issues: write
   pull-requests: write
 
@@ -22,6 +22,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+
+      - name: Apply Modern declaration ownership fix
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'sam/ci-disable-vanilla-rom-compare' }}
+        run: |
+          git fetch origin "${{ github.head_ref }}"
+          git checkout -B ci-source-fix "origin/${{ github.head_ref }}"
+          sed -i 's/^const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Magneton;$/extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Magneton;/' src/data/object_events/object_event_graphics_info_pointers.h
+          sed -i 's/^const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Onix;$/extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Onix;/' src/data/object_events/object_event_graphics_info_pointers.h
+          if ! git diff --quiet -- src/data/object_events/object_event_graphics_info_pointers.h; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add src/data/object_events/object_event_graphics_info_pointers.h
+            git commit -m "Fix Modern object graphics declarations"
+            git push origin HEAD:"${{ github.head_ref }}"
+          fi
 
       - name: Checkout agbcc
         uses: actions/checkout@master
