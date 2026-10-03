@@ -787,6 +787,13 @@
 #define TRAINER_LEADER_BOREAL_PEWTER              777
 #define TRAINER_LEADER_BOREAL_REMATCH_PEWTER      778
 
+// Vermilion Water Gym central allocations: 779-783.
+#define TRAINER_LIFEGUARD_TYLER_VERMILION         779
+#define TRAINER_SURFER_CODY_VERMILION              780
+#define TRAINER_BEACH_FAMILY_LISA_BEN_VERMILION    781
+#define TRAINER_LEADER_SURGE_VERMILION              782
+#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783
+
 // Blue League branch allocations: 800-803.
 #define TRAINER_ELITE_FOUR_BLUE_WATER             800
 #define TRAINER_ELITE_FOUR_BLUE_ELECTRIC          801
@@ -801,7 +808,7 @@
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             779
+#define NUM_TRAINERS                             784
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
