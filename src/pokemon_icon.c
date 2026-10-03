@@ -441,7 +441,7 @@ const u8 *const gMonIconTable[] = {
     // ARCH-004 placeholders; SPEC-009 supplies final custom species icons.
     [SPECIES_LEAFEON]     = gMonIcon_Leafeon,
     [SPECIES_ECTOCEON]    = gMonIcon_Ectoceon,
-    [SPECIES_RHYPERIOR]   = gMonIcon_QuestionMark,
+    [SPECIES_RHYPERIOR]   = gMonIcon_Rhyperior,
     [SPECIES_EGG]         = gMonIcon_Egg,
     [SPECIES_UNOWN_B]     = gMonIcon_UnownB,
     [SPECIES_UNOWN_C]     = gMonIcon_UnownC,
