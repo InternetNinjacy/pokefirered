@@ -34,7 +34,15 @@ jobs:
       - name: Verify production ancestry
         run: |
           set -euxo pipefail
-          git merge-base --is-ancestor e480dd37a1586ccf220acb46e1a3ef024317f7fd HEAD
+          git merge-base --is-ancestor 31d221ebe9e8849c565c86a167bdc8809d7c7572 HEAD
+          git diff --exit-code e480dd37a1586ccf220acb46e1a3ef024317f7fd -- \
+            src/magneton_object_graphics.c \
+            src/magneton_static.c \
+            data/maps/Route9/map.json \
+            data/maps/Route9/scripts.inc \
+            include/constants/event_objects.h \
+            include/constants/flags.h \
+            src/data/object_events/object_event_graphics_info_pointers.h
 
       - name: Sync current Miltank base normalization for integration build
         run: |
