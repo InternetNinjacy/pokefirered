@@ -1417,7 +1417,7 @@ static u16 DexScreen_CountMonsInOrderedList(u8 orderIdx)
         }
         break;
     case DEX_ORDER_ATOZ:
-        for (i = 0; i < NUM_SPECIES - 1; i++)
+        for (i = 0; i < ARRAY_COUNT(gPokedexOrder_Alphabetical); i++)
         {
             species = NationalPokedexNumToSpecies(gPokedexOrder_Alphabetical[i]);
             samDexNum = SpeciesToSamPokedexNum(species);
@@ -1436,7 +1436,7 @@ static u16 DexScreen_CountMonsInOrderedList(u8 orderIdx)
         }
         break;
     case DEX_ORDER_TYPE:
-        for (i = 0; i < NUM_SPECIES - 1; i++)
+        for (i = 0; i < ARRAY_COUNT(gPokedexOrder_Type); i++)
         {
             species = gPokedexOrder_Type[i];
             samDexNum = SpeciesToSamPokedexNum(species);
@@ -1455,7 +1455,7 @@ static u16 DexScreen_CountMonsInOrderedList(u8 orderIdx)
         }
         break;
     case DEX_ORDER_LIGHTEST:
-        for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+        for (i = 0; i < ARRAY_COUNT(gPokedexOrder_Weight); i++)
         {
             species = NationalPokedexNumToSpecies(gPokedexOrder_Weight[i]);
             samDexNum = SpeciesToSamPokedexNum(species);
@@ -1474,7 +1474,7 @@ static u16 DexScreen_CountMonsInOrderedList(u8 orderIdx)
         }
         break;
     case DEX_ORDER_SMALLEST:
-        for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+        for (i = 0; i < ARRAY_COUNT(gPokedexOrder_Height); i++)
         {
             species = NationalPokedexNumToSpecies(gPokedexOrder_Height[i]);
             samDexNum = SpeciesToSamPokedexNum(species);
