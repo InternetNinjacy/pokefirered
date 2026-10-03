@@ -39,69 +39,68 @@ jobs:
           oak_path = Path('src/oak_speech.c')
           oak = oak_path.read_text()
           oak = oak.replace('#include "constants/songs.h"\n', '#include "constants/songs.h"\n#include "gba/isagbprint.h"\n', 1)
-          marker = '''static void GetDefaultName(u8 namingTarget, u8 nameChoice)\n{'''
+          marker = 'static void GetDefaultName(u8 namingTarget, u8 nameChoice)\n{'
           if marker not in oak:
               raise SystemExit('GetDefaultName marker missing')
 
-          # Append a QA-only probe in the same translation unit so it executes the real static preset routine.
-          oak += r'''
-
-#define RIV013_MGBA_DEBUG_FLAGS  ((vu16 *)0x4FFF700)
-#define RIV013_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)
-
-static void Riv013QaLog(const char *text)
-{
-    u32 i = 0;
-    while (text[i] != '\0' && i < 255)
-    {
-        RIV013_MGBA_DEBUG_STRING[i] = text[i];
-        i++;
-    }
-    RIV013_MGBA_DEBUG_STRING[i] = '\0';
-    *RIV013_MGBA_DEBUG_FLAGS = MGBA_LOG_INFO | 0x100;
-}
-
-void Riv013_RunRuntimeQa(void)
-{
-    static const u8 sBlueSentinel[] = _("BLUEQA");
-    static const u8 sCustomGreen[] = _("CUSTOM");
-    u8 i;
-
-    StringCopy(gSaveBlock1Ptr->rivalName, sBlueSentinel);
-
-    for (i = 0; i < ARRAY_COUNT(sGreenNameChoices); i++)
-    {
-        GetDefaultName(NAME_TARGET_GREEN, i);
-        if (StringCompare(gSaveBlock1Ptr->samEdition.greenName, sGreenNameChoices[i]) != 0)
-        {
-            Riv013QaLog("RIV013 FAIL Green preset write");
-            for (;;);
-        }
-        if (StringCompare(gSaveBlock1Ptr->rivalName, sBlueSentinel) != 0)
-        {
-            Riv013QaLog("RIV013 FAIL Blue storage changed");
-            for (;;);
-        }
-    }
-
-    // The custom naming screen is wired directly to this buffer in production.
-    // Exercise that persistent target at runtime without changing production source.
-    StringCopy(gSaveBlock1Ptr->samEdition.greenName, sCustomGreen);
-    if (StringCompare(gSaveBlock1Ptr->samEdition.greenName, sCustomGreen) != 0)
-    {
-        Riv013QaLog("RIV013 FAIL custom Green buffer");
-        for (;;);
-    }
-    if (StringCompare(gSaveBlock1Ptr->rivalName, sBlueSentinel) != 0)
-    {
-        Riv013QaLog("RIV013 FAIL custom path touched Blue");
-        for (;;);
-    }
-
-    Riv013QaLog("RIV013 PASS runtime Green presets custom target Blue isolation");
-    for (;;);
-}
-'''
+          probe_lines = [
+              '',
+              '',
+              '#define RIV013_MGBA_DEBUG_FLAGS  ((vu16 *)0x4FFF700)',
+              '#define RIV013_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)',
+              '',
+              'static void Riv013QaLog(const char *text)',
+              '{',
+              '    u32 i = 0;',
+              "    while (text[i] != '\\0' && i < 255)",
+              '    {',
+              '        RIV013_MGBA_DEBUG_STRING[i] = text[i];',
+              '        i++;',
+              '    }',
+              "    RIV013_MGBA_DEBUG_STRING[i] = '\\0';",
+              '    *RIV013_MGBA_DEBUG_FLAGS = MGBA_LOG_INFO | 0x100;',
+              '}',
+              '',
+              'void Riv013_RunRuntimeQa(void)',
+              '{',
+              '    static const u8 sBlueSentinel[] = _("BLUEQA");',
+              '    static const u8 sCustomGreen[] = _("CUSTOM");',
+              '    u8 i;',
+              '',
+              '    StringCopy(gSaveBlock1Ptr->rivalName, sBlueSentinel);',
+              '    for (i = 0; i < ARRAY_COUNT(sGreenNameChoices); i++)',
+              '    {',
+              '        GetDefaultName(NAME_TARGET_GREEN, i);',
+              '        if (StringCompare(gSaveBlock1Ptr->samEdition.greenName, sGreenNameChoices[i]) != 0)',
+              '        {',
+              '            Riv013QaLog("RIV013 FAIL Green preset write");',
+              '            for (;;);',
+              '        }',
+              '        if (StringCompare(gSaveBlock1Ptr->rivalName, sBlueSentinel) != 0)',
+              '        {',
+              '            Riv013QaLog("RIV013 FAIL Blue storage changed");',
+              '            for (;;);',
+              '        }',
+              '    }',
+              '',
+              '    StringCopy(gSaveBlock1Ptr->samEdition.greenName, sCustomGreen);',
+              '    if (StringCompare(gSaveBlock1Ptr->samEdition.greenName, sCustomGreen) != 0)',
+              '    {',
+              '        Riv013QaLog("RIV013 FAIL custom Green buffer");',
+              '        for (;;);',
+              '    }',
+              '    if (StringCompare(gSaveBlock1Ptr->rivalName, sBlueSentinel) != 0)',
+              '    {',
+              '        Riv013QaLog("RIV013 FAIL custom path touched Blue");',
+              '        for (;;);',
+              '    }',
+              '',
+              '    Riv013QaLog("RIV013 PASS runtime Green presets custom target Blue isolation");',
+              '    for (;;);',
+              '}',
+              '',
+          ]
+          oak += '\n'.join(probe_lines)
           oak_path.write_text(oak)
 
           title_path = Path('src/title_screen.c')
