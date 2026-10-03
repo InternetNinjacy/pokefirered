@@ -104,7 +104,9 @@ static void SetDexFlags(void)
 {
     u32 i;
 
-    ResetPokedex();
+    CpuFill16(0, &gSaveBlock2Ptr->pokedex, sizeof(gSaveBlock2Ptr->pokedex));
+    CpuFill16(0, gSaveBlock1Ptr->seen1, sizeof(gSaveBlock1Ptr->seen1));
+    CpuFill16(0, gSaveBlock1Ptr->seen2, sizeof(gSaveBlock1Ptr->seen2));
     for (i = 0; i < ARRAY_COUNT(sSpecies); i++)
     {
         GetSetPokedexFlag(sBacking[i], FLAG_SET_SEEN);
