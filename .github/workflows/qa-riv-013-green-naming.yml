@@ -1,0 +1,94 @@
+name: QA RIV-013 Green Naming
+
+on:
+  push:
+    branches:
+      - qa/riv-013-green-naming-flow
+  pull_request:
+    branches:
+      - sam/riv-013-green-naming-flow
+
+permissions:
+  contents: read
+
+jobs:
+  focused-green-naming:
+    runs-on: ubuntu-latest
+    env:
+      GAME_VERSION: FIRERED
+      GAME_LANGUAGE: ENGLISH
+      GAME_REVISION: 0
+      MODERN: 0
+      COMPARE: 0
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+
+      - name: Static RIV-013 contract checks
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          source = Path('src/oak_speech.c').read_text()
+
+          required = [
+              'NAME_TARGET_PLAYER',
+              'NAME_TARGET_BLUE',
+              'NAME_TARGET_GREEN',
+              'sNameChoice_GreenSam[] = _("GREEN")',
+              'sNameChoice_Susan[] = _("SUSAN")',
+              'sNameChoice_Amy[] = _("AMY")',
+              'sNameChoice_Jess[] = _("JESS")',
+              'sGreenNameChoices[]',
+              'Task_OakSpeech_FadeInGreenPic',
+              'Task_OakSpeech_AskGreenName',
+              'Task_OakSpeech_FadeOutGreenPic',
+              'DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock1Ptr->samEdition.greenName',
+              'dest = gSaveBlock1Ptr->samEdition.greenName;',
+              'gTasks[taskId].func = Task_OakSpeech_FadeInGreenPic;',
+              'sOakSpeechResources->namingTarget = NAME_TARGET_GREEN;',
+          ]
+          for token in required:
+              assert token in source, f'missing RIV-013 contract token: {token}'
+
+          forbidden = [
+              'sOakSpeechResources->hasPlayerBeenNamed',
+          ]
+          for token in forbidden:
+              assert token not in source, f'stale two-target naming state remains: {token}'
+
+          # Blue and Green must retain separate backing fields.
+          assert 'dest = gSaveBlock1Ptr->rivalName;' in source
+          assert 'dest = gSaveBlock1Ptr->samEdition.greenName;' in source
+          assert 'DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock1Ptr->rivalName' in source
+          assert 'DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock1Ptr->samEdition.greenName' in source
+
+          # Green is inserted after Blue confirmation and before returning to the player.
+          blue_to_green = source.index('gTasks[taskId].func = Task_OakSpeech_FadeInGreenPic;')
+          green_task = source.index('static void Task_OakSpeech_FadeInGreenPic(u8 taskId)', blue_to_green)
+          return_task = source.index('static void Task_OakSpeech_ReshowPlayersPic(u8 taskId)', green_task)
+          assert blue_to_green < green_task < return_task
+
+          print('RIV-013 static contract checks passed')
+          PY
+
+      - name: Checkout agbcc
+        uses: actions/checkout@v4
+        with:
+          repository: pret/agbcc
+          path: agbcc
+
+      - name: Install binutils
+        run: |
+          sudo apt update
+          sudo apt install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
+
+      - name: Install agbcc
+        working-directory: ./agbcc
+        run: |
+          ./build.sh
+          ./install.sh ../
+
+      - name: Build FireRed without stock-ROM comparison
+        run: make -j$(nproc) all
