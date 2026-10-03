@@ -19,7 +19,7 @@ jobs:
         run: |
           set -euxo pipefail
           sudo apt update
-          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl xvfb
           mgba --version || true
 
       - name: Build and install agbcc
@@ -124,14 +124,20 @@ jobs:
       - name: Run Green naming runtime probe
         run: |
           set -euxo pipefail
-          export SDL_VIDEODRIVER=dummy
-          export SDL_AUDIODRIVER=dummy
-          timeout --signal=TERM 6s mgba -l 31 pokefirered.gba > riv013_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          set +e
+          timeout --signal=TERM 8s xvfb-run -a env SDL_AUDIODRIVER=dummy mgba -l 31 pokefirered.gba > riv013_runtime.log 2>&1
+          status=$?
+          set -e
           cat riv013_runtime.log
+          if [ "$status" -ne 0 ] && [ "$status" -ne 124 ] && [ "$status" -ne 143 ]; then
+            echo "mGBA/Xvfb exited unexpectedly with status $status"
+            exit "$status"
+          fi
           grep -q 'RIV013 PASS runtime Green presets custom target Blue isolation' riv013_runtime.log
           ! grep -q 'RIV013 FAIL' riv013_runtime.log
 
       - name: Upload runtime evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: riv-013-runtime-green-naming
@@ -139,4 +145,4 @@ jobs:
             RIV013_RUNTIME_ROM_SHA1.txt
             RIV013_RUNTIME_SOURCE_SHA.txt
             riv013_runtime.log
-          if-no-files-found: error
+          if-no-files-found: warn
