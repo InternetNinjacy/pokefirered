@@ -1,5 +1,3 @@
-	.include "asm/macros/satoshi.inc"
-
 PewterCity_Gym_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, PewterCity_Gym_OnResume
 	map_script MAP_SCRIPT_ON_LOAD, PewterCity_Gym_OnLoad
