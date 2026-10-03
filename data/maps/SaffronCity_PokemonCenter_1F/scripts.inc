@@ -1,7 +1,12 @@
 SaffronCity_PokemonCenter_1F_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, SaffronCity_PokemonCenter_1F_OnLoad
 	map_script MAP_SCRIPT_ON_TRANSITION, SaffronCity_PokemonCenter_1F_OnTransition
 	map_script MAP_SCRIPT_ON_RESUME, CableClub_OnResume
 	.byte 0
+
+SaffronCity_PokemonCenter_1F_OnLoad::
+	call EventScript_ThomasSyncVisibility
+	end
 
 SaffronCity_PokemonCenter_1F_OnTransition::
 	setrespawn HEAL_LOCATION_SAFFRON_CITY
