@@ -8,7 +8,7 @@
 #define MAGNETON_FRAME_SIZE 128
 
 extern const struct OamData gObjectEventBaseOam_16x16;
-extern const struct SubspriteTable *const gObjectEventSpriteOamTables_16x16[];
+extern const struct SubspriteTable gObjectEventSpriteOamTables_16x16[];
 
 const u16 gObjectEventPic_Magneton[] = INCBIN_U16("graphics/object_events/pics/pokemon/magneton.4bpp");
 
