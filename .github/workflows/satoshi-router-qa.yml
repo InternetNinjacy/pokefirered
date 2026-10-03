@@ -3,7 +3,7 @@ name: Satoshi Router QA
 on:
   pull_request:
     paths:
-      - 'asm/macros/satoshi.inc'
+      - 'asm/macros.inc'
       - 'data/maps/PewterCity_Gym/scripts.inc'
       - 'tools/qa/test_satoshi_router.py'
       - '.github/workflows/satoshi-router-qa.yml'
