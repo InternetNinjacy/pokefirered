@@ -2,6 +2,8 @@ name: SPRITE-003 Leafeon QA v3
 on:
   push:
     branches: [qa/sprite-003-leafeon-v3]
+  pull_request:
+    branches: [sam/sprite-003-leafeon-assets]
   workflow_dispatch:
 jobs:
   leafeon-qa:
@@ -66,7 +68,7 @@ jobs:
       - name: Build QA ROM
         run: |
           set -euxo pipefail
-          make 2>&1 | tee SPRITE003_LEAFEON_BUILD.log
+          make modern 2>&1 | tee SPRITE003_LEAFEON_BUILD.log
           test -f pokefirered.gba
           sha1sum pokefirered.gba | tee SPRITE003_LEAFEON_QA_ROM_SHA1.txt
           git rev-parse HEAD | tee SPRITE003_LEAFEON_QA_SOURCE_SHA.txt
