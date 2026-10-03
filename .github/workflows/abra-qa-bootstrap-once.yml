@@ -18,11 +18,10 @@ jobs:
           ref: qa/enc-002-abra-static-runtime
           fetch-depth: 0
 
-      - name: Patch QA entry point and write focused workflow
+      - name: Patch QA entry point
         shell: python
         run: |
           from pathlib import Path
-
           p=Path('src/main.c')
           s=p.read_text()
           old='extern u32 intr_main[];\n'
@@ -37,133 +36,10 @@ jobs:
               s=s.replace(old,new,1)
           p.write_text(s)
 
-          workflow = r'''name: ENC-002 Abra Static Runtime QA
-
-          on:
-            push:
-              branches:
-                - qa/enc-002-abra-static-runtime
-            pull_request:
-            workflow_dispatch:
-
-          jobs:
-            enc002-abra-qa:
-              runs-on: ubuntu-24.04
-              steps:
-                - name: Checkout QA branch
-                  uses: actions/checkout@v4
-                  with:
-                    ref: qa/enc-002-abra-static-runtime
-                    fetch-depth: 0
-                - name: Install build and emulator dependencies
-                  run: |
-                    set -euxo pipefail
-                    timeout 300s sudo apt-get update
-                    timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
-                    mgba --version || true
-                - name: Build and install agbcc
-                  run: |
-                    set -euxo pipefail
-                    cd ..
-                    git clone https://github.com/pret/agbcc.git
-                    cd agbcc
-                    ./build.sh
-                    ./install.sh ../pokefirered
-                - name: Verify production ancestry and exact source contract
-                  run: |
-                    set -euxo pipefail
-                    python3 - <<'PY'
-                    import json, pathlib, subprocess
-                    prod='395556183396cfab0bb582671f313675dd70577d'
-                    subprocess.check_call(['git','merge-base','--is-ancestor',prod,'HEAD'])
-                    flags=pathlib.Path('include/constants/flags.h').read_text()
-                    assert '#define FLAG_STATIC_ROUTE24_ABRA_COMPLETE              0x362' in flags
-                    eo=pathlib.Path('include/constants/event_objects.h').read_text()
-                    assert '#define OBJ_EVENT_GFX_ABRA               162' in eo
-                    assert '#define NUM_OBJ_EVENT_GFX                163' in eo
-                    m=json.loads(pathlib.Path('data/maps/Route24/map.json').read_text())
-                    objs=[o for o in m['object_events'] if o.get('script')=='Route24_EventScript_StaticAbra']
-                    assert len(objs)==1
-                    o=objs[0]
-                    assert o['graphics_id']=='OBJ_EVENT_GFX_ABRA'
-                    assert (o['x'],o['y'],o['elevation'])==(5,17,3)
-                    assert o['flag']=='FLAG_STATIC_ROUTE24_ABRA_COMPLETE'
-                    s=pathlib.Path('data/maps/Route24/scripts.inc').read_text()
-                    required=[
-                      'setwildbattle SPECIES_ABRA, 10, ITEM_TWISTED_SPOON',
-                      'MOVE_CONFUSION',
-                      'goto_if_eq VAR_RESULT, B_OUTCOME_WON, Route24_EventScript_DefeatedStaticAbra',
-                      'goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, Route24_EventScript_CompleteStaticAbra',
-                      'Route24_EventScript_DefeatedStaticAbra::',
-                      'giveitem ITEM_TWISTED_SPOON',
-                      'setflag FLAG_STATIC_ROUTE24_ABRA_COMPLETE',
-                      'removeobject VAR_LAST_TALKED'
-                    ]
-                    for token in required: assert token in s
-                    start=s.index('Route24_EventScript_StaticAbra::')
-                    defeated=s.index('Route24_EventScript_DefeatedStaticAbra::')
-                    pre=s[start:defeated]
-                    assert 'setflag FLAG_STATIC_ROUTE24_ABRA_COMPLETE' not in pre
-                    assert pre.rstrip().endswith('release\n\tend')
-                    defeated_block=s[defeated:s.index('Route24_EventScript_CompleteStaticAbra::')]
-                    assert 'giveitem ITEM_TWISTED_SPOON' in defeated_block
-                    mov=pathlib.Path('src/event_object_movement.c').read_text()
-                    assert '#define OBJ_EVENT_PAL_TAG_ABRA                         0x111E' in mov
-                    assert '{gObjectEventPal_Abra,                    OBJ_EVENT_PAL_TAG_ABRA},' in mov
-                    gfx=pathlib.Path('src/data/object_events/object_event_graphics.h').read_text()
-                    assert 'const u16 gObjectEventPic_Abra[] = INCBIN_U16("graphics/object_events/pics/pokemon/abra.4bpp");' in gfx
-                    assert 'const u16 gObjectEventPal_Abra[] = {' in gfx
-                    pics=pathlib.Path('src/data/object_events/object_event_pic_tables.h').read_text()
-                    assert 'static const struct SpriteFrameImage sPicTable_Abra[] = {' in pics
-                    assert pics.count('overworld_frame(gObjectEventPic_Abra, 2, 2,')==9
-                    info=pathlib.Path('src/data/object_events/object_event_graphics_info.h').read_text()
-                    assert 'const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Abra = {' in info
-                    assert '.paletteTag = OBJ_EVENT_PAL_TAG_ABRA' in info
-                    assert '.size = 128' in info and '.width = 16' in info and '.height = 16' in info
-                    assert '.paletteSlot = PALSLOT_NPC_SPECIAL' in info
-                    ptr=pathlib.Path('src/data/object_events/object_event_graphics_info_pointers.h').read_text()
-                    assert '[OBJ_EVENT_GFX_ABRA]                     = &gObjectEventGraphicsInfo_Abra,' in ptr
-                    pal=pathlib.Path('graphics/object_events/palettes/abra.pal').read_text().splitlines()
-                    assert pal[:3]==['JASC-PAL','0100','16'] and len(pal[3:])==16
-                    assert pathlib.Path('graphics/object_events/pics/pokemon/abra.4bpp').stat().st_size==1152
-                    print('ENC002 ABRA STATIC SOURCE PASS')
-                    PY
-                - name: Build QA ROM
-                  run: |
-                    set -euxo pipefail
-                    make
-                    test -f pokefirered.gba
-                    sha1sum pokefirered.gba | tee ENC002_ABRA_ROM_SHA1.txt
-                    git rev-parse HEAD | tee ENC002_ABRA_QA_SOURCE_SHA.txt
-                    echo 395556183396cfab0bb582671f313675dd70577d | tee ENC002_ABRA_PRODUCTION_SOURCE_SHA.txt
-                - name: Runtime phase 1
-                  run: |
-                    set -euxo pipefail
-                    rm -f pokefirered.sav
-                    export SDL_VIDEODRIVER=dummy
-                    export SDL_AUDIODRIVER=dummy
-                    timeout --signal=TERM 35s mgba -l 31 pokefirered.gba > enc002_abra_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
-                    cat enc002_abra_phase1.log
-                    grep -q 'ENC002 ABRA QA PHASE1 PASS package flag save' enc002_abra_phase1.log
-                    ! grep -q 'ENC002 ABRA QA FAIL' enc002_abra_phase1.log
-                    test -s pokefirered.sav
-                - name: Runtime phase 2
-                  run: |
-                    set -euxo pipefail
-                    export SDL_VIDEODRIVER=dummy
-                    export SDL_AUDIODRIVER=dummy
-                    timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > enc002_abra_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
-                    cat enc002_abra_phase2.log
-                    grep -q 'ENC002 ABRA QA PASS save reload package' enc002_abra_phase2.log
-                    ! grep -q 'ENC002 ABRA QA FAIL' enc002_abra_phase2.log
-          '''
-          import textwrap
-          Path('.github/workflows/enc-002-abra-static-runtime-qa.yml').write_text(textwrap.dedent(workflow))
-
-      - name: Commit QA wiring
+      - name: Commit QA entry point
         run: |
           git config user.name "InternetNinjacy"
           git config user.email "45226145+InternetNinjacy@users.noreply.github.com"
-          git add src/main.c .github/workflows/enc-002-abra-static-runtime-qa.yml
-          git commit -m "QA: wire ENC-002 Abra runtime verification"
+          git add src/main.c
+          git commit -m "QA: wire ENC-002 Abra runtime entry point"
           git push origin HEAD:qa/enc-002-abra-static-runtime
