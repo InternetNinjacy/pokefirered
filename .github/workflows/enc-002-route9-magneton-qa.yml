@@ -1,0 +1,141 @@
+name: ENC-002 Route 9 Magneton QA
+
+on:
+  push:
+    branches:
+      - qa/enc-002-route9-magneton
+  workflow_dispatch:
+
+jobs:
+  magneton-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/enc-002-route9-magneton
+          fetch-depth: 0
+
+      - name: Install build dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry
+        run: |
+          set -euxo pipefail
+          git merge-base --is-ancestor f2099ea41d56edf449b7cbc15c09819417321728 HEAD
+
+      - name: Verify Magneton static contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          constants = Path('include/constants/event_objects.h').read_text()
+          assert '#define OBJ_EVENT_GFX_MAGNETON           164' in constants
+          assert '#define NUM_OBJ_EVENT_GFX                165' in constants
+          assert 'OBJ_EVENT_GFX_MAGNETON >= OBJ_EVENT_GFX_VARS' in constants
+
+          pointers = Path('src/data/object_events/object_event_graphics_info_pointers.h').read_text()
+          assert 'const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Magneton;' in pointers
+          assert '[OBJ_EVENT_GFX_MAGNETON]                 = &gObjectEventGraphicsInfo_Magneton' in pointers
+
+          gfx = Path('src/magneton_object_graphics.c').read_text()
+          assert 'graphics/object_events/pics/pokemon/magneton.4bpp' in gfx
+          assert '.width = 16' in gfx and '.height = 16' in gfx
+          assert '.tracks = TRACKS_NONE' in gfx
+          assert Path('graphics/object_events/pics/pokemon/magneton.4bpp').stat().st_size == 9 * 128
+
+          m = json.loads(Path('data/maps/Route9/map.json').read_text())
+          magneton = [o for o in m['object_events'] if o.get('graphics_id') == 'OBJ_EVENT_GFX_MAGNETON']
+          assert len(magneton) == 1
+          magneton = magneton[0]
+          assert (magneton['x'], magneton['y'], magneton['elevation']) == (67, 17, 3)
+          assert magneton['script'] == 'Route9_EventScript_StaticMagneton'
+          assert magneton['flag'] == 'FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE'
+
+          burn = [o for o in m['object_events'] if o.get('script') == 'Route9_EventScript_ItemBurnHeal']
+          assert len(burn) == 1
+          burn = burn[0]
+          assert (burn['x'], burn['y']) == (65, 17)
+          assert (magneton['x'], magneton['y']) != (burn['x'], burn['y'])
+
+          flags = Path('include/constants/flags.h').read_text()
+          assert '#define FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE           0x366' in flags
+
+          scripts = Path('data/maps/Route9/scripts.inc').read_text()
+          required = [
+              'setwildbattle SPECIES_MAGNETON, 27, ITEM_METAL_COAT',
+              'special SetEnemyEventMonMagnetonHiddenPowerIVs',
+              'MOVE_SPARK', 'MOVE_THUNDER_WAVE', 'MOVE_SONIC_BOOM', 'MOVE_HIDDEN_POWER',
+              'goto_if_eq VAR_RESULT, B_OUTCOME_WON, Route9_EventScript_DefeatedStaticMagneton',
+              'goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, Route9_EventScript_CompleteStaticMagneton',
+              'giveitem ITEM_METAL_COAT',
+              'setflag FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE',
+              'removeobject VAR_LAST_TALKED',
+              'checkitemspace ITEM_METAL_COAT',
+          ]
+          for token in required:
+              assert token in scripts, token
+
+          # A flee/other non-win/non-catch outcome must fall through to release/end
+          # without setting the completion flag or removing the object.
+          battle_tail = scripts.split('specialvar VAR_RESULT, GetBattleOutcome', 1)[1].split('Route9_EventScript_DefeatedStaticMagneton::', 1)[0]
+          assert 'B_OUTCOME_WON' in battle_tail and 'B_OUTCOME_CAUGHT' in battle_tail
+          assert '\trelease\n\tend' in battle_tail
+          assert 'setflag FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE' not in battle_tail
+          assert 'removeobject' not in battle_tail
+
+          ivsrc = Path('src/magneton_static.c').read_text()
+          for token in ['iv = 28;', 'iv = 29;', 'iv = 30;', 'iv = 31;', 'MON_DATA_HP_IV', 'MON_DATA_ATK_IV', 'MON_DATA_DEF_IV', 'MON_DATA_SPEED_IV', 'MON_DATA_SPATK_IV', 'MON_DATA_SPDEF_IV']:
+              assert token in ivsrc
+
+          ivs = [28, 28, 29, 29, 30, 31]  # HP, Atk, Def, Speed, SpAtk, SpDef
+          type_bits = sum((iv & 1) << i for i, iv in enumerate(ivs))
+          power_bits = sum(((iv >> 1) & 1) << i for i, iv in enumerate(ivs))
+          hidden_power_type_index = type_bits * 15 // 63
+          hidden_power_power = power_bits * 40 // 63 + 30
+          # Gen III index 10 is Grass: Fighting/Flying/Poison/Ground/Rock/Bug/Ghost/Steel/Fire/Water/Grass/...
+          assert hidden_power_type_index == 10
+          assert hidden_power_power == 60
+
+          specials = Path('data/specials.inc').read_text()
+          assert 'def_special SetEnemyEventMonMagnetonHiddenPowerIVs' in specials
+
+          print('ENC002 MAGNETON STATIC CONTRACT PASS')
+          print('Hidden Power: Grass / 60 BP')
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ENC002_MAGNETON_QA_ROM_SHA1.txt
+          git rev-parse HEAD | tee ENC002_MAGNETON_QA_SOURCE_SHA.txt
+          echo f2099ea41d56edf449b7cbc15c09819417321728 | tee ENC002_MAGNETON_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: enc-002-route9-magneton-qa
+          path: |
+            pokefirered.gba
+            ENC002_MAGNETON_QA_ROM_SHA1.txt
+            ENC002_MAGNETON_QA_SOURCE_SHA.txt
+            ENC002_MAGNETON_PRODUCTION_SOURCE_SHA.txt
+          if-no-files-found: warn
