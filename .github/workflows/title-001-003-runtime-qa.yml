@@ -29,107 +29,120 @@ jobs:
           ./build.sh
           ./install.sh ../pokefirered
 
-      - name: Verify production payload
+      - name: Verify exact production payload
         run: |
           set -euxo pipefail
           python3 - <<'PY'
           from pathlib import Path
           import subprocess
-          prod = '22f7f806b8016832b0be1d9580d2432dc7cef29c'
-          files = [
-              'src/title_screen.c',
-              'graphics/title_screen/sam/title_screen.gbapal',
-              'graphics/title_screen/sam/title_screen_part0.4bpp',
-              'graphics/title_screen/sam/title_screen_part1.4bpp',
-              'graphics/title_screen/sam/title_screen_part2.4bpp',
-              'graphics/title_screen/sam/title_screen_part3.4bpp',
-          ]
+          prod='22f7f806b8016832b0be1d9580d2432dc7cef29c'
+          files=['src/title_screen.c','graphics/title_screen/sam/title_screen.gbapal','graphics/title_screen/sam/title_screen_part0.4bpp','graphics/title_screen/sam/title_screen_part1.4bpp','graphics/title_screen/sam/title_screen_part2.4bpp','graphics/title_screen/sam/title_screen_part3.4bpp']
           subprocess.check_call(['git','merge-base','--is-ancestor',prod,'HEAD'])
           subprocess.check_call(['git','diff','--exit-code',prod,'HEAD','--',*files])
-          sizes = [32,4800,4800,4800,4798]
-          for path,size in zip(files[1:],sizes):
-              assert Path(path).stat().st_size == size, (path,Path(path).stat().st_size)
-          text = Path('src/title_screen.c').read_text()
-          for token in [
-              'LoadSamTitleScreen();',
-              'sSamTitleScreen_TilesTail[] = { 0xDE, 0xDD };',
-              'CpuCopy16(sSamTitleScreen_TilesTail, (void *)(VRAM + 0x4AFE)',
-              'JOY_NEW(A_BUTTON | START_BUTTON)',
-              '#define KEYSTROKE_DELSAVE (B_BUTTON | SELECT_BUTTON | DPAD_UP)',
-              'SetMainCallback2(CB2_InitMainMenu);',
-              'SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);',
-          ]:
-              assert token in text, token
-          assert 'PlayCry_Normal(TITLE_SPECIES' not in text
-          print('TITLE QA STATIC PASS exact production payload semantics')
+          sizes=[32,4800,4800,4800,4798]
+          for path,size in zip(files[1:],sizes): assert Path(path).stat().st_size==size,(path,Path(path).stat().st_size)
+          t=Path('src/title_screen.c').read_text()
+          for token in ['LoadSamTitleScreen();','sSamTitleScreen_TilesTail[] = { 0xDE, 0xDD };','CpuCopy16(sSamTitleScreen_TilesTail, (void *)(VRAM + 0x4AFE)','JOY_NEW(A_BUTTON | START_BUTTON)','#define KEYSTROKE_DELSAVE (B_BUTTON | SELECT_BUTTON | DPAD_UP)','SetMainCallback2(CB2_InitMainMenu);','SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);','if (data[0] >= 2700)']:
+              assert token in t,token
+          cry=t[t.index('static void SetTitleScreenScene_Cry(s16 *data)\n{'):]
+          cry=cry[:cry.index('\nstatic void ',1)]
+          assert 'PlayCry' not in cry
+          print('TITLE QA STATIC PASS exact production payload/input/no-cry/2700-frame contract')
           PY
 
-      - name: Reconstruct native title
+      - name: Reconstruct exact native title
         run: |
           set -euxo pipefail
           python3 - <<'PY'
           from pathlib import Path
           import struct
-          pal = Path('graphics/title_screen/sam/title_screen.gbapal').read_bytes()
-          raw = b''.join(Path(f'graphics/title_screen/sam/title_screen_part{i}.4bpp').read_bytes() for i in range(4)) + bytes([0xDE,0xDD])
-          assert len(pal) == 32 and len(raw) == 19200
+          pal=Path('graphics/title_screen/sam/title_screen.gbapal').read_bytes()
+          raw=b''.join(Path(f'graphics/title_screen/sam/title_screen_part{i}.4bpp').read_bytes() for i in range(4))+bytes([0xDE,0xDD])
+          assert len(pal)==32 and len(raw)==19200
           colors=[]
           for i in range(16):
-              v=struct.unpack_from('<H',pal,i*2)[0]
-              colors.append(((v&31)*255//31,((v>>5)&31)*255//31,((v>>10)&31)*255//31))
+              v=struct.unpack_from('<H',pal,i*2)[0]; colors.append(((v&31)*255//31,((v>>5)&31)*255//31,((v>>10)&31)*255//31))
           px=bytearray(240*160*3)
           for tile in range(600):
-              tx,ty=tile%30,tile//30
-              off=tile*32
+              tx,ty=tile%30,tile//30; off=tile*32
               for y in range(8):
                   for xb in range(4):
                       b=raw[off+y*4+xb]
                       for sub,idx in enumerate((b&15,b>>4)):
-                          x=tx*8+xb*2+sub; yy=ty*8+y; p=(yy*240+x)*3
-                          px[p:p+3]=bytes(colors[idx])
-          with open('title_native_exact.ppm','wb') as f:
-              f.write(b'P6\n240 160\n255\n'); f.write(px)
-          print('TITLE QA NATIVE PASS')
+                          p=((ty*8+y)*240+tx*8+xb*2+sub)*3; px[p:p+3]=bytes(colors[idx])
+          Path('title_native_exact.ppm').write_bytes(b'P6\n240 160\n255\n'+px)
           PY
           convert title_native_exact.ppm title_native_exact.png
           test "$(identify -format '%wx%h' title_native_exact.png)" = "240x160"
           test "$(convert title_native_exact.png -format %k info:)" -le 16
 
-      - name: Inject QA runtime markers
+      - name: Inject evidence-only runtime instrumentation
         run: |
           set -euxo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          p=Path('src/title_screen.c')
-          text=p.read_text()
-          text=text.replace('#include "global.h"\n','#include "global.h"\n#include "gba/isagbprint.h"\n',1)
+          p=Path('src/title_screen.c'); t=p.read_text(); t=t.replace('#include "global.h"\n','#include "global.h"\n#include "gba/isagbprint.h"\n',1)
           anchor='static const u8 sSamTitleScreen_TilesTail[] = { 0xDE, 0xDD };\n'
-          helper=''.join([
-              '\n#define TITLE_QA_MGBA_ENABLE ((vu16 *)0x4FFF780)\n',
-              '#define TITLE_QA_MGBA_FLAGS ((vu16 *)0x4FFF700)\n',
-              '#define TITLE_QA_MGBA_STRING ((volatile char *)0x4FFF600)\n',
-              'static void TitleQaLog(const char *text)\n{\n',
-              '    u32 i = 0;\n',
-              '    *TITLE_QA_MGBA_ENABLE = 0xC0DE;\n',
-              "    while (text[i] != '\\0' && i < 255)\n    {\n",
-              '        TITLE_QA_MGBA_STRING[i] = text[i];\n        i++;\n    }\n',
-              "    TITLE_QA_MGBA_STRING[i] = '\\0';\n",
-              '    *TITLE_QA_MGBA_FLAGS = MGBA_LOG_INFO | 0x100;\n}\n'
-          ])
-          assert anchor in text
-          text=text.replace(anchor,anchor+helper,1)
+          helper=r'''
+#define TITLE_QA_MGBA_ENABLE ((vu16 *)0x4FFF780)
+#define TITLE_QA_MGBA_FLAGS ((vu16 *)0x4FFF700)
+#define TITLE_QA_MGBA_STRING ((volatile char *)0x4FFF600)
+static void TitleQaLog(const char *text)
+{
+    u32 i=0; *TITLE_QA_MGBA_ENABLE=0xC0DE;
+    while (text[i] != '\0' && i < 255) { TITLE_QA_MGBA_STRING[i]=text[i]; i++; }
+    TITLE_QA_MGBA_STRING[i]='\0'; *TITLE_QA_MGBA_FLAGS=MGBA_LOG_INFO|0x100;
+}
+static bool8 TitleQaBytesEqual(const u8 *src, const volatile u8 *dst, u32 size)
+{
+    u32 i; for (i=0;i<size;i++) if (src[i]!=dst[i]) return FALSE; return TRUE;
+}
+static void TitleQaCheckVideoMemory(void)
+{
+    u16 x,y; u16 *tilemap=(u16 *)(VRAM+0xF800);
+    bool8 ok=TRUE;
+    ok &= TitleQaBytesEqual((const u8 *)sSamTitleScreen_Pal,(const volatile u8 *)gPlttBufferUnfaded,sizeof(sSamTitleScreen_Pal));
+    ok &= TitleQaBytesEqual((const u8 *)sSamTitleScreen_Tiles0,(const volatile u8 *)(VRAM+0x0000),sizeof(sSamTitleScreen_Tiles0));
+    ok &= TitleQaBytesEqual((const u8 *)sSamTitleScreen_Tiles1,(const volatile u8 *)(VRAM+0x12C0),sizeof(sSamTitleScreen_Tiles1));
+    ok &= TitleQaBytesEqual((const u8 *)sSamTitleScreen_Tiles2,(const volatile u8 *)(VRAM+0x2580),sizeof(sSamTitleScreen_Tiles2));
+    ok &= TitleQaBytesEqual((const u8 *)sSamTitleScreen_Tiles3,(const volatile u8 *)(VRAM+0x3840),sizeof(sSamTitleScreen_Tiles3));
+    ok &= TitleQaBytesEqual(sSamTitleScreen_TilesTail,(const volatile u8 *)(VRAM+0x4AFE),sizeof(sSamTitleScreen_TilesTail));
+    for (y=0;y<32;y++) for (x=0;x<32;x++) if (tilemap[y*32+x] != ((x<30 && y<20)?(y*30+x):0)) ok=FALSE;
+    TitleQaLog(ok?"TITLEQA VIDEO MEMORY PASS":"TITLEQA VIDEO MEMORY FAIL");
+}
+'''
+          assert anchor in t; t=t.replace(anchor,anchor+helper,1)
+          t=t.replace('    ShowBg(0);\n}\n\nstatic void ResetGpuRegs', '    ShowBg(0);\n    TitleQaCheckVideoMemory();\n}\n\nstatic void ResetGpuRegs',1)
           reps=[
-              ('        HelpSystem_Enable();\n        tState++;','        HelpSystem_Enable();\n        TitleQaLog("TITLEQA RUN");\n        tState++;'),
-              ('            SetMainCallback2(CB2_FadeOutTransitionToSaveClearScreen);','            TitleQaLog("TITLEQA SAVECLEAR");\n            SetMainCallback2(CB2_FadeOutTransitionToSaveClearScreen);'),
-              ('            SetTitleScreenScene(data, TITLESCREENSCENE_CRY);','            TitleQaLog("TITLEQA INPUT ACCEPTED");\n            SetTitleScreenScene(data, TITLESCREENSCENE_CRY);'),
-              ('            SetTitleScreenScene(data, TITLESCREENSCENE_RESTART);','            TitleQaLog("TITLEQA TIMEOUT");\n            SetTitleScreenScene(data, TITLESCREENSCENE_RESTART);'),
-              ('            SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);','            TitleQaLog("TITLEQA RESTART");\n            SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);'),
-              ('            SetMainCallback2(CB2_InitMainMenu);','            TitleQaLog("TITLEQA MAINMENU NOCRY");\n            SetMainCallback2(CB2_InitMainMenu);'),
-          ]
-          for old,new in reps:
-              assert text.count(old)==1,(old,text.count(old))
-              text=text.replace(old,new,1)
-          p.write_text(text)
+            ('        HelpSystem_Enable();\n        tState++;','        HelpSystem_Enable();\n        TitleQaLog("TITLEQA RUN");\n        tState++;'),
+            ('            SetMainCallback2(CB2_FadeOutTransitionToSaveClearScreen);','            TitleQaLog("TITLEQA SAVECLEAR");\n            SetMainCallback2(CB2_FadeOutTransitionToSaveClearScreen);'),
+            ('            SetTitleScreenScene(data, TITLESCREENSCENE_CRY);','            TitleQaLog("TITLEQA INPUT ACCEPTED");\n            SetTitleScreenScene(data, TITLESCREENSCENE_CRY);'),
+            ('            SetTitleScreenScene(data, TITLESCREENSCENE_RESTART);','            TitleQaLog("TITLEQA TIMEOUT");\n            SetTitleScreenScene(data, TITLESCREENSCENE_RESTART);'),
+            ('            SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);','            TitleQaLog("TITLEQA RESTART");\n            SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);'),
+            ('            SetMainCallback2(CB2_InitMainMenu);','            TitleQaLog("TITLEQA MAINMENU NOCRY");\n            SetMainCallback2(CB2_InitMainMenu);')]
+          for old,new in reps: assert t.count(old)==1,(old,t.count(old)); t=t.replace(old,new,1)
+          p.write_text(t)
+
+          p=Path('src/main_menu.c'); t=p.read_text(); t=t.replace('#include "global.h"\n','#include "global.h"\n#include "gba/isagbprint.h"\n',1)
+          anchor='static const u8 sString_Dummy[] = _(" ");' if 'static const u8 sString_Dummy[] = _(" ");' in t else 'static const u8 sString_Dummy[] = _("");'
+          helper=r'''
+#define TITLE_QA_MM_ENABLE ((vu16 *)0x4FFF780)
+#define TITLE_QA_MM_FLAGS ((vu16 *)0x4FFF700)
+#define TITLE_QA_MM_STRING ((volatile char *)0x4FFF600)
+static void TitleQaMainMenuLog(const char *text)
+{
+    u32 i=0; *TITLE_QA_MM_ENABLE=0xC0DE;
+    while (text[i] != '\0' && i < 255) { TITLE_QA_MM_STRING[i]=text[i]; i++; }
+    TITLE_QA_MM_STRING[i]='\0'; *TITLE_QA_MM_FLAGS=MGBA_LOG_INFO|0x100;
+}
+'''
+          assert anchor in t; t=t.replace(anchor,helper+'\n'+anchor,1)
+          old='        switch (gSaveFileStatus)\n        {'
+          new='        if (JOY_HELD(L_BUTTON)) { gSaveFileStatus = SAVE_STATUS_OK; TitleQaMainMenuLog("TITLEQA CONTINUE MODE"); }\n        switch (gSaveFileStatus)\n        {'
+          assert t.count(old)==1; t=t.replace(old,new,1)
+          assert t.count('            StartNewGameScene();')==1; t=t.replace('            StartNewGameScene();','            TitleQaMainMenuLog("TITLEQA NEWGAME TRANSITION");\n            StartNewGameScene();',1)
+          assert t.count('            TryStartQuestLogPlayback(taskId);')==1; t=t.replace('            TryStartQuestLogPlayback(taskId);','            TitleQaMainMenuLog("TITLEQA CONTINUE TRANSITION");\n            TryStartQuestLogPlayback(taskId);',1)
+          p.write_text(t)
           PY
 
       - name: Build QA ROM
@@ -141,66 +154,91 @@ jobs:
           git rev-parse HEAD | tee TITLE_QA_SOURCE_SHA.txt
           echo 22f7f806b8016832b0be1d9580d2432dc7cef29c > TITLE_PRODUCTION_SOURCE_SHA.txt
 
-      - name: Runtime START A and idle START
+      - name: Runtime input transitions and save integrity
         run: |
           set -euxo pipefail
-          run_test() {
-            DISP="$1"; KEY="$2"; P="$3"; DELAY="${4:-0}"
+          run_title() {
+            DISP="$1"; KEY="$2"; P="$3"; DELAY="${4:-0}"; HOLD_L="${5:-0}"
+            rm -f pokefirered.sav
             export DISPLAY="$DISP" SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=dummy
-            Xvfb "$DISP" -screen 0 960x640x24 > "${P}_xvfb.log" 2>&1 & XP=$!
-            sleep 2
-            mgba pokefirered.gba > "${P}.log" 2>&1 & MP=$!
-            for i in $(seq 1 90); do grep -q 'TITLEQA RUN' "${P}.log" && break; sleep 1; done
-            grep -q 'TITLEQA RUN' "${P}.log"
-            W=$(xdotool search --onlyvisible --class mgba 2>/dev/null | tail -n1)
-            test -n "$W"
-            sleep "$DELAY"
-            xdotool key --window "$W" "$KEY"
-            for i in $(seq 1 25); do grep -q 'TITLEQA MAINMENU NOCRY' "${P}.log" && break; sleep 1; done
-            grep -q 'TITLEQA INPUT ACCEPTED' "${P}.log"
-            grep -q 'TITLEQA MAINMENU NOCRY' "${P}.log"
+            Xvfb "$DISP" -screen 0 960x640x24 > "${P}_xvfb.log" 2>&1 & XP=$!; sleep 2
+            mgba -l 31 pokefirered.gba > "${P}.log" 2>&1 & MP=$!
+            for i in $(seq 1 30); do grep -q 'TITLEQA RUN' "${P}.log" && break; sleep 1; done
+            grep -q 'TITLEQA VIDEO MEMORY PASS' "${P}.log"; grep -q 'TITLEQA RUN' "${P}.log"
+            W=$(xdotool search --onlyvisible --class mgba 2>/dev/null | tail -n1); test -n "$W"
+            if [ "$HOLD_L" = 1 ]; then xdotool keydown --window "$W" a; fi
+            sleep "$DELAY"; xdotool key --window "$W" "$KEY"
+            for i in $(seq 1 20); do grep -q 'TITLEQA MAINMENU NOCRY' "${P}.log" && break; sleep 1; done
+            grep -q 'TITLEQA INPUT ACCEPTED' "${P}.log"; grep -q 'TITLEQA MAINMENU NOCRY' "${P}.log"
+            if [ "$HOLD_L" = 1 ]; then xdotool keyup --window "$W" a; fi
             kill "$MP" || true; kill "$XP" || true
           }
-          run_test :99 Return title_start 0
-          run_test :98 x title_a 0
-          run_test :95 Return title_idle_start 5
-          echo 'TITLE QA START/A/IDLE-START PASS'
+          run_title :99 Return title_start 0 0
+          run_title :98 x title_a 0 0
+          run_title :95 Return title_idle_start 5 0
 
-      - name: Runtime save-clear
+          rm -f pokefirered.sav
+          export DISPLAY=:94 SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=dummy
+          Xvfb :94 -screen 0 960x640x24 >/tmp/title_ng_x 2>&1 & XP=$!; sleep 2
+          mgba -l 31 pokefirered.gba > title_newgame.log 2>&1 & MP=$!
+          for i in $(seq 1 30); do grep -q 'TITLEQA RUN' title_newgame.log && break; sleep 1; done
+          W=$(xdotool search --onlyvisible --class mgba | tail -n1); xdotool key --window "$W" Return
+          for i in $(seq 1 20); do grep -q 'TITLEQA MAINMENU NOCRY' title_newgame.log && break; sleep 1; done
+          sleep 2; xdotool key --window "$W" x
+          for i in $(seq 1 20); do grep -q 'TITLEQA NEWGAME TRANSITION' title_newgame.log && break; sleep 1; done
+          grep -q 'TITLEQA NEWGAME TRANSITION' title_newgame.log; kill "$MP" || true; kill "$XP" || true
+
+          rm -f pokefirered.sav
+          export DISPLAY=:93 SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=dummy
+          Xvfb :93 -screen 0 960x640x24 >/tmp/title_cont_x 2>&1 & XP=$!; sleep 2
+          mgba -l 31 pokefirered.gba > title_continue.log 2>&1 & MP=$!
+          for i in $(seq 1 30); do grep -q 'TITLEQA RUN' title_continue.log && break; sleep 1; done
+          W=$(xdotool search --onlyvisible --class mgba | tail -n1); xdotool keydown --window "$W" a; xdotool key --window "$W" Return
+          for i in $(seq 1 20); do grep -q 'TITLEQA CONTINUE MODE' title_continue.log && break; sleep 1; done
+          xdotool keyup --window "$W" a; sleep 3; xdotool key --window "$W" x
+          for i in $(seq 1 20); do grep -q 'TITLEQA CONTINUE TRANSITION' title_continue.log && break; sleep 1; done
+          grep -q 'TITLEQA CONTINUE TRANSITION' title_continue.log; kill "$MP" || true; kill "$XP" || true
+
+          python3 - <<'PY'
+          from pathlib import Path
+          Path('pokefirered.sav').write_bytes(bytes([0xA5])*131072)
+          PY
+          sha1sum pokefirered.sav | tee save_before.sha1
+          export DISPLAY=:92 SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=dummy
+          Xvfb :92 -screen 0 960x640x24 >/tmp/title_save_x 2>&1 & XP=$!; sleep 2
+          mgba -l 31 pokefirered.gba > title_save_integrity.log 2>&1 & MP=$!
+          for i in $(seq 1 30); do grep -q 'TITLEQA RUN' title_save_integrity.log && break; sleep 1; done
+          W=$(xdotool search --onlyvisible --class mgba | tail -n1); xdotool key --window "$W" Return
+          for i in $(seq 1 20); do grep -q 'TITLEQA MAINMENU NOCRY' title_save_integrity.log && break; sleep 1; done
+          kill "$MP" || true; kill "$XP" || true; sleep 1
+          sha1sum pokefirered.sav | tee save_after.sha1
+          cmp save_before.sha1 save_after.sha1
+
+      - name: Runtime save-clear chord
         run: |
           set -euxo pipefail
+          rm -f pokefirered.sav
           export DISPLAY=:97 SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=dummy
-          Xvfb :97 -screen 0 960x640x24 > saveclear_xvfb.log 2>&1 & XP=$!
-          sleep 2
-          mgba pokefirered.gba > title_saveclear.log 2>&1 & MP=$!
-          for i in $(seq 1 90); do grep -q 'TITLEQA RUN' title_saveclear.log && break; sleep 1; done
-          W=$(xdotool search --onlyvisible --class mgba 2>/dev/null | tail -n1)
-          test -n "$W"
-          xdotool keydown --window "$W" z
-          xdotool keydown --window "$W" BackSpace
-          xdotool keydown --window "$W" Up
-          sleep 1
-          xdotool keyup --window "$W" Up
-          xdotool keyup --window "$W" BackSpace
-          xdotool keyup --window "$W" z
-          for i in $(seq 1 25); do grep -q 'TITLEQA SAVECLEAR' title_saveclear.log && break; sleep 1; done
-          grep -q 'TITLEQA SAVECLEAR' title_saveclear.log
-          kill "$MP" || true; kill "$XP" || true
-          echo 'TITLE QA SAVECLEAR PASS'
+          Xvfb :97 -screen 0 960x640x24 >/tmp/title_sc_x 2>&1 & XP=$!; sleep 2
+          mgba -l 31 pokefirered.gba > title_saveclear.log 2>&1 & MP=$!
+          for i in $(seq 1 30); do grep -q 'TITLEQA RUN' title_saveclear.log && break; sleep 1; done
+          W=$(xdotool search --onlyvisible --class mgba | tail -n1)
+          xdotool keydown --window "$W" z; xdotool keydown --window "$W" BackSpace; xdotool keydown --window "$W" Up; sleep 1
+          xdotool keyup --window "$W" Up; xdotool keyup --window "$W" BackSpace; xdotool keyup --window "$W" z
+          for i in $(seq 1 20); do grep -q 'TITLEQA SAVECLEAR' title_saveclear.log && break; sleep 1; done
+          grep -q 'TITLEQA SAVECLEAR' title_saveclear.log; kill "$MP" || true; kill "$XP" || true
 
-      - name: Runtime timeout restart
+      - name: Runtime 2700-frame timeout restart
         run: |
           set -euxo pipefail
+          rm -f pokefirered.sav
           export DISPLAY=:96 SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=dummy
-          Xvfb :96 -screen 0 960x640x24 > timeout_xvfb.log 2>&1 & XP=$!
-          sleep 2
-          mgba pokefirered.gba > title_timeout.log 2>&1 & MP=$!
-          for i in $(seq 1 90); do grep -q 'TITLEQA RUN' title_timeout.log && break; sleep 1; done
-          for i in $(seq 1 80); do grep -q 'TITLEQA RESTART' title_timeout.log && break; sleep 1; done
-          grep -q 'TITLEQA TIMEOUT' title_timeout.log
-          grep -q 'TITLEQA RESTART' title_timeout.log
+          Xvfb :96 -screen 0 960x640x24 >/tmp/title_to_x 2>&1 & XP=$!; sleep 2
+          mgba -l 31 pokefirered.gba > title_timeout.log 2>&1 & MP=$!
+          for i in $(seq 1 30); do grep -q 'TITLEQA RUN' title_timeout.log && break; sleep 1; done
+          for i in $(seq 1 75); do grep -q 'TITLEQA RESTART' title_timeout.log && break; sleep 1; done
+          grep -q 'TITLEQA TIMEOUT' title_timeout.log; grep -q 'TITLEQA RESTART' title_timeout.log
           kill "$MP" || true; kill "$XP" || true
-          echo 'TITLE QA TIMEOUT PASS'
 
       - name: Upload evidence
         if: always()
@@ -213,9 +251,7 @@ jobs:
             TITLE_QA_SOURCE_SHA.txt
             TITLE_PRODUCTION_SOURCE_SHA.txt
             title_native_exact.png
-            title_start.log
-            title_a.log
-            title_idle_start.log
-            title_saveclear.log
-            title_timeout.log
+            title_*.log
+            save_before.sha1
+            save_after.sha1
           if-no-files-found: warn
