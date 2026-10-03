@@ -4,8 +4,8 @@
 #include "link_rfu.h"
 #include "pokemon.h"
 #include "trade.h"
-#include "constants/game_version.h"
 #include "constants/species.h"
+#include "constants/pokemon.h"
 #include "constants/trade.h"
 
 #define QA_MGBA_DEBUG_ENABLE ((vu16 *)0x4FFF780)
