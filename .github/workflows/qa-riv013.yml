@@ -1,0 +1,63 @@
+name: QA RIV-013 Green naming
+
+on:
+  pull_request:
+    branches:
+      - sam/riv-013-green-opening-naming
+
+permissions:
+  contents: read
+
+jobs:
+  focused-green-naming:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify Green naming package
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          oak = Path('src/oak_speech.c').read_text()
+          text = Path('data/text/new_game_intro.inc').read_text()
+          decl = Path('include/event_scripts.h').read_text()
+          new_game = Path('src/new_game.c').read_text()
+
+          required_presets = [
+              '_("GREEN")',
+              '_("SUSAN")',
+              '_("AMY")',
+              '_("JESS")',
+          ]
+          for preset in required_presets:
+              assert preset in oak, f'missing Green preset {preset}'
+
+          assert 'NAME_TARGET_GREEN' in oak
+          assert 'textPtrs = sGreenNameChoices;' in oak
+          assert 'DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock1Ptr->samEdition.greenName' in oak
+          assert 'dest = gSaveBlock1Ptr->samEdition.greenName;' in oak
+          assert 'gTasks[taskId].func = Task_OakSpeech_FadeInGreenPic;' in oak
+          assert 'gTasks[taskId].func = Task_OakSpeech_AskGreenName;' in oak
+          assert 'gTasks[taskId].func = Task_OakSpeech_FadeOutGreenPic;' in oak
+          assert 'sOakSpeechResources->namingTarget = NAME_TARGET_GREEN;' in oak
+          assert 'hasPlayerBeenNamed' not in oak
+
+          for symbol in [
+              'gOakSpeech_Text_WhatWasHerName',
+              'gOakSpeech_Text_YourGreenNameWhatWasIt',
+              'gOakSpeech_Text_ConfirmGreenName',
+              'gOakSpeech_Text_GreenNameConfirmed',
+          ]:
+              assert symbol in text, f'missing text {symbol}'
+              assert symbol in decl, f'missing declaration {symbol}'
+
+          # RIV-008 persistence contract must remain inherited and untouched.
+          assert 'StringCopy(greenName, gSaveBlock1Ptr->samEdition.greenName);' in new_game
+          assert 'StringCopy(gSaveBlock1Ptr->samEdition.greenName, greenName);' in new_game
+
+          # Blue remains independent from Green.
+          assert 'DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock1Ptr->rivalName' in oak
+          assert 'dest = gSaveBlock1Ptr->rivalName;' in oak
+
+          print('RIV-013 focused source QA passed')
+          PY
