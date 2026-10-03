@@ -1,0 +1,79 @@
+name: One-shot sync normalized Miltank into QA
+
+on:
+  push:
+    branches:
+      - qa/enc-002-miltank-static-runtime
+    paths:
+      - .github/workflows/one-shot-sync-miltank-qa.yml
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/enc-002-miltank-static-runtime
+          fetch-depth: 0
+
+      - name: Merge normalized production source
+        run: |
+          set -euxo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin sam/enc-002-gfx-miltank-assets
+          git merge --no-edit origin/sam/enc-002-gfx-miltank-assets
+
+      - name: Update focused QA source contract
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('.github/workflows/enc-002-miltank-static-runtime-qa.yml')
+          s = p.read_text()
+          old = '7c29d53d50def6869a91066961d1c3da62437bc4'
+          new = 'f2f9f3288ff178f451414ed533acceacef8f2706'
+          s = s.replace(old, new)
+          old_block = '''          gfx=pathlib.Path('src/miltank_object_graphics.c').read_text()
+          for token in [
+            'gObjectEventPic_Miltank',
+            'graphics/object_events/pics/pokemon/miltank.4bpp',
+            'OBJ_EVENT_PAL_TAG_NPC_PINK',
+            'gObjectEventGraphicsInfo_Miltank',
+            'gObjectEventBaseOam_16x16',
+            'SHADOW_SIZE_M',
+            'TRACKS_FOOT',
+          ]: assert token in gfx
+'''
+          new_block = '''          gfx=pathlib.Path('src/data/object_events/object_event_graphics.h').read_text()
+          assert 'gObjectEventPic_Miltank[] = INCBIN_U16("graphics/object_events/pics/pokemon/miltank.4bpp")' in gfx
+          pics=pathlib.Path('src/data/object_events/object_event_pic_tables.h').read_text()
+          assert 'sPicTable_Miltank[]' in pics
+          for frame in range(9):
+              assert f'overworld_frame(gObjectEventPic_Miltank, 2, 2, {frame})' in pics
+          info=pathlib.Path('src/data/object_events/object_event_graphics_info.h').read_text()
+          for token in [
+            'gObjectEventGraphicsInfo_Miltank = {',
+            'OBJ_EVENT_PAL_TAG_NPC_PINK',
+            'gObjectEventBaseOam_16x16',
+            'SHADOW_SIZE_M',
+            'TRACKS_FOOT',
+            '.anims = sAnimTable_Standard',
+            '.images = sPicTable_Miltank',
+          ]: assert token in info
+          assert not pathlib.Path('src/miltank_object_graphics.c').exists()
+'''
+          if old_block not in s:
+              raise SystemExit('old standalone Miltank QA contract block not found')
+          s = s.replace(old_block, new_block, 1)
+          p.write_text(s)
+
+      - name: Commit QA sync and remove one-shot workflow
+        run: |
+          set -euxo pipefail
+          git rm .github/workflows/one-shot-sync-miltank-qa.yml
+          git add .github/workflows/enc-002-miltank-static-runtime-qa.yml
+          git commit -m "qa: test normalized Miltank object-event registration"
+          git push origin HEAD:qa/enc-002-miltank-static-runtime
