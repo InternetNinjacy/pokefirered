@@ -73,9 +73,11 @@ jobs:
           assert 'StringCopy_PlayerName(dest, GetSamGreenName());' in api_c
 
           # Existing FireRed {RIVAL} placeholder remains Blue-backed.
-          rival_placeholder = string_util[string_util.index('static const u8 *ExpandPlaceholder_RivalName'):]
-          rival_placeholder = rival_placeholder[:rival_placeholder.index('}') + 1]
-          assert 'gSaveBlock1Ptr->rivalName' in rival_placeholder
+          start = string_util.index('static u8 *ExpandPlaceholder_RivalName(void)')
+          end = string_util.index('static u8 *ExpandPlaceholder_Version(void)', start)
+          rival_placeholder = string_util[start:end]
+          assert 'return gSaveBlock1Ptr->rivalName;' in rival_placeholder
+          assert '[PLACEHOLDER_ID_RIVAL]        = ExpandPlaceholder_RivalName' in string_util
 
           # Existing opening Blue naming still targets the same persistent Blue field.
           assert 'gSaveBlock1Ptr->rivalName' in oak
