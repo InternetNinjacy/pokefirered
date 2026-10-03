@@ -1,0 +1,136 @@
+name: ENC-002 Magneton Static Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/enc-002-magneton-static-runtime
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  enc002-magneton-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/enc-002-magneton-static-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and exact source contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          prod='31d221ebe9e8849c565c86a167bdc8809d7c7572'
+          subprocess.check_call(['git','merge-base','--is-ancestor',prod,'HEAD'])
+
+          flags=pathlib.Path('include/constants/flags.h').read_text()
+          assert '#define FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE           0x366' in flags
+
+          eo=pathlib.Path('include/constants/event_objects.h').read_text()
+          assert '#define OBJ_EVENT_GFX_MAGNETON           164' in eo
+          assert '#define NUM_OBJ_EVENT_GFX                165' in eo
+
+          m=json.loads(pathlib.Path('data/maps/Route9/map.json').read_text())
+          objs=[o for o in m['object_events'] if o.get('script')=='Route9_EventScript_StaticMagneton']
+          assert len(objs)==1
+          o=objs[0]
+          assert o['graphics_id']=='OBJ_EVENT_GFX_MAGNETON'
+          assert (o['x'],o['y'],o['elevation'])==(67,17,3)
+          assert o['flag']=='FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE'
+          burn=[x for x in m['object_events'] if x.get('script')=='Route9_EventScript_ItemBurnHeal']
+          assert len(burn)==1 and (burn[0]['x'],burn[0]['y'])==(65,17)
+
+          s=pathlib.Path('data/maps/Route9/scripts.inc').read_text()
+          required=[
+            'checkitemspace ITEM_METAL_COAT',
+            'setwildbattle SPECIES_MAGNETON, 27, ITEM_METAL_COAT',
+            'special SetEnemyEventMonMagnetonHiddenPowerIVs',
+            'MOVE_SPARK', 'MOVE_THUNDER_WAVE', 'MOVE_SONIC_BOOM', 'MOVE_HIDDEN_POWER',
+            'goto_if_eq VAR_RESULT, B_OUTCOME_WON, Route9_EventScript_DefeatedStaticMagneton',
+            'goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, Route9_EventScript_CompleteStaticMagneton',
+            'Route9_EventScript_DefeatedStaticMagneton::',
+            'giveitem ITEM_METAL_COAT',
+            'setflag FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE',
+            'removeobject VAR_LAST_TALKED'
+          ]
+          for token in required: assert token in s
+          start=s.index('Route9_EventScript_StaticMagneton::')
+          defeated=s.index('Route9_EventScript_DefeatedStaticMagneton::')
+          pre=s[start:defeated]
+          assert 'setflag FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE' not in pre
+          assert pre.rstrip().endswith('release\n\tend')
+
+          helper=pathlib.Path('src/magneton_static.c').read_text()
+          assert 'SetEnemyEventMonMagnetonHiddenPowerIVs' in helper
+          ivs=[28,28,29,29,30,31]
+          type_bits=sum(((iv & 1) << i) for i,iv in enumerate(ivs))
+          power_bits=sum((((iv >> 1) & 1) << i) for i,iv in enumerate(ivs))
+          hp_type=(type_bits*15)//63
+          hp_power=(power_bits*40)//63+30
+          assert hp_type==10, (type_bits,hp_type)
+          assert hp_power==60, (power_bits,hp_power)
+          for token in ['iv = 28;','iv = 29;','iv = 30;','iv = 31;','MON_DATA_HP_IV','MON_DATA_ATK_IV','MON_DATA_DEF_IV','MON_DATA_SPEED_IV','MON_DATA_SPATK_IV','MON_DATA_SPDEF_IV']:
+              assert token in helper
+
+          gfx=pathlib.Path('src/magneton_object_graphics.c').read_text()
+          assert '#define OBJ_EVENT_PAL_TAG_NONE 0x11FF' in gfx
+          assert 'gObjectEventGraphicsInfo_Magneton' in gfx
+          assert '.paletteTag = OBJ_EVENT_PAL_TAG_NPC_BLUE' in gfx
+          assert '.width = 16' in gfx and '.height = 16' in gfx
+          assert '.tracks = TRACKS_NONE' in gfx
+          assert pathlib.Path('graphics/object_events/pics/pokemon/magneton.4bpp').stat().st_size==1152
+          ptr=pathlib.Path('src/data/object_events/object_event_graphics_info_pointers.h').read_text()
+          assert '[OBJ_EVENT_GFX_MAGNETON]                 = &gObjectEventGraphicsInfo_Magneton,' in ptr
+          specials=pathlib.Path('data/specials.inc').read_text()
+          assert 'SetEnemyEventMonMagnetonHiddenPowerIVs' in specials
+          print('ENC002 MAGNETON STATIC SOURCE PASS Grass60')
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ENC002_MAGNETON_ROM_SHA1.txt
+          git rev-parse HEAD | tee ENC002_MAGNETON_QA_SOURCE_SHA.txt
+          echo 31d221ebe9e8849c565c86a167bdc8809d7c7572 | tee ENC002_MAGNETON_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 35s mgba -l 31 pokefirered.gba > enc002_magneton_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc002_magneton_phase1.log
+          grep -q 'ENC002 MAGNETON QA PHASE1 PASS package Grass60 flag save' enc002_magneton_phase1.log
+          ! grep -q 'ENC002 MAGNETON QA FAIL' enc002_magneton_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > enc002_magneton_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc002_magneton_phase2.log
+          grep -q 'ENC002 MAGNETON QA PASS save reload package Grass60' enc002_magneton_phase2.log
+          ! grep -q 'ENC002 MAGNETON QA FAIL' enc002_magneton_phase2.log
