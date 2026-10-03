@@ -3,6 +3,7 @@ PokemonMansion_B1F_MapScripts::
 	.byte 0
 
 PokemonMansion_B1F_OnLoad::
+	call EventScript_ThomasSyncVisibility
 	call_if_set FLAG_POKEMON_MANSION_SWITCH_STATE, PokemonMansion_EventScript_PressSwitch_B1F
 	end
 
