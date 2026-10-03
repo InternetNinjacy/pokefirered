@@ -11019,3 +11019,51 @@ static const struct TrainerMonItemCustomMoves sParty_LeaderBorealRematchPewter[]
         .moves = {MOVE_SURF, MOVE_ICE_BEAM, MOVE_ENCORE, MOVE_REST},
     },
 };
+
+
+// Pokémon: Sam Edition — Vermilion Water Gym.
+static const struct TrainerMonNoItemCustomMoves sParty_SatoshiVermilionPractice[] = {
+    {.iv = 50, .lvl = 19, .species = SPECIES_POLIWAG, .moves = {MOVE_BUBBLE, MOVE_HYPNOSIS, MOVE_DOUBLE_SLAP, MOVE_RAIN_DANCE}},
+};
+
+static const struct TrainerMonItemCustomMoves sParty_SatoshiVermilionRematch[] = {
+    {.iv = 200, .lvl = 58, .species = SPECIES_TENTACRUEL, .heldItem = ITEM_POISON_BARB, .moves = {MOVE_SURF, MOVE_SLUDGE_BOMB, MOVE_GIGA_DRAIN, MOVE_TOXIC}},
+    {.iv = 200, .lvl = 58, .species = SPECIES_KINGLER, .heldItem = ITEM_SCOPE_LENS, .moves = {MOVE_CRABHAMMER, MOVE_BRICK_BREAK, MOVE_MUD_SHOT, MOVE_PROTECT}},
+    {.iv = 200, .lvl = 59, .species = SPECIES_GYARADOS, .heldItem = ITEM_LUM_BERRY, .moves = {MOVE_DRAGON_DANCE, MOVE_RETURN, MOVE_EARTHQUAKE, MOVE_HYDRO_PUMP}},
+    {.iv = 200, .lvl = 60, .species = SPECIES_NIDOQUEEN, .heldItem = ITEM_SOFT_SAND, .moves = {MOVE_EARTHQUAKE, MOVE_SLUDGE_BOMB, MOVE_ICE_BEAM, MOVE_THUNDERBOLT}},
+    {.iv = 200, .lvl = 61, .species = SPECIES_BLASTOISE, .heldItem = ITEM_SHELL_BELL, .moves = {MOVE_SURF, MOVE_ICE_BEAM, MOVE_BITE, MOVE_PROTECT}},
+    {.iv = 200, .lvl = 62, .species = SPECIES_POLIWRATH, .heldItem = ITEM_BLACK_BELT, .moves = {MOVE_SURF, MOVE_BRICK_BREAK, MOVE_ICE_BEAM, MOVE_HYPNOSIS}},
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_LifeguardTylerVermilion[] = {
+    {.iv = 50, .lvl = 21, .species = SPECIES_TENTACOOL, .moves = {MOVE_POISON_STING, MOVE_SUPERSONIC, MOVE_CONSTRICT, MOVE_ACID}},
+    {.iv = 50, .lvl = 23, .species = SPECIES_KRABBY, .moves = {MOVE_LEER, MOVE_VICE_GRIP, MOVE_HARDEN, MOVE_MUD_SHOT}},
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_SurferCodyVermilion[] = {
+    {.iv = 50, .lvl = 21, .species = SPECIES_GOLDEEN, .moves = {MOVE_PECK, MOVE_SUPERSONIC, MOVE_HORN_ATTACK, MOVE_WATER_SPORT}},
+    {.iv = 50, .lvl = 22, .species = SPECIES_PSYDUCK, .moves = {MOVE_SCRATCH, MOVE_TAIL_WHIP, MOVE_DISABLE, MOVE_CONFUSION}},
+    {.iv = 50, .lvl = 24, .species = SPECIES_STARYU, .moves = {MOVE_WATER_GUN, MOVE_RAPID_SPIN, MOVE_RECOVER, MOVE_SWIFT}},
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_BeachFamilyLisaBenVermilion[] = {
+    {.iv = 50, .lvl = 22, .species = SPECIES_SEEL, .moves = {MOVE_WATER_GUN, MOVE_ICY_WIND, MOVE_ENCORE, MOVE_AURORA_BEAM}},
+    {.iv = 50, .lvl = 22, .species = SPECIES_HORSEA, .moves = {MOVE_BUBBLE, MOVE_SMOKESCREEN, MOVE_LEER, MOVE_WATER_GUN}},
+    {.iv = 50, .lvl = 23, .species = SPECIES_SHELLDER, .moves = {MOVE_ICICLE_SPEAR, MOVE_SUPERSONIC, MOVE_CLAMP, MOVE_AURORA_BEAM}},
+    {.iv = 50, .lvl = 21, .species = SPECIES_POLIWAG, .moves = {MOVE_BUBBLE, MOVE_HYPNOSIS, MOVE_WATER_GUN, MOVE_DOUBLE_SLAP}},
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_LeaderSurgeVermilion[] = {
+    {.iv = 100, .lvl = 24, .species = SPECIES_SLOWPOKE, .moves = {MOVE_WATER_PULSE, MOVE_CONFUSION, MOVE_YAWN, MOVE_DISABLE}},
+    {.iv = 100, .lvl = 25, .species = SPECIES_POLIWHIRL, .moves = {MOVE_WATER_PULSE, MOVE_BRICK_BREAK, MOVE_HYPNOSIS, MOVE_RAIN_DANCE}},
+    {.iv = 100, .lvl = 26, .species = SPECIES_STARMIE, .moves = {MOVE_WATER_PULSE, MOVE_PSYCHIC, MOVE_RECOVER, MOVE_SWIFT}},
+};
+
+static const struct TrainerMonItemCustomMoves sParty_LeaderSurgeRematchVermilion[] = {
+    {.iv = 255, .lvl = 60, .species = SPECIES_SLOWKING, .heldItem = ITEM_QUICK_CLAW, .moves = {MOVE_SURF, MOVE_PSYCHIC, MOVE_YAWN, MOVE_PROTECT}},
+    {.iv = 255, .lvl = 61, .species = SPECIES_POLITOED, .heldItem = ITEM_MYSTIC_WATER, .moves = {MOVE_RAIN_DANCE, MOVE_SURF, MOVE_HYPNOSIS, MOVE_ICE_BEAM}},
+    {.iv = 255, .lvl = 62, .species = SPECIES_KINGDRA, .heldItem = ITEM_CHESTO_BERRY, .moves = {MOVE_SURF, MOVE_ICE_BEAM, MOVE_DRAGON_BREATH, MOVE_REST}},
+    {.iv = 255, .lvl = 63, .species = SPECIES_KABUTOPS, .heldItem = ITEM_SCOPE_LENS, .moves = {MOVE_SWORDS_DANCE, MOVE_ROCK_SLIDE, MOVE_BRICK_BREAK, MOVE_PROTECT}},
+    {.iv = 255, .lvl = 64, .species = SPECIES_VAPOREON, .heldItem = ITEM_LEFTOVERS, .moves = {MOVE_SURF, MOVE_ICE_BEAM, MOVE_TOXIC, MOVE_PROTECT}},
+    {.iv = 255, .lvl = 65, .species = SPECIES_STARMIE, .heldItem = ITEM_LUM_BERRY, .moves = {MOVE_SURF, MOVE_PSYCHIC, MOVE_THUNDER, MOVE_RECOVER}},
+};
