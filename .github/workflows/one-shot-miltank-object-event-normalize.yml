@@ -1,0 +1,107 @@
+name: One-shot Miltank object-event normalization
+
+on:
+  push:
+    branches:
+      - sam/enc-002-gfx-miltank-assets
+    paths:
+      - .github/workflows/one-shot-miltank-object-event-normalize.yml
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: sam/enc-002-gfx-miltank-assets
+          fetch-depth: 0
+
+      - name: Move Miltank graphics into native object-event data headers
+        shell: python
+        run: |
+          from pathlib import Path
+
+          def insert_after_named_block(text, marker, block):
+              if block.splitlines()[0] in text:
+                  return text
+              start = text.index(marker)
+              end = text.index("\n};", start) + len("\n};")
+              return text[:end] + "\n\n" + block + text[end:]
+
+          graphics = Path("src/data/object_events/object_event_graphics.h")
+          text = graphics.read_text()
+          miltank_pic = 'const u16 gObjectEventPic_Miltank[] = INCBIN_U16("graphics/object_events/pics/pokemon/miltank.4bpp");'
+          if "gObjectEventPic_Miltank" not in text:
+              anchor = 'const u16 gObjectEventPic_Abra[] = INCBIN_U16("graphics/object_events/pics/pokemon/abra.4bpp");'
+              if anchor not in text:
+                  raise SystemExit("Abra graphics anchor not found")
+              text = text.replace(anchor, anchor + "\n" + miltank_pic, 1)
+              graphics.write_text(text)
+
+          pics = Path("src/data/object_events/object_event_pic_tables.h")
+          text = pics.read_text()
+          miltank_pic_table = '''static const struct SpriteFrameImage sPicTable_Miltank[] = {
+              overworld_frame(gObjectEventPic_Miltank, 2, 2, 0),
+              overworld_frame(gObjectEventPic_Miltank, 2, 2, 1),
+              overworld_frame(gObjectEventPic_Miltank, 2, 2, 2),
+              overworld_frame(gObjectEventPic_Miltank, 2, 2, 3),
+              overworld_frame(gObjectEventPic_Miltank, 2, 2, 4),
+              overworld_frame(gObjectEventPic_Miltank, 2, 2, 5),
+              overworld_frame(gObjectEventPic_Miltank, 2, 2, 6),
+              overworld_frame(gObjectEventPic_Miltank, 2, 2, 7),
+              overworld_frame(gObjectEventPic_Miltank, 2, 2, 8),
+          };'''.replace("          ", "")
+          text = insert_after_named_block(text, "static const struct SpriteFrameImage sPicTable_Rhyhorn[] = {", miltank_pic_table)
+          pics.write_text(text)
+
+          info = Path("src/data/object_events/object_event_graphics_info.h")
+          text = info.read_text()
+          miltank_info = '''const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Miltank = {
+              .tileTag = TAG_NONE,
+              .paletteTag = OBJ_EVENT_PAL_TAG_NPC_PINK,
+              .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
+              .size = 128,
+              .width = 16,
+              .height = 16,
+              .paletteSlot = PALSLOT_NPC_2,
+              .shadowSize = SHADOW_SIZE_M,
+              .inanimate = FALSE,
+              .disableReflectionPaletteLoad = FALSE,
+              .tracks = TRACKS_FOOT,
+              .oam = &gObjectEventBaseOam_16x16,
+              .subspriteTables = gObjectEventSpriteOamTables_16x16,
+              .anims = sAnimTable_Standard,
+              .images = sPicTable_Miltank,
+              .affineAnims = gDummySpriteAffineAnimTable,
+          };'''.replace("          ", "")
+          text = insert_after_named_block(text, "const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Rhyhorn = {", miltank_info)
+          info.write_text(text)
+
+          standalone = Path("src/miltank_object_graphics.c")
+          if standalone.exists():
+              standalone.unlink()
+
+      - name: Verify normalized source contract
+        run: |
+          set -eux
+          grep -F 'gObjectEventPic_Miltank[] = INCBIN_U16("graphics/object_events/pics/pokemon/miltank.4bpp")' src/data/object_events/object_event_graphics.h
+          grep -F 'sPicTable_Miltank[]' src/data/object_events/object_event_pic_tables.h
+          grep -F 'gObjectEventGraphicsInfo_Miltank = {' src/data/object_events/object_event_graphics_info.h
+          grep -F '.anims = sAnimTable_Standard' src/data/object_events/object_event_graphics_info.h
+          grep -F '.images = sPicTable_Miltank' src/data/object_events/object_event_graphics_info.h
+          test ! -e src/miltank_object_graphics.c
+
+      - name: Commit normalized production structure and remove one-shot workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/one-shot-miltank-object-event-normalize.yml
+          git add src/data/object_events/object_event_graphics.h \
+                  src/data/object_events/object_event_pic_tables.h \
+                  src/data/object_events/object_event_graphics_info.h \
+                  src/miltank_object_graphics.c
+          git commit -m "fix: normalize Miltank object-event graphics registration"
+          git push origin HEAD:sam/enc-002-gfx-miltank-assets
