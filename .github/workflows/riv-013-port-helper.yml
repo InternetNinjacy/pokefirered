@@ -1,0 +1,389 @@
+name: RIV-013 port helper
+
+on:
+  push:
+    branches:
+      - sam/riv-013-green-naming-flow
+
+permissions:
+  contents: write
+
+jobs:
+  port-green-naming:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: sam/riv-013-green-naming-flow
+      - name: Port Green naming flow onto current ancestry
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('src/oak_speech.c')
+          s = p.read_text()
+
+          def once(old, new, label):
+              global s
+              n = s.count(old)
+              if n != 1:
+                  raise SystemExit(f'{label}: expected exactly one match, got {n}')
+              s = s.replace(old, new, 1)
+
+          once('''enum
+          {
+              WIN_INTRO_TEXTBOX,
+              WIN_INTRO_BOYGIRL,
+              WIN_INTRO_YESNO,
+              WIN_INTRO_NAMES,
+              NUM_INTRO_WINDOWS,
+          };
+
+          struct OakSpeechResources''', '''enum
+          {
+              WIN_INTRO_TEXTBOX,
+              WIN_INTRO_BOYGIRL,
+              WIN_INTRO_YESNO,
+              WIN_INTRO_NAMES,
+              NUM_INTRO_WINDOWS,
+          };
+
+          enum
+          {
+              NAME_TARGET_PLAYER,
+              NAME_TARGET_BLUE,
+              NAME_TARGET_GREEN,
+          };
+
+          struct OakSpeechResources''', 'name target enum')
+
+          once('    u16 hasPlayerBeenNamed;\n', '    u16 namingTarget;\n', 'naming target field')
+
+          once('''static void Task_OakSpeech_FadeInRivalPic(u8);
+          static void Task_OakSpeech_AskRivalsName(u8);
+          static void Task_OakSpeech_ReshowPlayersPic(u8);''', '''static void Task_OakSpeech_FadeInRivalPic(u8);
+          static void Task_OakSpeech_AskRivalsName(u8);
+          static void Task_OakSpeech_FadeInGreenPic(u8);
+          static void Task_OakSpeech_AskGreenName(u8);
+          static void Task_OakSpeech_FadeOutGreenPic(u8);
+          static void Task_OakSpeech_ReshowPlayersPic(u8);''', 'green task declarations')
+
+          s = s.replace('sRivalNameChoices', 'sBlueNameChoices')
+
+          marker = '''#endif
+          };
+
+          enum
+          {
+              MALE_PLAYER_PIC,'''
+          once(marker, '''#endif
+          };
+
+          static const u8 sNameChoice_GreenSam[] = _("GREEN");
+          static const u8 sNameChoice_Susan[] = _("SUSAN");
+          static const u8 sNameChoice_Amy[] = _("AMY");
+          static const u8 sNameChoice_Jess[] = _("JESS");
+
+          static const u8 *const sGreenNameChoices[] =
+          {
+              sNameChoice_GreenSam,
+              sNameChoice_Susan,
+              sNameChoice_Amy,
+              sNameChoice_Jess,
+          };
+
+          static const u8 sGreenNamePrompt[] = _("And this is the other Trainer.\\nWhat shall we call her?");
+          static const u8 sGreenNameRepeatPrompt[] = _("What shall we call her?");
+          static const u8 sGreenNameConfirmPrompt[] = _("We'll call her {STR_VAR_1},\\ncorrect?");
+          static const u8 sGreenNameConfirmed[] = _("Yes... {STR_VAR_1}.");
+
+          enum
+          {
+              MALE_PLAYER_PIC,''', 'Green presets and local text')
+
+          once('sOakSpeechResources->hasPlayerBeenNamed = FALSE;', 'sOakSpeechResources->namingTarget = NAME_TARGET_PLAYER;', 'player naming target')
+          s = s.replace('PrintNameChoiceOptions(taskId, sOakSpeechResources->hasPlayerBeenNamed);', 'PrintNameChoiceOptions(taskId, sOakSpeechResources->namingTarget);')
+          s = s.replace('GetDefaultName(sOakSpeechResources->hasPlayerBeenNamed, input - 1);', 'GetDefaultName(sOakSpeechResources->namingTarget, input - 1);')
+
+          once('''static void Task_OakSpeech_RepeatNameQuestion(u8 taskId)
+          {
+              PrintNameChoiceOptions(taskId, sOakSpeechResources->namingTarget);
+              if (sOakSpeechResources->hasPlayerBeenNamed == FALSE)
+                  OakSpeechPrintMessage(gOakSpeech_Text_YourNameWhatIsIt, 0);
+              else
+                  OakSpeechPrintMessage(gOakSpeech_Text_YourRivalsNameWhatWasIt, 0);
+              gTasks[taskId].func = Task_OakSpeech_HandleRivalNameInput;
+          }''', '''static void Task_OakSpeech_RepeatNameQuestion(u8 taskId)
+          {
+              PrintNameChoiceOptions(taskId, sOakSpeechResources->namingTarget);
+              switch (sOakSpeechResources->namingTarget)
+              {
+              case NAME_TARGET_PLAYER:
+                  OakSpeechPrintMessage(gOakSpeech_Text_YourNameWhatIsIt, 0);
+                  break;
+              case NAME_TARGET_BLUE:
+                  OakSpeechPrintMessage(gOakSpeech_Text_YourRivalsNameWhatWasIt, 0);
+                  break;
+              case NAME_TARGET_GREEN:
+                  OakSpeechPrintMessage(sGreenNameRepeatPrompt, 0);
+                  break;
+              }
+              gTasks[taskId].func = Task_OakSpeech_HandleRivalNameInput;
+          }''', 'repeat name question')
+
+          once('''static void Task_OakSpeech_DoNamingScreen(u8 taskId)
+          {
+              if (!gPaletteFade.active)
+              {
+                  GetDefaultName(sOakSpeechResources->hasPlayerBeenNamed, 0);
+                  if (sOakSpeechResources->hasPlayerBeenNamed == FALSE)
+                  {
+                      DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_ReturnFromNamingScreen);
+                  }
+                  else
+                  {
+                      ClearStdWindowAndFrameToTransparent(gTasks[taskId].tMenuWindowId, TRUE);
+                      RemoveWindow(gTasks[taskId].tMenuWindowId);
+                      DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock1Ptr->rivalName, 0, 0, 0, CB2_ReturnFromNamingScreen);
+                  }
+                  DestroyPikachuOrPlatformSprites(taskId, SPRITE_TYPE_PLATFORM);
+                  FreeAllWindowBuffers();
+              }
+          }''', '''static void Task_OakSpeech_DoNamingScreen(u8 taskId)
+          {
+              if (!gPaletteFade.active)
+              {
+                  GetDefaultName(sOakSpeechResources->namingTarget, 0);
+                  switch (sOakSpeechResources->namingTarget)
+                  {
+                  case NAME_TARGET_PLAYER:
+                      DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_ReturnFromNamingScreen);
+                      break;
+                  case NAME_TARGET_BLUE:
+                      ClearStdWindowAndFrameToTransparent(gTasks[taskId].tMenuWindowId, TRUE);
+                      RemoveWindow(gTasks[taskId].tMenuWindowId);
+                      DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock1Ptr->rivalName, 0, 0, 0, CB2_ReturnFromNamingScreen);
+                      break;
+                  case NAME_TARGET_GREEN:
+                      ClearStdWindowAndFrameToTransparent(gTasks[taskId].tMenuWindowId, TRUE);
+                      RemoveWindow(gTasks[taskId].tMenuWindowId);
+                      DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock1Ptr->samEdition.greenName, 0, 0, 0, CB2_ReturnFromNamingScreen);
+                      break;
+                  }
+                  DestroyPikachuOrPlatformSprites(taskId, SPRITE_TYPE_PLATFORM);
+                  FreeAllWindowBuffers();
+              }
+          }''', 'custom naming screen routing')
+
+          once('''            if (sOakSpeechResources->hasPlayerBeenNamed == FALSE)
+                          StringExpandPlaceholders(gStringVar4, gOakSpeech_Text_SoYourNameIsPlayer);
+                      else
+                          StringExpandPlaceholders(gStringVar4, gOakSpeech_Text_ConfirmRivalName);''', '''            switch (sOakSpeechResources->namingTarget)
+                      {
+                      case NAME_TARGET_PLAYER:
+                          StringExpandPlaceholders(gStringVar4, gOakSpeech_Text_SoYourNameIsPlayer);
+                          break;
+                      case NAME_TARGET_BLUE:
+                          StringExpandPlaceholders(gStringVar4, gOakSpeech_Text_ConfirmRivalName);
+                          break;
+                      case NAME_TARGET_GREEN:
+                          StringCopy(gStringVar1, gSaveBlock1Ptr->samEdition.greenName);
+                          StringExpandPlaceholders(gStringVar4, sGreenNameConfirmPrompt);
+                          break;
+                      }''', 'confirmation prompt routing')
+
+          once('''        if (sOakSpeechResources->hasPlayerBeenNamed == FALSE)
+                  {
+                      ClearDialogWindowAndFrame(WIN_INTRO_TEXTBOX, TRUE);
+                      CreateFadeInTask(taskId, 2);
+                      gTasks[taskId].func = Task_OakSpeech_FadeOutPlayerPic;
+                  }
+                  else
+                  {
+                      StringExpandPlaceholders(gStringVar4, gOakSpeech_Text_RememberRivalsName);
+                      OakSpeechPrintMessage(gStringVar4, sOakSpeechResources->textSpeed);
+                      gTasks[taskId].func = Task_OakSpeech_FadeOutRivalPic;
+                  }''', '''        switch (sOakSpeechResources->namingTarget)
+                  {
+                  case NAME_TARGET_PLAYER:
+                      ClearDialogWindowAndFrame(WIN_INTRO_TEXTBOX, TRUE);
+                      CreateFadeInTask(taskId, 2);
+                      gTasks[taskId].func = Task_OakSpeech_FadeOutPlayerPic;
+                      break;
+                  case NAME_TARGET_BLUE:
+                      StringExpandPlaceholders(gStringVar4, gOakSpeech_Text_RememberRivalsName);
+                      OakSpeechPrintMessage(gStringVar4, sOakSpeechResources->textSpeed);
+                      gTasks[taskId].func = Task_OakSpeech_FadeOutRivalPic;
+                      break;
+                  case NAME_TARGET_GREEN:
+                      StringCopy(gStringVar1, gSaveBlock1Ptr->samEdition.greenName);
+                      StringExpandPlaceholders(gStringVar4, sGreenNameConfirmed);
+                      OakSpeechPrintMessage(gStringVar4, sOakSpeechResources->textSpeed);
+                      gTasks[taskId].func = Task_OakSpeech_FadeOutGreenPic;
+                      break;
+                  }''', 'confirm yes routing')
+
+          s = s.replace('if (sOakSpeechResources->hasPlayerBeenNamed == FALSE)\n            gTasks[taskId].func = Task_OakSpeech_FadeOutForPlayerNamingScreen;', 'if (sOakSpeechResources->namingTarget == NAME_TARGET_PLAYER)\n            gTasks[taskId].func = Task_OakSpeech_FadeOutForPlayerNamingScreen;', 1)
+
+          once('''        gTasks[taskId].func = Task_OakSpeech_ReshowPlayersPic;
+              }
+          }
+
+          static void Task_OakSpeech_FadeInRivalPic''', '''        gTasks[taskId].func = Task_OakSpeech_FadeInGreenPic;
+              }
+          }
+
+          static void Task_OakSpeech_FadeInRivalPic''', 'route Blue to Green')
+
+          once('sOakSpeechResources->hasPlayerBeenNamed = TRUE;', 'sOakSpeechResources->namingTarget = NAME_TARGET_BLUE;', 'Blue naming target')
+
+          once('''static void Task_OakSpeech_ReshowPlayersPic(u8 taskId)''', '''static void Task_OakSpeech_FadeInGreenPic(u8 taskId)
+          {
+              s16 *data = gTasks[taskId].data;
+
+              if (tTrainerPicFadeState != 0)
+              {
+                  ClearTrainerPic();
+                  LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
+                  tTrainerPicPosX = 0;
+                  gSpriteCoordOffsetX = 0;
+                  ChangeBgX(2, 0, BG_COORD_SET);
+                  CreateFadeOutTask(taskId, 2);
+                  gTasks[taskId].func = Task_OakSpeech_AskGreenName;
+              }
+          }
+
+          static void Task_OakSpeech_AskGreenName(u8 taskId)
+          {
+              s16 *data = gTasks[taskId].data;
+
+              if (tTrainerPicFadeState != 0)
+              {
+                  OakSpeechPrintMessage(sGreenNamePrompt, sOakSpeechResources->textSpeed);
+                  sOakSpeechResources->namingTarget = NAME_TARGET_GREEN;
+                  gTasks[taskId].func = Task_OakSpeech_MoveRivalDisplayNameOptions;
+              }
+          }
+
+          static void Task_OakSpeech_FadeOutGreenPic(u8 taskId)
+          {
+              if (!IsTextPrinterActive(WIN_INTRO_TEXTBOX))
+              {
+                  ClearDialogWindowAndFrame(WIN_INTRO_TEXTBOX, TRUE);
+                  CreateFadeInTask(taskId, 2);
+                  gTasks[taskId].func = Task_OakSpeech_ReshowPlayersPic;
+              }
+          }
+
+          static void Task_OakSpeech_ReshowPlayersPic(u8 taskId)''', 'Green task implementations')
+
+          once('''        if (sOakSpeechResources->hasPlayerBeenNamed == FALSE)
+                  {
+                      if (gSaveBlock2Ptr->playerGender == MALE)
+                          LoadTrainerPic(MALE_PLAYER_PIC, 0);
+                      else
+                          LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
+                  }
+                  else
+                  {
+                      LoadTrainerPic(RIVAL_PIC, 0);
+                  }''', '''        switch (sOakSpeechResources->namingTarget)
+                  {
+                  case NAME_TARGET_PLAYER:
+                      if (gSaveBlock2Ptr->playerGender == MALE)
+                          LoadTrainerPic(MALE_PLAYER_PIC, 0);
+                      else
+                          LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
+                      break;
+                  case NAME_TARGET_BLUE:
+                      LoadTrainerPic(RIVAL_PIC, 0);
+                      break;
+                  case NAME_TARGET_GREEN:
+                      LoadTrainerPic(FEMALE_PLAYER_PIC, 0);
+                      break;
+                  }''', 'return-from-naming portrait routing')
+
+          # Replace helper implementations at the tail.
+          start = s.index('static void PrintNameChoiceOptions(u8 taskId, u8 hasPlayerBeenNamed)')
+          end = s.index('\n#undef tSpriteTimer', start)
+          s = s[:start] + '''static void PrintNameChoiceOptions(u8 taskId, u8 namingTarget)
+          {
+              s16 *data = gTasks[taskId].data;
+              const u8 *const *textPtrs;
+              u8 i;
+
+              tMenuWindowId = AddWindow(&sIntro_WindowTemplates[WIN_INTRO_NAMES]);
+              PutWindowTilemap(tMenuWindowId);
+              DrawStdFrameWithCustomTileAndPalette(tMenuWindowId, 1, GetStdWindowBaseTileNum(), 14);
+              FillWindowPixelBuffer(gTasks[taskId].tMenuWindowId, PIXEL_FILL(1));
+              AddTextPrinterParameterized(tMenuWindowId, FONT_NORMAL, gOtherText_NewName, 8, 1, 0, NULL);
+              switch (namingTarget)
+              {
+              case NAME_TARGET_PLAYER:
+                  textPtrs = gSaveBlock2Ptr->playerGender == MALE ? sMaleNameChoices : sFemaleNameChoices;
+                  break;
+              case NAME_TARGET_BLUE:
+                  textPtrs = sBlueNameChoices;
+                  break;
+              case NAME_TARGET_GREEN:
+                  textPtrs = sGreenNameChoices;
+                  break;
+              default:
+                  textPtrs = sBlueNameChoices;
+                  break;
+              }
+              for (i = 0; i < ARRAY_COUNT(sBlueNameChoices); i++)
+                  AddTextPrinterParameterized(tMenuWindowId, FONT_NORMAL, textPtrs[i], 8, 16 * (i + 1) + 1, 0, NULL);
+              Menu_InitCursor(tMenuWindowId, FONT_NORMAL, 0, 1, 16, 5, 0);
+              CopyWindowToVram(tMenuWindowId, COPYWIN_FULL);
+          }
+
+          static void GetDefaultName(u8 namingTarget, u8 nameChoice)
+          {
+              const u8 *src;
+              u8 *dest;
+              u8 i;
+
+              switch (namingTarget)
+              {
+              case NAME_TARGET_PLAYER:
+                  if (gSaveBlock2Ptr->playerGender == MALE)
+                      src = sMaleNameChoices[Random() % ARRAY_COUNT(sMaleNameChoices)];
+                  else
+                      src = sFemaleNameChoices[Random() % ARRAY_COUNT(sFemaleNameChoices)];
+                  dest = gSaveBlock2Ptr->playerName;
+                  break;
+              case NAME_TARGET_BLUE:
+                  src = sBlueNameChoices[nameChoice];
+                  dest = gSaveBlock1Ptr->rivalName;
+                  break;
+              case NAME_TARGET_GREEN:
+                  src = sGreenNameChoices[nameChoice];
+                  dest = gSaveBlock1Ptr->samEdition.greenName;
+                  break;
+              default:
+                  return;
+              }
+              for (i = 0; i < PLAYER_NAME_LENGTH && src[i] != EOS; i++)
+                  dest[i] = src[i];
+              for (; i < PLAYER_NAME_LENGTH + 1; i++)
+                  dest[i] = EOS;
+          }
+          ''' + s[end:]
+
+          if 'hasPlayerBeenNamed' in s:
+              raise SystemExit('stale hasPlayerBeenNamed references remain')
+          for expected in ('GREEN', 'SUSAN', 'AMY', 'JESS', 'NAME_TARGET_GREEN', 'samEdition.greenName'):
+              if expected not in s:
+                  raise SystemExit(f'missing expected token: {expected}')
+
+          p.write_text(s)
+          PY
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/oak_speech.c
+          git diff --cached --check
+          git commit -m "RIV-013: add Green opening naming flow"
+          git push origin HEAD:sam/riv-013-green-naming-flow
