@@ -2346,6 +2346,13 @@ extern const u32 gMonBackPic_Chimecho[];
 extern const u32 gMonShinyPalette_Chimecho[];
 extern const u8 gMonIcon_Chimecho[];
 extern const u8 gMonFootprint_Chimecho[];
+extern const u32 gMonFrontPic_Leafeon[];
+extern const u32 gMonPalette_Leafeon[];
+extern const u32 gMonBackPic_Leafeon[];
+extern const u32 gMonShinyPalette_Leafeon[];
+extern const u8 gMonIcon_Leafeon[];
+extern const u8 gMonFootprint_Leafeon[];
+
 extern const u32 gMonFrontPic_Egg[];
 extern const u32 gMonPalette_Egg[];
 extern const u8 gMonIcon_Egg[];
