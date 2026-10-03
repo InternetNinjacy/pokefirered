@@ -48,14 +48,14 @@ jobs:
           o=objs[0]
           assert o["graphics_id"]=="OBJ_EVENT_GFX_RHYHORN"
           assert (o["x"],o["y"],o["elevation"])==(33,8,3)
-          assert o["flag"]=="FLAG_STATIC_VIRIDIAN_FOREST_RHYHORN_COMPLETE"
+          assert o["flag"]=="FLAG_STATIC_MT_MOON_RHYHORN_COMPLETE"
           s=pathlib.Path("data/maps/MtMoon_B2F/scripts.inc").read_text()
-          for token in ["setwildbattle SPECIES_RHYHORN, 16, ITEM_HARD_STONE","MOVE_ROCK_THROW","MOVE_HORN_ATTACK","MOVE_STOMP","MOVE_TAIL_WHIP","goto_if_eq VAR_RESULT, B_OUTCOME_WON, MtMoon_B2F_EventScript_CompleteStaticRhyhorn","goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, MtMoon_B2F_EventScript_CompleteStaticRhyhorn","setflag FLAG_STATIC_VIRIDIAN_FOREST_RHYHORN_COMPLETE","removeobject VAR_LAST_TALKED"]:
+          for token in ["setwildbattle SPECIES_RHYHORN, 16, ITEM_HARD_STONE","MOVE_ROCK_THROW","MOVE_HORN_ATTACK","MOVE_STOMP","MOVE_TAIL_WHIP","goto_if_eq VAR_RESULT, B_OUTCOME_WON, MtMoon_B2F_EventScript_CompleteStaticRhyhorn","goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, MtMoon_B2F_EventScript_CompleteStaticRhyhorn","setflag FLAG_STATIC_MT_MOON_RHYHORN_COMPLETE","removeobject VAR_LAST_TALKED"]:
               assert token in s
           start=s.index("MtMoon_B2F_EventScript_StaticRhyhorn::")
           complete=s.index("MtMoon_B2F_EventScript_CompleteStaticRhyhorn::")
           pre=s[start:complete]
-          assert "setflag FLAG_STATIC_VIRIDIAN_FOREST_RHYHORN_COMPLETE" not in pre
+          assert "setflag FLAG_STATIC_MT_MOON_RHYHORN_COMPLETE" not in pre
           assert pre.rstrip().endswith("release\n\tend")
           mov=pathlib.Path("src/event_object_movement.c").read_text()
           assert "#define OBJ_EVENT_PAL_TAG_RHYHORN                      0x111D" in mov
