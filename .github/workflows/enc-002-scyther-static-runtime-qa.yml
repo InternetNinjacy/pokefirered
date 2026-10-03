@@ -1,0 +1,100 @@
+name: ENC-002 Scyther Static Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/enc-002-scyther-static-runtime-v2
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  enc002-scyther-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/enc-002-scyther-static-runtime
+          fetch-depth: 0
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+      - name: Verify production ancestry and exact source contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, pathlib, struct, subprocess
+          prod="c2f9d3a5fb538bb58d332e4660586e659a41b8d6"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+          flags=pathlib.Path("include/constants/flags.h").read_text()
+          assert "#define FLAG_STATIC_VIRIDIAN_FOREST_SCYTHER_COMPLETE   0x360" in flags
+          eo=pathlib.Path("include/constants/event_objects.h").read_text()
+          assert "#define OBJ_EVENT_GFX_SCYTHER            160" in eo
+          assert "#define NUM_OBJ_EVENT_GFX                161" in eo
+          m=json.loads(pathlib.Path("data/maps/ViridianForest/map.json").read_text())
+          objs=[o for o in m["object_events"] if o.get("script")=="ViridianForest_EventScript_StaticScyther"]
+          assert len(objs)==1
+          o=objs[0]
+          assert o["graphics_id"]=="OBJ_EVENT_GFX_SCYTHER"
+          assert (o["x"],o["y"],o["elevation"])==(4,23,3)
+          assert o["flag"]=="FLAG_STATIC_VIRIDIAN_FOREST_SCYTHER_COMPLETE"
+          s=pathlib.Path("data/maps/ViridianForest/scripts.inc").read_text()
+          for token in ["setwildbattle SPECIES_SCYTHER, 11, ITEM_SILVER_POWDER","MOVE_QUICK_ATTACK","MOVE_LEER","MOVE_FOCUS_ENERGY","MOVE_FURY_CUTTER","goto_if_eq VAR_RESULT, B_OUTCOME_WON, ViridianForest_EventScript_CompleteStaticScyther","goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, ViridianForest_EventScript_CompleteStaticScyther","setflag FLAG_STATIC_VIRIDIAN_FOREST_SCYTHER_COMPLETE","removeobject VAR_LAST_TALKED"]:
+              assert token in s
+          start=s.index("ViridianForest_EventScript_StaticScyther::")
+          complete=s.index("ViridianForest_EventScript_CompleteStaticScyther::")
+          pre=s[start:complete]
+          assert "setflag FLAG_STATIC_VIRIDIAN_FOREST_SCYTHER_COMPLETE" not in pre
+          assert pre.rstrip().endswith("release\n\tend")
+          mov=pathlib.Path("src/event_object_movement.c").read_text()
+          assert "#define OBJ_EVENT_PAL_TAG_SCYTHER                      0x111C" in mov
+          assert "{gObjectEventPal_Scyther,                 OBJ_EVENT_PAL_TAG_SCYTHER}," in mov
+          info=pathlib.Path("src/data/object_events/object_event_graphics_info.h").read_text()
+          assert ".paletteTag = OBJ_EVENT_PAL_TAG_SCYTHER" in info
+          assert ".paletteSlot = PALSLOT_NPC_SPECIAL" in info
+          png=pathlib.Path("graphics/object_events/pics/pokemon/scyther.png").read_bytes()
+          assert png[:8]==b"\x89PNG\r\n\x1a\n"
+          w,h=struct.unpack(">II",png[16:24]); assert (w,h)==(16,144)
+          pal=pathlib.Path("graphics/object_events/palettes/scyther.pal").read_text().splitlines()
+          assert pal[:3]==["JASC-PAL","0100","16"] and len(pal[3:])==16
+          print("ENC002 SCYTHER STATIC SOURCE PASS")
+          PY
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ENC002_SCYTHER_ROM_SHA1.txt
+          git rev-parse HEAD | tee ENC002_SCYTHER_QA_SOURCE_SHA.txt
+          echo c2f9d3a5fb538bb58d332e4660586e659a41b8d6 | tee ENC002_SCYTHER_PRODUCTION_SOURCE_SHA.txt
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 35s mgba -l 31 pokefirered.gba > enc002_scyther_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc002_scyther_phase1.log
+          grep -q "ENC002 SCYTHER QA PHASE1 PASS package flag save" enc002_scyther_phase1.log
+          ! grep -q "ENC002 SCYTHER QA FAIL" enc002_scyther_phase1.log
+          test -s pokefirered.sav
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > enc002_scyther_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc002_scyther_phase2.log
+          grep -q "ENC002 SCYTHER QA PASS save reload package" enc002_scyther_phase2.log
+          ! grep -q "ENC002 SCYTHER QA FAIL" enc002_scyther_phase2.log
