@@ -1,0 +1,87 @@
+name: SPEC-009 Pokedex Backing Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/spec-009-pokedex-backing-runtime
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  spec009-pokedex-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/spec-009-pokedex-backing-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and backing separation
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import pathlib, subprocess
+          prod = "a6d92e6c1c8f869455454b68f3f8434396a741c6"
+          subprocess.check_call(["git", "merge-base", "--is-ancestor", prod, "HEAD"])
+          const = pathlib.Path("include/constants/pokedex.h").read_text()
+          pokemon = pathlib.Path("src/pokemon.c").read_text()
+          screen = pathlib.Path("src/pokedex_screen.c").read_text()
+          assert "#define NATIONAL_DEX_COUNT  NATIONAL_DEX_DEOXYS" in const
+          assert "#define SAM_DEX_FLAG_LEAFEON    412" in const
+          assert "#define SAM_DEX_FLAG_ECTOCEON   413" in const
+          assert "#define SAM_DEX_FLAG_RHYPERIOR  414" in const
+          assert "[SPECIES_LEAFEON - 1] = SAM_DEX_FLAG_LEAFEON" in pokemon
+          assert "[SPECIES_ECTOCEON - 1] = SAM_DEX_FLAG_ECTOCEON" in pokemon
+          assert "[SPECIES_RHYPERIOR - 1] = SAM_DEX_FLAG_RHYPERIOR" in pokemon
+          assert "nationalDexNo > DEX_FLAGS_NO * 8" in screen
+          print("SPEC009DEX STATIC PASS")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee SPEC009DEX_QA_ROM_SHA1.txt
+          git rev-parse HEAD | tee SPEC009DEX_QA_SOURCE_SHA.txt
+          echo a6d92e6c1c8f869455454b68f3f8434396a741c6 | tee SPEC009DEX_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Run focused runtime QA
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 25s mgba -l 31 pokefirered.gba > spec009dex_runtime.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat spec009dex_runtime.log
+          grep -q "SPEC009DEX QA PASS custom seen-owned backing" spec009dex_runtime.log
+          ! grep -q "SPEC009DEX QA FAIL" spec009dex_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-009-pokedex-backing-runtime-qa
+          path: |
+            pokefirered.gba
+            SPEC009DEX_QA_ROM_SHA1.txt
+            SPEC009DEX_QA_SOURCE_SHA.txt
+            SPEC009DEX_PRODUCTION_SOURCE_SHA.txt
+            spec009dex_runtime.log
+          if-no-files-found: error
