@@ -1,0 +1,85 @@
+name: SPRITE-003 Leafeon QA v3
+on:
+  push:
+    branches: [qa/sprite-003-leafeon-v3]
+  pull_request:
+    branches: [sam/sprite-003-leafeon-assets]
+  workflow_dispatch:
+jobs:
+  leafeon-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/sprite-003-leafeon-v3
+          fetch-depth: 0
+      - name: Install build dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential gcc-arm-none-eabi binutils-arm-none-eabi git libpng-dev
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+      - name: Verify Leafeon contract
+        run: |
+          set -euxo pipefail
+          git merge-base --is-ancestor 8d2432a033cc2bbdc00845a8ac14b94a1d609640 HEAD
+          python3 - <<'PY'
+          import struct, zlib
+          from pathlib import Path
+          def verify_png(path, expected):
+              d=Path(path).read_bytes()
+              assert d[:8] == b'\x89PNG\r\n\x1a\n'
+              assert struct.unpack('>II', d[16:24]) == expected
+              p=8
+              while p < len(d):
+                  n=struct.unpack('>I',d[p:p+4])[0]
+                  typ=d[p+4:p+8]; payload=d[p+8:p+8+n]
+                  crc=struct.unpack('>I',d[p+8+n:p+12+n])[0]
+                  assert zlib.crc32(typ+payload)&0xffffffff == crc, (path,typ)
+                  p += 12+n
+                  if typ == b'IEND': break
+          verify_png('graphics/pokemon/leafeon/front.png',(64,64))
+          verify_png('graphics/pokemon/leafeon/back.png',(64,64))
+          verify_png('graphics/pokemon/leafeon/icon.png',(32,64))
+          verify_png('graphics/pokemon/leafeon/footprint.png',(16,16))
+          checks={
+           'src/data/pokemon_graphics/front_pic_table.h':'SPECIES_SPRITE(LEAFEON, gMonFrontPic_Leafeon)',
+           'src/data/pokemon_graphics/back_pic_table.h':'SPECIES_SPRITE(LEAFEON, gMonBackPic_Leafeon)',
+           'src/data/pokemon_graphics/palette_table.h':'SPECIES_PAL(LEAFEON, gMonPalette_Leafeon)',
+           'src/data/pokemon_graphics/shiny_palette_table.h':'SPECIES_SHINY_PAL(LEAFEON, gMonShinyPalette_Leafeon)',
+           'src/data/pokemon_graphics/footprint_table.h':'[SPECIES_LEAFEON] = gMonFootprint_Leafeon',
+           'src/pokemon_icon.c':'[SPECIES_LEAFEON]     = gMonIcon_Leafeon',
+           'src/data/pokemon/cry_ids.h':'[SPECIES_LEAFEON - HOENN_MON_SPECIES_START] = SPECIES_EEVEE - 1'}
+          for p,t in checks.items(): assert t in Path(p).read_text(),(p,t)
+          assert '[SPECIES_LEAFEON]     = 1' in Path('src/pokemon_icon.c').read_text().split('const u8 gMonIconPaletteIndices[]',1)[1]
+          f=Path('src/data/pokemon_graphics/front_pic_coordinates.h').read_text().split('[SPECIES_LEAFEON] =',1)[1].split('[SPECIES_ECTOCEON]',1)[0]
+          b=Path('src/data/pokemon_graphics/back_pic_coordinates.h').read_text().split('[SPECIES_LEAFEON] =',1)[1].split('[SPECIES_ECTOCEON]',1)[0]
+          assert 'MON_COORDS_SIZE(56, 56)' in f and '.y_offset = 6' in f
+          assert 'MON_COORDS_SIZE(48, 40)' in b and '.y_offset = 8' in b
+          print('SPRITE-003 LEAFEON CONTRACT PASS')
+          PY
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make modern 2>&1 | tee SPRITE003_LEAFEON_BUILD.log
+          test -f pokefirered_modern.gba
+          sha1sum pokefirered_modern.gba | tee SPRITE003_LEAFEON_QA_ROM_SHA1.txt
+          git rev-parse HEAD | tee SPRITE003_LEAFEON_QA_SOURCE_SHA.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sprite-003-leafeon-qa-v3
+          path: |
+            pokefirered_modern.gba
+            SPRITE003_LEAFEON_BUILD.log
+            SPRITE003_LEAFEON_QA_ROM_SHA1.txt
+            SPRITE003_LEAFEON_QA_SOURCE_SHA.txt
+          if-no-files-found: warn
