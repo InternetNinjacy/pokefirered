@@ -173,8 +173,9 @@
 #define OBJ_EVENT_GFX_BUSHRANGER_F       158
 #define OBJ_EVENT_GFX_BOREAL             159
 #define OBJ_EVENT_GFX_SCYTHER            160
+#define OBJ_EVENT_GFX_RHYHORN            161
 
-#define NUM_OBJ_EVENT_GFX                161
+#define NUM_OBJ_EVENT_GFX                162
 
 // These are dynamic object gfx ids.
 // They correspond with the values of the VAR_OBJ_GFX_ID_X vars.
@@ -209,7 +210,7 @@
 #if OBJ_EVENT_GFX_VARS != 240 || OBJ_EVENT_GFX_VAR_F != 255
 #error "ARCH-006: dynamic OBJ graphics range must remain 240-255"
 #endif
-#if OBJ_EVENT_GFX_SCYTHER >= OBJ_EVENT_GFX_VARS || NUM_OBJ_EVENT_GFX > OBJ_EVENT_GFX_VARS
+#if OBJ_EVENT_GFX_RHYHORN >= OBJ_EVENT_GFX_VARS || NUM_OBJ_EVENT_GFX > OBJ_EVENT_GFX_VARS
 #error "ARCH-006: fixed Sam OBJ graphics crossed into the dynamic range"
 #endif
 
