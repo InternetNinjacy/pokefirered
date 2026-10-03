@@ -1,0 +1,153 @@
+name: GYM1 Pewter Endurance Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/gym1-pewter-endurance-runtime-v4
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  gym1-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/gym1-pewter-endurance-runtime-v4
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and exact source contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, pathlib, struct, subprocess
+          prod="e48eea33455e703f59d5313cb4df9035628ea7a7"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+
+          opp=pathlib.Path("include/constants/opponents.h").read_text()
+          for token in [
+              "#define TRAINER_HIKER_CLIFF_PEWTER                775",
+              "#define TRAINER_HIKER_MILES_PEWTER                776",
+              "#define TRAINER_LEADER_BOREAL_PEWTER              777",
+              "#define TRAINER_LEADER_BOREAL_REMATCH_PEWTER      778",
+          ]: assert token in opp
+
+          flags=pathlib.Path("include/constants/flags.h").read_text()
+          assert "#define FLAG_GYM1_TM55_RECEIVED             0x318" in flags
+
+          mapj=json.loads(pathlib.Path("data/maps/PewterCity_Gym/map.json").read_text())
+          assert mapj["layout"]=="LAYOUT_PEWTER_CITY_GYM"
+          objs={o["script"]:o for o in mapj["object_events"]}
+          assert (objs["PewterCity_Gym_EventScript_Boreal"]["x"],objs["PewterCity_Gym_EventScript_Boreal"]["y"])==(9,4)
+          assert objs["PewterCity_Gym_EventScript_Boreal"]["graphics_id"]=="OBJ_EVENT_GFX_BOREAL"
+          assert (objs["PewterCity_Gym_EventScript_Cliff"]["x"],objs["PewterCity_Gym_EventScript_Cliff"]["y"])==(8,14)
+          assert (objs["PewterCity_Gym_EventScript_Miles"]["x"],objs["PewterCity_Gym_EventScript_Miles"]["y"])==(8,9)
+          assert (objs["PewterCity_Gym_EventScript_Satoshi"]["x"],objs["PewterCity_Gym_EventScript_Satoshi"]["y"])==(6,20)
+          assert len(mapj["warp_events"])==1 and (mapj["warp_events"][0]["x"],mapj["warp_events"][0]["y"])==(9,22)
+
+          layouts=json.loads(pathlib.Path("data/layouts/layouts.json").read_text())
+          layout=next(x for x in layouts["layouts"] if x.get("id")=="LAYOUT_PEWTER_CITY_GYM")
+          assert (layout["width"],layout["height"])==(19,23)
+          raw=pathlib.Path("data/layouts/PewterCity_Gym/map.bin").read_bytes()
+          vals=struct.unpack("<"+"H"*(len(raw)//2),raw)
+          def tile(x,y): return vals[y*19+x]&0x3ff
+          for x,y in [(9,18),(9,17),(9,16),(9,13),(9,12),(9,11),(9,8),(9,7),(9,6),(9,5),
+                      (8,18),(7,18),(7,17),(6,17),(6,16),(5,16),(5,15),(5,14),(5,13),(6,13),(6,12),(7,12),(8,12),
+                      (10,12),(11,12),(11,11),(12,11),(12,10),(13,10),(13,9),(13,8),(13,7),(12,7),(12,6),(11,6),(10,6)]:
+              assert tile(x,y)==0x359, (x,y,hex(tile(x,y)))
+
+          scripts=pathlib.Path("data/maps/PewterCity_Gym/scripts.inc").read_text()
+          for token in [
+              "setstepcallback STEP_CB_GYM1_ICE",
+              "TRAINER_HIKER_CLIFF_PEWTER",
+              "TRAINER_HIKER_MILES_PEWTER",
+              "TRAINER_LEADER_BOREAL_PEWTER",
+              "ITEM_TM55_ICY_WIND",
+              "FLAG_GYM1_TM55_RECEIVED",
+              "FLAG_SATOSHI_PEWTER_PRACTICE_WON",
+          ]: assert token in scripts
+
+          field=pathlib.Path("src/field_tasks.c").read_text()
+          assert "PewterGymIcePerStepCallback" in field
+          assert "VarSet(VAR_TEMP_1, 1)" in field
+
+          battle=pathlib.Path("src/battle_main.c").read_text()
+          for token in ["TRAINER_SATOSHI_PEWTER_PRACTICE","TRAINER_HIKER_CLIFF_PEWTER","TRAINER_HIKER_MILES_PEWTER","TRAINER_LEADER_BOREAL_PEWTER","gBattleWeather = B_WEATHER_HAIL","gWishFutureKnock.weatherDuration = 5"]:
+              assert token in battle
+
+          parties=pathlib.Path("src/data/trainer_parties.h").read_text()
+          for token in ["sParty_HikerCliffPewter","sParty_HikerMilesPewter","sParty_LeaderBorealPewter","sParty_LeaderBorealRematchPewter","sParty_SatoshiPewterPractice","sParty_SatoshiPewterRematch"]:
+              assert token in parties
+
+          ptr=pathlib.Path("src/data/object_events/object_event_graphics_info_pointers.h").read_text()
+          assert "[OBJ_EVENT_GFX_BOREAL]                   = &gObjectEventGraphicsInfo_Boreal," in ptr
+          gfx=pathlib.Path("src/data/object_events/object_event_graphics.h").read_text()
+          assert 'graphics/object_events/pics/people/boreal.4bpp' in gfx
+          badge=pathlib.Path("graphics/trainer_card/badges.png")
+          assert badge.exists() and badge.stat().st_size > 0
+
+          print("GYM1 STATIC CONTRACT PASS")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee GYM1_ROM_SHA1.txt
+          git rev-parse HEAD | tee GYM1_QA_SOURCE_SHA.txt
+          echo e48eea33455e703f59d5313cb4df9035628ea7a7 | tee GYM1_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 35s mgba -l 31 pokefirered.gba > gym1_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat gym1_phase1.log
+          grep -q "GYM1 QA PHASE1 PASS persistent state save" gym1_phase1.log
+          ! grep -q "GYM1 QA FAIL" gym1_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > gym1_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat gym1_phase2.log
+          grep -q "GYM1 QA PASS persistent state reload" gym1_phase2.log
+          ! grep -q "GYM1 QA FAIL" gym1_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gym1-pewter-endurance-runtime-qa
+          path: |
+            pokefirered.gba
+            GYM1_ROM_SHA1.txt
+            GYM1_QA_SOURCE_SHA.txt
+            GYM1_PRODUCTION_SOURCE_SHA.txt
+            gym1_phase1.log
+            gym1_phase2.log
+            pokefirered.sav
+          if-no-files-found: error
