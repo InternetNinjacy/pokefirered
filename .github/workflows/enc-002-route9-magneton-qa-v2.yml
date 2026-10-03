@@ -34,7 +34,18 @@ jobs:
       - name: Verify production ancestry
         run: |
           set -euxo pipefail
-          git merge-base --is-ancestor 31d221ebe9e8849c565c86a167bdc8809d7c7572 HEAD
+          git merge-base --is-ancestor e480dd37a1586ccf220acb46e1a3ef024317f7fd HEAD
+
+      - name: Sync current Miltank base normalization for integration build
+        run: |
+          set -euxo pipefail
+          git fetch origin sam/enc-002-gfx-miltank-assets
+          git checkout origin/sam/enc-002-gfx-miltank-assets -- \
+            src/data/object_events/object_event_graphics.h \
+            src/data/object_events/object_event_graphics_info.h \
+            src/data/object_events/object_event_pic_tables.h
+          rm -f src/miltank_object_graphics.c
+          test "$(git rev-parse origin/sam/enc-002-gfx-miltank-assets)" = "f2f9f3288ff178f451414ed533acceacef8f2706"
 
       - name: Verify Magneton static contract
         run: |
@@ -123,7 +134,7 @@ jobs:
           test -f pokefirered.gba
           sha1sum pokefirered.gba | tee ENC002_MAGNETON_QA_ROM_SHA1.txt
           git rev-parse HEAD | tee ENC002_MAGNETON_QA_SOURCE_SHA.txt
-          echo 31d221ebe9e8849c565c86a167bdc8809d7c7572 | tee ENC002_MAGNETON_PRODUCTION_SOURCE_SHA.txt
+          echo e480dd37a1586ccf220acb46e1a3ef024317f7fd | tee ENC002_MAGNETON_PRODUCTION_SOURCE_SHA.txt
 
       - name: Upload evidence
         if: always()
