@@ -14,7 +14,7 @@ jobs:
       - name: Checkout QA branch
         uses: actions/checkout@v4
         with:
-          ref: qa/enc-002-scyther-static-runtime
+          ref: qa/enc-002-scyther-static-runtime-v2
           fetch-depth: 0
       - name: Install build and emulator dependencies
         run: |
