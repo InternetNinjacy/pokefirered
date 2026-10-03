@@ -4,7 +4,7 @@
 // In Gens 6 and 7, invalid versions instead show "a distant land" in the summary screen.
 // In Gen 4 only, migrated Pokemon with Diamond, Pearl, or Platinum's ID show as "----------".
 // Gen 5 and up read Diamond, Pearl, or Platinum's ID as "Sinnoh".
-// In Gen 4 and up, migrated Pokemon with HeartGold or SoulSilver's ID show the otherwise unused "Johto" string.
+// In Gen 4 and up, migrated Pokemon with HeartGold or SoulSilver's ID show as "Johto".
 #define VERSION_SAPPHIRE 1
 #define VERSION_RUBY 2
 #define VERSION_EMERALD 3
@@ -60,7 +60,7 @@
 #define NUM_BAG_POCKETS_NO_CASES 3 // number of pockets without considering TM case or berry pouch
 
 // Contests
-#define CONTEST_CATEGORIES_COUNT  5
+#define CONTEST_CATEGORIES_COUNT 5
 
 // string lengths
 #define ITEM_NAME_LENGTH 14
@@ -73,7 +73,6 @@
 #define WONDER_CARD_TEXT_LENGTH 40
 #define WONDER_NEWS_TEXT_LENGTH 40
 #define WONDER_CARD_BODY_TEXT_LINES 4
-#define WONDER_NEWS_BODY_TEXT_LINES 10
 
 #define MAX_STAMP_CARD_STAMPS 7
 
@@ -91,24 +90,26 @@
 #define GENDER_COUNT 2
 
 #define BARD_SONG_LENGTH       6
-#define NUM_STORYTELLER_TALES  4
-#define NUM_TRADER_ITEMS       4
-#define GIDDY_MAX_TALES       10
-#define GIDDY_MAX_QUESTIONS    8
+#define MAX_BARD_SONG_LENGTH   6
+#define BARD_SONG_TOTAL_LENGTH 8
 
-#define OPTIONS_BUTTON_MODE_HELP         0
-#define OPTIONS_BUTTON_MODE_LR           1
-#define OPTIONS_BUTTON_MODE_L_EQUALS_A   2
+#define MALE   0
+#define FEMALE 1
+#define GENDER_COUNT 2
 
-#define OPTIONS_TEXT_SPEED_SLOW  0
-#define OPTIONS_TEXT_SPEED_MID   1
-#define OPTIONS_TEXT_SPEED_FAST  2
+#define OPTIONS_TEXT_SPEED_SLOW   0
+#define OPTIONS_TEXT_SPEED_MID    1
+#define OPTIONS_TEXT_SPEED_FAST   2
 
-#define OPTIONS_SOUND_MONO    0
-#define OPTIONS_SOUND_STEREO  1
+#define OPTIONS_SOUND_MONO        0
+#define OPTIONS_SOUND_STEREO      1
 
-#define OPTIONS_BATTLE_STYLE_SHIFT  0
-#define OPTIONS_BATTLE_STYLE_SET    1
+#define OPTIONS_BATTLE_STYLE_SHIFT 0
+#define OPTIONS_BATTLE_STYLE_SET   1
+
+#define OPTIONS_BUTTON_MODE_HELP       0
+#define OPTIONS_BUTTON_MODE_LR         1
+#define OPTIONS_BUTTON_MODE_L_EQUALS_A 2
 
 #define DIR_NONE        0
 #define DIR_SOUTH       1
@@ -128,5 +129,22 @@
 #define CONNECTION_EAST     4
 #define CONNECTION_DIVE     5
 #define CONNECTION_EMERGE   6
+
+// Sam Edition Thomas rival persistent-state contract.
+// Numeric slots are centrally allocated in the Programming Readiness Registry.
+#define VAR_THOMAS_ARC_STAGE          0x40A1
+#define FLAG_THOMAS_QUIT_ROCKET       0x350
+#define FLAG_THOMAS_MARA_AVAILABLE    0x351
+#define FLAG_THOMAS_DOLL_DELIVERED    0x352
+#define FLAG_THOMAS_TAUROS_RECEIVED   0x353
+
+#define THOMAS_ARC_UNSEEN             0
+#define THOMAS_ARC_RECRUITED          1
+#define THOMAS_ARC_CELADON_CLEARED    2
+#define THOMAS_ARC_LAVENDER_CLEARED   3
+#define THOMAS_ARC_SILPH_CLEARED      4
+#define THOMAS_ARC_CINNABAR_CLEARED   5
+#define THOMAS_ARC_QUIT_ROCKET        6
+#define THOMAS_ARC_EPILOGUE_COMPLETE  7
 
 #endif //GUARD_CONSTANTS_GLOBAL_H
