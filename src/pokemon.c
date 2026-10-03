@@ -37,6 +37,7 @@
 #include "constants/battle_move_effects.h"
 #include "constants/union_room.h"
 #include "constants/vars.h"
+#include "constants/sam_pokedex.h"
 
 #define SPECIES_TO_HOENN(name)      [SPECIES_##name - 1] = HOENN_DEX_##name
 #define SPECIES_TO_NATIONAL(name)   [SPECIES_##name - 1] = NATIONAL_DEX_##name
@@ -81,6 +82,7 @@ static u8 GetLevelFromMonExp(struct Pokemon *mon);
 static u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon);
 
 #include "data/battle_moves.h"
+#include "data/pokemon/sam_pokedex_order.h"
 
 // Used in an unreferenced function in RS.
 // Unreferenced here and in Emerald.
@@ -5275,6 +5277,30 @@ u16 SpeciesToNationalPokedexNum(u16 species)
     return sSpeciesToNationalPokedexNum[species - 1];
 }
 
+u16 SamPokedexNumToSpecies(u16 samDexNum)
+{
+    if (samDexNum == 0 || samDexNum > SAM_DEX_COUNT)
+        return SPECIES_NONE;
+
+    return sSamPokedexOrder[samDexNum - 1];
+}
+
+u16 SpeciesToSamPokedexNum(u16 species)
+{
+    u16 i;
+
+    if (species == SPECIES_NONE)
+        return 0;
+
+    for (i = 0; i < SAM_DEX_COUNT; i++)
+    {
+        if (sSamPokedexOrder[i] == species)
+            return i + 1;
+    }
+
+    return 0;
+}
+
 static u16 SpeciesToHoennPokedexNum(u16 species)
 {
     if (!species)
@@ -5888,11 +5914,12 @@ u8 GetNumberOfRelearnableMoves(struct Pokemon *mon)
 
 u16 SpeciesToPokedexNum(u16 species)
 {
-    species = SpeciesToNationalPokedexNum(species);
+    u16 samDexNum = SpeciesToSamPokedexNum(species);
 
-    if (!IsNationalPokedexEnabled() && species > KANTO_SPECIES_END)
+    if (samDexNum == 0)
         return 0xFFFF;
-    return species;
+
+    return samDexNum;
 }
 
 void ClearBattleMonForms(void)
