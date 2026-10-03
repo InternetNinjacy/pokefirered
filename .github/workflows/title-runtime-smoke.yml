@@ -1,0 +1,32 @@
+name: TITLE Runtime Calibration
+on:
+  push:
+    branches: [qa/title-001-003-runtime]
+jobs:
+  calibrate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install emulator
+        run: sudo apt-get update && sudo apt-get install -y mgba-sdl
+      - name: Download deterministic START evidence ROM
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euxo pipefail
+          gh run download 37098088264 -n title-001-003-runtime-qa -D old-evidence
+          test -f old-evidence/title_start.gba
+      - name: Run calibrated START scenario
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 45s mgba -l 8 old-evidence/title_start.gba > title_start_calibrated.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat title_start_calibrated.log
+          grep -q 'TITLEQA VIDEO MEMORY PASS' title_start_calibrated.log
+          grep -q 'TITLEQA INPUT ACCEPTED' title_start_calibrated.log
+          grep -q 'TITLEQA MAINMENU NOCRY' title_start_calibrated.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: title-runtime-calibration
+          path: title_start_calibrated.log
