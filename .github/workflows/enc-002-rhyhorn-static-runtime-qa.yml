@@ -1,0 +1,100 @@
+name: ENC-002 Rhyhorn Static Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/enc-002-rhyhorn-static-runtime
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  enc002-rhyhorn-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/enc-002-rhyhorn-static-runtime
+          fetch-depth: 0
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+      - name: Verify production ancestry and exact source contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, pathlib, struct, subprocess
+          prod="19776f999ad187c0651972f425824f60daf1436c"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+          flags=pathlib.Path("include/constants/flags.h").read_text()
+          assert "#define FLAG_STATIC_MT_MOON_RHYHORN_COMPLETE           0x361" in flags
+          eo=pathlib.Path("include/constants/event_objects.h").read_text()
+          assert "#define OBJ_EVENT_GFX_RHYHORN            161" in eo
+          assert "#define NUM_OBJ_EVENT_GFX                162" in eo
+          m=json.loads(pathlib.Path("data/maps/MtMoon_B2F/map.json").read_text())
+          objs=[o for o in m["object_events"] if o.get("script")=="MtMoon_B2F_EventScript_StaticRhyhorn"]
+          assert len(objs)==1
+          o=objs[0]
+          assert o["graphics_id"]=="OBJ_EVENT_GFX_RHYHORN"
+          assert (o["x"],o["y"],o["elevation"])==(33,8,3)
+          assert o["flag"]=="FLAG_STATIC_VIRIDIAN_FOREST_RHYHORN_COMPLETE"
+          s=pathlib.Path("data/maps/MtMoon_B2F/scripts.inc").read_text()
+          for token in ["setwildbattle SPECIES_RHYHORN, 16, ITEM_HARD_STONE","MOVE_ROCK_THROW","MOVE_HORN_ATTACK","MOVE_STOMP","MOVE_TAIL_WHIP","goto_if_eq VAR_RESULT, B_OUTCOME_WON, MtMoon_B2F_EventScript_CompleteStaticRhyhorn","goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, MtMoon_B2F_EventScript_CompleteStaticRhyhorn","setflag FLAG_STATIC_VIRIDIAN_FOREST_RHYHORN_COMPLETE","removeobject VAR_LAST_TALKED"]:
+              assert token in s
+          start=s.index("MtMoon_B2F_EventScript_StaticRhyhorn::")
+          complete=s.index("MtMoon_B2F_EventScript_CompleteStaticRhyhorn::")
+          pre=s[start:complete]
+          assert "setflag FLAG_STATIC_VIRIDIAN_FOREST_RHYHORN_COMPLETE" not in pre
+          assert pre.rstrip().endswith("release\n\tend")
+          mov=pathlib.Path("src/event_object_movement.c").read_text()
+          assert "#define OBJ_EVENT_PAL_TAG_RHYHORN                      0x111D" in mov
+          assert "{gObjectEventPal_Rhyhorn,                 OBJ_EVENT_PAL_TAG_RHYHORN}," in mov
+          info=pathlib.Path("src/data/object_events/object_event_graphics_info.h").read_text()
+          assert ".paletteTag = OBJ_EVENT_PAL_TAG_RHYHORN" in info
+          assert ".paletteSlot = PALSLOT_NPC_SPECIAL" in info
+          gfx=pathlib.Path("src/data/object_events/object_event_graphics.h").read_text()
+          assert "const u32 gObjectEventPic_Rhyhorn[] = {" in gfx
+          assert gfx.count("0x") >= 288
+          pal=pathlib.Path("graphics/object_events/palettes/rhyhorn.pal").read_text().splitlines()
+          assert pal[:3]==["JASC-PAL","0100","16"] and len(pal[3:])==16
+          print("ENC002 RHYHORN STATIC SOURCE PASS")
+          PY
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ENC002_RHYHORN_ROM_SHA1.txt
+          git rev-parse HEAD | tee ENC002_RHYHORN_QA_SOURCE_SHA.txt
+          echo 19776f999ad187c0651972f425824f60daf1436c | tee ENC002_RHYHORN_PRODUCTION_SOURCE_SHA.txt
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 35s mgba -l 31 pokefirered.gba > enc002_rhyhorn_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc002_rhyhorn_phase1.log
+          grep -q "ENC002 RHYHORN QA PHASE1 PASS package flag save" enc002_rhyhorn_phase1.log
+          ! grep -q "ENC002 RHYHORN QA FAIL" enc002_rhyhorn_phase1.log
+          test -s pokefirered.sav
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > enc002_rhyhorn_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc002_rhyhorn_phase2.log
+          grep -q "ENC002 RHYHORN QA PASS save reload package" enc002_rhyhorn_phase2.log
+          ! grep -q "ENC002 RHYHORN QA FAIL" enc002_rhyhorn_phase2.log
