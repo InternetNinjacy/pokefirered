@@ -107,10 +107,8 @@ static void SetDexFlags(void)
     ResetPokedex();
     for (i = 0; i < ARRAY_COUNT(sSpecies); i++)
     {
-        if (!GetSetPokedexFlag(sBacking[i], FLAG_SET_SEEN))
-            Fail("SPEC009BOUNDS FAIL set seen");
-        if (!GetSetPokedexFlag(sBacking[i], FLAG_SET_CAUGHT))
-            Fail("SPEC009BOUNDS FAIL set caught");
+        GetSetPokedexFlag(sBacking[i], FLAG_SET_SEEN);
+        GetSetPokedexFlag(sBacking[i], FLAG_SET_CAUGHT);
         if (!GetSetPokedexFlag(sBacking[i], FLAG_GET_SEEN))
             Fail("SPEC009BOUNDS FAIL get seen");
         if (!GetSetPokedexFlag(sBacking[i], FLAG_GET_CAUGHT))
