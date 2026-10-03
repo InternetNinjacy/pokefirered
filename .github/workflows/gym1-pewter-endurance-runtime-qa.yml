@@ -3,7 +3,7 @@ name: GYM1 Pewter Endurance Runtime QA
 on:
   push:
     branches:
-      - qa/gym1-pewter-endurance-runtime-v3-v3
+      - qa/gym1-pewter-endurance-runtime-v3
   pull_request:
   workflow_dispatch:
 
