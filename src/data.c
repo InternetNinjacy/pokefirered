@@ -284,11 +284,24 @@ const union AnimCmd *const gAnims_MonPic[] =
 #define TRAINER_SPRITE(trainerPic, sprite, size) [TRAINER_PIC_##trainerPic] = {sprite, size, TRAINER_PIC_##trainerPic}
 #define TRAINER_PAL(trainerPic, pal) [TRAINER_PIC_##trainerPic] = {pal, TRAINER_PIC_##trainerPic}
 
+extern const u32 gMonFrontPic_Leafeon[];
+extern const u32 gMonBackPic_Leafeon[];
+extern const u32 gMonPalette_Leafeon[];
+extern const u32 gMonShinyPalette_Leafeon[];
+
 #include "data/pokemon_graphics/front_pic_coordinates.h"
+#undef SPECIES_SPRITE
+#define SPECIES_SPRITE(species, sprite) [SPECIES_##species] = {(SPECIES_##species == SPECIES_LEAFEON ? gMonFrontPic_Leafeon : sprite), 0x800, SPECIES_##species}
 #include "data/pokemon_graphics/front_pic_table.h"
 #include "data/pokemon_graphics/back_pic_coordinates.h"
+#undef SPECIES_SPRITE
+#define SPECIES_SPRITE(species, sprite) [SPECIES_##species] = {(SPECIES_##species == SPECIES_LEAFEON ? gMonBackPic_Leafeon : sprite), 0x800, SPECIES_##species}
 #include "data/pokemon_graphics/back_pic_table.h"
+#undef SPECIES_PAL
+#define SPECIES_PAL(species, pal) [SPECIES_##species] = {(SPECIES_##species == SPECIES_LEAFEON ? gMonPalette_Leafeon : pal), SPECIES_##species}
 #include "data/pokemon_graphics/palette_table.h"
+#undef SPECIES_SHINY_PAL
+#define SPECIES_SHINY_PAL(species, pal) [SPECIES_##species] = {(SPECIES_##species == SPECIES_LEAFEON ? gMonShinyPalette_Leafeon : pal), SPECIES_##species + SPECIES_SHINY_TAG}
 #include "data/pokemon_graphics/shiny_palette_table.h"
 
 #include "data/trainer_graphics/front_pic_anims.h"
