@@ -1,0 +1,108 @@
+name: RIV-008 Name Variable QA
+
+on:
+  push:
+    branches:
+      - qa/riv-008-name-variable-support
+  workflow_dispatch:
+
+jobs:
+  riv008-name-variable-qa:
+    runs-on: ubuntu-24.04
+    env:
+      GAME_VERSION: FIRERED
+      GAME_LANGUAGE: ENGLISH
+      GAME_REVISION: 0
+      MODERN: 1
+      COMPARE: 0
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/riv-008-name-variable-support
+
+      - name: Install build dependencies
+        run: |
+          set -euxo pipefail
+          sudo apt update
+          sudo apt install -y build-essential gcc-arm-none-eabi binutils-arm-none-eabi git libpng-dev
+
+      - name: Focused rival-name source assertions
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          global_h = Path('include/global.h').read_text()
+          new_game = Path('src/new_game.c').read_text()
+          api_h = Path('include/rival_names.h').read_text()
+          api_c = Path('src/rival_names.c').read_text()
+          string_util = Path('src/string_util.c').read_text()
+          oak = Path('src/oak_speech.c').read_text()
+
+          # Independent persistent storage already reserved by Sam Edition.
+          assert 'u8 rivalName[PLAYER_NAME_LENGTH + 1];' in global_h
+          assert 'u8 greenName[PLAYER_NAME_LENGTH + 1];' in global_h
+          assert 'struct SamEditionSaveData' in global_h
+
+          # Both rival names survive the SaveBlock1 clear performed by new-game init.
+          clear = new_game.index('ClearSav1();')
+          before = new_game[:clear]
+          after = new_game[clear:]
+          assert 'StringCopy(rivalName, gSaveBlock1Ptr->rivalName);' in before
+          assert 'StringCopy(greenName, gSaveBlock1Ptr->samEdition.greenName);' in before
+          assert 'StringCopy(gSaveBlock1Ptr->rivalName, rivalName);' in after
+          assert 'StringCopy(gSaveBlock1Ptr->samEdition.greenName, greenName);' in after
+
+          # RIV-008 API addresses the two stores independently and uses bounded player-name copies.
+          for decl in [
+              'const u8 *GetSamBlueName(void);',
+              'const u8 *GetSamGreenName(void);',
+              'void SetSamBlueName(const u8 *name);',
+              'void SetSamGreenName(const u8 *name);',
+              'void BufferSamBlueName(u8 *dest);',
+              'void BufferSamGreenName(u8 *dest);',
+          ]:
+              assert decl in api_h
+
+          assert 'return gSaveBlock1Ptr->rivalName;' in api_c
+          assert 'return gSaveBlock1Ptr->samEdition.greenName;' in api_c
+          assert 'StringCopy_PlayerName(gSaveBlock1Ptr->rivalName, name);' in api_c
+          assert 'StringCopy_PlayerName(gSaveBlock1Ptr->samEdition.greenName, name);' in api_c
+          assert 'StringCopy_PlayerName(dest, GetSamBlueName());' in api_c
+          assert 'StringCopy_PlayerName(dest, GetSamGreenName());' in api_c
+
+          # Existing FireRed {RIVAL} placeholder remains Blue-backed.
+          rival_placeholder = string_util[string_util.index('static const u8 *ExpandPlaceholder_RivalName'):]
+          rival_placeholder = rival_placeholder[:rival_placeholder.index('}') + 1]
+          assert 'gSaveBlock1Ptr->rivalName' in rival_placeholder
+
+          # Existing opening Blue naming still targets the same persistent Blue field.
+          assert 'gSaveBlock1Ptr->rivalName' in oak
+          assert 'DoNamingScreen' in oak
+
+          print('RIV008 STATIC PASS independent-storage persistence bounded-access Blue-placeholder opening-target')
+          PY
+
+      - name: Build modified ROM with modern toolchain
+        run: |
+          set -euxo pipefail
+          make -j$(nproc) all
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba
+
+      - name: Verify production scope is narrow
+        run: |
+          set -euxo pipefail
+          git diff --name-only b7bebdccde2384c575d6d9e597d5438495614764^ b7bebdccde2384c575d6d9e597d5438495614764 | sort
+          python3 - <<'PY'
+          import subprocess
+          changed = set(subprocess.check_output([
+              'git', 'diff', '--name-only',
+              '2525442045c69501c5574a3827ebed7921c3b841',
+              'b7bebdccde2384c575d6d9e597d5438495614764'
+          ], text=True).splitlines())
+          expected = {'include/rival_names.h', 'src/rival_names.c'}
+          assert changed == expected, (changed, expected)
+          print('RIV008 SCOPE PASS', sorted(changed))
+          PY
