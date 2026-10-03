@@ -1,0 +1,26 @@
+name: TEMP apply Ectoceon assets
+on:
+  push:
+    branches: [sam/sprite-003-ectoceon-assets]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: sam/sprite-003-ectoceon-assets
+          fetch-depth: 0
+      - name: Apply prepared Ectoceon assets
+        run: python3 tools/apply_ectoceon_assets.py
+      - name: Commit final production packet
+        run: |
+          set -euxo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "SPRITE-003: integrate Ectoceon battle and UI assets"
+          git push origin HEAD:sam/sprite-003-ectoceon-assets
