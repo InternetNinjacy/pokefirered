@@ -1,0 +1,1 @@
+Binary PNGs are stored as repository files; do not treat this notice as an asset.
