@@ -1,0 +1,195 @@
+name: ENC-002 Miltank Static Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/enc-002-miltank-static-runtime
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  enc002-miltank-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/enc-002-miltank-static-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and exact source contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          prod='7c29d53d50def6869a91066961d1c3da62437bc4'
+          subprocess.check_call(['git','merge-base','--is-ancestor',prod,'HEAD'])
+          flags=pathlib.Path('include/constants/flags.h').read_text()
+          assert '#define FLAG_STATIC_ROUTE5_MILTANK_COMPLETE' in flags and '0x363' in flags
+          eo=pathlib.Path('include/constants/event_objects.h').read_text()
+          assert '#define OBJ_EVENT_GFX_MILTANK            163' in eo
+          assert '#define NUM_OBJ_EVENT_GFX                164' in eo
+          m=json.loads(pathlib.Path('data/maps/Route5/map.json').read_text())
+          objs=[o for o in m['object_events'] if o.get('script')=='Route5_EventScript_StaticMiltank']
+          assert len(objs)==1
+          o=objs[0]
+          assert o['graphics_id']=='OBJ_EVENT_GFX_MILTANK'
+          assert (o['x'],o['y'],o['elevation'])==(27,24,3)
+          assert o['flag']=='FLAG_STATIC_ROUTE5_MILTANK_COMPLETE'
+          s=pathlib.Path('data/maps/Route5/scripts.inc').read_text()
+          required=[
+            'setwildbattle SPECIES_MILTANK, 18, ITEM_SILK_SCARF',
+            'MOVE_TACKLE','MOVE_ROLLOUT','MOVE_DEFENSE_CURL','MOVE_STOMP',
+            'goto_if_eq VAR_RESULT, B_OUTCOME_WON, Route5_EventScript_CompleteStaticMiltank',
+            'goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, Route5_EventScript_CompleteStaticMiltank',
+            'Route5_EventScript_CompleteStaticMiltank::',
+            'setflag FLAG_STATIC_ROUTE5_MILTANK_COMPLETE',
+            'removeobject VAR_LAST_TALKED'
+          ]
+          for token in required: assert token in s
+          start=s.index('Route5_EventScript_StaticMiltank::')
+          complete=s.index('Route5_EventScript_CompleteStaticMiltank::')
+          pre=s[start:complete]
+          assert 'setflag FLAG_STATIC_ROUTE5_MILTANK_COMPLETE' not in pre
+          assert pre.rstrip().endswith('release\n\tend')
+          gfx=pathlib.Path('src/miltank_object_graphics.c').read_text()
+          for token in [
+            'gObjectEventPic_Miltank',
+            'graphics/object_events/pics/pokemon/miltank.4bpp',
+            'OBJ_EVENT_PAL_TAG_NPC_PINK',
+            'gObjectEventGraphicsInfo_Miltank',
+            'gObjectEventBaseOam_16x16',
+            'SHADOW_SIZE_M',
+            'TRACKS_FOOT',
+          ]: assert token in gfx
+          ptr=pathlib.Path('src/data/object_events/object_event_graphics_info_pointers.h').read_text()
+          assert '[OBJ_EVENT_GFX_MILTANK]                  = &gObjectEventGraphicsInfo_Miltank,' in ptr
+          assert pathlib.Path('graphics/object_events/pics/pokemon/miltank.4bpp').stat().st_size==1152
+          print('ENC002 MILTANK STATIC SOURCE PASS')
+          PY
+
+      - name: Install evidence-only runtime harness
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('include/config.h')
+          s=p.read_text().replace('#define LOG_HANDLER (LOG_HANDLER_AGB_PRINT)', '#define LOG_HANDLER (LOG_HANDLER_MGBA_PRINT)')
+          p.write_text(s)
+          p=Path('src/main.c')
+          s=p.read_text()
+          s=s.replace('extern u32 intr_main[];\n', 'extern u32 intr_main[];\nvoid Enc002MiltankQa_RunRuntimeQa(void);\n', 1)
+          s=s.replace('    SetNotInSaveFailedScreen();\n', '    SetNotInSaveFailedScreen();\n\n    Enc002MiltankQa_RunRuntimeQa();\n', 1)
+          p.write_text(s)
+          PY
+          cat > src/enc002_miltank_qa.c <<'EOF'
+          #include "global.h"
+          #include "event_data.h"
+          #include "gba/isagbprint.h"
+          #include "load_save.h"
+          #include "pokemon.h"
+          #include "save.h"
+          #include "script.h"
+          #include "script_pokemon_util.h"
+          #include "constants/flags.h"
+          #include "constants/items.h"
+          #include "constants/moves.h"
+          #include "constants/pokemon.h"
+          #include "constants/species.h"
+
+          #define QA_MGBA_DEBUG_FLAGS  ((vu16 *)0x4FFF700)
+          #define QA_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)
+
+          extern void SetEnemyEventMonMoveSlot(void);
+
+          static void Log(const char *text){u32 i=0;while(text[i]&&i<255){QA_MGBA_DEBUG_STRING[i]=text[i];i++;}QA_MGBA_DEBUG_STRING[i]='\0';*QA_MGBA_DEBUG_FLAGS=MGBA_LOG_INFO|0x100;}
+          static void Fail(const char *text){Log(text);for(;;);}
+
+          static void SetMove(u16 move, u16 slot)
+          {
+              gSpecialVar_0x8004=move; gSpecialVar_0x8005=slot; SetEnemyEventMonMoveSlot();
+          }
+
+          static void CheckMiltankPackage(void)
+          {
+              CreateScriptedWildMon(SPECIES_MILTANK, 18, ITEM_SILK_SCARF);
+              SetMove(MOVE_TACKLE,0); SetMove(MOVE_ROLLOUT,1); SetMove(MOVE_DEFENSE_CURL,2); SetMove(MOVE_STOMP,3);
+              if (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL)!=SPECIES_MILTANK
+               || GetMonData(&gEnemyParty[0], MON_DATA_LEVEL, NULL)!=18
+               || GetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, NULL)!=ITEM_SILK_SCARF
+               || GetMonData(&gEnemyParty[0], MON_DATA_MOVE1, NULL)!=MOVE_TACKLE
+               || GetMonData(&gEnemyParty[0], MON_DATA_MOVE2, NULL)!=MOVE_ROLLOUT
+               || GetMonData(&gEnemyParty[0], MON_DATA_MOVE3, NULL)!=MOVE_DEFENSE_CURL
+               || GetMonData(&gEnemyParty[0], MON_DATA_MOVE4, NULL)!=MOVE_STOMP)
+                  Fail("ENC002 MILTANK QA FAIL package");
+          }
+
+          static void RunFresh(void)
+          {
+              ClearSav2(); ClearSav1(); CheckMiltankPackage();
+              if (FlagGet(FLAG_STATIC_ROUTE5_MILTANK_COMPLETE)) Fail("ENC002 MILTANK QA FAIL dirty flag");
+              FlagSet(FLAG_STATIC_ROUTE5_MILTANK_COMPLETE);
+              if (!FlagGet(FLAG_STATIC_ROUTE5_MILTANK_COMPLETE)) Fail("ENC002 MILTANK QA FAIL set flag");
+              if (TrySavingData(SAVE_NORMAL)!=SAVE_STATUS_OK) Fail("ENC002 MILTANK QA FAIL save");
+              Log("ENC002 MILTANK QA PHASE1 PASS package flag save"); for(;;);
+          }
+
+          static void RunReload(void)
+          {
+              if (!FlagGet(FLAG_STATIC_ROUTE5_MILTANK_COMPLETE)) Fail("ENC002 MILTANK QA FAIL reload flag");
+              CheckMiltankPackage(); Log("ENC002 MILTANK QA PASS save reload package"); for(;;);
+          }
+
+          void Enc002MiltankQa_RunRuntimeQa(void)
+          {
+              u8 loadStatus; MgbaOpen(); SetSaveBlocksPointers(); loadStatus=LoadGameSave(SAVE_NORMAL);
+              if (loadStatus!=SAVE_STATUS_OK) RunFresh(); RunReload();
+          }
+          EOF
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make COMPARE=0
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee ENC002_MILTANK_ROM_SHA1.txt
+          git rev-parse HEAD | tee ENC002_MILTANK_QA_SOURCE_SHA.txt
+          echo 7c29d53d50def6869a91066961d1c3da62437bc4 | tee ENC002_MILTANK_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 35s mgba -l 31 pokefirered.gba > enc002_miltank_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc002_miltank_phase1.log
+          grep -q 'ENC002 MILTANK QA PHASE1 PASS package flag save' enc002_miltank_phase1.log
+          ! grep -q 'ENC002 MILTANK QA FAIL' enc002_miltank_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > enc002_miltank_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat enc002_miltank_phase2.log
+          grep -q 'ENC002 MILTANK QA PASS save reload package' enc002_miltank_phase2.log
+          ! grep -q 'ENC002 MILTANK QA FAIL' enc002_miltank_phase2.log
