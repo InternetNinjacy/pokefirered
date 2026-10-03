@@ -137,6 +137,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Machoke;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Scyther;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Rhyhorn;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Abra;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Miltank;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lapras;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Zapdos;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Moltres;
@@ -154,7 +155,6 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysD;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysA;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysN;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SSAnne;
-
 
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
     [OBJ_EVENT_GFX_RED_NORMAL]               = &gObjectEventGraphicsInfo_RedNormal,
@@ -323,4 +323,5 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_SCYTHER]                  = &gObjectEventGraphicsInfo_Scyther,
     [OBJ_EVENT_GFX_RHYHORN]                  = &gObjectEventGraphicsInfo_Rhyhorn,
     [OBJ_EVENT_GFX_ABRA]                     = &gObjectEventGraphicsInfo_Abra,
+    [OBJ_EVENT_GFX_MILTANK]                  = &gObjectEventGraphicsInfo_Miltank,
 };
