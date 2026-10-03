@@ -62,3 +62,41 @@ ViridianForest_EventScript_Charlie::
 	trainerbattle_single TRAINER_BUG_CATCHER_CHARLIE, ViridianForest_Text_CharlieIntro, ViridianForest_Text_CharlieDefeat
 	msgbox ViridianForest_Text_CharliePostBattle, MSGBOX_AUTOCLOSE
 	end
+
+
+ViridianForest_EventScript_StaticScyther::
+	goto_if_questlog EventScript_ReleaseEnd
+	lock
+	faceplayer
+	setwildbattle SPECIES_SCYTHER, 11, ITEM_SILVER_POWDER
+	setvar VAR_0x8004, MOVE_QUICK_ATTACK
+	setvar VAR_0x8005, 0
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_LEER
+	setvar VAR_0x8005, 1
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_FOCUS_ENERGY
+	setvar VAR_0x8005, 2
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_FURY_CUTTER
+	setvar VAR_0x8005, 3
+	special SetEnemyEventMonMoveSlot
+	waitse
+	playmoncry SPECIES_SCYTHER, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	dowildbattle
+	clearflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	special QuestLog_CutRecording
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, ViridianForest_EventScript_CompleteStaticScyther
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, ViridianForest_EventScript_CompleteStaticScyther
+	release
+	end
+
+ViridianForest_EventScript_CompleteStaticScyther::
+	setflag FLAG_STATIC_VIRIDIAN_FOREST_SCYTHER_COMPLETE
+	removeobject VAR_LAST_TALKED
+	release
+	end
