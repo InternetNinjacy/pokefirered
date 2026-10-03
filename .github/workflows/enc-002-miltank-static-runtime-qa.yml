@@ -11,10 +11,10 @@ jobs:
   enc002-miltank-qa:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout QA branch
+      - name: Checkout normalized Miltank production
         uses: actions/checkout@v4
         with:
-          ref: qa/enc-002-miltank-static-runtime
+          ref: sam/enc-002-gfx-miltank-assets
           fetch-depth: 0
 
       - name: Install build and emulator dependencies
@@ -33,13 +33,14 @@ jobs:
           ./build.sh
           ./install.sh ../pokefirered
 
-      - name: Verify production ancestry and exact source contract
+      - name: Verify exact production source contract
         run: |
           set -euxo pipefail
           python3 - <<'PY'
           import json, pathlib, subprocess
-          prod='7c29d53d50def6869a91066961d1c3da62437bc4'
-          subprocess.check_call(['git','merge-base','--is-ancestor',prod,'HEAD'])
+          prod='f2f9f3288ff178f451414ed533acceacef8f2706'
+          head=subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip()
+          assert head == prod, (head, prod)
           flags=pathlib.Path('include/constants/flags.h').read_text()
           assert '#define FLAG_STATIC_ROUTE5_MILTANK_COMPLETE' in flags and '0x363' in flags
           eo=pathlib.Path('include/constants/event_objects.h').read_text()
@@ -68,16 +69,23 @@ jobs:
           pre=s[start:complete]
           assert 'setflag FLAG_STATIC_ROUTE5_MILTANK_COMPLETE' not in pre
           assert pre.rstrip().endswith('release\n\tend')
-          gfx=pathlib.Path('src/miltank_object_graphics.c').read_text()
+          gfx=pathlib.Path('src/data/object_events/object_event_graphics.h').read_text()
+          assert 'gObjectEventPic_Miltank[] = INCBIN_U16("graphics/object_events/pics/pokemon/miltank.4bpp")' in gfx
+          pics=pathlib.Path('src/data/object_events/object_event_pic_tables.h').read_text()
+          assert 'sPicTable_Miltank[]' in pics
+          for frame in range(9):
+              assert f'overworld_frame(gObjectEventPic_Miltank, 2, 2, {frame})' in pics
+          info=pathlib.Path('src/data/object_events/object_event_graphics_info.h').read_text()
           for token in [
-            'gObjectEventPic_Miltank',
-            'graphics/object_events/pics/pokemon/miltank.4bpp',
+            'gObjectEventGraphicsInfo_Miltank = {',
             'OBJ_EVENT_PAL_TAG_NPC_PINK',
-            'gObjectEventGraphicsInfo_Miltank',
             'gObjectEventBaseOam_16x16',
             'SHADOW_SIZE_M',
             'TRACKS_FOOT',
-          ]: assert token in gfx
+            '.anims = sAnimTable_Standard',
+            '.images = sPicTable_Miltank',
+          ]: assert token in info
+          assert not pathlib.Path('src/miltank_object_graphics.c').exists()
           ptr=pathlib.Path('src/data/object_events/object_event_graphics_info_pointers.h').read_text()
           assert '[OBJ_EVENT_GFX_MILTANK]                  = &gObjectEventGraphicsInfo_Miltank,' in ptr
           assert pathlib.Path('graphics/object_events/pics/pokemon/miltank.4bpp').stat().st_size==1152
@@ -170,7 +178,7 @@ jobs:
           test -f pokefirered.gba
           sha1sum pokefirered.gba | tee ENC002_MILTANK_ROM_SHA1.txt
           git rev-parse HEAD | tee ENC002_MILTANK_QA_SOURCE_SHA.txt
-          echo 7c29d53d50def6869a91066961d1c3da62437bc4 | tee ENC002_MILTANK_PRODUCTION_SOURCE_SHA.txt
+          echo f2f9f3288ff178f451414ed533acceacef8f2706 | tee ENC002_MILTANK_PRODUCTION_SOURCE_SHA.txt
 
       - name: Runtime phase 1
         run: |
