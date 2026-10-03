@@ -1,5 +1,10 @@
 Route24_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, Route24_OnLoad
 	.byte 0
+
+Route24_OnLoad::
+	call EventScript_ThomasSyncVisibility
+	end
 
 Route24_EventScript_Rocket::
 	lock
@@ -135,3 +140,85 @@ Route24_EventScript_StaticAbraNoRoom::
 	msgbox Route24_Text_YouDontHaveAnyRoom
 	release
 	end
+
+EventScript_ThomasSyncVisibility::
+	setflag FLAG_HIDE_THOMAS_ROUTE24
+	setflag FLAG_HIDE_THOMAS_CELADON
+	setflag FLAG_HIDE_THOMAS_LAVENDER
+	setflag FLAG_HIDE_THOMAS_SILPH
+	setflag FLAG_HIDE_THOMAS_CINNABAR
+	setflag FLAG_HIDE_THOMAS_VIRIDIAN
+	setflag FLAG_HIDE_THOMAS_MARA
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_UNSEEN, EventScript_ThomasShowRoute24
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_RECRUITED, EventScript_ThomasShowCeladon
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_CELADON_CLEARED, EventScript_ThomasShowLavender
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_LAVENDER_CLEARED, EventScript_ThomasShowSilph
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_SILPH_CLEARED, EventScript_ThomasShowCinnabar
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_CINNABAR_CLEARED, EventScript_ThomasShowViridian
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_QUIT_ROCKET, EventScript_ThomasShowMara
+	return
+
+EventScript_ThomasShowRoute24::
+	clearflag FLAG_HIDE_THOMAS_ROUTE24
+	return
+
+EventScript_ThomasShowCeladon::
+	clearflag FLAG_HIDE_THOMAS_CELADON
+	return
+
+EventScript_ThomasShowLavender::
+	clearflag FLAG_HIDE_THOMAS_LAVENDER
+	return
+
+EventScript_ThomasShowSilph::
+	clearflag FLAG_HIDE_THOMAS_SILPH
+	return
+
+EventScript_ThomasShowCinnabar::
+	clearflag FLAG_HIDE_THOMAS_CINNABAR
+	return
+
+EventScript_ThomasShowViridian::
+	clearflag FLAG_HIDE_THOMAS_VIRIDIAN
+	return
+
+EventScript_ThomasShowMara::
+	clearflag FLAG_HIDE_THOMAS_MARA
+	return
+
+EventScript_ThomasSetRecruited::
+	setvar VAR_THOMAS_ARC_STAGE, THOMAS_ARC_RECRUITED
+	call EventScript_ThomasSyncVisibility
+	return
+
+EventScript_ThomasSetCeladonCleared::
+	setvar VAR_THOMAS_ARC_STAGE, THOMAS_ARC_CELADON_CLEARED
+	call EventScript_ThomasSyncVisibility
+	return
+
+EventScript_ThomasSetLavenderCleared::
+	setvar VAR_THOMAS_ARC_STAGE, THOMAS_ARC_LAVENDER_CLEARED
+	call EventScript_ThomasSyncVisibility
+	return
+
+EventScript_ThomasSetSilphCleared::
+	setvar VAR_THOMAS_ARC_STAGE, THOMAS_ARC_SILPH_CLEARED
+	call EventScript_ThomasSyncVisibility
+	return
+
+EventScript_ThomasSetCinnabarCleared::
+	setvar VAR_THOMAS_ARC_STAGE, THOMAS_ARC_CINNABAR_CLEARED
+	call EventScript_ThomasSyncVisibility
+	return
+
+EventScript_ThomasSetQuitRocket::
+	setvar VAR_THOMAS_ARC_STAGE, THOMAS_ARC_QUIT_ROCKET
+	setflag FLAG_THOMAS_QUIT_ROCKET
+	setflag FLAG_THOMAS_MARA_AVAILABLE
+	call EventScript_ThomasSyncVisibility
+	return
+
+EventScript_ThomasSetEpilogueComplete::
+	setvar VAR_THOMAS_ARC_STAGE, THOMAS_ARC_EPILOGUE_COMPLETE
+	call EventScript_ThomasSyncVisibility
+	return
