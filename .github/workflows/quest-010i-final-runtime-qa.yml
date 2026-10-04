@@ -1,0 +1,119 @@
+name: QUEST-010 Final Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/quest-010i-final-runtime
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  quest-010i-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/quest-010i-final-runtime
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and QUEST-010 final contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          prod="3cfa817aa66d66c9bb43dc40b7c5aad6788b670d"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+          scripts=pathlib.Path("data/maps/SaffronCity_CopycatsHouse_2F/scripts.inc").read_text()
+          text=pathlib.Path("data/maps/SaffronCity_CopycatsHouse_2F/text.inc").read_text()
+          reward=pathlib.Path("src/sam_quest_010_reward.c").read_text()
+          trade=pathlib.Path("include/constants/trade.h").read_text()
+          m=json.loads(pathlib.Path("data/maps/SaffronCity_CopycatsHouse_2F/map.json").read_text())
+          assert "checkitem ITEM_POKE_DOLL" in scripts and "EventScript_MimicTutor" in scripts
+          assert "SQ_SAFFRON_STATE_REWARD_PENDING" in scripts
+          assert "SamQuest010GiveMrMimeReward" in scripts
+          assert scripts.count("addobject LOCALID_SQ_SAFFRON_") == 3
+          assert "permanently" in text
+          assert "SPECIES_MR_MIME" in reward and "OTID_GIFT_COPYCAT" in reward
+          assert "#define OTID_GIFT_COPYCAT              52012" in trade
+          assert any(o.get("flag")=="FLAG_TEMP_1" for o in m["object_events"])
+          assert any(o.get("flag")=="FLAG_TEMP_2" for o in m["object_events"])
+          assert any(o.get("flag")=="FLAG_TEMP_3" for o in m["object_events"])
+          print("QUEST010I STATIC PASS routing dialogue objects reward")
+          PY
+
+      - name: Inject QA-only runtime hook
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("src/main.c")
+          s=p.read_text()
+          s=s.replace("extern u32 intr_main[];\n", "extern u32 intr_main[];\nvoid Quest010iQa_RunRuntimeQa(void);\n", 1)
+          s=s.replace("    SetNotInSaveFailedScreen();\n", "    SetNotInSaveFailedScreen();\n\n    Quest010iQa_RunRuntimeQa();\n", 1)
+          p.write_text(s)
+          p=Path("include/config.h")
+          s=p.read_text().replace("#define LOG_HANDLER (LOG_HANDLER_AGB_PRINT)", "#define LOG_HANDLER (LOG_HANDLER_MGBA_PRINT)", 1)
+          p.write_text(s)
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee QUEST010I_ROM_SHA1.txt
+          git rev-parse HEAD | tee QUEST010I_QA_SOURCE_SHA.txt
+          echo 3cfa817aa66d66c9bb43dc40b7c5aad6788b670d | tee QUEST010I_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 60s mgba -l 31 pokefirered.gba > quest010i_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat quest010i_phase1.log
+          grep -q "QUEST010I QA PHASE1 PASS reward delivery retry save" quest010i_phase1.log
+          ! grep -q "QUEST010I QA FAIL" quest010i_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 25s mgba -l 31 pokefirered.gba > quest010i_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat quest010i_phase2.log
+          grep -q "QUEST010I QA PASS completion persistence" quest010i_phase2.log
+          ! grep -q "QUEST010I QA FAIL" quest010i_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quest-010-final-runtime-qa
+          path: |
+            pokefirered.gba
+            QUEST010I_ROM_SHA1.txt
+            QUEST010I_QA_SOURCE_SHA.txt
+            QUEST010I_PRODUCTION_SOURCE_SHA.txt
+            quest010i_phase1.log
+            quest010i_phase2.log
+            pokefirered.sav
+          if-no-files-found: error
