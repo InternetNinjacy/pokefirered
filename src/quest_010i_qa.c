@@ -34,9 +34,9 @@ static void Log(const char *text)
     *QA_MGBA_DEBUG_FLAGS = MGBA_LOG_INFO | 0x100;
 }
 
-static void Fail(const char *text)
+static void Fail(void)
 {
-    Log(text);
+    Log("QUEST010I QA FAIL");
     for (;;);
 }
 
@@ -87,13 +87,13 @@ static void CheckMrMimeMon(struct Pokemon *mon)
      || GetMonData(mon, MON_DATA_HELD_ITEM, NULL) != ITEM_NONE
      || GetMonData(mon, MON_DATA_OT_ID, NULL) != OTID_GIFT_COPYCAT
      || !QaIsTradedMon(mon))
-        Fail("QUEST010I QA FAIL Mr Mime package");
+        Fail();
     GetMonData(mon, MON_DATA_OT_NAME, otName);
     if (StringCompare(otName, sCopycatName))
-        Fail("QUEST010I QA FAIL Copycat OT");
+        Fail();
     GetMonData(mon, MON_DATA_NICKNAME, nickname);
     if (StringCompare(nickname, gSpeciesNames[SPECIES_MR_MIME]))
-        Fail("QUEST010I QA FAIL nickname");
+        Fail();
 }
 
 static void CheckPartyDelivery(void)
@@ -102,7 +102,7 @@ static void CheckPartyDelivery(void)
     VarSet(VAR_SQ_SAFFRON_COUNT, SQ_REWARD_PENDING);
     SamQuest010GiveMrMimeReward();
     if (gSpecialVar_Result != MON_GIVEN_TO_PARTY || gPlayerPartyCount != 1)
-        Fail("QUEST010I QA FAIL party reward");
+        Fail();
     CheckMrMimeMon(&gPlayerParty[0]);
 }
 
@@ -116,16 +116,16 @@ static void CheckPcFallback(void)
     VarSet(VAR_SQ_SAFFRON_COUNT, SQ_REWARD_PENDING);
     SamQuest010GiveMrMimeReward();
     if (gSpecialVar_Result != MON_GIVEN_TO_PC)
-        Fail("QUEST010I QA FAIL PC fallback");
+        Fail();
     boxed = GetBoxedMonPtr(gSpecialVar_MonBoxId, gSpecialVar_MonBoxPos);
     if (GetBoxMonData(boxed, MON_DATA_SPECIES, NULL) != SPECIES_MR_MIME
      || GetBoxMonData(boxed, MON_DATA_LEVEL, NULL) != 30
      || GetBoxMonData(boxed, MON_DATA_HELD_ITEM, NULL) != ITEM_NONE
      || GetBoxMonData(boxed, MON_DATA_OT_ID, NULL) != OTID_GIFT_COPYCAT)
-        Fail("QUEST010I QA FAIL boxed package");
+        Fail();
     GetBoxMonData(boxed, MON_DATA_OT_NAME, otName);
     if (StringCompare(otName, sCopycatName))
-        Fail("QUEST010I QA FAIL boxed OT");
+        Fail();
 }
 
 static void CheckFullStorageRetry(void)
@@ -136,14 +136,14 @@ static void CheckFullStorageRetry(void)
     VarSet(VAR_SQ_SAFFRON_COUNT, SQ_REWARD_PENDING);
     SamQuest010GiveMrMimeReward();
     if (gSpecialVar_Result != MON_CANT_GIVE)
-        Fail("QUEST010I QA FAIL full storage accepted");
+        Fail();
     if (VarGet(VAR_SQ_SAFFRON_COUNT) != SQ_REWARD_PENDING || FlagGet(FLAG_SQ_SAFFRON_COMPLETE))
-        Fail("QUEST010I QA FAIL pending mutated");
+        Fail();
 
     CpuFill16(0, GetBoxedMonPtr(0, 0), sizeof(struct BoxPokemon));
     SamQuest010GiveMrMimeReward();
     if (gSpecialVar_Result != MON_GIVEN_TO_PC)
-        Fail("QUEST010I QA FAIL retry delivery");
+        Fail();
 }
 
 static void RunFresh(void)
@@ -156,12 +156,12 @@ static void RunFresh(void)
     VarSet(VAR_SQ_SAFFRON_COUNT, SQ_REWARD_PENDING);
     SamQuest010GiveMrMimeReward();
     if (gSpecialVar_Result != MON_GIVEN_TO_PARTY)
-        Fail("QUEST010I QA FAIL final delivery");
+        Fail();
     FlagSet(FLAG_SQ_SAFFRON_COMPLETE);
     CheckMrMimeMon(&gPlayerParty[0]);
 
     if (TrySavingData(SAVE_NORMAL) != SAVE_STATUS_OK)
-        Fail("QUEST010I QA FAIL save");
+        Fail();
     Log("QUEST010I QA PHASE1 PASS reward delivery retry save");
     for (;;);
 }
@@ -171,7 +171,7 @@ static void RunReload(void)
     if (!FlagGet(FLAG_SQ_SAFFRON_COMPLETE)
      || VarGet(VAR_SQ_SAFFRON_COUNT) != SQ_REWARD_PENDING
      || CalculatePlayerPartyCount() != 1)
-        Fail("QUEST010I QA FAIL reload state");
+        Fail();
     CheckMrMimeMon(&gPlayerParty[0]);
     Log("QUEST010I QA PASS completion persistence");
     for (;;);
