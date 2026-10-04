@@ -61,7 +61,8 @@ jobs:
           assert "B_OUTCOME_CAUGHT, Route22_EventScript_RunawayNidoranRescued" in route
           assert "B_OUTCOME_RAN, Route22_EventScript_RunawayNidoranRescued" not in route
           assert "B_OUTCOME_PLAYER_TELEPORTED, Route22_EventScript_RunawayNidoranRescued" not in route
-          assert route.index("setvar VAR_SQ_VIRIDIAN_STATE, 2") < route.index("removeobject LOCALID_ROUTE22_RUNAWAY_NIDORAN")
+          rescued=route.split("Route22_EventScript_RunawayNidoranRescued::",1)[1].split("Route22_EventScript_RunawayNidoranInactive::",1)[0]
+          assert rescued.index("setvar VAR_SQ_VIRIDIAN_STATE, 2") < rescued.index("removeobject LOCALID_ROUTE22_RUNAWAY_NIDORAN")
 
           assert "checkitemspace ITEM_POKE_BALL, 5" in vir
           reward=vir.index("giveitem ITEM_POKE_BALL, 5")
