@@ -1,0 +1,143 @@
+name: QUEST-002 Pallet Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/quest-002-pallet-helping-hand
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  quest-002-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/quest-002-pallet-helping-hand
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and QUEST-002 contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          prod="5b75640f3f4a8140a9eba90953c816824261ce94"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+
+          scripts=pathlib.Path("data/maps/PalletTown/scripts.inc").read_text()
+          text=pathlib.Path("data/maps/PalletTown/text.inc").read_text()
+          trade=pathlib.Path("include/constants/trade.h").read_text()
+          util=pathlib.Path("src/script_pokemon_util.c").read_text()
+          m=json.loads(pathlib.Path("data/maps/PalletTown/map.json").read_text())
+
+          assert "goto_if_unset FLAG_SYS_POKEDEX_GET, PalletTown_EventScript_MiraPreEligibility" in scripts
+          assert "setvar VAR_SQ_PALLET_STATE, 1" in scripts
+          assert scripts.count("removeitem ITEM_PARALYZE_HEAL, 1") == 1
+          assert scripts.index("removeitem ITEM_PARALYZE_HEAL, 1") < scripts.index("setvar VAR_SQ_PALLET_STATE, 2")
+          assert "msgbox PalletTown_Text_MiraConfirm, MSGBOX_YESNO" in scripts
+          assert "setvar VAR_0x8004, SPECIES_TYROGUE" in scripts
+          assert "setvar VAR_0x8005, 5" in scripts
+          assert "setvar VAR_0x8006, SAM_PREOWNED_OT_MIRA" in scripts
+          gift=scripts.index("special GiveSamPreOwnedMon")
+          no_room=scripts.index("goto_if_eq VAR_RESULT, 2, PalletTown_EventScript_MiraNoRoom")
+          state3=scripts.index("setvar VAR_SQ_PALLET_STATE, 3")
+          complete=scripts.index("setflag FLAG_SQ_PALLET_COMPLETE")
+          assert gift < no_room < state3 < complete
+          assert "goto_if_set FLAG_SQ_PALLET_COMPLETE, PalletTown_EventScript_MiraComplete" in scripts
+          assert "goto_if_ge VAR_SQ_PALLET_STATE, 2, PalletTown_EventScript_JigglypuffHealed" in scripts
+
+          objs={o["local_id"]:o for o in m["object_events"]}
+          assert objs["LOCALID_PALLET_MIRA"]["graphics_id"] == "OBJ_EVENT_GFX_LASS"
+          assert (objs["LOCALID_PALLET_MIRA"]["x"],objs["LOCALID_PALLET_MIRA"]["y"]) == (18,15)
+          assert objs["LOCALID_PALLET_JIGGLYPUFF"]["graphics_id"] == "OBJ_EVENT_GFX_JIGGLYPUFF"
+          assert (objs["LOCALID_PALLET_JIGGLYPUFF"]["x"],objs["LOCALID_PALLET_JIGGLYPUFF"]["y"]) == (19,15)
+
+          assert "OTID_GIFT_MIRA                 52011" in trade
+          assert "SAM_PREOWNED_OT_MIRA         4" in trade
+          assert 'sSamGiftOtMira[] = _("MIRA")' in util
+          assert "case SAM_PREOWNED_OT_MIRA:" in util
+          assert "otId = OTID_GIFT_MIRA;" in util
+          assert "otGender = FEMALE;" in util
+          for token in ["MIRA: JIGGLYPUFF is paralyzed.", "Use one PARLYZ HEAL on JIGGLYPUFF?", "I want you to take care of this", "I'll keep him", "JIGGLYPUFF looks healthy again."]:
+              assert token in text
+
+          print("QUEST002 STATIC PASS")
+          PY
+
+      - name: Inject QA-only runtime hook
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("src/main.c")
+          s=p.read_text()
+          s=s.replace("extern u32 intr_main[];\n", "extern u32 intr_main[];\nvoid Quest002Qa_RunRuntimeQa(void);\n", 1)
+          s=s.replace("    SetNotInSaveFailedScreen();\n", "    SetNotInSaveFailedScreen();\n\n    Quest002Qa_RunRuntimeQa();\n", 1)
+          p.write_text(s)
+          p=Path("include/config.h")
+          s=p.read_text().replace("#define LOG_HANDLER (LOG_HANDLER_AGB_PRINT)", "#define LOG_HANDLER (LOG_HANDLER_MGBA_PRINT)", 1)
+          p.write_text(s)
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee QUEST002_ROM_SHA1.txt
+          git rev-parse HEAD | tee QUEST002_QA_SOURCE_SHA.txt
+          echo 5b75640f3f4a8140a9eba90953c816824261ce94 | tee QUEST002_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 35s mgba -l 31 pokefirered.gba > quest002_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat quest002_phase1.log
+          grep -q "QUEST002 QA PHASE1 PASS gift storage save" quest002_phase1.log
+          ! grep -q "QUEST002 QA FAIL" quest002_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > quest002_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat quest002_phase2.log
+          grep -q "QUEST002 QA PASS reload completion" quest002_phase2.log
+          ! grep -q "QUEST002 QA FAIL" quest002_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quest-002-pallet-runtime-qa
+          path: |
+            pokefirered.gba
+            QUEST002_ROM_SHA1.txt
+            QUEST002_QA_SOURCE_SHA.txt
+            QUEST002_PRODUCTION_SOURCE_SHA.txt
+            quest002_phase1.log
+            quest002_phase2.log
+            pokefirered.sav
+          if-no-files-found: error
