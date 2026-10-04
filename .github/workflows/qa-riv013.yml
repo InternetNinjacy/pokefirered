@@ -177,7 +177,7 @@ jobs:
         run: |
           set -euxo pipefail
           set +e
-          timeout --signal=TERM 8s xvfb-run -a env SDL_AUDIODRIVER=dummy mgba -l 31 pokefirered.gba > riv013_runtime.log 2>&1
+          timeout --signal=TERM 25s xvfb-run -a env SDL_AUDIODRIVER=dummy mgba -l 31 pokefirered.gba > riv013_runtime.log 2>&1
           status=$?
           set -e
           cat riv013_runtime.log
