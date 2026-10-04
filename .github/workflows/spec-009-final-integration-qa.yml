@@ -20,7 +20,16 @@ jobs:
         run: |
           set -euxo pipefail
           timeout 300s sudo apt-get update
-          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev
+          timeout 900s sudo apt-get install -y build-essential gcc-arm-none-eabi binutils-arm-none-eabi git libpng-dev
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
 
       - name: Verify production ancestry and custom-species integration
         run: |
@@ -31,10 +40,10 @@ jobs:
 
           integrated = "4e794f0f180a664176e400e81466711b983a59c3"
           required_ancestors = [
-              "81a4b8df3f7fe1eb389fe98e9763bc4721ad8cf1", # merged Leafeon / prior SPEC-009 base
-              "0ffe87168cb449a7f83b6595b5d1d95051ced901", # focused-QA-proven Ectoceon head
-              "f2c3e182dd9f97e868e4adbbab6ef4694cf28839", # focused-QA-proven Rhyperior head
-              "b4f9f0fc6b881928221a4b00307d4296cfad5a13", # prior integrated bounds/save runtime source
+              "81a4b8df3f7fe1eb389fe98e9763bc4721ad8cf1",
+              "0ffe87168cb449a7f83b6595b5d1d95051ced901",
+              "f2c3e182dd9f97e868e4adbbab6ef4694cf28839",
+              "b4f9f0fc6b881928221a4b00307d4296cfad5a13",
           ]
           for sha in required_ancestors:
               subprocess.check_call(["git", "merge-base", "--is-ancestor", sha, "HEAD"])
@@ -97,15 +106,11 @@ jobs:
       - name: Build modern ROM
         run: |
           set -euxo pipefail
-          make modern
-          test -f pokefirered_modern.gba || test -f pokefirered.gba
+          make modern 2>&1 | tee SPEC009_FINAL_BUILD.log
+          test -f pokefirered_modern.gba
           git rev-parse HEAD | tee SPEC009_FINAL_QA_SOURCE_SHA.txt
           echo 4e794f0f180a664176e400e81466711b983a59c3 | tee SPEC009_FINAL_PRODUCTION_SOURCE_SHA.txt
-          if test -f pokefirered_modern.gba; then
-            sha1sum pokefirered_modern.gba | tee SPEC009_FINAL_QA_ROM_SHA1.txt
-          else
-            sha1sum pokefirered.gba | tee SPEC009_FINAL_QA_ROM_SHA1.txt
-          fi
+          sha1sum pokefirered_modern.gba | tee SPEC009_FINAL_QA_ROM_SHA1.txt
 
       - name: Record previously passed focused/runtime evidence
         run: |
@@ -126,6 +131,8 @@ jobs:
         with:
           name: spec-009-final-integration-qa
           path: |
+            pokefirered_modern.gba
+            SPEC009_FINAL_BUILD.log
             SPEC009_FINAL_QA_SOURCE_SHA.txt
             SPEC009_FINAL_PRODUCTION_SOURCE_SHA.txt
             SPEC009_FINAL_QA_ROM_SHA1.txt
