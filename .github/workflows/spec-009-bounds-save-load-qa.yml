@@ -1,0 +1,140 @@
+name: SPEC-009 Bounds Save Load QA
+
+on:
+  push:
+    branches:
+      - qa/spec-009-bounds-save-load
+  workflow_dispatch:
+
+jobs:
+  spec009-bounds-save-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/spec-009-bounds-save-load
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Static species-index bounds sweep
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          prod="b4f9f0fc6b881928221a4b00307d4296cfad5a13"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+
+          species=(Path("include/constants/species.h")).read_text()
+          assert "#define SPECIES_LEAFEON 412" in species
+          assert "#define SPECIES_ECTOCEON 413" in species
+          assert "#define SPECIES_RHYPERIOR 414" in species
+          assert "#define SPECIES_EGG 415" in species
+          assert "#define NUM_SPECIES SPECIES_EGG" in species
+
+          pokemon=Path("src/pokemon.c").read_text()
+          assert "static const u16 sSpeciesToNationalPokedexNum[NUM_SPECIES - 1]" in pokemon
+          for token in [
+              "[SPECIES_LEAFEON - 1] = SAM_DEX_FLAG_LEAFEON",
+              "[SPECIES_ECTOCEON - 1] = SAM_DEX_FLAG_ECTOCEON",
+              "[SPECIES_RHYPERIOR - 1] = SAM_DEX_FLAG_RHYPERIOR",
+          ]:
+              assert token in pokemon
+
+          globalh=Path("include/global.h").read_text()
+          assert "#define DEX_FLAGS_NO ROUND_BITS_TO_BYTES(NUM_SPECIES)" in globalh
+
+          screen=Path("src/pokedex_screen.c").read_text()
+          assert "nationalDexNo > DEX_FLAGS_NO * 8" in screen
+
+          checks = {
+              "src/data/pokemon/species_info.h": ["[SPECIES_LEAFEON] =", "[SPECIES_ECTOCEON] =", "[SPECIES_RHYPERIOR] ="],
+              "src/data/pokemon/level_up_learnset_pointers.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/data/pokemon/evolution.h": ["gEvolutionTable[NUM_SPECIES][EVOS_PER_MON]", "SPECIES_RHYPERIOR"],
+              "src/data/pokemon/tmhm_learnsets.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/data/pokemon/tutor_learnsets.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/data/pokemon/cry_ids.h": ["SPECIES_LEAFEON - HOENN_MON_SPECIES_START", "SPECIES_ECTOCEON - HOENN_MON_SPECIES_START", "SPECIES_RHYPERIOR - HOENN_MON_SPECIES_START", "SPECIES_EGG - HOENN_MON_SPECIES_START"],
+              "src/data/pokemon_graphics/front_pic_table.h": ["SPECIES_SPRITE(LEAFEON", "SPECIES_SPRITE(ECTOCEON", "SPECIES_SPRITE(RHYPERIOR"],
+              "src/data/pokemon_graphics/back_pic_table.h": ["SPECIES_SPRITE(LEAFEON", "SPECIES_SPRITE(ECTOCEON", "SPECIES_SPRITE(RHYPERIOR"],
+              "src/data/pokemon_graphics/palette_table.h": ["SPECIES_PAL(LEAFEON", "SPECIES_PAL(ECTOCEON", "SPECIES_PAL(RHYPERIOR"],
+              "src/data/pokemon_graphics/shiny_palette_table.h": ["SPECIES_SHINY_PAL(LEAFEON", "SPECIES_SHINY_PAL(ECTOCEON", "SPECIES_SHINY_PAL(RHYPERIOR"],
+              "src/data/pokemon_graphics/front_pic_coordinates.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/data/pokemon_graphics/back_pic_coordinates.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/data/pokemon_graphics/footprint_table.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/pokemon_icon.c": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+          }
+          for path,tokens in checks.items():
+              text=Path(path).read_text()
+              for token in tokens:
+                  assert token in text, (path, token)
+
+          ph=Path("include/pokemon.h").read_text()
+          assert "u16 species;" in ph
+          gh=Path("include/global.h").read_text()
+          assert "u16 species;" in gh
+
+          print("SPEC009BOUNDS STATIC PASS custom IDs covered by indexed species surfaces")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee SPEC009BOUNDS_QA_ROM_SHA1.txt
+          git rev-parse HEAD | tee SPEC009BOUNDS_QA_SOURCE_SHA.txt
+          echo b4f9f0fc6b881928221a4b00307d4296cfad5a13 | tee SPEC009BOUNDS_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 25s mgba -l 31 pokefirered.gba > spec009bounds_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat spec009bounds_phase1.log
+          grep -q "SPEC009BOUNDS PHASE1 PASS indexes party box dex saved" spec009bounds_phase1.log
+          ! grep -q "SPEC009BOUNDS FAIL" spec009bounds_phase1.log
+          test -f pokefirered.sav
+
+      - name: Runtime phase 2 fresh-process reload
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 25s mgba -l 31 pokefirered.gba > spec009bounds_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat spec009bounds_phase2.log
+          grep -q "SPEC009BOUNDS QA PASS bounds and save reload" spec009bounds_phase2.log
+          ! grep -q "SPEC009BOUNDS FAIL" spec009bounds_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-009-bounds-save-load-qa
+          path: |
+            pokefirered.gba
+            pokefirered.sav
+            SPEC009BOUNDS_QA_ROM_SHA1.txt
+            SPEC009BOUNDS_QA_SOURCE_SHA.txt
+            SPEC009BOUNDS_PRODUCTION_SOURCE_SHA.txt
+            spec009bounds_phase1.log
+            spec009bounds_phase2.log
+          if-no-files-found: error
