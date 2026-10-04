@@ -1,0 +1,133 @@
+name: SPEC-009 Final Integration QA
+
+on:
+  push:
+    branches:
+      - qa/spec-009-final-integration
+  workflow_dispatch:
+
+jobs:
+  spec009-final-integration:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/spec-009-final-integration
+          fetch-depth: 0
+
+      - name: Install build dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev
+
+      - name: Verify production ancestry and custom-species integration
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          integrated = "4e794f0f180a664176e400e81466711b983a59c3"
+          required_ancestors = [
+              "81a4b8df3f7fe1eb389fe98e9763bc4721ad8cf1", # merged Leafeon / prior SPEC-009 base
+              "0ffe87168cb449a7f83b6595b5d1d95051ced901", # focused-QA-proven Ectoceon head
+              "f2c3e182dd9f97e868e4adbbab6ef4694cf28839", # focused-QA-proven Rhyperior head
+              "b4f9f0fc6b881928221a4b00307d4296cfad5a13", # prior integrated bounds/save runtime source
+          ]
+          for sha in required_ancestors:
+              subprocess.check_call(["git", "merge-base", "--is-ancestor", sha, "HEAD"])
+          subprocess.check_call(["git", "merge-base", "--is-ancestor", integrated, "HEAD"])
+
+          species = Path("include/constants/species.h").read_text()
+          for token in [
+              "#define SPECIES_LEAFEON 412",
+              "#define SPECIES_ECTOCEON 413",
+              "#define SPECIES_RHYPERIOR 414",
+              "#define SPECIES_EGG 415",
+              "#define NUM_SPECIES SPECIES_EGG",
+          ]:
+              assert token in species, token
+
+          pokemon = Path("src/pokemon.c").read_text()
+          for token in [
+              "[SPECIES_LEAFEON - 1] = SAM_DEX_FLAG_LEAFEON",
+              "[SPECIES_ECTOCEON - 1] = SAM_DEX_FLAG_ECTOCEON",
+              "[SPECIES_RHYPERIOR - 1] = SAM_DEX_FLAG_RHYPERIOR",
+          ]:
+              assert token in pokemon, token
+
+          checks = {
+              "src/data/pokemon/species_info.h": ["[SPECIES_LEAFEON] =", "[SPECIES_ECTOCEON] =", "[SPECIES_RHYPERIOR] ="],
+              "src/data/pokemon/level_up_learnset_pointers.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/data/pokemon/evolution.h": ["SPECIES_RHYPERIOR"],
+              "src/data/pokemon/tmhm_learnsets.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/data/pokemon/tutor_learnsets.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/data/pokemon_graphics/front_pic_table.h": ["gMonFrontPic_Leafeon", "gMonFrontPic_Ectoceon", "gMonFrontPic_Rhyperior"],
+              "src/data/pokemon_graphics/back_pic_table.h": ["gMonBackPic_Leafeon", "gMonBackPic_Ectoceon", "gMonBackPic_Rhyperior"],
+              "src/data/pokemon_graphics/palette_table.h": ["gMonPalette_Leafeon", "gMonPalette_Ectoceon", "gMonPalette_Rhyperior"],
+              "src/data/pokemon_graphics/shiny_palette_table.h": ["gMonShinyPalette_Leafeon", "gMonShinyPalette_Ectoceon", "gMonShinyPalette_Rhyperior"],
+              "src/data/pokemon_graphics/front_pic_coordinates.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/data/pokemon_graphics/back_pic_coordinates.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/data/pokemon_graphics/footprint_table.h": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+              "src/pokemon_icon.c": ["[SPECIES_LEAFEON]", "[SPECIES_ECTOCEON]", "[SPECIES_RHYPERIOR]"],
+          }
+          for path, tokens in checks.items():
+              text = Path(path).read_text()
+              for token in tokens:
+                  assert token in text, (path, token)
+
+          asset_sets = {
+              "leafeon": ["front.png", "back.png", "icon.png", "normal.pal", "shiny.pal"],
+              "ectoceon": ["front.png", "back.png", "icon.png", "normal.pal", "shiny.pal"],
+              "rhyperior": ["front.png", "back.png", "icon.png", "footprint.png", "normal.pal", "shiny.pal"],
+          }
+          for species_name, files in asset_sets.items():
+              for name in files:
+                  p = Path("graphics/pokemon") / species_name / name
+                  assert p.is_file() and p.stat().st_size > 0, str(p)
+
+          assert Path("src/sam_ectoceon_graphics.c").is_file()
+          assert Path("src/sam_rhyperior_graphics.c").is_file()
+
+          print("SPEC009 FINAL STATIC PASS integrated species mechanics, dex backing, assets, and registrations")
+          PY
+
+      - name: Build modern ROM
+        run: |
+          set -euxo pipefail
+          make modern
+          test -f pokefirered_modern.gba || test -f pokefirered.gba
+          git rev-parse HEAD | tee SPEC009_FINAL_QA_SOURCE_SHA.txt
+          echo 4e794f0f180a664176e400e81466711b983a59c3 | tee SPEC009_FINAL_PRODUCTION_SOURCE_SHA.txt
+          if test -f pokefirered_modern.gba; then
+            sha1sum pokefirered_modern.gba | tee SPEC009_FINAL_QA_ROM_SHA1.txt
+          else
+            sha1sum pokefirered.gba | tee SPEC009_FINAL_QA_ROM_SHA1.txt
+          fi
+
+      - name: Record previously passed focused/runtime evidence
+        run: |
+          set -euxo pipefail
+          cat > SPEC009_FINAL_EVIDENCE.txt <<'EOF'
+          Prior focused/runtime evidence retained by verified ancestry:
+          - SPEC-009 bounds/save-load runtime QA PR #115 from production b4f9f0fc6b881928221a4b00307d4296cfad5a13
+          - Leafeon focused asset QA passed before merge at 81a4b8df3f7fe1eb389fe98e9763bc4721ad8cf1
+          - Ectoceon focused asset QA run 37136504579 at 0ffe87168cb449a7f83b6595b5d1d95051ced901
+          - Rhyperior focused asset QA run 37150881535 at f2c3e182dd9f97e868e4adbbab6ef4694cf28839
+          This final gate verifies those proven packets coexist on the integrated production head and still build together.
+          EOF
+          cat SPEC009_FINAL_EVIDENCE.txt
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-009-final-integration-qa
+          path: |
+            SPEC009_FINAL_QA_SOURCE_SHA.txt
+            SPEC009_FINAL_PRODUCTION_SOURCE_SHA.txt
+            SPEC009_FINAL_QA_ROM_SHA1.txt
+            SPEC009_FINAL_EVIDENCE.txt
+          if-no-files-found: warn
