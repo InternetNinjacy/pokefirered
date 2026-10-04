@@ -1,4 +1,3 @@
-# QA-only retrigger marker: validate current RIV-013 production head
 name: QA RIV-013 Runtime Green naming
 
 on:
@@ -104,15 +103,15 @@ jobs:
           oak += '\n'.join(probe_lines)
           oak_path.write_text(oak)
 
-          title_path = Path('src/title_screen.c')
-          title = title_path.read_text()
-          title = title.replace('#include "constants/songs.h"\n', '#include "constants/songs.h"\n\nextern void Riv013_RunRuntimeQa(void);\n', 1)
-          title = title.replace('void CB2_InitTitleScreen(void)\n{\n', 'void CB2_InitTitleScreen(void)\n{\n    Riv013_RunRuntimeQa();\n', 1)
-          title_path.write_text(title)
+          main_path = Path('src/main.c')
+          main = main_path.read_text()
+          main = main.replace('#include "sloopsvc.h"\n', '#include "sloopsvc.h"\n\nextern void Riv013_RunRuntimeQa(void);\n', 1)
+          main = main.replace('    InitMainCallbacks();\n', '    InitMainCallbacks();\n    Riv013_RunRuntimeQa();\n', 1)
+          main_path.write_text(main)
           PY
           git diff --check
           grep -q 'Riv013_RunRuntimeQa' src/oak_speech.c
-          grep -q 'Riv013_RunRuntimeQa();' src/title_screen.c
+          grep -q 'Riv013_RunRuntimeQa();' src/main.c
 
       - name: Build QA ROM
         run: |
