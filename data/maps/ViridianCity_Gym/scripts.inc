@@ -1,5 +1,10 @@
 ViridianCity_Gym_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, ViridianCity_Gym_OnLoad
 	.byte 0
+
+ViridianCity_Gym_OnLoad::
+	call EventScript_ThomasSyncVisibility
+	end
 
 ViridianCity_Gym_EventScript_Giovanni::
 	famechecker FAMECHECKER_GIOVANNI, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005

@@ -1,5 +1,10 @@
 RocketHideout_B3F_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, RocketHideout_B3F_OnLoad
 	.byte 0
+
+RocketHideout_B3F_OnLoad::
+	call EventScript_ThomasSyncVisibility
+	end
 
 RocketHideout_B3F_EventScript_Grunt1::
 	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_14, RocketHideout_B3F_Text_Grunt1Intro, RocketHideout_B3F_Text_Grunt1Defeat

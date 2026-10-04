@@ -1,5 +1,10 @@
 PokemonTower_7F_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, PokemonTower_7F_OnLoad
 	.byte 0
+
+PokemonTower_7F_OnLoad::
+	call EventScript_ThomasSyncVisibility
+	end
 
 PokemonTower_7F_EventScript_MrFuji::
 	lock
