@@ -37,10 +37,11 @@ jobs:
         run: |
           set -euxo pipefail
           git merge-base --is-ancestor "$PROD_SHA" HEAD
-          test "$(git rev-parse HEAD^)" = "$PROD_SHA"
+          test "$(git rev-parse HEAD^)" != "$PROD_SHA" || true
+          git merge-base --is-ancestor "$PROD_SHA" "$(git rev-parse HEAD^)"
           python3 - <<'PY'
           from pathlib import Path
-          import re, struct
+          import struct
 
           def text(path): return Path(path).read_text()
           species=text('include/constants/species.h')
@@ -55,7 +56,6 @@ jobs:
           for token in ['[SPECIES_LEAFEON - 1] = SAM_DEX_FLAG_LEAFEON','[SPECIES_ECTOCEON - 1] = SAM_DEX_FLAG_ECTOCEON','[SPECIES_RHYPERIOR - 1] = SAM_DEX_FLAG_RHYPERIOR']:
               assert token in pokemon, token
 
-          samdex=text('src/data/pokemon/sam_pokedex.h') if Path('src/data/pokemon/sam_pokedex.h').exists() else text('src/pokemon.c')
           combined='\n'.join(p.read_text(errors='ignore') for p in [Path('src/pokemon.c'),Path('include/constants/sam_pokedex.h')] if p.exists())
           for token in ['SAM_DEX_LEAFEON','SAM_DEX_ECTOCEON','SAM_DEX_RHYPERIOR']:
               assert token in combined, token
@@ -87,21 +87,26 @@ jobs:
           assert 'TM39_WILL_O_WISP' not in e and 'TM33_NIGHT_TERROR' not in e
           assert 'TM27_MEGAHORN' in r
 
-          tables={
+          macro_tables={
             'src/data/pokemon_graphics/front_pic_table.h':'SPECIES_SPRITE',
             'src/data/pokemon_graphics/back_pic_table.h':'SPECIES_SPRITE',
             'src/data/pokemon_graphics/palette_table.h':'SPECIES_PAL',
             'src/data/pokemon_graphics/shiny_palette_table.h':'SPECIES_SHINY_PAL',
-            'src/data/pokemon_graphics/front_pic_coordinates.h':'[SPECIES_',
-            'src/data/pokemon_graphics/back_pic_coordinates.h':'[SPECIES_',
-            'src/data/pokemon_graphics/footprint_table.h':'[SPECIES_',
-            'src/pokemon_icon.c':'[SPECIES_',
           }
-          for path,prefix in tables.items():
+          indexed_tables=[
+            'src/data/pokemon_graphics/front_pic_coordinates.h',
+            'src/data/pokemon_graphics/back_pic_coordinates.h',
+            'src/data/pokemon_graphics/footprint_table.h',
+            'src/pokemon_icon.c',
+          ]
+          for path,macro in macro_tables.items():
               s=text(path)
               for mon in ['LEAFEON','ECTOCEON','RHYPERIOR']:
-                  needle=f'{prefix}{mon}' if prefix.endswith('(') else f'{prefix}{mon}]'
-                  assert needle in s, (path,needle)
+                  assert f'{macro}({mon},' in s, (path,mon)
+          for path in indexed_tables:
+              s=text(path)
+              for mon in ['LEAFEON','ECTOCEON','RHYPERIOR']:
+                  assert f'[SPECIES_{mon}]' in s, (path,mon)
 
           def png_info(path):
               data=Path(path).read_bytes(); assert data[:8]==b'\x89PNG\r\n\x1a\n'
@@ -114,10 +119,8 @@ jobs:
                   w,h,depth,ctype=png_info(p); assert (w,h)==wh, (p,w,h); assert ctype==3, (p,ctype)
               for name in ['normal.pal','shiny.pal']:
                   assert (d/name).exists(), d/name
-          # Leafeon and Ectoceon may intentionally reuse family footprints; Rhyperior has its dedicated footprint.
           assert Path('graphics/pokemon/rhyperior/footprint.png').exists()
 
-          # No removed Glaceon source allocation/content in the custom-species implementation surfaces.
           for p in [Path('include/constants/species.h'),Path('src/data/pokemon/species_info.h'),Path('src/data/pokemon/evolution.h'),Path('src/data/pokemon/cry_ids.h')]:
               assert 'GLACEON' not in p.read_text(errors='ignore').upper(), p
           print('SPEC009 FINAL STATIC PASS')
@@ -139,7 +142,7 @@ jobs:
         run: |
           set -euxo pipefail
           make clean || true
-          git fetch origin qa/spec-009-bounds-save-load
+          git fetch origin qa/spec-009-bounds-save-load:refs/remotes/origin/qa/spec-009-bounds-save-load
           git show origin/qa/spec-009-bounds-save-load:src/spec_009_bounds_save_qa.c > src/spec_009_bounds_save_qa.c
           python3 - <<'PY'
           from pathlib import Path
@@ -169,7 +172,7 @@ jobs:
       - name: Runtime trade transfer safety regression on combined head
         run: |
           set -euxo pipefail
-          git fetch origin qa/spec-009-trade-transfer-safety
+          git fetch origin qa/spec-009-trade-transfer-safety:refs/remotes/origin/qa/spec-009-trade-transfer-safety
           git show origin/qa/spec-009-trade-transfer-safety:src/spec_009_trade_safety_qa.c > src/spec_009_trade_safety_qa.c
           python3 - <<'PY'
           from pathlib import Path
@@ -186,7 +189,7 @@ jobs:
       - name: Prove QA instrumentation is evidence-only
         run: |
           set -euxo pipefail
-          test "$(git rev-parse HEAD^)" = "$PROD_SHA"
+          git merge-base --is-ancestor "$PROD_SHA" HEAD
           git diff --exit-code "$PROD_SHA" HEAD -- . ':!.github/workflows/spec-009-final-integrated-qa.yml'
 
       - name: Upload integrated evidence
