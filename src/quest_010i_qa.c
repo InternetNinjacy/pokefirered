@@ -40,6 +40,12 @@ static void Fail(const char *text)
     for (;;);
 }
 
+static bool8 __attribute__((noinline)) QaIsTradedMon(struct Pokemon *mon)
+{
+    bool8 (*volatile func)(struct Pokemon *) = IsTradedMon;
+    return func(mon);
+}
+
 static void ResetState(void)
 {
     ClearSav2();
@@ -80,7 +86,7 @@ static void CheckMrMimeMon(struct Pokemon *mon)
      || GetMonData(mon, MON_DATA_LEVEL, NULL) != 30
      || GetMonData(mon, MON_DATA_HELD_ITEM, NULL) != ITEM_NONE
      || GetMonData(mon, MON_DATA_OT_ID, NULL) != OTID_GIFT_COPYCAT
-     || !IsTradedMon(mon))
+     || !QaIsTradedMon(mon))
         Fail("QUEST010I QA FAIL Mr Mime package");
     GetMonData(mon, MON_DATA_OT_NAME, otName);
     if (StringCompare(otName, sCopycatName))
