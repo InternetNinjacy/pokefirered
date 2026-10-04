@@ -1,0 +1,113 @@
+name: QUEST-010F All-Order Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/quest-010f-all-order-progression
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  quest-010f-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/quest-010f-all-order-progression
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and QUEST-010F contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import pathlib, subprocess
+          prod="f6d7f2ddca79213e76a502c1acc80b5a532dceac"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+          helper=pathlib.Path("src/sam_quest_010.c").read_text()
+          assert "SQ_SAFFRON_SUBMITTED_PIDGEY" in helper
+          assert "SQ_SAFFRON_SUBMITTED_RATTATA" in helper
+          assert "SQ_SAFFRON_SUBMITTED_ODDISH" in helper
+          assert "state |= SQ_SAFFRON_STARTED_BIT | SQ_SAFFRON_SUBMITTED_PIDGEY" in helper
+          assert "state |= SQ_SAFFRON_STARTED_BIT | SQ_SAFFRON_SUBMITTED_RATTATA" in helper
+          assert "state |= SQ_SAFFRON_STARTED_BIT | SQ_SAFFRON_SUBMITTED_ODDISH" in helper
+          assert helper.count("VarSet(VAR_SQ_SAFFRON_COUNT, state)") >= 3
+          assert "FLAG_SQ_SAFFRON_COMPLETE" in helper
+          print("QUEST010F STATIC PASS independent species-bit commits")
+          PY
+
+      - name: Inject QA-only runtime hook
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("src/main.c")
+          s=p.read_text()
+          s=s.replace("extern u32 intr_main[];\n", "extern u32 intr_main[];\nvoid Quest010fQa_RunRuntimeQa(void);\n", 1)
+          s=s.replace("    SetNotInSaveFailedScreen();\n", "    SetNotInSaveFailedScreen();\n\n    Quest010fQa_RunRuntimeQa();\n", 1)
+          p.write_text(s)
+          p=Path("include/config.h")
+          s=p.read_text().replace("#define LOG_HANDLER (LOG_HANDLER_AGB_PRINT)", "#define LOG_HANDLER (LOG_HANDLER_MGBA_PRINT)", 1)
+          p.write_text(s)
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee QUEST010F_ROM_SHA1.txt
+          git rev-parse HEAD | tee QUEST010F_QA_SOURCE_SHA.txt
+          echo f6d7f2ddca79213e76a502c1acc80b5a532dceac | tee QUEST010F_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 45s mgba -l 31 pokefirered.gba > quest010f_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat quest010f_phase1.log
+          grep -q "QUEST010F QA PHASE1 PASS all six submission orders" quest010f_phase1.log
+          ! grep -q "QUEST010F QA FAIL" quest010f_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > quest010f_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat quest010f_phase2.log
+          grep -q "QUEST010F QA PASS all-order persistence" quest010f_phase2.log
+          ! grep -q "QUEST010F QA FAIL" quest010f_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quest-010f-all-order-runtime-qa
+          path: |
+            pokefirered.gba
+            QUEST010F_ROM_SHA1.txt
+            QUEST010F_QA_SOURCE_SHA.txt
+            QUEST010F_PRODUCTION_SOURCE_SHA.txt
+            quest010f_phase1.log
+            quest010f_phase2.log
+            pokefirered.sav
+          if-no-files-found: error
