@@ -8,6 +8,7 @@ ViridianCity_OnTransition::
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 1, ViridianCity_EventScript_SetOldManStandingByRoad
 	call_if_ge VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 2, ViridianCity_EventScript_SetOldManNormal
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_GYM_DOOR, 0, ViridianCity_EventScript_TryUnlockGym
+	call ViridianCity_EventScript_UpdateRunawayNidoran
 	end
 
 ViridianCity_EventScript_SetOldManNormal::
@@ -270,3 +271,5 @@ ViridianCity_EventScript_FernPostGift::
 	msgbox ViridianCity_Text_FernPostGift
 	release
 	end
+
+	.include "data/maps/ViridianCity/quest_003.inc"
