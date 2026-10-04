@@ -1,0 +1,224 @@
+name: TITLE-001-003 Runtime QA
+
+on:
+  push:
+    branches: [qa/title-001-003-runtime]
+  workflow_dispatch:
+
+jobs:
+  title-runtime-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa/title-001-003-runtime
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl imagemagick
+
+      - name: Build agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone --depth 1 https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify exact production payload
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+          prod='22f7f806b8016832b0be1d9580d2432dc7cef29c'
+          files=['src/title_screen.c','graphics/title_screen/sam/title_screen.gbapal','graphics/title_screen/sam/title_screen_part0.4bpp','graphics/title_screen/sam/title_screen_part1.4bpp','graphics/title_screen/sam/title_screen_part2.4bpp','graphics/title_screen/sam/title_screen_part3.4bpp']
+          subprocess.check_call(['git','merge-base','--is-ancestor',prod,'HEAD'])
+          subprocess.check_call(['git','diff','--exit-code',prod,'HEAD','--',*files])
+          sizes=[32,4800,4800,4800,4798]
+          for path,size in zip(files[1:],sizes):
+              assert Path(path).stat().st_size==size,(path,Path(path).stat().st_size)
+          t=Path('src/title_screen.c').read_text()
+          for token in ['LoadSamTitleScreen();','sSamTitleScreen_TilesTail[] = { 0xDE, 0xDD };','CpuCopy16(sSamTitleScreen_TilesTail, (void *)(VRAM + 0x4AFE)','JOY_NEW(A_BUTTON | START_BUTTON)','#define KEYSTROKE_DELSAVE (B_BUTTON | SELECT_BUTTON | DPAD_UP)','SetMainCallback2(CB2_InitMainMenu);','SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);','if (data[0] >= 2700)']:
+              assert token in t,token
+          start=t.index('static void SetTitleScreenScene_Cry(s16 *data)\n{')
+          cry=t[start:]
+          next_func=cry.find('\nstatic void ',1)
+          if next_func!=-1:
+              cry=cry[:next_func]
+          assert 'PlayCry' not in cry
+          print('TITLE QA STATIC PASS exact production payload/input/no-cry/2700 contract')
+          PY
+
+      - name: Reconstruct exact native title
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import struct
+          pal=Path('graphics/title_screen/sam/title_screen.gbapal').read_bytes()
+          raw=b''.join(Path(f'graphics/title_screen/sam/title_screen_part{i}.4bpp').read_bytes() for i in range(4))+bytes([0xDE,0xDD])
+          assert len(pal)==32 and len(raw)==19200
+          colors=[]
+          for i in range(16):
+              v=struct.unpack_from('<H',pal,i*2)[0]
+              colors.append(((v&31)*255//31,((v>>5)&31)*255//31,((v>>10)&31)*255//31))
+          px=bytearray(240*160*3)
+          for tile in range(600):
+              tx,ty=tile%30,tile//30
+              off=tile*32
+              for y in range(8):
+                  for xb in range(4):
+                      b=raw[off+y*4+xb]
+                      for sub,idx in enumerate((b&15,b>>4)):
+                          p=((ty*8+y)*240+tx*8+xb*2+sub)*3
+                          px[p:p+3]=bytes(colors[idx])
+          Path('title_native_exact.ppm').write_bytes(b'P6\n240 160\n255\n'+px)
+          PY
+          convert title_native_exact.ppm title_native_exact.png
+          test "$(identify -format '%wx%h' title_native_exact.png)" = "240x160"
+          test "$(convert title_native_exact.png -format %k info:)" -le 16
+
+      - name: Inject evidence-only deterministic QA harness
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p=Path('src/title_screen.c')
+          t=p.read_text()
+          t=t.replace('#include "global.h"\n','#include "global.h"\n#include "gba/isagbprint.h"\n',1)
+          anchor='static const u8 sSamTitleScreen_TilesTail[] = { 0xDE, 0xDD };\n'
+          helper='\nu8 gTitleQaOnTitle;\nu8 gTitleQaAtMainMenu;\n#define TITLE_QA_MGBA_ENABLE ((vu16 *)0x4FFF780)\n#define TITLE_QA_MGBA_FLAGS ((vu16 *)0x4FFF700)\n#define TITLE_QA_MGBA_STRING ((volatile char *)0x4FFF600)\nstatic void TitleQaLog(const char *text) { u32 i=0; *TITLE_QA_MGBA_ENABLE=0xC0DE; while (text[i] != 0 && i < 255) { TITLE_QA_MGBA_STRING[i]=text[i]; i++; } TITLE_QA_MGBA_STRING[i]=0; *TITLE_QA_MGBA_FLAGS=MGBA_LOG_INFO|0x100; }\nstatic bool8 TitleQaBytesEqual(const u8 *src, const volatile u8 *dst, u32 size) { u32 i; for (i=0;i<size;i++) if (src[i]!=dst[i]) return FALSE; return TRUE; }\nstatic void TitleQaCheckVideoMemory(void) { u16 x; u16 y; u16 *tilemap=(u16 *)(VRAM+0xF800); bool8 ok=TRUE; ok &= TitleQaBytesEqual((const u8 *)sSamTitleScreen_Pal,(const volatile u8 *)gPlttBufferUnfaded,sizeof(sSamTitleScreen_Pal)); ok &= TitleQaBytesEqual((const u8 *)sSamTitleScreen_Tiles0,(const volatile u8 *)(VRAM+0x0000),sizeof(sSamTitleScreen_Tiles0)); ok &= TitleQaBytesEqual((const u8 *)sSamTitleScreen_Tiles1,(const volatile u8 *)(VRAM+0x12C0),sizeof(sSamTitleScreen_Tiles1)); ok &= TitleQaBytesEqual((const u8 *)sSamTitleScreen_Tiles2,(const volatile u8 *)(VRAM+0x2580),sizeof(sSamTitleScreen_Tiles2)); ok &= TitleQaBytesEqual((const u8 *)sSamTitleScreen_Tiles3,(const volatile u8 *)(VRAM+0x3840),sizeof(sSamTitleScreen_Tiles3)); ok &= TitleQaBytesEqual(sSamTitleScreen_TilesTail,(const volatile u8 *)(VRAM+0x4AFE),sizeof(sSamTitleScreen_TilesTail)); for (y=0;y<32;y++) for (x=0;x<32;x++) if (tilemap[y*32+x] != ((x<30 && y<20)?(y*30+x):0)) ok=FALSE; TitleQaLog(ok?"TITLEQA VIDEO MEMORY PASS":"TITLEQA VIDEO MEMORY FAIL"); }\n'
+          assert anchor in t
+          t=t.replace(anchor,anchor+helper,1)
+          old='    ShowBg(0);\n}\n\nstatic void ResetGpuRegs'
+          assert old in t
+          t=t.replace(old,'    ShowBg(0);\n    TitleQaCheckVideoMemory();\n}\n\nstatic void ResetGpuRegs',1)
+          reps=[
+              ('        HelpSystem_Enable();\n        tState++;','        HelpSystem_Enable();\n        gTitleQaOnTitle = TRUE;\n        gTitleQaAtMainMenu = FALSE;\n        TitleQaLog("TITLEQA RUN");\n        tState++;'),
+              ('            SetMainCallback2(CB2_FadeOutTransitionToSaveClearScreen);','            gTitleQaOnTitle = FALSE;\n            TitleQaLog("TITLEQA SAVECLEAR");\n            SetMainCallback2(CB2_FadeOutTransitionToSaveClearScreen);'),
+              ('            SetTitleScreenScene(data, TITLESCREENSCENE_CRY);','            TitleQaLog("TITLEQA INPUT ACCEPTED");\n            SetTitleScreenScene(data, TITLESCREENSCENE_CRY);'),
+              ('            SetTitleScreenScene(data, TITLESCREENSCENE_RESTART);','            TitleQaLog("TITLEQA TIMEOUT");\n            SetTitleScreenScene(data, TITLESCREENSCENE_RESTART);'),
+              ('            SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);','            gTitleQaOnTitle = FALSE;\n            TitleQaLog("TITLEQA RESTART");\n            SetMainCallback2(CB2_InitCopyrightScreenAfterTitleScreen);'),
+              ('            SetMainCallback2(CB2_InitMainMenu);','            gTitleQaOnTitle = FALSE;\n            gTitleQaAtMainMenu = TRUE;\n            TitleQaLog("TITLEQA MAINMENU NOCRY");\n            SetMainCallback2(CB2_InitMainMenu);')]
+          for old,new in reps:
+              assert t.count(old)==1,(old,t.count(old))
+              t=t.replace(old,new,1)
+          p.write_text(t)
+
+          p=Path('src/main_menu.c')
+          t=p.read_text()
+          insert='#include "global.h"\n#include "gba/isagbprint.h"\nextern u8 gTitleQaForceContinue;\n#define TITLE_QA_MM_ENABLE ((vu16 *)0x4FFF780)\n#define TITLE_QA_MM_FLAGS ((vu16 *)0x4FFF700)\n#define TITLE_QA_MM_STRING ((volatile char *)0x4FFF600)\nstatic void TitleQaMainMenuLog(const char *text) { u32 i=0; *TITLE_QA_MM_ENABLE=0xC0DE; while (text[i] != 0 && i < 255) { TITLE_QA_MM_STRING[i]=text[i]; i++; } TITLE_QA_MM_STRING[i]=0; *TITLE_QA_MM_FLAGS=MGBA_LOG_INFO|0x100; }\n'
+          t=t.replace('#include "global.h"\n',insert,1)
+          old='        switch (gSaveFileStatus)\n        {'
+          new='        if (gTitleQaForceContinue) { gSaveFileStatus = SAVE_STATUS_OK; TitleQaMainMenuLog("TITLEQA CONTINUE MODE"); }\n        switch (gSaveFileStatus)\n        {'
+          assert t.count(old)==1
+          t=t.replace(old,new,1)
+          assert t.count('            StartNewGameScene();')==1
+          t=t.replace('            StartNewGameScene();','            TitleQaMainMenuLog("TITLEQA NEWGAME TRANSITION");\n            StartNewGameScene();',1)
+          assert t.count('            TryStartQuestLogPlayback(taskId);')==1
+          t=t.replace('            TryStartQuestLogPlayback(taskId);','            TitleQaMainMenuLog("TITLEQA CONTINUE TRANSITION");\n            TryStartQuestLogPlayback(taskId);',1)
+          p.write_text(t)
+
+          p=Path('src/main.c')
+          t=p.read_text()
+          t=t.replace('#include "global.h"\n','#include "global.h"\nvoid TitleScreenQaDriveInput(void);\n',1)
+          old='        ReadKeys();\n\n        if (gSoftResetDisabled == FALSE'
+          assert old in t
+          t=t.replace(old,'        ReadKeys();\n        TitleScreenQaDriveInput();\n\n        if (gSoftResetDisabled == FALSE',1)
+          p.write_text(t)
+
+          qa='''#include "global.h"\n#include "main.h"\n#define TITLE_QA_SCENARIO 1\nextern u8 gTitleQaOnTitle;\nextern u8 gTitleQaAtMainMenu;\nu8 gTitleQaForceContinue;\nstatic u32 sTitleQaFrames;\nstatic u32 sTitleQaMenuFrames;\nstatic bool8 sTitleQaPressed;\nstatic void TitleQaPress(u16 keys) { gMain.newKeys=keys; gMain.newKeysRaw=keys; gMain.heldKeys=keys; gMain.heldKeysRaw=keys; gMain.newAndRepeatedKeys=keys; }\nvoid TitleScreenQaDriveInput(void) { if (TITLE_QA_SCENARIO == 7) gTitleQaForceContinue=TRUE; if (gTitleQaOnTitle) { sTitleQaFrames++; if (!sTitleQaPressed) { if (TITLE_QA_SCENARIO==1) { TitleQaPress(START_BUTTON); sTitleQaPressed=TRUE; } else if (TITLE_QA_SCENARIO==2) { TitleQaPress(A_BUTTON); sTitleQaPressed=TRUE; } else if (TITLE_QA_SCENARIO==3 && sTitleQaFrames>=300) { TitleQaPress(START_BUTTON); sTitleQaPressed=TRUE; } else if (TITLE_QA_SCENARIO==4) { TitleQaPress(B_BUTTON|SELECT_BUTTON|DPAD_UP); sTitleQaPressed=TRUE; } else if (TITLE_QA_SCENARIO==6 || TITLE_QA_SCENARIO==7 || TITLE_QA_SCENARIO==8) { TitleQaPress(START_BUTTON); sTitleQaPressed=TRUE; } } } if (gTitleQaAtMainMenu && (TITLE_QA_SCENARIO==6 || TITLE_QA_SCENARIO==7)) { sTitleQaMenuFrames++; if (sTitleQaMenuFrames==240) TitleQaPress(A_BUTTON); } }\n'''
+          Path('src/title_screen_qa.c').write_text(qa)
+          PY
+
+      - name: Build and run deterministic scenarios
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy
+          run_mgba() {
+            ROM="$1"; LOG="$2"; SECS="$3"
+            timeout --signal=TERM "${SECS}s" mgba -C logToStdout=1 -C logLevel.gba.debug=127 -l 31 "$ROM" > "$LOG" 2>&1 || test $? -eq 124 -o $? -eq 143
+          }
+          run_scenario() {
+            N="$1"; NAME="$2"; SECS="$3"
+            sed -i -E "s/#define TITLE_QA_SCENARIO [0-9]+/#define TITLE_QA_SCENARIO $N/" src/title_screen_qa.c
+            make -j2
+            cp pokefirered.gba "title_${NAME}.gba"
+            rm -f pokefirered.sav
+            run_mgba "title_${NAME}.gba" "title_${NAME}.log" "$SECS"
+            grep -q 'TITLEQA VIDEO MEMORY PASS' "title_${NAME}.log"
+            ! grep -q 'TITLEQA VIDEO MEMORY FAIL' "title_${NAME}.log"
+          }
+
+          run_scenario 1 start 12
+          grep -q 'TITLEQA INPUT ACCEPTED' title_start.log
+          grep -q 'TITLEQA MAINMENU NOCRY' title_start.log
+
+          run_scenario 2 a 12
+          grep -q 'TITLEQA INPUT ACCEPTED' title_a.log
+          grep -q 'TITLEQA MAINMENU NOCRY' title_a.log
+
+          run_scenario 3 idle_start 18
+          grep -q 'TITLEQA INPUT ACCEPTED' title_idle_start.log
+          grep -q 'TITLEQA MAINMENU NOCRY' title_idle_start.log
+
+          run_scenario 4 saveclear 12
+          grep -q 'TITLEQA SAVECLEAR' title_saveclear.log
+
+          run_scenario 5 timeout 20
+          grep -q 'TITLEQA TIMEOUT' title_timeout.log
+          grep -q 'TITLEQA RESTART' title_timeout.log
+
+          run_scenario 6 newgame 18
+          grep -q 'TITLEQA MAINMENU NOCRY' title_newgame.log
+          grep -q 'TITLEQA NEWGAME TRANSITION' title_newgame.log
+
+          run_scenario 7 continue 18
+          grep -q 'TITLEQA CONTINUE MODE' title_continue.log
+          grep -q 'TITLEQA CONTINUE TRANSITION' title_continue.log
+
+      - name: Verify title path does not modify save
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy
+          sed -i -E 's/#define TITLE_QA_SCENARIO [0-9]+/#define TITLE_QA_SCENARIO 8/' src/title_screen_qa.c
+          make -j2
+          python3 - <<'PY'
+          from pathlib import Path
+          Path('pokefirered.sav').write_bytes(bytes([0xA5])*131072)
+          PY
+          sha1sum pokefirered.sav | tee save_before.sha1
+          timeout --signal=TERM 12s mgba -C logToStdout=1 -C logLevel.gba.debug=127 -l 31 pokefirered.gba > title_save_integrity.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          grep -q 'TITLEQA MAINMENU NOCRY' title_save_integrity.log
+          sha1sum pokefirered.sav | tee save_after.sha1
+          cmp save_before.sha1 save_after.sha1
+
+      - name: Record QA evidence hashes
+        run: |
+          set -euxo pipefail
+          sha1sum pokefirered.gba | tee TITLE_QA_ROM_SHA1.txt
+          git rev-parse HEAD | tee TITLE_QA_SOURCE_SHA.txt
+          echo 22f7f806b8016832b0be1d9580d2432dc7cef29c > TITLE_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: title-001-003-runtime-qa
+          path: |
+            pokefirered.gba
+            title_*.gba
+            title_*.log
+            title_native_exact.png
+            save_before.sha1
+            save_after.sha1
+            TITLE_QA_ROM_SHA1.txt
+            TITLE_QA_SOURCE_SHA.txt
+            TITLE_PRODUCTION_SOURCE_SHA.txt
+          if-no-files-found: warn
