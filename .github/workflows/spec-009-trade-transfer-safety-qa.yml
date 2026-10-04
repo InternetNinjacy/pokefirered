@@ -1,0 +1,105 @@
+name: SPEC-009 Trade Transfer Safety QA
+
+on:
+  push:
+    branches:
+      - qa/spec-009-trade-transfer-safety
+  workflow_dispatch:
+
+jobs:
+  spec009-trade-safety-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/spec-009-trade-transfer-safety
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and trade safety source
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import pathlib, subprocess
+          base="a6d92e6c1c8f869455454b68f3f8434396a741c6"
+          prod="b4f9f0fc6b881928221a4b00307d4296cfad5a13"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+
+          changed=set(subprocess.check_output(
+              ["git","diff","--name-only",base+".."+prod], text=True
+          ).splitlines())
+          assert changed == {"src/link.c","src/link_rfu_3.c","src/trade.c"}, changed
+
+          link=pathlib.Path("src/link.c").read_text()
+          rfu=pathlib.Path("src/link_rfu_3.c").read_text()
+          trade=pathlib.Path("src/trade.c").read_text()
+          species=pathlib.Path("include/constants/species.h").read_text()
+
+          assert "gLocalLinkPlayer.neverRead = TRUE;" in link
+          assert "data->compatibility.unknown = TRUE;" in rfu
+          assert "PlayerPartyHasSamCustomSpecies()" in trade
+          assert "!IsSamLinkPlayerCustomSpeciesCompatible(partner)" in trade
+          assert "return TRADE_PLAYER_NOT_READY;" in trade
+          assert "IsSamRfuCustomSpeciesCompatible(partner)" in trade
+          assert "CanRegisterMonForTradingBoard" in trade
+          assert "if (IsSamCustomSpecies(species))" in trade
+
+          assert "#define SPECIES_LEAFEON 412" in species
+          assert "#define SPECIES_ECTOCEON 413" in species
+          assert "#define SPECIES_RHYPERIOR 414" in species
+          assert "#define SPECIES_EGG 415" in species
+
+          print("SPEC009TRADE STATIC PASS capability gates numbering unchanged")
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee SPEC009TRADE_QA_ROM_SHA1.txt
+          git rev-parse HEAD | tee SPEC009TRADE_QA_SOURCE_SHA.txt
+          echo b4f9f0fc6b881928221a4b00307d4296cfad5a13 | tee SPEC009TRADE_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Run focused runtime QA
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          set +e
+          timeout --signal=TERM 25s mgba -l 31 pokefirered.gba > spec009trade_runtime.log 2>&1
+          rc=$?
+          set -e
+          test "$rc" -eq 124 -o "$rc" -eq 143
+          cat spec009trade_runtime.log
+          grep -q "SPEC009TRADE QA PASS cable RFU custom safety stock unchanged" spec009trade_runtime.log
+          ! grep -q "SPEC009TRADE QA FAIL" spec009trade_runtime.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spec-009-trade-transfer-safety-qa
+          path: |
+            pokefirered.gba
+            SPEC009TRADE_QA_ROM_SHA1.txt
+            SPEC009TRADE_QA_SOURCE_SHA.txt
+            SPEC009TRADE_PRODUCTION_SOURCE_SHA.txt
+            spec009trade_runtime.log
+          if-no-files-found: error
