@@ -1,5 +1,10 @@
 Route22_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, Route22_OnTransition
 	.byte 0
+
+Route22_OnTransition::
+	call Route22_OnTransition_Quest003
+	end
 
 Route22_EventScript_EarlyRivalTriggerTop::
 	lockall
@@ -232,3 +237,5 @@ Route22_Movement_LateRivalExit::
 Route22_EventScript_LeagueGateSign::
 	msgbox Route22_Text_LeagueGateSign, MSGBOX_SIGN
 	end
+
+	.include "data/maps/Route22/quest_003.inc"
