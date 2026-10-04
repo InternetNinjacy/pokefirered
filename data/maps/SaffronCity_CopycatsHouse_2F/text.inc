@@ -112,6 +112,31 @@ SaffronCity_CopycatsHouse_2F_Text_PidgeySubmissionCancelled::
 SaffronCity_CopycatsHouse_2F_Text_PidgeySubmitted::
     .string "{STR_VAR_1} was submitted to COPYCAT.$"
 
+SaffronCity_CopycatsHouse_2F_Text_ChooseRattata::
+    .string "Which RATTATA will you submit?$"
+
+SaffronCity_CopycatsHouse_2F_Text_ConfirmRattataSubmission::
+    .string "Submit {STR_VAR_1} to COPYCAT?$"
+
+SaffronCity_CopycatsHouse_2F_Text_NoRattataInParty::
+    .string "You don't have a RATTATA with you.$"
+
+SaffronCity_CopycatsHouse_2F_Text_InvalidRattataSelection::
+    .string "That POKéMON can't be submitted.$"
+
+SaffronCity_CopycatsHouse_2F_Text_RattataSubmissionUnavailable::
+    .string "That submission can't be completed\n"
+    .string "safely right now.$"
+
+SaffronCity_CopycatsHouse_2F_Text_RattataAlreadySubmitted::
+    .string "You've already submitted a RATTATA.$"
+
+SaffronCity_CopycatsHouse_2F_Text_RattataSubmissionCancelled::
+    .string "You decided not to submit a POKéMON.$"
+
+SaffronCity_CopycatsHouse_2F_Text_RattataSubmitted::
+    .string "{STR_VAR_1} was submitted to COPYCAT.$"
+
 SaffronCity_CopycatsHouse_2F_Text_MarioWearingABucket::
     .string "A game with MARIO wearing a bucket\n"
     .string "on his head!$"
