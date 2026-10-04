@@ -26,6 +26,9 @@
 .set FLAG_SQ_SAFFRON_HIDE_PIDGEY_OBJECT,  FLAG_TEMP_1
 .set FLAG_SQ_SAFFRON_HIDE_RATTATA_OBJECT, FLAG_TEMP_2
 .set FLAG_SQ_SAFFRON_HIDE_ODDISH_OBJECT,  FLAG_TEMP_3
+.set LOCALID_SQ_SAFFRON_PIDGEY_OBJECT,    5
+.set LOCALID_SQ_SAFFRON_RATTATA_OBJECT,   6
+.set LOCALID_SQ_SAFFRON_ODDISH_OBJECT,    7
 
 SaffronCity_CopycatsHouse_2F_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, SaffronCity_CopycatsHouse_2F_OnTransition
@@ -233,6 +236,8 @@ SaffronCity_CopycatsHouse_2F_EventScript_SubmitPidgey::
 	goto_if_eq VAR_RESULT, NO, SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionCancelled
 	callnative SamQuest010CommitPidgeySubmission
 	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionUnavailable
+	clearflag FLAG_SQ_SAFFRON_HIDE_PIDGEY_OBJECT
+	addobject LOCALID_SQ_SAFFRON_PIDGEY_OBJECT
 	msgbox SaffronCity_CopycatsHouse_2F_Text_PidgeySubmitted
 	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
 	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RewardFirstAttempt
@@ -295,6 +300,8 @@ SaffronCity_CopycatsHouse_2F_EventScript_SubmitRattata::
 	goto_if_eq VAR_RESULT, NO, SaffronCity_CopycatsHouse_2F_EventScript_RattataSubmissionCancelled
 	callnative SamQuest010CommitRattataSubmission
 	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_RattataSubmissionUnavailable
+	clearflag FLAG_SQ_SAFFRON_HIDE_RATTATA_OBJECT
+	addobject LOCALID_SQ_SAFFRON_RATTATA_OBJECT
 	msgbox SaffronCity_CopycatsHouse_2F_Text_RattataSubmitted
 	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
 	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RewardFirstAttempt
@@ -357,6 +364,8 @@ SaffronCity_CopycatsHouse_2F_EventScript_SubmitOddish::
 	goto_if_eq VAR_RESULT, NO, SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionCancelled
 	callnative SamQuest010CommitOddishSubmission
 	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionUnavailable
+	clearflag FLAG_SQ_SAFFRON_HIDE_ODDISH_OBJECT
+	addobject LOCALID_SQ_SAFFRON_ODDISH_OBJECT
 	msgbox SaffronCity_CopycatsHouse_2F_Text_OddishSubmitted
 	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
 	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RewardFirstAttempt
