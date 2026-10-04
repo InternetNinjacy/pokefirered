@@ -1,3 +1,26 @@
+@ QUEST-010 persistent state model.
+@ Reuses the centrally allocated Saffron quest variable and completion flag.
+@ Bits 0-2 independently record submitted species so submission order is arbitrary.
+@ Bit 3 records that the quest has started. Bit 4 records reward-pending state.
+@ Completion is FLAG_SQ_SAFFRON_COMPLETE; no additional persistent storage is allocated.
+.set VAR_SQ_SAFFRON_STATE,              VAR_SQ_SAFFRON_COUNT
+.set SQ_SAFFRON_SUBMITTED_PIDGEY,       0x0001
+.set SQ_SAFFRON_SUBMITTED_RATTATA,      0x0002
+.set SQ_SAFFRON_SUBMITTED_ODDISH,       0x0004
+.set SQ_SAFFRON_SUBMISSION_MASK,        0x0007
+.set SQ_SAFFRON_STARTED_BIT,            0x0008
+.set SQ_SAFFRON_REWARD_PENDING_BIT,     0x0010
+.set SQ_SAFFRON_STATE_NOT_STARTED,      0x0000
+.set SQ_SAFFRON_STATE_STARTED,          0x0008
+.set SQ_SAFFRON_STATE_PIDGEY,           0x0009
+.set SQ_SAFFRON_STATE_RATTATA,          0x000A
+.set SQ_SAFFRON_STATE_PIDGEY_RATTATA,   0x000B
+.set SQ_SAFFRON_STATE_ODDISH,           0x000C
+.set SQ_SAFFRON_STATE_PIDGEY_ODDISH,    0x000D
+.set SQ_SAFFRON_STATE_RATTATA_ODDISH,   0x000E
+.set SQ_SAFFRON_STATE_ALL_SUBMITTED,    0x000F
+.set SQ_SAFFRON_STATE_REWARD_PENDING,   0x001F
+
 SaffronCity_CopycatsHouse_2F_MapScripts::
 	.byte 0
 
