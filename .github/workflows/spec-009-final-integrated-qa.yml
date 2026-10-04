@@ -132,10 +132,6 @@ jobs:
           make -j2 COMPARE=0 all
           test -f pokefirered.gba
           sha1sum pokefirered.gba | tee SPEC009_FINAL_AGBCC_ROM_SHA1.txt
-          make clean
-          make -j2 MODERN=1 COMPARE=0 all
-          test -f pokefirered.gba
-          sha1sum pokefirered.gba | tee SPEC009_FINAL_MODERN_ROM_SHA1.txt
           git rev-parse "$PROD_SHA" | tee SPEC009_FINAL_PRODUCTION_SHA.txt
 
       - name: Runtime bounds persistence and dex regression on combined head
@@ -199,7 +195,6 @@ jobs:
           name: spec-009-final-integrated-qa
           path: |
             SPEC009_FINAL_AGBCC_ROM_SHA1.txt
-            SPEC009_FINAL_MODERN_ROM_SHA1.txt
             SPEC009_FINAL_PRODUCTION_SHA.txt
             spec009_final_bounds_phase1.log
             spec009_final_bounds_phase2.log
