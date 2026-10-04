@@ -4,9 +4,7 @@
 #include "constants/items.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
-
-// Centrally authorized for QUEST-010 closure on 2026-10-04.
-#define OTID_GIFT_COPYCAT 52012
+#include "constants/trade.h"
 
 static const u8 sQuest010CopycatOtName[] = _("COPYCAT");
 
