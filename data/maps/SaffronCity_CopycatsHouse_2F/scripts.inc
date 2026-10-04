@@ -53,6 +53,67 @@ SaffronCity_CopycatsHouse_2F_EventScript_Copycat::
 	release
 	end
 
+@ QUEST-010C transaction only. QUEST-010H owns final Copycat interaction routing/dialogue.
+@ Current policy is party submission only; PC storage is never scanned or modified.
+SaffronCity_CopycatsHouse_2F_EventScript_SubmitPidgey::
+	lock
+	faceplayer
+	checkflag FLAG_SQ_SAFFRON_COMPLETE
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionUnavailable
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_RATTATA
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_REWARD_PENDING
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted
+	setvar VAR_0x8004, SPECIES_PIDGEY
+	special DoesPlayerPartyContainSpecies
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_NoPidgeyInParty
+	msgbox SaffronCity_CopycatsHouse_2F_Text_ChoosePidgey
+	fadescreen FADE_TO_BLACK
+	special ChoosePartyMon
+	waitstate
+	goto_if_ge VAR_0x8004, PARTY_SIZE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionCancelled
+	bufferpartymonnick STR_VAR_1, VAR_0x8004
+	callnative SamQuest010PreparePidgeySubmission
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_InvalidPidgeySelection
+	msgbox SaffronCity_CopycatsHouse_2F_Text_ConfirmPidgeySubmission, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionCancelled
+	callnative SamQuest010CommitPidgeySubmission
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionUnavailable
+	msgbox SaffronCity_CopycatsHouse_2F_Text_PidgeySubmitted
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_NoPidgeyInParty::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_NoPidgeyInParty
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_InvalidPidgeySelection::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_InvalidPidgeySelection
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionUnavailable::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_PidgeySubmissionUnavailable
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_PidgeyAlreadySubmitted
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionCancelled::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_PidgeySubmissionCancelled
+	release
+	end
+
 SaffronCity_CopycatsHouse_2F_EventScript_MimicPlayerMale::
 	msgbox SaffronCity_CopycatsHouse_2F_Text_MimickingFavoriteHobbyMale
 	return
