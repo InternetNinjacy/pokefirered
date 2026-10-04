@@ -33,6 +33,62 @@ PalletTown_Text_TownSign::
     .string "PALLET TOWN\n"
     .string "Shades of your journey await!$"
 
+PalletTown_Text_MiraPreEligibility::
+    .string "MIRA: My JIGGLYPUFF isn't feeling\n"
+    .string "well. I'm keeping her close until\l"
+    .string "she's better.$"
+
+PalletTown_Text_MiraRequest::
+    .string "MIRA: JIGGLYPUFF is paralyzed.\n"
+    .string "A PARLYZ HEAL should help her.\l"
+    .string "Could you spare one?$"
+
+PalletTown_Text_MiraReminder::
+    .string "MIRA: JIGGLYPUFF still needs a\n"
+    .string "PARLYZ HEAL.$"
+
+PalletTown_Text_MiraNoMedicine::
+    .string "MIRA: You don't have one right now.\n"
+    .string "That's okay. Please come back if you\l"
+    .string "find a PARLYZ HEAL.$"
+
+PalletTown_Text_MiraConfirm::
+    .string "Use one PARLYZ HEAL on JIGGLYPUFF?$"
+
+PalletTown_Text_MiraDecline::
+    .string "MIRA: That's okay. I'll stay here\n"
+    .string "with her.$"
+
+PalletTown_Text_MiraHealed::
+    .string "MIRA: It worked!\n"
+    .string "She's feeling better already.$"
+
+PalletTown_Text_MiraTyrogueOffer::
+    .string "MIRA: Thank you for helping us.\n"
+    .string "I want you to take care of this\l"
+    .string "TYROGUE.$"
+
+PalletTown_Text_MiraNoRoom::
+    .string "MIRA: You don't have room for\n"
+    .string "TYROGUE right now. I'll keep him\l"
+    .string "safe until you come back.$"
+
+PalletTown_Text_MiraTyrogueSuccess::
+    .string "MIRA: Take good care of him.\n"
+    .string "And thank you again.$"
+
+PalletTown_Text_MiraComplete::
+    .string "MIRA: JIGGLYPUFF is doing great.\n"
+    .string "I hope TYROGUE is, too.$"
+
+PalletTown_Text_JigglypuffUnwell::
+    .string "JIGGLYPUFF looks weak and stiff.\n"
+    .string "It can't move properly.$"
+
+PalletTown_Text_JigglypuffHealed::
+    .string "JIGGLYPUFF looks healthy again.\n"
+    .string "It bounces happily beside MIRA.$"
+
 PalletTown_Text_OakLetMeSeePokedex::
     .string "OAK: Ah, {PLAYER}!\n"
     .string "You're back, are you?\p"
