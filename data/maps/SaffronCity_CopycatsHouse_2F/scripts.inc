@@ -175,6 +175,67 @@ SaffronCity_CopycatsHouse_2F_EventScript_RattataSubmissionCancelled::
 	release
 	end
 
+@ QUEST-010E transaction only. QUEST-010H owns final Copycat interaction routing/dialogue.
+@ Mirrors the proven party-only safety contract for Oddish.
+SaffronCity_CopycatsHouse_2F_EventScript_SubmitOddish::
+	lock
+	faceplayer
+	checkflag FLAG_SQ_SAFFRON_COMPLETE
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionUnavailable
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_RATTATA_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_REWARD_PENDING
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted
+	setvar VAR_0x8004, SPECIES_ODDISH
+	special DoesPlayerPartyContainSpecies
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_NoOddishInParty
+	msgbox SaffronCity_CopycatsHouse_2F_Text_ChooseOddish
+	fadescreen FADE_TO_BLACK
+	special ChoosePartyMon
+	waitstate
+	goto_if_ge VAR_0x8004, PARTY_SIZE, SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionCancelled
+	bufferpartymonnick STR_VAR_1, VAR_0x8004
+	callnative SamQuest010PrepareOddishSubmission
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_InvalidOddishSelection
+	msgbox SaffronCity_CopycatsHouse_2F_Text_ConfirmOddishSubmission, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionCancelled
+	callnative SamQuest010CommitOddishSubmission
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionUnavailable
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OddishSubmitted
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_NoOddishInParty::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_NoOddishInParty
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_InvalidOddishSelection::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_InvalidOddishSelection
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionUnavailable::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OddishSubmissionUnavailable
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OddishAlreadySubmitted
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionCancelled::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OddishSubmissionCancelled
+	release
+	end
+
 SaffronCity_CopycatsHouse_2F_EventScript_MimicPlayerMale::
 	msgbox SaffronCity_CopycatsHouse_2F_Text_MimickingFavoriteHobbyMale
 	return
