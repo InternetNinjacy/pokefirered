@@ -1,0 +1,200 @@
+name: QA RIV-013 Green naming
+
+on:
+  pull_request:
+    branches:
+      - sam/riv-013-green-opening-naming
+
+permissions:
+  contents: read
+
+jobs:
+  focused-green-naming:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify Green naming package
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          oak = Path('src/oak_speech.c').read_text()
+          text = Path('data/text/new_game_intro.inc').read_text()
+          decl = Path('include/event_scripts.h').read_text()
+          new_game = Path('src/new_game.c').read_text()
+
+          required_presets = [
+              '_("GREEN")',
+              '_("SUSAN")',
+              '_("AMY")',
+              '_("JESS")',
+          ]
+          for preset in required_presets:
+              assert preset in oak, f'missing Green preset {preset}'
+
+          assert 'NAME_TARGET_GREEN' in oak
+          assert 'textPtrs = sGreenNameChoices;' in oak
+          assert 'DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock1Ptr->samEdition.greenName' in oak
+          assert 'dest = gSaveBlock1Ptr->samEdition.greenName;' in oak
+          assert 'gTasks[taskId].func = Task_OakSpeech_FadeInGreenPic;' in oak
+          assert 'gTasks[taskId].func = Task_OakSpeech_AskGreenName;' in oak
+          assert 'gTasks[taskId].func = Task_OakSpeech_FadeOutGreenPic;' in oak
+          assert 'sOakSpeechResources->namingTarget = NAME_TARGET_GREEN;' in oak
+          assert 'hasPlayerBeenNamed' not in oak
+
+          for symbol in [
+              'gOakSpeech_Text_WhatWasHerName',
+              'gOakSpeech_Text_YourGreenNameWhatWasIt',
+              'gOakSpeech_Text_ConfirmGreenName',
+              'gOakSpeech_Text_GreenNameConfirmed',
+          ]:
+              assert symbol in text, f'missing text {symbol}'
+              assert symbol in decl, f'missing declaration {symbol}'
+
+          # RIV-008 persistence contract must remain inherited and untouched.
+          assert 'StringCopy(greenName, gSaveBlock1Ptr->samEdition.greenName);' in new_game
+          assert 'StringCopy(gSaveBlock1Ptr->samEdition.greenName, greenName);' in new_game
+
+          # Blue remains independent from Green.
+          assert 'DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock1Ptr->rivalName' in oak
+          assert 'dest = gSaveBlock1Ptr->rivalName;' in oak
+
+          print('RIV-013 focused source QA passed')
+          PY
+
+  runtime-green-naming:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          sudo apt update
+          sudo apt install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl xvfb
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Inject QA-only runtime probe
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          oak_path = Path('src/oak_speech.c')
+          oak = oak_path.read_text()
+          oak = oak.replace('#include "constants/songs.h"\n', '#include "constants/songs.h"\n#include "gba/isagbprint.h"\n', 1)
+          marker = 'static void GetDefaultName(u8 namingTarget, u8 nameChoice)\n{'
+          if marker not in oak:
+              raise SystemExit('GetDefaultName marker missing')
+
+          probe_lines = [
+              '',
+              '',
+              '#define RIV013_MGBA_DEBUG_FLAGS  ((vu16 *)0x4FFF700)',
+              '#define RIV013_MGBA_DEBUG_STRING ((volatile char *)0x4FFF600)',
+              '',
+              'static void Riv013QaLog(const char *text)',
+              '{',
+              '    u32 i = 0;',
+              "    while (text[i] != '\\0' && i < 255)",
+              '    {',
+              '        RIV013_MGBA_DEBUG_STRING[i] = text[i];',
+              '        i++;',
+              '    }',
+              "    RIV013_MGBA_DEBUG_STRING[i] = '\\0';",
+              '    *RIV013_MGBA_DEBUG_FLAGS = MGBA_LOG_INFO | 0x100;',
+              '}',
+              '',
+              'void Riv013_RunRuntimeQa(void)',
+              '{',
+              '    static const u8 sBlueSentinel[] = _("BLUEQA");',
+              '    static const u8 sCustomGreen[] = _("CUSTOM");',
+              '    u8 i;',
+              '',
+              '    StringCopy(gSaveBlock1Ptr->rivalName, sBlueSentinel);',
+              '    for (i = 0; i < ARRAY_COUNT(sGreenNameChoices); i++)',
+              '    {',
+              '        GetDefaultName(NAME_TARGET_GREEN, i);',
+              '        if (StringCompare(gSaveBlock1Ptr->samEdition.greenName, sGreenNameChoices[i]) != 0)',
+              '        {',
+              '            Riv013QaLog("RIV013 FAIL Green preset write");',
+              '            for (;;);',
+              '        }',
+              '        if (StringCompare(gSaveBlock1Ptr->rivalName, sBlueSentinel) != 0)',
+              '        {',
+              '            Riv013QaLog("RIV013 FAIL Blue storage changed");',
+              '            for (;;);',
+              '        }',
+              '    }',
+              '',
+              '    StringCopy(gSaveBlock1Ptr->samEdition.greenName, sCustomGreen);',
+              '    if (StringCompare(gSaveBlock1Ptr->samEdition.greenName, sCustomGreen) != 0)',
+              '    {',
+              '        Riv013QaLog("RIV013 FAIL custom Green buffer");',
+              '        for (;;);',
+              '    }',
+              '    if (StringCompare(gSaveBlock1Ptr->rivalName, sBlueSentinel) != 0)',
+              '    {',
+              '        Riv013QaLog("RIV013 FAIL custom path touched Blue");',
+              '        for (;;);',
+              '    }',
+              '',
+              '    Riv013QaLog("RIV013 PASS runtime Green presets custom target Blue isolation");',
+              '    for (;;);',
+              '}',
+              '',
+          ]
+          oak += '\n'.join(probe_lines)
+          oak_path.write_text(oak)
+
+          main_path = Path('src/main.c')
+          main = main_path.read_text()
+          main = main.replace('#include "sloopsvc.h"\n', '#include "sloopsvc.h"\n\nextern void Riv013_RunRuntimeQa(void);\n', 1)
+          main = main.replace('    InitMainCallbacks();\n', '    InitMainCallbacks();\n    Riv013_RunRuntimeQa();\n', 1)
+          main_path.write_text(main)
+          PY
+          git diff --check
+          grep -q 'Riv013_RunRuntimeQa' src/oak_speech.c
+          grep -q 'Riv013_RunRuntimeQa();' src/main.c
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee RIV013_RUNTIME_ROM_SHA1.txt
+          git rev-parse HEAD | tee RIV013_RUNTIME_SOURCE_SHA.txt
+
+      - name: Run Green naming runtime probe
+        run: |
+          set -euxo pipefail
+          set +e
+          timeout --signal=TERM 8s xvfb-run -a env SDL_AUDIODRIVER=dummy mgba -l 31 pokefirered.gba > riv013_runtime.log 2>&1
+          status=$?
+          set -e
+          cat riv013_runtime.log
+          if [ "$status" -ne 0 ] && [ "$status" -ne 124 ] && [ "$status" -ne 143 ]; then
+            echo "mGBA/Xvfb exited unexpectedly with status $status"
+            exit "$status"
+          fi
+          grep -q 'RIV013 PASS runtime Green presets custom target Blue isolation' riv013_runtime.log
+          ! grep -q 'RIV013 FAIL' riv013_runtime.log
+
+      - name: Upload runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: riv-013-runtime-green-naming
+          path: |
+            RIV013_RUNTIME_ROM_SHA1.txt
+            RIV013_RUNTIME_SOURCE_SHA.txt
+            riv013_runtime.log
+          if-no-files-found: warn
