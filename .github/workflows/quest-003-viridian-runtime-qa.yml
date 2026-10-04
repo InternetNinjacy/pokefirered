@@ -1,0 +1,166 @@
+name: QUEST-003 Viridian Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/quest-003-viridian-runaway-nidoran
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  quest-003-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/quest-003-viridian-runaway-nidoran
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+          mgba --version || true
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and QUEST-003 contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          prod="7b16d3f8421dae5e675a01367b52c986387c70e0"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+
+          vir=pathlib.Path("data/maps/ViridianCity/quest_003.inc").read_text()
+          route=pathlib.Path("data/maps/Route22/quest_003.inc").read_text()
+          vir_scripts=pathlib.Path("data/maps/ViridianCity/scripts.inc").read_text()
+          route_scripts=pathlib.Path("data/maps/Route22/scripts.inc").read_text()
+          vir_map=json.loads(pathlib.Path("data/maps/ViridianCity/map.json").read_text())
+          route_map=json.loads(pathlib.Path("data/maps/Route22/map.json").read_text())
+          vars_h=pathlib.Path("include/constants/vars.h").read_text()
+          flags_h=pathlib.Path("include/constants/flags.h").read_text()
+          learnsets=pathlib.Path("src/data/pokemon/level_up_learnsets.h").read_text()
+
+          assert "VAR_SQ_VIRIDIAN_STATE" in vars_h
+          assert "FLAG_SQ_VIRIDIAN_COMPLETE" in flags_h
+          assert "goto_if_unset FLAG_SYS_POKEDEX_GET" in vir
+          assert "setvar VAR_SQ_VIRIDIAN_STATE, 1" in vir
+          assert "setwildbattle SPECIES_NIDORAN_F" not in vir + route
+          assert "setwildbattle SPECIES_SPEAROW, 6" in route
+          assert "B_OUTCOME_WON, Route22_EventScript_RunawayNidoranRescued" in route
+          assert "B_OUTCOME_CAUGHT, Route22_EventScript_RunawayNidoranRescued" in route
+          assert "B_OUTCOME_RAN, Route22_EventScript_RunawayNidoranRescued" not in route
+          assert "B_OUTCOME_PLAYER_TELEPORTED, Route22_EventScript_RunawayNidoranRescued" not in route
+          assert route.index("setvar VAR_SQ_VIRIDIAN_STATE, 2") < route.index("removeobject LOCALID_ROUTE22_RUNAWAY_NIDORAN")
+
+          assert "checkitemspace ITEM_POKE_BALL, 5" in vir
+          reward=vir.index("giveitem ITEM_POKE_BALL, 5")
+          complete_state=vir.index("setvar VAR_SQ_VIRIDIAN_STATE, 4")
+          complete_flag=vir.index("setflag FLAG_SQ_VIRIDIAN_COMPLETE")
+          assert reward < complete_state < complete_flag
+          assert "goto_if_eq VAR_RESULT, FALSE, ViridianCity_EventScript_NidoranTrainerNoRoom" in vir
+
+          vobjs={o.get("local_id"):o for o in vir_map["object_events"] if o.get("local_id")}
+          robjs={o.get("local_id"):o for o in route_map["object_events"] if o.get("local_id")}
+          assert vobjs["LOCALID_VIRIDIAN_NIDORAN_TRAINER"]["graphics_id"] == "OBJ_EVENT_GFX_LASS"
+          assert vobjs["LOCALID_VIRIDIAN_NIDORAN_TRAINER"]["x"] < 20
+          assert vobjs["LOCALID_VIRIDIAN_RUNAWAY_NIDORAN"]["graphics_id"] == "OBJ_EVENT_GFX_NIDORAN_F"
+          assert robjs["LOCALID_ROUTE22_RUNAWAY_NIDORAN"]["graphics_id"] == "OBJ_EVENT_GFX_NIDORAN_F"
+
+          labels=[b["script"] for b in vir_map["bg_events"]]
+          assert "ViridianCity_EventScript_DisturbedGrass" in labels
+          rlabels=[b["script"] for b in route_map["bg_events"]]
+          assert "Route22_EventScript_NidoranTracks" in rlabels
+          assert "Route22_EventScript_SpearowFeathers" in rlabels
+
+          for token in [
+              "VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN",
+              "ViridianCity_EventScript_TryUnlockGym",
+              "ViridianCity_EventScript_DoTutorialBattle",
+              "ViridianCity_EventScript_Fern"
+          ]:
+              assert token in vir_scripts
+          for token in [
+              "Route22_EventScript_EarlyRival",
+              "Route22_EventScript_LateRival",
+              "VAR_MAP_SCENE_ROUTE22"
+          ]:
+              assert token in route_scripts
+
+          spearow=learnsets.split("static const u16 sSpearowLevelUpLearnset[] = {",1)[1].split("};",1)[0]
+          assert "LEVEL_UP_MOVE(1, MOVE_PECK)" in spearow
+          assert "LEVEL_UP_MOVE(1, MOVE_GROWL)" in spearow
+          assert "LEVEL_UP_MOVE(7, MOVE_LEER)" in spearow
+          print("QUEST003 STATIC PASS")
+          PY
+
+      - name: Inject QA-only runtime hook
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("src/main.c")
+          s=p.read_text()
+          s=s.replace("extern u32 intr_main[];\n", "extern u32 intr_main[];\nvoid Quest003Qa_RunRuntimeQa(void);\n", 1)
+          s=s.replace("    SetNotInSaveFailedScreen();\n", "    SetNotInSaveFailedScreen();\n\n    Quest003Qa_RunRuntimeQa();\n", 1)
+          p.write_text(s)
+          p=Path("include/config.h")
+          s=p.read_text().replace("#define LOG_HANDLER (LOG_HANDLER_AGB_PRINT)", "#define LOG_HANDLER (LOG_HANDLER_MGBA_PRINT)", 1)
+          p.write_text(s)
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee QUEST003_ROM_SHA1.txt
+          git rev-parse HEAD | tee QUEST003_QA_SOURCE_SHA.txt
+          echo 7b16d3f8421dae5e675a01367b52c986387c70e0 | tee QUEST003_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 35s mgba -l 31 pokefirered.gba > quest003_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat quest003_phase1.log
+          grep -q "QUEST003 QA PHASE1 PASS state reward save" quest003_phase1.log
+          ! grep -q "QUEST003 QA FAIL" quest003_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > quest003_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat quest003_phase2.log
+          grep -q "QUEST003 QA PASS reload completion" quest003_phase2.log
+          ! grep -q "QUEST003 QA FAIL" quest003_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quest-003-viridian-runtime-qa
+          path: |
+            pokefirered.gba
+            QUEST003_ROM_SHA1.txt
+            QUEST003_QA_SOURCE_SHA.txt
+            QUEST003_PRODUCTION_SOURCE_SHA.txt
+            quest003_phase1.log
+            quest003_phase2.log
+            pokefirered.sav
+          if-no-files-found: error
