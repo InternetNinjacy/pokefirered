@@ -2068,8 +2068,8 @@ const struct MonCoords gMonBackPicCoords[] =
     },
     [SPECIES_ECTOCEON] =
     {
-        .size = MON_COORDS_SIZE(64, 64),
-        .y_offset = 0,
+        .size = MON_COORDS_SIZE(56, 56),
+        .y_offset = 2,
     },
     [SPECIES_RHYPERIOR] =
     {

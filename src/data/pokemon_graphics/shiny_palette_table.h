@@ -414,8 +414,8 @@ const struct CompressedSpritePalette gMonShinyPaletteTable[] =
     SPECIES_SHINY_PAL(CHIMECHO, gMonShinyPalette_Chimecho),
     // ARCH-004 placeholders; SPEC-009 supplies final custom species shiny palettes.
     SPECIES_SHINY_PAL(LEAFEON, gMonShinyPalette_Leafeon),
-    SPECIES_SHINY_PAL(ECTOCEON, gMonPalette_CircledQuestionMark),
-    SPECIES_SHINY_PAL(RHYPERIOR, gMonPalette_CircledQuestionMark),
+    SPECIES_SHINY_PAL(ECTOCEON, gMonShinyPalette_Ectoceon),
+    SPECIES_SHINY_PAL(RHYPERIOR, gMonShinyPalette_Rhyperior),
     SPECIES_SHINY_PAL(EGG, gMonPalette_Egg),
     SPECIES_SHINY_PAL(UNOWN_B, gMonShinyPalette_Unown),
     SPECIES_SHINY_PAL(UNOWN_C, gMonShinyPalette_Unown),

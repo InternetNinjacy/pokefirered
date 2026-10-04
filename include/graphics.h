@@ -2352,6 +2352,17 @@ extern const u32 gMonBackPic_Leafeon[];
 extern const u32 gMonShinyPalette_Leafeon[];
 extern const u8 gMonIcon_Leafeon[];
 extern const u8 gMonFootprint_Leafeon[];
+extern const u32 gMonFrontPic_Ectoceon[];
+extern const u32 gMonPalette_Ectoceon[];
+extern const u32 gMonBackPic_Ectoceon[];
+extern const u32 gMonShinyPalette_Ectoceon[];
+extern const u8 gMonIcon_Ectoceon[];
+extern const u32 gMonFrontPic_Rhyperior[];
+extern const u32 gMonPalette_Rhyperior[];
+extern const u32 gMonBackPic_Rhyperior[];
+extern const u32 gMonShinyPalette_Rhyperior[];
+extern const u8 gMonIcon_Rhyperior[];
+extern const u8 gMonFootprint_Rhyperior[];
 
 extern const u32 gMonFrontPic_Egg[];
 extern const u32 gMonPalette_Egg[];
