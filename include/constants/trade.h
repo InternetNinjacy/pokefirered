@@ -44,12 +44,14 @@
 #define OTID_PURCHASE_MAGIKARP_VENDOR 52008
 #define OTID_GAME_CORNER_CELADON      52009
 #define OTID_FOSSIL_CINNABAR_LAB      52010
+#define OTID_GIFT_MIRA                 52011
 
 // Authored-OT profiles used by stock special-acquisition scripts.
-#define SAM_PREOWNED_OT_VENDOR      0
-#define SAM_PREOWNED_OT_GAME_CORNER 1
-#define SAM_PREOWNED_OT_FOSSIL_LAB  2
-#define SAM_PREOWNED_OT_SILPH       3
+#define SAM_PREOWNED_OT_VENDOR       0
+#define SAM_PREOWNED_OT_GAME_CORNER  1
+#define SAM_PREOWNED_OT_FOSSIL_LAB   2
+#define SAM_PREOWNED_OT_SILPH        3
+#define SAM_PREOWNED_OT_MIRA         4
 
 // Return values for CanTradeSelectedMon and CanSpinTradeMon
 #define CAN_TRADE_MON              0
@@ -76,10 +78,10 @@
 #define UR_TRADE_MSG_MON_CANT_BE_TRADED_1         3
 #define UR_TRADE_MSG_MON_CANT_BE_TRADED_2         4
 #define UR_TRADE_MSG_PARTNERS_MON_CANT_BE_TRADED  5
-#define UR_TRADE_MSG_EGG_CANT_BE_TRADED           6
-#define UR_TRADE_MSG_PARTNER_CANT_ACCEPT_MON      7
-#define UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_1    8
-#define UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_2    9
+#define UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER      6
+#define UR_TRADE_MSG_CANT_ACCEPT_MON               7
+#define UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_2    8
+#define UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_3    9
 
 // Return values for CanRegisterMonForTradingBoard
 #define CAN_REGISTER_MON   0
