@@ -222,3 +222,5 @@ EventScript_ThomasSetEpilogueComplete::
 	setvar VAR_THOMAS_ARC_STAGE, THOMAS_ARC_EPILOGUE_COMPLETE
 	call EventScript_ThomasSyncVisibility
 	return
+
+	.include "data/maps/Route24/thomas_event_chain.inc"
