@@ -87,6 +87,31 @@ SaffronCity_CopycatsHouse_2F_Text_RareMonOnlyDoll::
     .string "This is a rare POKéMON!\n"
     .string "Huh? It's only a doll!$"
 
+SaffronCity_CopycatsHouse_2F_Text_ChoosePidgey::
+    .string "Which PIDGEY will you submit?$"
+
+SaffronCity_CopycatsHouse_2F_Text_ConfirmPidgeySubmission::
+    .string "Submit {STR_VAR_1} to COPYCAT?$"
+
+SaffronCity_CopycatsHouse_2F_Text_NoPidgeyInParty::
+    .string "You don't have a PIDGEY with you.$"
+
+SaffronCity_CopycatsHouse_2F_Text_InvalidPidgeySelection::
+    .string "That POKéMON can't be submitted.$"
+
+SaffronCity_CopycatsHouse_2F_Text_PidgeySubmissionUnavailable::
+    .string "That submission can't be completed\n"
+    .string "safely right now.$"
+
+SaffronCity_CopycatsHouse_2F_Text_PidgeyAlreadySubmitted::
+    .string "You've already submitted a PIDGEY.$"
+
+SaffronCity_CopycatsHouse_2F_Text_PidgeySubmissionCancelled::
+    .string "You decided not to submit a POKéMON.$"
+
+SaffronCity_CopycatsHouse_2F_Text_PidgeySubmitted::
+    .string "{STR_VAR_1} was submitted to COPYCAT.$"
+
 SaffronCity_CopycatsHouse_2F_Text_MarioWearingABucket::
     .string "A game with MARIO wearing a bucket\n"
     .string "on his head!$"
