@@ -2063,13 +2063,13 @@ const struct MonCoords gMonBackPicCoords[] =
     // ARCH-004 placeholders matching the question-mark sprite bounds.
     [SPECIES_LEAFEON] =
     {
-        .size = MON_COORDS_SIZE(64, 64),
-        .y_offset = 0,
+        .size = MON_COORDS_SIZE(48, 40),
+        .y_offset = 8,
     },
     [SPECIES_ECTOCEON] =
     {
-        .size = MON_COORDS_SIZE(64, 64),
-        .y_offset = 0,
+        .size = MON_COORDS_SIZE(56, 56),
+        .y_offset = 2,
     },
     [SPECIES_RHYPERIOR] =
     {

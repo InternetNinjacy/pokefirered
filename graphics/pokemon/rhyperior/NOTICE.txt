@@ -1,0 +1,3 @@
+Rhyperior graphics in this folder were adapted from the GBA-ready Rhyperior asset package in rh-hideout/pokeemerald-expansion for use in Pokemon: Sam Edition.
+
+Pokemon and related character designs are the property of their respective rights holders. This file records project asset provenance only; it does not grant additional rights to the underlying Pokemon artwork.

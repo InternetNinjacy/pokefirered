@@ -2732,6 +2732,40 @@ static void SetTradePartyHPBarSprites(void)
     }
 }
 
+static bool32 IsSamCustomSpecies(u16 species)
+{
+    return species == SPECIES_LEAFEON
+        || species == SPECIES_ECTOCEON
+        || species == SPECIES_RHYPERIOR;
+}
+
+static bool32 IsSamLinkPlayerCustomSpeciesCompatible(const struct LinkPlayer *player)
+{
+    u16 version = player->version & 0xFF;
+
+    return (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
+        && player->neverRead == TRUE;
+}
+
+static bool32 IsSamRfuCustomSpeciesCompatible(struct RfuGameCompatibilityData player)
+{
+    return (player.version == VERSION_FIRE_RED || player.version == VERSION_LEAF_GREEN)
+        && player.unknown == TRUE;
+}
+
+static bool32 PlayerPartyHasSamCustomSpecies(void)
+{
+    int i;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (IsSamCustomSpecies(GetMonData(&gPlayerParty[i], MON_DATA_SPECIES)))
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
 static void SaveTradeGiftRibbons(void)
 {
     int i;
@@ -2778,6 +2812,14 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
     }
 
     partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
+
+    // The normal trade menu should never be reached with a custom species and
+    // an incompatible peer because GetGameProgressForLinkTrade blocks earlier,
+    // before party transfer. Keep this guard as defense in depth.
+    if (IsSamCustomSpecies(species[monIdx])
+     && !IsSamLinkPlayerCustomSpeciesCompatible(partner))
+        return CANT_TRADE_INVALID_MON;
+
     if ((partner->version & 0xFF) != VERSION_RUBY &&
         (partner->version & 0xFF) != VERSION_SAPPHIRE)
     {
@@ -2825,8 +2867,17 @@ s32 GetGameProgressForLinkTrade(void)
 
     if (gReceivedRemoteLinkPlayers)
     {
+        struct LinkPlayer *partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
+
+        // BufferTradeParties sends the complete party before the selection
+        // screen. Refuse a legacy peer here so custom species IDs never leave
+        // Sam Edition for a game that cannot interpret them safely.
+        if (PlayerPartyHasSamCustomSpecies()
+         && !IsSamLinkPlayerCustomSpeciesCompatible(partner))
+            return TRADE_PLAYER_NOT_READY;
+
         versionId = 0;
-        version = (gLinkPlayers[GetMultiplayerId() ^ 1].version & 0xFF);
+        version = (partner->version & 0xFF);
 
         if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
             versionId = 0;
@@ -2893,6 +2944,16 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
             return UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_2;
     }
 
+    // Custom species may only be exchanged with another Sam-compatible
+    // Union Room peer. Stock FRLG advertises the compatibility bit as FALSE.
+    if (IsSamCustomSpecies(playerSpecies)
+     && !IsSamRfuCustomSpeciesCompatible(partner))
+        return UR_TRADE_MSG_MON_CANT_BE_TRADED_2;
+
+    if (IsSamCustomSpecies(partnerSpecies)
+     && !IsSamRfuCustomSpeciesCompatible(partner))
+        return UR_TRADE_MSG_PARTNERS_MON_CANT_BE_TRADED;
+
     // Cannot trade illegitimate Deoxys/Mew
     if (IsDeoxysOrMewUntradable(playerSpecies, isModernFatefulEncounter))
         return UR_TRADE_MSG_MON_CANT_BE_TRADED_2;
@@ -2940,6 +3001,12 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
 int CanRegisterMonForTradingBoard(struct RfuGameCompatibilityData player, u16 species2, u16 species, bool8 isModernFatefulEncounter)
 {
     bool8 hasNationalDex = player.hasNationalDex;
+
+    // Trade Board registration is broadcast before a specific peer is chosen.
+    // Advertising a custom species there would expose its ID to stock clients,
+    // so custom species use direct Sam-to-Sam Union Room trades instead.
+    if (IsSamCustomSpecies(species))
+        return CANT_REGISTER_MON;
 
     if (IsDeoxysOrMewUntradable(species, isModernFatefulEncounter))
         return CANT_REGISTER_MON;

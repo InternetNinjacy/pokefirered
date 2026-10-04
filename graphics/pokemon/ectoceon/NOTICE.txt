@@ -1,0 +1,1 @@
+ROM-ready assets were derived from the approved Ectoceon implementation references archived in the Sam Edition Google Drive.
