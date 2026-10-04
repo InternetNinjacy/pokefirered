@@ -137,6 +137,31 @@ SaffronCity_CopycatsHouse_2F_Text_RattataSubmissionCancelled::
 SaffronCity_CopycatsHouse_2F_Text_RattataSubmitted::
     .string "{STR_VAR_1} was submitted to COPYCAT.$"
 
+SaffronCity_CopycatsHouse_2F_Text_ChooseOddish::
+    .string "Which ODDISH will you submit?$"
+
+SaffronCity_CopycatsHouse_2F_Text_ConfirmOddishSubmission::
+    .string "Submit {STR_VAR_1} to COPYCAT?$"
+
+SaffronCity_CopycatsHouse_2F_Text_NoOddishInParty::
+    .string "You don't have an ODDISH with you.$"
+
+SaffronCity_CopycatsHouse_2F_Text_InvalidOddishSelection::
+    .string "That POKéMON can't be submitted.$"
+
+SaffronCity_CopycatsHouse_2F_Text_OddishSubmissionUnavailable::
+    .string "That submission can't be completed\n"
+    .string "safely right now.$"
+
+SaffronCity_CopycatsHouse_2F_Text_OddishAlreadySubmitted::
+    .string "You've already submitted an ODDISH.$"
+
+SaffronCity_CopycatsHouse_2F_Text_OddishSubmissionCancelled::
+    .string "You decided not to submit a POKéMON.$"
+
+SaffronCity_CopycatsHouse_2F_Text_OddishSubmitted::
+    .string "{STR_VAR_1} was submitted to COPYCAT.$"
+
 SaffronCity_CopycatsHouse_2F_Text_MarioWearingABucket::
     .string "A game with MARIO wearing a bucket\n"
     .string "on his head!$"
