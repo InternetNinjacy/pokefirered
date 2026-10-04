@@ -1,3 +1,4 @@
+# QA-only retrigger marker: validate current RIV-013 production head
 name: QA RIV-013 Runtime Green naming
 
 on:
