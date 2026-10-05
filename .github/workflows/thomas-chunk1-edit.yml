@@ -3,7 +3,9 @@ name: Thomas Chunk 1 Edit Helper
 on:
   push:
     branches:
-      - sam/thomas-chunk1-trainer-foundation
+      - 'sam/thomas-chunk1-trainer-foundation'
+    paths:
+      - '.github/workflows/thomas-chunk1-edit.yml'
 
 permissions:
   contents: write
@@ -17,15 +19,15 @@ jobs:
           ref: sam/thomas-chunk1-trainer-foundation
           fetch-depth: 0
       - name: Apply Thomas trainer foundation delta
-        shell: python
         run: |
+          python3 <<'PY'
           from pathlib import Path
 
           opponents = Path("include/constants/opponents.h")
           text = opponents.read_text()
-          assert "TRAINER_THOMAS_NUGGET_BRIDGE" not in text
-          anchor = "#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783\n\n// Blue League branch allocations: 800-803."
-          replacement = """#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783
+          if "TRAINER_THOMAS_NUGGET_BRIDGE" not in text:
+              anchor = "#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783\n\n// Blue League branch allocations: 800-803."
+              replacement = """#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783
 
 // Thomas Team Rocket rival central allocations: 784-789.
 #define TRAINER_THOMAS_NUGGET_BRIDGE                784
@@ -36,24 +38,24 @@ jobs:
 #define TRAINER_THOMAS_VIRIDIAN_GYM                 789
 
 // Blue League branch allocations: 800-803."""
-          assert anchor in text
-          text = text.replace(anchor, replacement, 1)
-          assert "#define NUM_TRAINERS                             784" in text
-          text = text.replace("#define NUM_TRAINERS                             784", "#define NUM_TRAINERS                             790", 1)
-          opponents.write_text(text)
+              assert anchor in text
+              text = text.replace(anchor, replacement, 1)
+              assert "#define NUM_TRAINERS                             784" in text
+              text = text.replace("#define NUM_TRAINERS                             784", "#define NUM_TRAINERS                             790", 1)
+              opponents.write_text(text)
 
           data_c = Path("src/data.c")
           text = data_c.read_text()
-          assert '#include "data/sam_thomas_trainer_parties.h"' not in text
-          anchor = '#include "data/sam_satoshi_viridian_parties.h"\n#include "data/text/trainer_class_names.h"'
-          replacement = '#include "data/sam_satoshi_viridian_parties.h"\n#include "data/sam_thomas_trainer_parties.h"\n#include "data/text/trainer_class_names.h"'
-          assert anchor in text
-          data_c.write_text(text.replace(anchor, replacement, 1))
+          if '#include "data/sam_thomas_trainer_parties.h"' not in text:
+              anchor = '#include "data/sam_satoshi_viridian_parties.h"\n#include "data/text/trainer_class_names.h"'
+              replacement = '#include "data/sam_satoshi_viridian_parties.h"\n#include "data/sam_thomas_trainer_parties.h"\n#include "data/text/trainer_class_names.h"'
+              assert anchor in text
+              data_c.write_text(text.replace(anchor, replacement, 1))
 
           trainers = Path("src/data/trainers.h")
           text = trainers.read_text()
-          assert "TRAINER_THOMAS_NUGGET_BRIDGE" not in text
-          records = r'''
+          if "TRAINER_THOMAS_NUGGET_BRIDGE" not in text:
+              records = '''
     [TRAINER_THOMAS_NUGGET_BRIDGE] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_AQUA,
@@ -115,12 +117,11 @@ jobs:
         .party = ITEM_CUSTOM_MOVES(sParty_ThomasBattle6),
     },
 '''
-          close = text.rfind("    };")
-          assert close != -1
-          text = text[:close] + records + text[close:]
-          trainers.write_text(text)
+              close = text.rfind("    };")
+              assert close != -1
+              trainers.write_text(text[:close] + records + text[close:])
+          PY
       - name: Commit production delta
-        shell: bash
         run: |
           if git diff --quiet -- include/constants/opponents.h src/data.c src/data/trainers.h; then
             exit 0
