@@ -56,13 +56,14 @@ PokemonLeague_ChampionsRoom_EventScript_EnterRoom::
 	setflag FLAG_TEMP_3
 	setflag FLAG_TEMP_5
 	savebgm MUS_VICTORY_GYM_LEADER
-	call_if_unset FLAG_SYS_CAN_LINK_WITH_RS, PokemonLeague_ChampionsRoom_EventScript_Battle
-	call_if_set FLAG_SYS_CAN_LINK_WITH_RS, PokemonLeague_ChampionsRoom_EventScript_Rematch
+	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_Battle
+	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_Rematch
 	setflag FLAG_TEMP_4
 	clearflag FLAG_TEMP_5
 	setflag FLAG_DEFEATED_CHAMP
 	setflag FLAG_TEMP_4
-	msgbox PokemonLeague_ChampionsRoom_Text_PostBattle
+	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_FirstClearPostBattle
+	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_ChampionsRoom_EventScript_RematchPostBattle
 	playbgm MUS_SLOW_PALLET, 0
 	addobject LOCALID_CHAMPIONS_ROOM_PROF_OAK
 	msgbox PokemonLeague_ChampionsRoom_Text_OakPlayer
@@ -78,8 +79,6 @@ PokemonLeague_ChampionsRoom_EventScript_EnterRoom::
 	applymovement LOCALID_CHAMPIONS_ROOM_PROF_OAK, Common_Movement_WalkInPlaceFasterRight
 	applymovement LOCALID_CHAMPIONS_ROOM_RIVAL, Common_Movement_WalkInPlaceFasterLeft
 	waitmovement 0
-	msgbox PokemonLeague_ChampionsRoom_Text_OakImDisappointedRival
-	closemessage
 	applymovement LOCALID_CHAMPIONS_ROOM_PROF_OAK, Common_Movement_WalkInPlaceFasterDown
 	waitmovement 0
 	delay 20
@@ -94,6 +93,14 @@ PokemonLeague_ChampionsRoom_EventScript_EnterRoom::
 	waitstate
 	releaseall
 	end
+
+PokemonLeague_ChampionsRoom_EventScript_FirstClearPostBattle::
+	msgbox PokemonLeague_ChampionsRoom_Text_PostBattle
+	return
+
+PokemonLeague_ChampionsRoom_EventScript_RematchPostBattle::
+	msgbox PokemonLeague_ChampionsRoom_Text_RematchPostBattle
+	return
 
 PokemonLeague_ChampionsRoom_EventScript_QuestLogEnd::
 	call PokemonLeague_ChampionsRoom_EventScript_StopSceneTrigger
@@ -113,11 +120,23 @@ PokemonLeague_ChampionsRoom_EventScript_Rematch::
 	return
 
 PokemonLeague_ChampionsRoom_EventScript_Intro::
+	goto_if_set FLAG_GREEN_CHAMPION_REVEALED, PokemonLeague_ChampionsRoom_EventScript_RepeatIntro
+	setflag FLAG_GREEN_CHAMPION_REVEALED
 	msgbox PokemonLeague_ChampionsRoom_Text_Intro
 	return
 
+PokemonLeague_ChampionsRoom_EventScript_RepeatIntro::
+	msgbox PokemonLeague_ChampionsRoom_Text_RepeatIntro
+	return
+
 PokemonLeague_ChampionsRoom_EventScript_RematchIntro::
+	goto_if_set FLAG_GREEN_TITLE_CHALLENGE_SEEN, PokemonLeague_ChampionsRoom_EventScript_SubsequentRematchIntro
+	setflag FLAG_GREEN_TITLE_CHALLENGE_SEEN
 	msgbox PokemonLeague_ChampionsRoom_Text_RematchIntro
+	return
+
+PokemonLeague_ChampionsRoom_EventScript_SubsequentRematchIntro::
+	msgbox PokemonLeague_ChampionsRoom_Text_SubsequentRematchIntro
 	return
 
 PokemonLeague_ChampionsRoom_EventScript_BattleSquirtle::
@@ -133,15 +152,15 @@ PokemonLeague_ChampionsRoom_EventScript_BattleCharmander::
 	return
 
 PokemonLeague_ChampionsRoom_EventScript_RematchSquirtle::
-	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_SQUIRTLE, PokemonLeague_ChampionsRoom_Text_Defeat
+	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_SQUIRTLE, PokemonLeague_ChampionsRoom_Text_RematchDefeat
 	return
 
 PokemonLeague_ChampionsRoom_EventScript_RematchBulbasaur::
-	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_BULBASAUR, PokemonLeague_ChampionsRoom_Text_Defeat
+	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_BULBASAUR, PokemonLeague_ChampionsRoom_Text_RematchDefeat
 	return
 
 PokemonLeague_ChampionsRoom_EventScript_RematchCharmander::
-	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_CHARMANDER, PokemonLeague_ChampionsRoom_Text_Defeat
+	trainerbattle_no_intro TRAINER_CHAMPION_REMATCH_CHARMANDER, PokemonLeague_ChampionsRoom_Text_RematchDefeat
 	return
 
 PokemonLeague_ChampionsRoom_Movement_PlayerEnter::
