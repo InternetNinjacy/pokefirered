@@ -299,7 +299,13 @@ const union AnimCmd *const gAnims_MonPic[] =
 
 #include "data/pokemon_graphics/enemy_mon_elevation.h"
 
+// Preserve the historical draft declaration under a legacy symbol, then bind
+// the current Gym 3 authority package under the production symbol used by the
+// existing trainer record.
+#define sParty_LeaderSurgeVermilion sParty_LeaderSurgeVermilionLegacy
 #include "data/trainer_parties.h"
+#undef sParty_LeaderSurgeVermilion
+#include "data/sam_gym3_vermilion_current_parties.h"
 #include "data/sam_blue_parties.h"
 #include "data/sam_thomas_trainer_parties.h"
 #include "data/sam_satoshi_cerulean_parties.h"

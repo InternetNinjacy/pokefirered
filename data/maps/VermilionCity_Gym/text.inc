@@ -1,86 +1,100 @@
 VermilionCity_Gym_Text_LtSurgeIntro::
-    .string "Hey, kid! What do you think you're\n"
-    .string "doing here?\p"
-    .string "You won't live long in combat!\n"
-    .string "Not with your puny power!\p"
-    .string "I tell you, kid, electric POKéMON\n"
-    .string "saved me during the war!\p"
-    .string "They zapped my enemies into\n"
-    .string "paralysis!\p"
-    .string "The same as I'll do to you!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
+    .string "Ten-hut!\p"
+    .string "You made it through my GYM, kid.\n"
+    .string "Not bad.\p"
+    .string "But power without discipline is\n"
+    .string "just wasted effort.\p"
+    .string "In battle, every move has a\n"
+    .string "purpose. You hit hard, you hit\l"
+    .string "where it matters, and you don't\l"
+    .string "give your opponent room to recover.\p"
+    .string "That's how my POKéMON fight.\p"
+    .string "Let's see if you can handle a real\n"
+    .string "offensive!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
 
 VermilionCity_Gym_Text_LtSurgePostBattle::
-    .string "A little word of advice, kid!\p"
-    .string "Electricity is sure powerful!\p"
-    .string "But, it's useless against GROUND-\n"
-    .string "type POKéMON!$"
+    .string "Keep your formation tight, kid.\n"
+    .string "Strong opponents won't give you\l"
+    .string "room to breathe.\p"
+    .string "Stay disciplined, trust your\n"
+    .string "POKéMON, and make every move count.$"
 
-VermilionCity_Gym_Text_ExplainThunderBadgeTakeThis::
-    .string "The THUNDERBADGE cranks up your\n"
-    .string "POKéMON's SPEED!\p"
-    .string "It also lets your POKéMON FLY\n"
-    .string "lightning-quick anytime, kid!\p"
-    .string "You're special, kid!\n"
-    .string "Take this!$"
+VermilionCity_Gym_Text_ExplainHarborBadgeTakeThis::
+    .string "All right, kid. You earned it.\n"
+    .string "Take the HARBOR BADGE!\p"
+    .string "That badge proves you can stand\n"
+    .string "up to pressure and still execute\l"
+    .string "when it counts.\p"
+    .string "It also lets you use FLY outside\n"
+    .string "of battle, as long as one of your\l"
+    .string "POKéMON knows the move.$"
 
-VermilionCity_Gym_Text_ReceivedTM34FromLtSurge::
-    .string "{PLAYER} received TM34\n"
+VermilionCity_Gym_Text_ReceivedTM40FromLtSurge::
+    .string "{PLAYER} received TM40\n"
     .string "from LT. SURGE.$"
 
-VermilionCity_Gym_Text_ExplainTM34::
-    .string "TM34 contains SHOCK WAVE!\p"
-    .string "Teach it to an ELECTRIC POKéMON!$"
+VermilionCity_Gym_Text_ExplainTM40::
+    .string "And take this with you.\n"
+    .string "TM40 contains WATER PULSE.\p"
+    .string "It fires a concentrated blast of\n"
+    .string "water, and it may confuse the target.\p"
+    .string "Power is good. Controlled power is\n"
+    .string "better. Make every shot count.$"
 
 VermilionCity_Gym_Text_MakeRoomInYourBag::
     .string "Yo, kid, make room in your BAG!$"
 
 VermilionCity_Gym_Text_LtSurgeDefeat::
-    .string "Now that's a shocker!\p"
-    .string "You're the real deal, kid!\p"
-    .string "Fine, then, take the THUNDERBADGE!$"
+    .string "Whoa! You broke right through my\n"
+    .string "formation!\p"
+    .string "You didn't panic, you didn't waste\n"
+    .string "moves, and when you saw your chance,\l"
+    .string "you struck.\p"
+    .string "That's the kind of discipline I\n"
+    .string "respect!$"
 
 VermilionCity_Gym_Text_TuckerIntro::
-    .string "When I was in the Army, LT. SURGE\n"
-    .string "was my strict CO.\p"
-    .string "He was a hard taskmaster.$"
+    .string "LT. SURGE ran a tight unit in the\n"
+    .string "Army. Discipline came before\l"
+    .string "everything.\p"
+    .string "POKéMON battles are no different!$"
 
 VermilionCity_Gym_Text_TuckerDefeat::
-    .string "Stop!\n"
-    .string "You're very good!$"
+    .string "Impressive.\n"
+    .string "You never lost control.$"
 
 VermilionCity_Gym_Text_TuckerPostBattle::
-    .string "It's not easy opening that door.\p"
-    .string "LT. SURGE was always famous for\n"
-    .string "his cautious nature in the Army.$"
+    .string "SURGE expects total commitment.\n"
+    .string "Once he gives an order, his POKéMON\l"
+    .string "follow through.$"
 
 VermilionCity_Gym_Text_BailyIntro::
-    .string "I'm a lightweight, but I'm good\n"
-    .string "with electricity!\p"
-    .string "That's why I joined this GYM.$"
+    .string "Power's useless if you can't control\n"
+    .string "it! Every move needs a purpose.\p"
+    .string "Let's see how precise you are!$"
 
 VermilionCity_Gym_Text_BailyDefeat::
-    .string "Fried!$"
+    .string "You picked your moment perfectly!$"
 
 VermilionCity_Gym_Text_BailyPostBattle::
-    .string "Okay, I'll talk!\p"
-    .string "LT. SURGE said he hid door\n"
-    .string "switches inside something.$"
+    .string "SURGE plans ahead. He doesn't just\n"
+    .string "attack because he can.\p"
+    .string "He attacks when it matters.$"
 
 VermilionCity_Gym_Text_DwayneIntro::
-    .string "This is no place for kids!\n"
-    .string "Not even if you're good!$"
+    .string "Out at sea, hesitation gets you\n"
+    .string "swallowed up fast!\p"
+    .string "SURGE taught us to hit hard and\n"
+    .string "keep the enemy on the defensive!$"
 
 VermilionCity_Gym_Text_DwayneDefeat::
-    .string "Wow!\n"
-    .string "Surprised me!$"
+    .string "Whoa!\n"
+    .string "You pushed right through me!$"
 
 VermilionCity_Gym_Text_DwaynePostBattle::
-    .string "LT. SURGE installed the traps in\n"
-    .string "the GYM himself.\p"
-    .string "He set up double locks everywhere.\n"
-    .string "Let me give you a hint.\p"
-    .string "When you open the first lock, the\n"
-    .string "second lock is right next to it.$"
+    .string "SURGE doesn't waste strength.\n"
+    .string "Every attack is meant to force the\l"
+    .string "battle where he wants it.$"
 
 VermilionCity_Gym_Text_GymGuyAdvice::
     .string "Yo!\n"
