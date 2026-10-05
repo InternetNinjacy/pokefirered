@@ -1,0 +1,50 @@
+name: Launch Blue Chunk 1 Apply
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  launch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: sam/blue-main-rival
+          fetch-depth: 0
+      - name: Execute committed Blue patch
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          helper = Path('.github/workflows/blue-chunk1-apply.yml').read_text()
+          start_marker = "          python3 - <<'PY'\n"
+          end_marker = "\n          PY\n"
+          start = helper.index(start_marker) + len(start_marker)
+          end = helper.index(end_marker, start)
+          code = helper[start:end]
+          # Remove the workflow YAML indentation from the embedded Python block.
+          code = '\n'.join(line[10:] if line.startswith('          ') else line for line in code.splitlines())
+          exec(compile(code, 'blue_chunk1_apply.py', 'exec'))
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/blue-chunk1-apply.yml
+          git add include/constants/opponents.h src/data/trainer_parties.h src/data/trainers.h src/battle_message.c src/battle_main.c
+          git commit -m "Blue: implement trainer foundation and party branches"
+          git push origin HEAD:sam/blue-main-rival
+
+      - name: Remove launcher from master
+        shell: bash
+        run: |
+          git fetch origin master
+          git checkout -B master origin/master
+          git rm .github/workflows/blue-chunk1-launch.yml
+          git commit -m "Remove Blue Chunk 1 launcher"
+          git push origin master
