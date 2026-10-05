@@ -83,8 +83,8 @@ PokedexRating_Text_LessThan10::
 PokedexRating_Text_LessThan20::
 	.string "It looks as if you're getting on\n"
 	.string "the right track!\p"
-	.string "I've given one of my AIDES a FLASH\n"
-	.string "HM. Make sure you go get it!$"
+	.string "Keep exploring new areas and recording\n"
+	.string "the POKéMON you find.$"
 
 PokedexRating_Text_LessThan30::
 	.string "Your POKéDEX could use a bit more\n"
@@ -95,8 +95,8 @@ PokedexRating_Text_LessThan30::
 PokedexRating_Text_LessThan40::
 	.string "Good, it's apparent that you're\n"
 	.string "trying hard!\p"
-	.string "I've given one of my AIDES an\n"
-	.string "ITEMFINDER. Be sure to collect it!$"
+	.string "Keep looking in places you haven't\n"
+	.string "searched carefully yet.$"
 
 PokedexRating_Text_LessThan50::
 	.string "Your POKéDEX is coming along quite\n"
@@ -107,8 +107,8 @@ PokedexRating_Text_LessThan50::
 PokedexRating_Text_LessThan60::
 	.string "Ah, you've finally topped 50\n"
 	.string "species!\p"
-	.string "I've given one of my AIDES an EXP.\n"
-	.string "SHARE. Be sure to go get it!$"
+	.string "You're building a very respectable\n"
+	.string "collection, {PLAYER}!$"
 
 PokedexRating_Text_LessThan70::
 	.string "Hoho! This is turning into quite the\n"
