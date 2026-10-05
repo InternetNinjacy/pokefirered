@@ -44,15 +44,13 @@
 #define OTID_PURCHASE_MAGIKARP_VENDOR 52008
 #define OTID_GAME_CORNER_CELADON      52009
 #define OTID_FOSSIL_CINNABAR_LAB      52010
-#define OTID_GIFT_MIRA                 52011
 #define OTID_GIFT_COPYCAT              52012
 
 // Authored-OT profiles used by stock special-acquisition scripts.
-#define SAM_PREOWNED_OT_VENDOR       0
-#define SAM_PREOWNED_OT_GAME_CORNER  1
-#define SAM_PREOWNED_OT_FOSSIL_LAB   2
-#define SAM_PREOWNED_OT_SILPH        3
-#define SAM_PREOWNED_OT_MIRA         4
+#define SAM_PREOWNED_OT_VENDOR      0
+#define SAM_PREOWNED_OT_GAME_CORNER 1
+#define SAM_PREOWNED_OT_FOSSIL_LAB  2
+#define SAM_PREOWNED_OT_SILPH       3
 
 // Return values for CanTradeSelectedMon and CanSpinTradeMon
 #define CAN_TRADE_MON              0
