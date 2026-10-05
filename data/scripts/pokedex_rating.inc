@@ -1,9 +1,49 @@
 PokedexRating_EventScript_RateInPerson::
 	goto_if_questlog EventScript_ReleaseEnd
 	special QuestLog_CutRecording
+	call PokedexRating_EventScript_TryOakMilestoneRewards
 	call_if_set FLAG_OAK_SAW_DEX_COMPLETION, PokedexRating_EventScript_DexCompleteIntro
 	call_if_unset FLAG_OAK_SAW_DEX_COMPLETION, PokedexRating_EventScript_NormalIntro
 	call PokedexRating_EventScript_Rate
+	return
+
+PokedexRating_EventScript_TryOakMilestoneRewards::
+	setvar VAR_0x8004, 1
+	specialvar VAR_RESULT, GetPokedexCount
+	copyvar VAR_0x800B, VAR_0x8006
+	call_if_unset FLAG_OAK_REWARD_30_CLAIMED, PokedexRating_EventScript_TryOakReward30
+	call_if_unset FLAG_OAK_REWARD_50_CLAIMED, PokedexRating_EventScript_TryOakReward50
+	call_if_unset FLAG_OAK_REWARD_100_CLAIMED, PokedexRating_EventScript_TryOakReward100
+	return
+
+PokedexRating_EventScript_TryOakReward30::
+	goto_if_lt VAR_0x800B, 30, PokedexRating_EventScript_Return
+	checkitemspace ITEM_EXP_SHARE, 1
+	goto_if_eq VAR_RESULT, FALSE, PokedexRating_EventScript_Return
+	msgbox PokedexRating_Text_OakReward30
+	giveitem_msg PokedexRating_Text_ReceivedExpShareFromOak, ITEM_EXP_SHARE, 1
+	setflag FLAG_OAK_REWARD_30_CLAIMED
+	return
+
+PokedexRating_EventScript_TryOakReward50::
+	goto_if_lt VAR_0x800B, 50, PokedexRating_EventScript_Return
+	checkitemspace ITEM_TM54_PSYCHIC, 1
+	goto_if_eq VAR_RESULT, FALSE, PokedexRating_EventScript_Return
+	msgbox PokedexRating_Text_OakReward50
+	giveitem_msg PokedexRating_Text_ReceivedTM54FromOak, ITEM_TM54_PSYCHIC, 1
+	setflag FLAG_OAK_REWARD_50_CLAIMED
+	return
+
+PokedexRating_EventScript_TryOakReward100::
+	goto_if_lt VAR_0x800B, 100, PokedexRating_EventScript_Return
+	checkitemspace ITEM_TM17_EARTHQUAKE, 1
+	goto_if_eq VAR_RESULT, FALSE, PokedexRating_EventScript_Return
+	msgbox PokedexRating_Text_OakReward100
+	giveitem_msg PokedexRating_Text_ReceivedTM17FromOak, ITEM_TM17_EARTHQUAKE, 1
+	setflag FLAG_OAK_REWARD_100_CLAIMED
+	return
+
+PokedexRating_EventScript_Return::
 	return
 
 PokedexRating_EventScript_DexCompleteIntro::
