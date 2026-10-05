@@ -58,7 +58,16 @@ VermilionCity_Text_PollutionBattleCleared::
 VermilionCity_Text_PollutionRewardPending::
     .string "The sludge POKéMON are gone and the\n"
     .string "dock is usable again.\p"
-    .string "Come talk to me for your thanks.$"
+    .string "I've got something for your help.$"
+
+VermilionCity_Text_PollutionRewardNoRoom::
+    .string "Your BAG is too full right now.\p"
+    .string "Make some room and come back. I'll\n"
+    .string "keep your reward here for you.$"
+
+VermilionCity_Text_PollutionRewardReceived::
+    .string "Please take this POISON BARB.\p"
+    .string "You earned it for clearing the dock.$"
 
 VermilionCity_Text_PollutionComplete::
     .string "The water's clearing and the dock is\n"
