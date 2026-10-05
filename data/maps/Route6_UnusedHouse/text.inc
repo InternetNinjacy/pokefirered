@@ -41,6 +41,20 @@ Route6_UnusedHouse_Text_AlcoveDrained::
     .string "The southeast alcove is drained.\n"
     .string "Something was exposed here.$"
 
+Route6_UnusedHouse_Text_AlcoveRareCandy::
+    .string "A RARE CANDY lies in the drained\n"
+    .string "alcove.$"
+
+Route6_UnusedHouse_Text_AlcoveNoRoom::
+    .string "Your BAG is full. The RARE CANDY\n"
+    .string "stays where it is.$"
+
+Route6_UnusedHouse_Text_AlcoveRareCandyTaken::
+    .string "You recovered the RARE CANDY.$"
+
+Route6_UnusedHouse_Text_AlcoveEmpty::
+    .string "The drained alcove is empty now.$"
+
 Route6_UnusedHouse_Text_ControlsRepaired::
     .string "The control valves are locked in the\n"
     .string "repaired configuration.$"
