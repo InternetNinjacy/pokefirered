@@ -44,3 +44,34 @@ RockTunnel_1F_EventScript_Dana::
 	trainerbattle_single TRAINER_PICNICKER_DANA, RockTunnel_1F_Text_DanaIntro, RockTunnel_1F_Text_DanaDefeat
 	msgbox RockTunnel_1F_Text_DanaPostBattle, MSGBOX_AUTOCLOSE
 	end
+
+@ Thomas/Rocket-owned Special Acquisition. The occupied SILPH Ball remains
+@ retryable until Thomas Battle #4 is cleared and delivery actually succeeds.
+RockTunnel_1F_EventScript_ThomasPorygonRecovery::
+	lock
+	faceplayer
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_UNSEEN, RockTunnel_1F_EventScript_ThomasPorygonLocked
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_RECRUITED, RockTunnel_1F_EventScript_ThomasPorygonLocked
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_CELADON_CLEARED, RockTunnel_1F_EventScript_ThomasPorygonLocked
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_LAVENDER_CLEARED, RockTunnel_1F_EventScript_ThomasPorygonLocked
+	msgbox RockTunnel_1F_Text_ThomasPorygonFound
+	setvar VAR_0x8004, SPECIES_PORYGON
+	setvar VAR_0x8005, 25
+	setvar VAR_0x8006, SAM_PREOWNED_OT_SILPH
+	special GiveSamPreOwnedMon
+	goto_if_eq VAR_RESULT, 2, RockTunnel_1F_EventScript_ThomasPorygonNoRoom
+	setflag FLAG_ROCK_TUNNEL_PORYGON_RECEIVED
+	removeobject VAR_LAST_TALKED
+	msgbox RockTunnel_1F_Text_ThomasPorygonRecovered
+	release
+	end
+
+RockTunnel_1F_EventScript_ThomasPorygonLocked::
+	msgbox RockTunnel_1F_Text_ThomasPorygonLocked
+	release
+	end
+
+RockTunnel_1F_EventScript_ThomasPorygonNoRoom::
+	msgbox RockTunnel_1F_Text_ThomasPorygonNoRoom
+	release
+	end
