@@ -1,15 +1,17 @@
 name: Sam trainer batch 1 apply
 
 on:
-  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
     branches:
-      - sam/trainers-batch1-viridian-opening
+      - sam/enc-002-gfx-onix-assets
 
 permissions:
   contents: write
 
 jobs:
   apply:
+    if: github.head_ref == 'sam/trainers-batch1-viridian-opening'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -79,22 +81,15 @@ jobs:
 
           map_path = Path('data/maps/ViridianForest/map.json')
           data = json.loads(map_path.read_text())
-          remove_scripts = {
-              'ViridianForest_EventScript_Anthony',
-              'ViridianForest_EventScript_Charlie',
-          }
+          remove_scripts = {'ViridianForest_EventScript_Anthony', 'ViridianForest_EventScript_Charlie'}
           before = len(data['object_events'])
-          data['object_events'] = [
-              obj for obj in data['object_events']
-              if obj.get('script') not in remove_scripts
-          ]
+          data['object_events'] = [obj for obj in data['object_events'] if obj.get('script') not in remove_scripts]
           if before - len(data['object_events']) != 2:
               raise SystemExit('expected to remove exactly Anthony and Charlie trainer objects')
           map_path.write_text(json.dumps(data, indent=2) + '\n')
           PY
 
           rm -f .github/workflows/sam-trainer-batch1-apply.yml
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/data/trainer_parties.h data/maps/ViridianForest/map.json .github/workflows/sam-trainer-batch1-apply.yml
