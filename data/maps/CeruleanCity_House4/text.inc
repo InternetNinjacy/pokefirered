@@ -1,3 +1,29 @@
+CeruleanCity_House4_Text_WaterworksOffer::
+    .string "You're a TRAINER, right?\p"
+    .string "CERULEAN's waterworks are stuck in\n"
+    .string "a bad routing configuration.\p"
+    .string "The control room is underground,\n"
+    .string "and I could use another set of eyes.\p"
+    .string "Will you take a look?$"
+
+CeruleanCity_House4_Text_WaterworksStart::
+    .string "Thanks. The three tank gauges are\n"
+    .string "NORTH, CENTRAL, and SOUTH.\p"
+    .string "Some valves affect more than one.\n"
+    .string "We need all three gauges ON.$"
+
+CeruleanCity_House4_Text_WaterworksDecline::
+    .string "All right. I'll be here if you\n"
+    .string "change your mind.$"
+
+CeruleanCity_House4_Text_WaterworksReturn::
+    .string "The controls are still downstairs.\n"
+    .string "Get all three tank gauges ON.$"
+
+CeruleanCity_House4_Text_WaterworksComplete::
+    .string "The waterworks are running normally\n"
+    .string "again. Thanks for the help!$"
+
 CeruleanCity_House4_Text_NothingEntertaining::
     .string "Sigh…\n"
     .string "Too much time, too little to do…\p"
