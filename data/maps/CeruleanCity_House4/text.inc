@@ -20,6 +20,19 @@ CeruleanCity_House4_Text_WaterworksReturn::
     .string "The controls are still downstairs.\n"
     .string "Get all three tank gauges ON.$"
 
+CeruleanCity_House4_Text_WaterworksReward::
+    .string "You did it! The pumps are stable\n"
+    .string "and the flooded alcove is drained.\p"
+    .string "Take this MYSTIC WATER for helping.$"
+
+CeruleanCity_House4_Text_WaterworksNoRoom::
+    .string "Your BAG is full. I'll hold the\n"
+    .string "MYSTIC WATER until you make room.$"
+
+CeruleanCity_House4_Text_WaterworksRewardSuccess::
+    .string "Thanks again. The system should\n"
+    .string "stay balanced now.$"
+
 CeruleanCity_House4_Text_WaterworksComplete::
     .string "The waterworks are running normally\n"
     .string "again. Thanks for the help!$"
