@@ -24,3 +24,14 @@ ViridianCity_Mart_Text_GotToBuySomePotions::
     .string "You never know when your POKéMON\n"
     .string "will need quick healing.$"
 
+
+
+ViridianCity_Mart_Text_EeveeEvolutionTutorial::
+    .string "That EEVEE of yours can evolve\n"
+    .string "in several different ways.\p"
+    .string "We carry evolution items here,\n"
+    .string "so you don't have to wait until\n"
+    .string "later in your journey.\p"
+    .string "If you're planning to raise it\n"
+    .string "as an EEVEE for a while, keep\n"
+    .string "Lv. 15 in mind.$"

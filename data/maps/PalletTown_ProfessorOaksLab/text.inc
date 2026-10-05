@@ -101,22 +101,22 @@ PalletTown_ProfessorOaksLab_Text_OakHeyDontGoAwayYet::
     .string "Don't go away yet!$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingCharmander::
-    .string "Ah! CHARMANDER is your choice.\n"
+    .string "Ah! DITTO is your choice.\n"
     .string "You should raise it patiently.\p"
-    .string "So, {PLAYER}, you're claiming the\n"
-    .string "FIRE POKéMON CHARMANDER?$"
+    .string "So, {PLAYER}, you're claiming\n"
+    .string "DITTO?$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingSquirtle::
-    .string "Hm! SQUIRTLE is your choice.\n"
+    .string "Hm! PICHU is your choice.\n"
     .string "It's one worth raising.\p"
-    .string "So, {PLAYER}, you've decided on the\n"
-    .string "WATER POKéMON SQUIRTLE?$"
+    .string "So, {PLAYER}, you've decided on\n"
+    .string "PICHU?$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingBulbasaur::
-    .string "I see! BULBASAUR is your choice.\n"
+    .string "I see! EEVEE is your choice.\n"
     .string "It's very easy to raise.\p"
     .string "So, {PLAYER}, you want to go with\n"
-    .string "the GRASS POKéMON BULBASAUR?$"
+    .string "EEVEE?$"
 
 PalletTown_ProfessorOaksLab_Text_OakThisMonIsEnergetic::
     .string "This POKéMON is really quite\n"
@@ -355,3 +355,17 @@ PalletTown_ProfessorOaksLab_Text_RivalIllCompleteThePokedex::
     .string "ONE ISLAND first…\p"
     .string "Anyways, I'm outta here!$"
 
+
+
+PalletTown_ProfessorOaksLab_Text_EeveeStarterTutorial::
+    .string "EEVEE is a little different from\n"
+    .string "most starter POKéMON.\p"
+    .string "It can grow in many directions,\n"
+    .string "but you shouldn't wait too long\n"
+    .string "to choose one.\p"
+    .string "It stops learning new moves on\n"
+    .string "its own after Lv. 14.\p"
+    .string "By around Lv. 15, you'll want\n"
+    .string "to use an evolution item and\n"
+    .string "decide what kind of partner\n"
+    .string "you want it to become.$"

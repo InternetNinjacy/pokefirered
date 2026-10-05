@@ -1388,11 +1388,19 @@ static void OpenContextMenu(u8 taskId)
             switch (gBagMenuState.pocket)
             {
             case OPEN_BAG_ITEMS:
-                sContextMenuNumItems = 4;
-                if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
-                    sContextMenuItemsPtr = sContextMenuItems_CheckGiveTossCancel;
+                if (gSpecialVar_ItemId == ITEM_ADAPTIVE_GENE)
+                {
+                    sContextMenuItemsPtr = sContextMenuItems_GiveIfNotKeyItemPocket[OPEN_BAG_ITEMS];
+                    sContextMenuNumItems = 2;
+                }
                 else
-                    sContextMenuItemsPtr = sContextMenuItems_Field[gBagMenuState.pocket];
+                {
+                    sContextMenuNumItems = 4;
+                    if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
+                        sContextMenuItemsPtr = sContextMenuItems_CheckGiveTossCancel;
+                    else
+                        sContextMenuItemsPtr = sContextMenuItems_Field[gBagMenuState.pocket];
+                }
                 break;
             case OPEN_BAG_KEYITEMS:
                 sContextMenuItemsPtr = sContextMenuItemsBuffer;
