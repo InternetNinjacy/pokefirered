@@ -270,6 +270,18 @@ VermilionCity_EventScript_PollutionBattleCleared::
 
 VermilionCity_EventScript_PollutionRewardPending::
 	msgbox VermilionCity_Text_PollutionRewardPending
+	checkitemspace ITEM_POISON_BARB, 1
+	goto_if_eq VAR_RESULT, FALSE, VermilionCity_EventScript_PollutionRewardNoRoom
+	additem ITEM_POISON_BARB, 1
+	goto_if_eq VAR_RESULT, FALSE, VermilionCity_EventScript_PollutionRewardNoRoom
+	setvar VAR_SQ_VERMILION_STATE, 3
+	setflag FLAG_SQ_VERMILION_COMPLETE
+	msgbox VermilionCity_Text_PollutionRewardReceived
+	release
+	end
+
+VermilionCity_EventScript_PollutionRewardNoRoom::
+	msgbox VermilionCity_Text_PollutionRewardNoRoom
 	release
 	end
 
