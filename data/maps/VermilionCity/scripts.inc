@@ -240,6 +240,31 @@ VermilionCity_EventScript_PollutionDecline::
 
 VermilionCity_EventScript_PollutionActive::
 	msgbox VermilionCity_Text_PollutionActive
+	msgbox VermilionCity_Text_PollutionBattlePrompt, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, VermilionCity_EventScript_PollutionBattleNotReady
+	special HasEnoughMonsForDoubleBattle
+	goto_if_ne VAR_RESULT, 0, VermilionCity_EventScript_PollutionNeedsTwoPokemon
+	closemessage
+	callnative StartVermilionPollutionBattle
+	waitstate
+	special GetBattleOutcome
+	goto_if_eq VAR_RESULT, 1, VermilionCity_EventScript_PollutionBattleCleared
+	goto_if_eq VAR_RESULT, 7, VermilionCity_EventScript_PollutionBattleCleared
+	release
+	end
+
+VermilionCity_EventScript_PollutionBattleNotReady::
+	release
+	end
+
+VermilionCity_EventScript_PollutionNeedsTwoPokemon::
+	msgbox VermilionCity_Text_PollutionNeedsTwoPokemon
+	release
+	end
+
+VermilionCity_EventScript_PollutionBattleCleared::
+	setvar VAR_SQ_VERMILION_STATE, 2
+	msgbox VermilionCity_Text_PollutionBattleCleared
 	release
 	end
 
