@@ -301,6 +301,7 @@ const union AnimCmd *const gAnims_MonPic[] =
 
 #include "data/trainer_parties.h"
 #include "data/sam_route3_trainer_parties.h"
+#include "data/sam_route24_trainer_parties.h"
 #include "data/sam_blue_parties.h"
 #include "data/sam_joey_parties.h"
 #include "data/sam_thomas_trainer_parties.h"
@@ -316,7 +317,11 @@ const union AnimCmd *const gAnims_MonPic[] =
 #define sParty_YoungsterCalvin sParty_SamRoute3YoungsterCalvin
 #define sParty_BugCatcherColton sParty_SamRoute3BugCatcherColton
 #define sParty_BugCatcherGreg sParty_SamRoute3BugCatcherGreg
+// Route 24 Batch 3 reconciliation: preserve Shane's live trainer ID, record,
+// scripts, dialogue, and battle format while selecting the settled ecology party.
+#define sParty_CamperShane sParty_SamRoute24CamperShane
 #include "data/trainers.h"
+#undef sParty_CamperShane
 #undef sParty_YoungsterBen
 #undef sParty_YoungsterCalvin
 #undef sParty_BugCatcherColton
