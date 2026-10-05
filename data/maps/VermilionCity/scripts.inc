@@ -216,7 +216,41 @@ VermilionCity_EventScript_CheckSeagallopPresentTrigger::
 	end
 
 VermilionCity_EventScript_Sailor::
-	msgbox VermilionCity_Text_SSAnneVisitsOnceAYear, MSGBOX_NPC
+	lock
+	faceplayer
+	goto_if_set FLAG_SQ_VERMILION_COMPLETE, VermilionCity_EventScript_PollutionComplete
+	goto_if_eq VAR_SQ_VERMILION_STATE, 0, VermilionCity_EventScript_PollutionOffer
+	goto_if_eq VAR_SQ_VERMILION_STATE, 1, VermilionCity_EventScript_PollutionActive
+	goto_if_eq VAR_SQ_VERMILION_STATE, 2, VermilionCity_EventScript_PollutionRewardPending
+	goto VermilionCity_EventScript_PollutionComplete
+	end
+
+VermilionCity_EventScript_PollutionOffer::
+	msgbox VermilionCity_Text_PollutionOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, VermilionCity_EventScript_PollutionDecline
+	setvar VAR_SQ_VERMILION_STATE, 1
+	msgbox VermilionCity_Text_PollutionStart
+	release
+	end
+
+VermilionCity_EventScript_PollutionDecline::
+	msgbox VermilionCity_Text_PollutionDecline
+	release
+	end
+
+VermilionCity_EventScript_PollutionActive::
+	msgbox VermilionCity_Text_PollutionActive
+	release
+	end
+
+VermilionCity_EventScript_PollutionRewardPending::
+	msgbox VermilionCity_Text_PollutionRewardPending
+	release
+	end
+
+VermilionCity_EventScript_PollutionComplete::
+	msgbox VermilionCity_Text_PollutionComplete
+	release
 	end
 
 VermilionCity_EventScript_OaksAide::
