@@ -53,7 +53,6 @@
 #define SAM_PREOWNED_OT_FOSSIL_LAB   2
 #define SAM_PREOWNED_OT_SILPH        3
 #define SAM_PREOWNED_OT_MIRA         4
-#define SAM_PREOWNED_OT_CURATOR      5
 
 // Return values for CanTradeSelectedMon and CanSpinTradeMon
 #define CAN_TRADE_MON              0
