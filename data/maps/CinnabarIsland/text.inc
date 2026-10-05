@@ -140,3 +140,80 @@ CinnabarIsland_Text_BluePostBattle::
     .string "This is great.\p"
     .string "Now I've gotta get even stronger!$"
 
+CinnabarIsland_EventScript_BlueTrigger::
+    lockall
+    setvar VAR_TEMP_3, 0
+    call_if_eq VAR_STARTER_MON, 0, CinnabarIsland_EventScript_CheckBlueWater
+    call_if_eq VAR_STARTER_MON, 1, CinnabarIsland_EventScript_CheckBlueFire
+    call_if_eq VAR_STARTER_MON, 2, CinnabarIsland_EventScript_CheckBlueElectric
+    goto_if_eq VAR_TEMP_3, 1, CinnabarIsland_EventScript_BlueBegin
+    releaseall
+    end
+
+CinnabarIsland_EventScript_CheckBlueWater::
+    checktrainerflag TRAINER_BLUE_ROUTE10_WATER
+    goto_if FALSE, CinnabarIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_RIVAL_POKEMON_TOWER_SQUIRTLE
+    goto_if FALSE, CinnabarIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_RIVAL_SILPH_SQUIRTLE
+    goto_if FALSE, CinnabarIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_BLUE_CINNABAR_WATER
+    goto_if TRUE, CinnabarIsland_EventScript_BlueCheckDone
+    setvar VAR_TEMP_3, 1
+CinnabarIsland_EventScript_BlueCheckDone::
+    return
+
+CinnabarIsland_EventScript_CheckBlueElectric::
+    checktrainerflag TRAINER_BLUE_ROUTE10_ELECTRIC
+    goto_if FALSE, CinnabarIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_RIVAL_POKEMON_TOWER_BULBASAUR
+    goto_if FALSE, CinnabarIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_RIVAL_SILPH_BULBASAUR
+    goto_if FALSE, CinnabarIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_BLUE_CINNABAR_ELECTRIC
+    goto_if TRUE, CinnabarIsland_EventScript_BlueCheckDone
+    setvar VAR_TEMP_3, 1
+    return
+
+CinnabarIsland_EventScript_CheckBlueFire::
+    checktrainerflag TRAINER_BLUE_ROUTE10_FIRE
+    goto_if FALSE, CinnabarIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_RIVAL_POKEMON_TOWER_CHARMANDER
+    goto_if FALSE, CinnabarIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_RIVAL_SILPH_CHARMANDER
+    goto_if FALSE, CinnabarIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_BLUE_CINNABAR_FIRE
+    goto_if TRUE, CinnabarIsland_EventScript_BlueCheckDone
+    setvar VAR_TEMP_3, 1
+    return
+
+CinnabarIsland_EventScript_BlueBegin::
+    addobject LOCALID_CINNABAR_BLUE
+    setvar VAR_LAST_TALKED, LOCALID_CINNABAR_BLUE
+    textcolor NPC_TEXT_COLOR_MALE
+    playbgm MUS_ENCOUNTER_RIVAL, 0
+    faceplayer
+    msgbox CinnabarIsland_Text_BlueIntro
+    call_if_eq VAR_STARTER_MON, 0, CinnabarIsland_EventScript_BlueWater
+    call_if_eq VAR_STARTER_MON, 1, CinnabarIsland_EventScript_BlueFire
+    call_if_eq VAR_STARTER_MON, 2, CinnabarIsland_EventScript_BlueElectric
+    msgbox CinnabarIsland_Text_BluePostBattle
+    closemessage
+    fadedefaultbgm
+    removeobject LOCALID_CINNABAR_BLUE
+    setvar VAR_TEMP_3, 2
+    releaseall
+    end
+
+CinnabarIsland_EventScript_BlueWater::
+    trainerbattle_no_intro TRAINER_BLUE_CINNABAR_WATER, CinnabarIsland_Text_BlueDefeat
+    return
+
+CinnabarIsland_EventScript_BlueElectric::
+    trainerbattle_no_intro TRAINER_BLUE_CINNABAR_ELECTRIC, CinnabarIsland_Text_BlueDefeat
+    return
+
+CinnabarIsland_EventScript_BlueFire::
+    trainerbattle_no_intro TRAINER_BLUE_CINNABAR_FIRE, CinnabarIsland_Text_BlueDefeat
+    return
+

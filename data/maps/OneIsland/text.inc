@@ -93,3 +93,70 @@ OneIsland_Text_BluePostBattle::
     .string "never know!\p"
     .string "See you around, dude!$"
 
+OneIsland_EventScript_BlueTrigger::
+    lockall
+    setvar VAR_TEMP_3, 0
+    goto_if_lt VAR_MAP_SCENE_ONE_ISLAND_HARBOR, 3, OneIsland_EventScript_BlueUnavailable
+    call_if_eq VAR_STARTER_MON, 0, OneIsland_EventScript_CheckBlueWater
+    call_if_eq VAR_STARTER_MON, 1, OneIsland_EventScript_CheckBlueFire
+    call_if_eq VAR_STARTER_MON, 2, OneIsland_EventScript_CheckBlueElectric
+    goto_if_eq VAR_TEMP_3, 1, OneIsland_EventScript_BlueBegin
+OneIsland_EventScript_BlueUnavailable::
+    releaseall
+    end
+
+OneIsland_EventScript_CheckBlueWater::
+    checktrainerflag TRAINER_BLUE_CINNABAR_WATER
+    goto_if FALSE, OneIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_BLUE_ONE_ISLAND_WATER
+    goto_if TRUE, OneIsland_EventScript_BlueCheckDone
+    setvar VAR_TEMP_3, 1
+OneIsland_EventScript_BlueCheckDone::
+    return
+
+OneIsland_EventScript_CheckBlueElectric::
+    checktrainerflag TRAINER_BLUE_CINNABAR_ELECTRIC
+    goto_if FALSE, OneIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_BLUE_ONE_ISLAND_ELECTRIC
+    goto_if TRUE, OneIsland_EventScript_BlueCheckDone
+    setvar VAR_TEMP_3, 1
+    return
+
+OneIsland_EventScript_CheckBlueFire::
+    checktrainerflag TRAINER_BLUE_CINNABAR_FIRE
+    goto_if FALSE, OneIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_BLUE_ONE_ISLAND_FIRE
+    goto_if TRUE, OneIsland_EventScript_BlueCheckDone
+    setvar VAR_TEMP_3, 1
+    return
+
+OneIsland_EventScript_BlueBegin::
+    addobject LOCALID_ONE_ISLAND_BLUE
+    setvar VAR_LAST_TALKED, LOCALID_ONE_ISLAND_BLUE
+    textcolor NPC_TEXT_COLOR_MALE
+    playbgm MUS_ENCOUNTER_RIVAL, 0
+    faceplayer
+    msgbox OneIsland_Text_BlueIntro
+    call_if_eq VAR_STARTER_MON, 0, OneIsland_EventScript_BlueWater
+    call_if_eq VAR_STARTER_MON, 1, OneIsland_EventScript_BlueFire
+    call_if_eq VAR_STARTER_MON, 2, OneIsland_EventScript_BlueElectric
+    msgbox OneIsland_Text_BluePostBattle
+    closemessage
+    fadedefaultbgm
+    removeobject LOCALID_ONE_ISLAND_BLUE
+    setvar VAR_TEMP_3, 2
+    releaseall
+    end
+
+OneIsland_EventScript_BlueWater::
+    trainerbattle_no_intro TRAINER_BLUE_ONE_ISLAND_WATER, OneIsland_Text_BlueDefeat
+    return
+
+OneIsland_EventScript_BlueElectric::
+    trainerbattle_no_intro TRAINER_BLUE_ONE_ISLAND_ELECTRIC, OneIsland_Text_BlueDefeat
+    return
+
+OneIsland_EventScript_BlueFire::
+    trainerbattle_no_intro TRAINER_BLUE_ONE_ISLAND_FIRE, OneIsland_Text_BlueDefeat
+    return
+
