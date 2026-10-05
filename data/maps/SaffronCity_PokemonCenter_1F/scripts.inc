@@ -6,6 +6,11 @@ SaffronCity_PokemonCenter_1F_MapScripts::
 
 SaffronCity_PokemonCenter_1F_OnLoad::
 	call EventScript_ThomasSyncVisibility
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_EPILOGUE_COMPLETE, SaffronCity_PokemonCenter_1F_OnLoadKeepMaraVisible
+	end
+
+SaffronCity_PokemonCenter_1F_OnLoadKeepMaraVisible::
+	clearflag FLAG_HIDE_THOMAS_MARA
 	end
 
 SaffronCity_PokemonCenter_1F_OnTransition::
@@ -40,10 +45,39 @@ SaffronCity_PokemonCenter_1F_EventScript_YoungsterRocketsGone::
 	release
 	end
 
-@ Chunk 5 owns Mara's availability/object foundation only. Chunk 6 owns the
-@ Poké Doll dialogue, reward transaction, Tauros package, and epilogue completion.
 SaffronCity_PokemonCenter_1F_EventScript_Mara::
 	lock
 	faceplayer
+	goto_if_set FLAG_THOMAS_TAUROS_RECEIVED, SaffronCity_PokemonCenter_1F_EventScript_MaraComplete
+	checkitem ITEM_15B
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_PokemonCenter_1F_EventScript_MaraNoDoll
+	msgbox SaffronCity_PokemonCenter_1F_Text_MaraDoll
+	callnative GiveThomasMaraTauros
+	goto_if_eq VAR_RESULT, 2, SaffronCity_PokemonCenter_1F_EventScript_MaraTaurosNoRoom
+	removeitem ITEM_15B
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_PokemonCenter_1F_EventScript_MaraNoDoll
+	setflag FLAG_THOMAS_DOLL_DELIVERED
+	setflag FLAG_THOMAS_TAUROS_RECEIVED
+	call EventScript_ThomasSetEpilogueComplete
+	clearflag FLAG_HIDE_THOMAS_MARA
+	msgbox SaffronCity_PokemonCenter_1F_Text_MaraTaurosReceived
+	msgbox SaffronCity_PokemonCenter_1F_Text_MaraFinal
 	release
 	end
+
+SaffronCity_PokemonCenter_1F_EventScript_MaraNoDoll::
+	msgbox SaffronCity_PokemonCenter_1F_Text_MaraNoDoll
+	release
+	end
+
+SaffronCity_PokemonCenter_1F_EventScript_MaraTaurosNoRoom::
+	msgbox SaffronCity_PokemonCenter_1F_Text_MaraTaurosNoRoom
+	release
+	end
+
+SaffronCity_PokemonCenter_1F_EventScript_MaraComplete::
+	msgbox SaffronCity_PokemonCenter_1F_Text_MaraComplete
+	release
+	end
+
+	.include "data/maps/SaffronCity_PokemonCenter_1F/thomas_epilogue.inc"
