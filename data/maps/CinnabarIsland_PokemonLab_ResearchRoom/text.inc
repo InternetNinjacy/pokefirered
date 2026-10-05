@@ -40,8 +40,37 @@ CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchActive::
 
 CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchReadyToReturn::
     .string "You found all three pieces!\p"
-    .string "Give me a moment to sort the field\n"
-    .string "samples and your reward.$"
+    .string "That saves my field study. I promised\n"
+    .string "you a proper reward.$"
+
+CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchReceivedEarthquake::
+    .string "Here. TM17 contains EARTHQUAKE.\p"
+    .string "And I have one more thing for you.$"
+
+CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchBagFull::
+    .string "I can't hand over the TM while your\n"
+    .string "BAG is full.\p"
+    .string "Make some room and come back.$"
+
+CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchEggPending::
+    .string "I still have the other part of your\n"
+    .string "reward: a MAGBY EGG.$"
+
+CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchNoPokemonRoom::
+    .string "There isn't room for the MAGBY EGG\n"
+    .string "right now.\p"
+    .string "Make some space and come back. Your\n"
+    .string "EGG will be waiting.$"
+
+CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchRewardsComplete::
+    .string "Take good care of that MAGBY EGG.\p"
+    .string "Thanks again. With my equipment and\n"
+    .string "samples back, the survey can go on.$"
+
+CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchComplete::
+    .string "The coastal survey is back on track.\p"
+    .string "I couldn't have recovered all that\n"
+    .string "fieldwork without you.$"
 
 CinnabarIsland_PokemonLab_ResearchRoom_Text_LegendaryBirdEmail::
     .string "There's an e-mail message.\p"
