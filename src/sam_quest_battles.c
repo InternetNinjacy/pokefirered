@@ -15,3 +15,10 @@ void StartVermilionPollutionBattle(void)
     StartScriptedWildBattle();
     gBattleTypeFlags |= BATTLE_TYPE_DOUBLE;
 }
+
+void StartCinnabarFieldResearchTentacruelBattle(void)
+{
+    ZeroEnemyPartyMons();
+    CreateMon(&gEnemyParty[0], SPECIES_TENTACRUEL, 42, USE_RANDOM_IVS, FALSE, 0, OT_ID_RANDOM_NO_SHINY, 0);
+    StartScriptedWildBattle();
+}

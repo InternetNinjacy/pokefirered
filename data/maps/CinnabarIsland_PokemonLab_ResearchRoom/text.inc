@@ -38,6 +38,11 @@ CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchActive::
     .string "They're scattered around CINNABAR's\n"
     .string "offshore rocks and inlets.$"
 
+CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchReadyToReturn::
+    .string "You found all three pieces!\p"
+    .string "Give me a moment to sort the field\n"
+    .string "samples and your reward.$"
+
 CinnabarIsland_PokemonLab_ResearchRoom_Text_LegendaryBirdEmail::
     .string "There's an e-mail message.\p"
     .string "… … …\p"

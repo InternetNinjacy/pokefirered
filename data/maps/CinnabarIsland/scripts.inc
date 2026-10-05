@@ -336,6 +336,78 @@ CinnabarIsland_EventScript_OldMan::
 	msgbox CinnabarIsland_Text_ScientistsExperimentInMansion, MSGBOX_NPC
 	end
 
+CinnabarIsland_EventScript_FieldResearchSampleCase::
+	lockall
+	goto_if_ne VAR_SQ_CINNABAR_STATE, 1, CinnabarIsland_EventScript_FieldResearchInactiveSpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 1, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 3, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 5, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 7, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	msgbox CinnabarIsland_Text_FieldResearchFoundSampleCase
+	addvar VAR_SQ_CINNABAR_ITEMS, 1
+	call CinnabarIsland_EventScript_FieldResearchCheckComplete
+	releaseall
+	end
+
+CinnabarIsland_EventScript_FieldResearchNotebook::
+	lockall
+	goto_if_ne VAR_SQ_CINNABAR_STATE, 1, CinnabarIsland_EventScript_FieldResearchInactiveSpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 2, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 3, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 6, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 7, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	msgbox CinnabarIsland_Text_FieldResearchFoundNotebook
+	addvar VAR_SQ_CINNABAR_ITEMS, 2
+	call CinnabarIsland_EventScript_FieldResearchCheckComplete
+	releaseall
+	end
+
+CinnabarIsland_EventScript_FieldResearchGeologyKit::
+	lockall
+	goto_if_ne VAR_SQ_CINNABAR_STATE, 1, CinnabarIsland_EventScript_FieldResearchInactiveSpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 4, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 5, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 6, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	goto_if_eq VAR_SQ_CINNABAR_ITEMS, 7, CinnabarIsland_EventScript_FieldResearchEmptySpot
+	goto_if_set FLAG_SQ_CINNABAR_TENTACRUEL_DEFEATED, CinnabarIsland_EventScript_FieldResearchTakeGeologyKit
+	msgbox CinnabarIsland_Text_FieldResearchTentacruelAppears
+	closemessage
+	callnative StartCinnabarFieldResearchTentacruelBattle
+	waitstate
+	special GetBattleOutcome
+	goto_if_eq VAR_RESULT, 1, CinnabarIsland_EventScript_FieldResearchTentacruelCleared
+	goto_if_eq VAR_RESULT, 7, CinnabarIsland_EventScript_FieldResearchTentacruelCleared
+	releaseall
+	end
+
+CinnabarIsland_EventScript_FieldResearchTentacruelCleared::
+	setflag FLAG_SQ_CINNABAR_TENTACRUEL_DEFEATED
+	msgbox CinnabarIsland_Text_FieldResearchTentacruelCleared
+
+CinnabarIsland_EventScript_FieldResearchTakeGeologyKit::
+	msgbox CinnabarIsland_Text_FieldResearchFoundGeologyKit
+	addvar VAR_SQ_CINNABAR_ITEMS, 4
+	call CinnabarIsland_EventScript_FieldResearchCheckComplete
+	releaseall
+	end
+
+CinnabarIsland_EventScript_FieldResearchCheckComplete::
+	goto_if_ne VAR_SQ_CINNABAR_ITEMS, 7, CinnabarIsland_EventScript_FieldResearchCheckCompleteReturn
+	setvar VAR_SQ_CINNABAR_STATE, 2
+	msgbox CinnabarIsland_Text_FieldResearchAllRecovered
+CinnabarIsland_EventScript_FieldResearchCheckCompleteReturn::
+	return
+
+CinnabarIsland_EventScript_FieldResearchInactiveSpot::
+	msgbox CinnabarIsland_Text_FieldResearchInactiveSpot
+	releaseall
+	end
+
+CinnabarIsland_EventScript_FieldResearchEmptySpot::
+	msgbox CinnabarIsland_Text_FieldResearchEmptySpot
+	releaseall
+	end
+
 CinnabarIsland_EventScript_IslandSign::
 	msgbox CinnabarIsland_Text_IslandSign, MSGBOX_SIGN
 	end

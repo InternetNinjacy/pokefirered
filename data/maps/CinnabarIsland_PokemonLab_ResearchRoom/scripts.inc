@@ -9,7 +9,8 @@ CinnabarIsland_PokemonLab_ResearchRoom_EventScript_Scientist::
 	lock
 	faceplayer
 	goto_if_eq VAR_SQ_CINNABAR_STATE, 0, CinnabarIsland_PokemonLab_ResearchRoom_EventScript_FieldResearchOffer
-	goto CinnabarIsland_PokemonLab_ResearchRoom_EventScript_FieldResearchActive
+	goto_if_eq VAR_SQ_CINNABAR_STATE, 1, CinnabarIsland_PokemonLab_ResearchRoom_EventScript_FieldResearchActive
+	goto CinnabarIsland_PokemonLab_ResearchRoom_EventScript_FieldResearchReadyToReturn
 	end
 
 CinnabarIsland_PokemonLab_ResearchRoom_EventScript_FieldResearchOffer::
@@ -34,6 +35,11 @@ CinnabarIsland_PokemonLab_ResearchRoom_EventScript_FieldResearchDecline::
 
 CinnabarIsland_PokemonLab_ResearchRoom_EventScript_FieldResearchActive::
 	msgbox CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchActive
+	release
+	end
+
+CinnabarIsland_PokemonLab_ResearchRoom_EventScript_FieldResearchReadyToReturn::
+	msgbox CinnabarIsland_PokemonLab_ResearchRoom_Text_FieldResearchReadyToReturn
 	release
 	end
 
