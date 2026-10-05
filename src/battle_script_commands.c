@@ -5394,7 +5394,10 @@ static void Cmd_getmoneyreward(void)
                     break;
             }
             party4 = gTrainers[gTrainerBattleOpponent_A].party.ItemCustomMoves; // Needed to Match. Has no effect.
-            moneyReward = 4 * lastMonLevel * gBattleStruct->moneyMultiplier * (gBattleTypeFlags & BATTLE_TYPE_DOUBLE ? 2 : 1) * gTrainerMoneyTable[i].value;
+            if (gTrainerBattleOpponent_A == TRAINER_YOUNGSTER_JOEY)
+                moneyReward = 50000 * gBattleStruct->moneyMultiplier;
+            else
+                moneyReward = 4 * lastMonLevel * gBattleStruct->moneyMultiplier * (gBattleTypeFlags & BATTLE_TYPE_DOUBLE ? 2 : 1) * gTrainerMoneyTable[i].value;
         }
         AddMoney(&gSaveBlock1Ptr->money, moneyReward);
     }
@@ -6074,8 +6077,15 @@ static void Cmd_hpthresholds2(void)
 
 static void Cmd_useitemonopponent(void)
 {
+    u8 partyIndex = gBattlerPartyIndexes[gBattlerAttacker];
+
     gBattlerInMenuId = gBattlerAttacker;
-    PokemonUseItemEffects(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker]], gLastUsedItem, gBattlerPartyIndexes[gBattlerAttacker], 0, TRUE);
+    if (gLastUsedItem == ITEM_MAX_REVIVE
+     && *(gBattleStruct->AI_itemType + gBattlerAttacker / 2) == AI_ITEM_REVIVE
+     && *(gBattleStruct->AI_itemFlags + gBattlerAttacker / 2) != 0)
+        partyIndex = *(gBattleStruct->AI_itemFlags + gBattlerAttacker / 2) - 1;
+
+    PokemonUseItemEffects(&gEnemyParty[partyIndex], gLastUsedItem, partyIndex, 0, TRUE);
     gBattlescriptCurrInstr++;
 }
 

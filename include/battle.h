@@ -48,7 +48,7 @@
 #define B_ACTION_NOTHING_FAINTED           13 // when choosing an action
 #define B_ACTION_NONE                      0xFF
 
-#define MAX_TRAINER_ITEMS 4
+#define MAX_TRAINER_ITEMS 6
 
 enum {
     BATTLER_AFFINE_NORMAL,
@@ -297,7 +297,7 @@ struct BattleHistory
     /*0x00*/ u16 usedMoves[2][8]; // 0xFFFF means move not used (confuse self hit, etc)
     /*0x20*/ u8 abilities[MAX_BATTLERS_COUNT / 2];
     /*0x22*/ u8 itemEffects[MAX_BATTLERS_COUNT / 2];
-    /*0x24*/ u16 trainerItems[MAX_BATTLERS_COUNT];
+    /*0x24*/ u16 trainerItems[MAX_TRAINER_ITEMS];
     /*0x2C*/ u8 itemsNo;
 };
 
