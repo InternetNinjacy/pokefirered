@@ -91,7 +91,7 @@ PewterCity_Museum_1F_Text_MuseumChallengeDecline::
 
 PewterCity_Museum_1F_Text_MuseumChallengeRewardPending::
     .string "You solved all three exhibits.\n"
-    .string "Your prize is ready.$"
+    .string "Your prize is this SANDSHREW.$"
 
 PewterCity_Museum_1F_Text_MuseumChallengeStage1Intro::
     .string "Stage one: FOSSIL MATCHING.\p"
@@ -164,9 +164,22 @@ PewterCity_Museum_1F_Text_MuseumChallengeWrong::
     .string "That answer breaks this exhibit's\n"
     .string "logic. Try this stage again.$"
 
+PewterCity_Museum_1F_Text_MuseumChallengeNoRoom::
+    .string "Your party and storage are full.\n"
+    .string "Make room, then come back for\l"
+    .string "SANDSHREW.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeRewardSuccess::
+    .string "Take good care of SANDSHREW.\n"
+    .string "You've earned a real piece of\l"
+    .string "PEWTER's natural history.$"
+
 PewterCity_Museum_1F_Text_MuseumChallengeComplete::
     .string "You completed our MUSEUM\n"
     .string "CHALLENGE. Well done!$"
+
+PewterCity_Museum_1F_Text_CuratorOtName::
+    .string "CURATOR$"
 
 PewterCity_Museum_1F_Text_BeautifulPieceOfAmber::
     .string "There is a beautiful piece of\n"
