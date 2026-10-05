@@ -1,0 +1,124 @@
+name: QUEST-010C Pidgey Runtime QA
+
+on:
+  push:
+    branches:
+      - qa/quest-010c-pidgey-submission
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  quest-010c-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout QA branch
+        uses: actions/checkout@v4
+        with:
+          ref: qa/quest-010c-pidgey-submission
+          fetch-depth: 0
+
+      - name: Install build and emulator dependencies
+        run: |
+          set -euxo pipefail
+          timeout 300s sudo apt-get update
+          timeout 900s sudo apt-get install -y build-essential binutils-arm-none-eabi git libpng-dev mgba-sdl
+
+      - name: Build and install agbcc
+        run: |
+          set -euxo pipefail
+          cd ..
+          git clone https://github.com/pret/agbcc.git
+          cd agbcc
+          ./build.sh
+          ./install.sh ../pokefirered
+
+      - name: Verify production ancestry and QUEST-010C contract
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import pathlib, subprocess
+          prod="6dafff0809facdcafea091aeecf216da57515b7a"
+          subprocess.check_call(["git","merge-base","--is-ancestor",prod,"HEAD"])
+          scripts=pathlib.Path("data/maps/SaffronCity_CopycatsHouse_2F/scripts.inc").read_text()
+          helper=pathlib.Path("src/sam_quest_010.c").read_text()
+          assert "SaffronCity_CopycatsHouse_2F_EventScript_SubmitPidgey" in scripts
+          assert "special DoesPlayerPartyContainSpecies" in scripts
+          assert "special ChoosePartyMon" in scripts
+          assert "bufferpartymonnick STR_VAR_1, VAR_0x8004" in scripts
+          confirm=scripts.index("SaffronCity_CopycatsHouse_2F_Text_ConfirmPidgeySubmission")
+          decline=scripts.index("goto_if_eq VAR_RESULT, NO")
+          commit=scripts.index("callnative SamQuest010CommitPidgeySubmission")
+          assert confirm < decline < commit
+          assert "SamQuest010PreparePidgeySubmission" in helper
+          assert "MON_DATA_PERSONALITY" in helper and "MON_DATA_OT_ID" in helper
+          assert "GetMonData(&gPlayerParty[slot], MON_DATA_SPECIES" in helper
+          assert "MonHasMail(&gPlayerParty[slot])" in helper
+          assert "HasUsablePartyMonOtherThan(slot)" in helper
+          assert "CopyMon(&gPlayerParty[i], &gPlayerParty[i + 1]" in helper
+          assert "ZeroMonData(&gPlayerParty[partyCount - 1])" in helper
+          assert "state |= SQ_SAFFRON_STARTED_BIT | SQ_SAFFRON_SUBMITTED_PIDGEY" in helper
+          assert "VarSet(VAR_SQ_SAFFRON_COUNT, state)" in helper
+          assert "PokemonStorage" not in helper and "BoxMon" not in helper
+          print("QUEST010C STATIC PASS")
+          PY
+
+      - name: Inject QA-only runtime hook
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("src/main.c")
+          s=p.read_text()
+          s=s.replace("extern u32 intr_main[];\n", "extern u32 intr_main[];\nvoid Quest010cQa_RunRuntimeQa(void);\n", 1)
+          s=s.replace("    SetNotInSaveFailedScreen();\n", "    SetNotInSaveFailedScreen();\n\n    Quest010cQa_RunRuntimeQa();\n", 1)
+          p.write_text(s)
+          p=Path("include/config.h")
+          s=p.read_text().replace("#define LOG_HANDLER (LOG_HANDLER_AGB_PRINT)", "#define LOG_HANDLER (LOG_HANDLER_MGBA_PRINT)", 1)
+          p.write_text(s)
+          PY
+
+      - name: Build QA ROM
+        run: |
+          set -euxo pipefail
+          make
+          test -f pokefirered.gba
+          sha1sum pokefirered.gba | tee QUEST010C_ROM_SHA1.txt
+          git rev-parse HEAD | tee QUEST010C_QA_SOURCE_SHA.txt
+          echo 6dafff0809facdcafea091aeecf216da57515b7a | tee QUEST010C_PRODUCTION_SOURCE_SHA.txt
+
+      - name: Runtime phase 1
+        run: |
+          set -euxo pipefail
+          rm -f pokefirered.sav
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 35s mgba -l 31 pokefirered.gba > quest010c_phase1.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat quest010c_phase1.log
+          grep -q "QUEST010C QA PHASE1 PASS exact removal reorder repeat save" quest010c_phase1.log
+          ! grep -q "QUEST010C QA FAIL" quest010c_phase1.log
+          test -s pokefirered.sav
+
+      - name: Runtime phase 2
+        run: |
+          set -euxo pipefail
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
+          timeout --signal=TERM 20s mgba -l 31 pokefirered.gba > quest010c_phase2.log 2>&1 || test $? -eq 124 -o $? -eq 143
+          cat quest010c_phase2.log
+          grep -q "QUEST010C QA PASS persistence exact selected individual" quest010c_phase2.log
+          ! grep -q "QUEST010C QA FAIL" quest010c_phase2.log
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quest-010c-pidgey-runtime-qa
+          path: |
+            pokefirered.gba
+            QUEST010C_ROM_SHA1.txt
+            QUEST010C_QA_SOURCE_SHA.txt
+            QUEST010C_PRODUCTION_SOURCE_SHA.txt
+            quest010c_phase1.log
+            quest010c_phase2.log
+            pokefirered.sav
+          if-no-files-found: error
