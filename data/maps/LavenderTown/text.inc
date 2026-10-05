@@ -69,6 +69,41 @@ LavenderTown_Text_MemorialGrowlitheEpitaph::
     .string "the gate without fail…\p"
     .string "And never once missed supper.$"
 
+LavenderTown_Text_MemorialPlaceBell::
+    .string "Place the small bell here?$"
+
+LavenderTown_Text_MemorialPlaceFlowers::
+    .string "Place the bundle of flowers here?$"
+
+LavenderTown_Text_MemorialPlaceTreat::
+    .string "Place the favorite treat here?$"
+
+LavenderTown_Text_MemorialNoChange::
+    .string "You leave the offerings as they are.$"
+
+LavenderTown_Text_MemorialOfferingPlaced::
+    .string "You arrange the offering at the\n"
+    .string "memorial.\p"
+    .string "The garden is still uneasy.$"
+
+LavenderTown_Text_MemorialOfferingFixed::
+    .string "The offering rests peacefully here.\n"
+    .string "It should not be disturbed again.$"
+
+LavenderTown_Text_MemorialPuzzleSolved::
+    .string "The final offering settles into\n"
+    .string "place.\p"
+    .string "For an instant, the music seems to\n"
+    .string "vanish. The flowers move without wind.$"
+
+LavenderTown_Text_MemorialHaunterAppears::
+    .string "A wild HAUNTER rises over the\n"
+    .string "central monument!$"
+
+LavenderTown_Text_MemorialHaunterDefeated::
+    .string "HAUNTER disappears into the night.\p"
+    .string "The unnatural cold finally lifts.$"
+
 LavenderTown_Text_MemorialMonumentDormant::
     .string "A quiet stone monument overlooks\n"
     .string "the small memorial garden.$"
@@ -76,6 +111,10 @@ LavenderTown_Text_MemorialMonumentDormant::
 LavenderTown_Text_MemorialMonumentActive::
     .string "The air around the monument feels\n"
     .string "unnaturally cold.$"
+
+LavenderTown_Text_MemorialMonumentQuiet::
+    .string "The monument is quiet now.\p"
+    .string "The caretaker is waiting nearby.$"
 
 LavenderTown_Text_MemorialMonumentComplete::
     .string "The air here feels peaceful now.$"
