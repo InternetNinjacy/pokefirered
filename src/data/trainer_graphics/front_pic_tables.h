@@ -150,6 +150,9 @@ const struct MonCoords gTrainerFrontPicCoords[] =
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
     // ARCH-006 allocation-only trainer-picture placeholders (148-154).
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
