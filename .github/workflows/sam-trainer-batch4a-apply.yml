@@ -1,0 +1,106 @@
+name: Sam trainer batch 4A apply
+
+on:
+  push:
+    branches:
+      - sam/trainers-batch4a-route11
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: sam/trainers-batch4a-route11
+
+      - name: Apply Route 11 ordinary trainer batch
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          parties_path = Path('src/data/trainer_parties.h')
+          trainers_path = Path('src/data/trainers.h')
+          scripts_path = Path('data/scripts/trainers.inc')
+          parties = parties_path.read_text()
+          trainers = trainers_path.read_text()
+          scripts = scripts_path.read_text()
+
+          teams = {
+              'TRAINER_YOUNGSTER_EDDIE': [(21,'SPECIES_EKANS'),(20,'SPECIES_DROWZEE')],
+              'TRAINER_GAMER_HUGO': [(20,'SPECIES_POLIWAG'),(20,'SPECIES_HORSEA'),(21,'SPECIES_PSYDUCK')],
+              'TRAINER_ENGINEER_BERNIE': [(20,'SPECIES_MAGNEMITE'),(20,'SPECIES_VOLTORB'),(21,'SPECIES_MAGNETON')],
+              'TRAINER_YOUNGSTER_DAVE': [(20,'SPECIES_NIDORAN_M'),(22,'SPECIES_NIDORINO')],
+              'TRAINER_YOUNGSTER_DILLON': [(21,'SPECIES_PSYDUCK'),(21,'SPECIES_DROWZEE'),(21,'SPECIES_EKANS')],
+              'TRAINER_GAMER_JASPER': [(20,'SPECIES_BELLSPROUT'),(20,'SPECIES_ODDISH'),(21,'SPECIES_EXEGGCUTE')],
+              'TRAINER_ENGINEER_BRAXTON': [(23,'SPECIES_MAGNETON')],
+              'TRAINER_GAMER_DARIAN': [(21,'SPECIES_VULPIX'),(22,'SPECIES_GROWLITHE'),(21,'SPECIES_PONYTA')],
+              'TRAINER_YOUNGSTER_YASU': [(21,'SPECIES_RATICATE'),(21,'SPECIES_DROWZEE'),(21,'SPECIES_PSYDUCK')],
+              'TRAINER_GAMER_DIRK': [(21,'SPECIES_PIKACHU'),(21,'SPECIES_VOLTORB'),(22,'SPECIES_ELECTABUZZ')],
+          }
+          doubles = {'TRAINER_GAMER_HUGO','TRAINER_ENGINEER_BERNIE','TRAINER_YOUNGSTER_DILLON','TRAINER_GAMER_DIRK'}
+
+          record_pat = re.compile(r'(?ms)(^    \[(TRAINER_[A-Z0-9_]+)\] = \{\n)(.*?)(^    \},)')
+          records = {m.group(2): m for m in record_pat.finditer(trainers)}
+          party_names = {}
+          for tid in teams:
+              m = records.get(tid)
+              if not m:
+                  raise SystemExit(f'missing trainer record {tid}')
+              pm = re.search(r'\.party\s*=\s*[A-Z_]+\((sParty_[A-Za-z0-9_]+)\)', m.group(3))
+              if not pm:
+                  raise SystemExit(f'missing party ref {tid}')
+              party_names[tid] = pm.group(1)
+
+          def decl(name, mons):
+              lines = [f'static const struct TrainerMonNoItemDefaultMoves {name}[] = {{']
+              for lvl, species in mons:
+                  lines += ['    {','        .iv = 0,',f'        .lvl = {lvl},',f'        .species = {species},','    },']
+              lines.append('};')
+              return '\n'.join(lines)
+
+          for tid, mons in teams.items():
+              pname = party_names[tid]
+              pat = re.compile(r'(?ms)^static const struct TrainerMon(?:NoItem|Item)(?:DefaultMoves|CustomMoves) ' + re.escape(pname) + r'\[\] = \{\n.*?^\};')
+              parties, n = pat.subn(decl(pname, mons), parties, count=1)
+              if n != 1:
+                  raise SystemExit(f'party declaration mismatch {pname}: {n}')
+
+          out, pos, seen = [], 0, set()
+          for m in record_pat.finditer(trainers):
+              out.append(trainers[pos:m.start()])
+              tid, block = m.group(2), m.group(3)
+              if tid in teams:
+                  seen.add(tid)
+                  block = re.sub(r'(\.doubleBattle\s*=\s*)(TRUE|FALSE)', r'\g<1>' + ('TRUE' if tid in doubles else 'FALSE'), block, count=1)
+                  pname = party_names[tid]
+                  block = re.sub(r'(\.party\s*=\s*)[A-Z_]+\(' + re.escape(pname) + r'\)', r'\1NO_ITEM_DEFAULT_MOVES(' + pname + ')', block, count=1)
+              out.append(m.group(1) + block + m.group(4))
+              pos = m.end()
+          out.append(trainers[pos:])
+          trainers = ''.join(out)
+          if seen != set(teams):
+              raise SystemExit(f'unprocessed Route 11 records: {sorted(set(teams)-seen)}')
+
+          for tid in doubles:
+              pat = re.compile(r'(trainerbattle_)single (' + re.escape(tid) + r'), ([A-Za-z0-9_]+), ([A-Za-z0-9_]+)')
+              scripts, n = pat.subn(r'\1double \2, \3, \4, MtMoon_1F_Text_KentNotEnoughMons', scripts, count=1)
+              if n != 1:
+                  raise SystemExit(f'expected one initial Route 11 single command for {tid}, got {n}')
+
+          parties_path.write_text(parties)
+          trainers_path.write_text(trainers)
+          scripts_path.write_text(scripts)
+          PY
+
+          rm -f .github/workflows/sam-trainer-batch4a-apply.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/trainer_parties.h src/data/trainers.h data/scripts/trainers.inc .github/workflows/sam-trainer-batch4a-apply.yml
+          git commit -m "Apply Route 11 trainer batch"
+          git push origin HEAD:sam/trainers-batch4a-route11
