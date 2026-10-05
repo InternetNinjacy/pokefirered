@@ -1518,9 +1518,9 @@
                 "species": "SPECIES_NIDORINA"
               },
               {
-                "min_level": 30,
-                "max_level": 30,
-                "species": "SPECIES_PARASECT"
+                "min_level": 22,
+                "max_level": 22,
+                "species": "SPECIES_BULBASAUR"
               },
               {
                 "min_level": 22,
@@ -3150,9 +3150,9 @@
                 "species": "SPECIES_DEWGONG"
               },
               {
-                "min_level": 30,
-                "max_level": 30,
-                "species": "SPECIES_GOLBAT"
+                "min_level": 28,
+                "max_level": 28,
+                "species": "SPECIES_SQUIRTLE"
               }
             ]
           },
@@ -3705,7 +3705,7 @@
               {
                 "min_level": 30,
                 "max_level": 30,
-                "species": "SPECIES_SPEAROW"
+                "species": "SPECIES_CHARMANDER"
               },
               {
                 "min_level": 39,
