@@ -7,6 +7,6 @@ SSAnne_B1F_Room4_EventScript_Leonard::
 	end
 
 SSAnne_B1F_Room4_EventScript_Duncan::
-	trainerbattle_single TRAINER_SAILOR_DUNCAN, SSAnne_B1F_Room4_Text_DuncanIntro, SSAnne_B1F_Room4_Text_DuncanDefeat
+	trainerbattle_double TRAINER_SAILOR_DUNCAN, SSAnne_B1F_Room4_Text_DuncanIntro, SSAnne_B1F_Room4_Text_DuncanDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SSAnne_B1F_Room4_Text_DuncanPostBattle, MSGBOX_AUTOCLOSE
 	end
