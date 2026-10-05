@@ -95,6 +95,21 @@ const struct WildPokemonHeader {{ wild_encounter_group.label }}[] =
 #endif
 {% endif %}
 ## endfor
+{% if wild_encounter_group.for_maps %}
+#ifdef FIRERED
+    // ENC-003: Seven Island main shoreline uses the approved Table Family F
+    // already encoded for Tanoby Ruins / Trainer Tower. Creator-approved
+    // encounter rates are therefore inherited exactly: Surf 2, Fishing 20.
+    {
+        .mapGroup = MAP_GROUP(MAP_SEVEN_ISLAND),
+        .mapNum = MAP_NUM(MAP_SEVEN_ISLAND),
+        .landMonsInfo = NULL,
+        .waterMonsInfo = &sSevenIslandTanobyRuins_FireRed_WaterMonsInfo,
+        .rockSmashMonsInfo = NULL,
+        .fishingMonsInfo = &sSevenIslandTanobyRuins_FireRed_FishingMonsInfo,
+    },
+#endif
+{% endif %}
     {
         .mapGroup = MAP_GROUP(MAP_UNDEFINED),
         .mapNum = MAP_NUM(MAP_UNDEFINED),
