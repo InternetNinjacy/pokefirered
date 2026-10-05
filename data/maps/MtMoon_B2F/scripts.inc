@@ -131,7 +131,7 @@ MtMoon_B2F_EventScript_Grunt3::
 	end
 
 MtMoon_B2F_EventScript_Grunt4::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_4, MtMoon_B2F_Text_Grunt4Intro, MtMoon_B2F_Text_Grunt4Defeat
+	trainerbattle_double TRAINER_TEAM_ROCKET_GRUNT_4, MtMoon_B2F_Text_Grunt4Intro, MtMoon_B2F_Text_Grunt4Defeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox MtMoon_B2F_Text_Grunt4PostBattle, MSGBOX_AUTOCLOSE
 	end
 
