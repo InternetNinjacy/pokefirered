@@ -45,6 +45,7 @@
 #define OTID_GAME_CORNER_CELADON      52009
 #define OTID_FOSSIL_CINNABAR_LAB      52010
 #define OTID_GIFT_COPYCAT              52012
+#define OTID_GIFT_CURATOR              52013
 
 // Authored-OT profiles used by stock special-acquisition scripts.
 #define SAM_PREOWNED_OT_VENDOR      0
@@ -68,6 +69,7 @@
 // Return values for GetGameProgressForLinkTrade
 #define TRADE_BOTH_PLAYERS_READY      0
 #define TRADE_PLAYER_NOT_READY        1
+
 #define TRADE_PARTNER_NOT_READY       2
 
 // Message indexes for sUnionRoomTradeMessages
