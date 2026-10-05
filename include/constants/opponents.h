@@ -803,11 +803,27 @@
 #define TRAINER_THOMAS_CINNABAR_MANSION            788
 #define TRAINER_THOMAS_VIRIDIAN_GYM                 789
 
-// Blue League branch allocations: 800-803.
+// Blue supplemental rival allocations. Vanilla rival IDs remain in use for Route 22,
+// Route 4 (legacy Cerulean slot), Pokémon Tower, and Silph Co.
+#define TRAINER_BLUE_ROUTE11_WATER                 790
+#define TRAINER_BLUE_ROUTE11_ELECTRIC              791
+#define TRAINER_BLUE_ROUTE11_FIRE                  792
+#define TRAINER_BLUE_ROUTE10_WATER                 793
+#define TRAINER_BLUE_ROUTE10_ELECTRIC              794
+#define TRAINER_BLUE_ROUTE10_FIRE                  795
+#define TRAINER_BLUE_CINNABAR_WATER                796
+#define TRAINER_BLUE_CINNABAR_ELECTRIC             797
+#define TRAINER_BLUE_CINNABAR_FIRE                 798
+
+// Blue League branch allocations: 800-803. Fire reuses the legacy Bruno slots.
 #define TRAINER_ELITE_FOUR_BLUE_WATER             800
 #define TRAINER_ELITE_FOUR_BLUE_ELECTRIC          801
 #define TRAINER_ELITE_FOUR_BLUE_WATER_2           802
 #define TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2        803
+
+#define TRAINER_BLUE_ONE_ISLAND_WATER              804
+#define TRAINER_BLUE_ONE_ISLAND_ELECTRIC           805
+#define TRAINER_BLUE_ONE_ISLAND_FIRE               806
 
 // Oak research/postgame central allocations.
 #define TRAINER_YOUNGSTER_JOEY                    940
@@ -817,7 +833,7 @@
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             790
+#define NUM_TRAINERS                             807
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H

@@ -1628,6 +1628,23 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 }
                 break;
             }
+
+            // Sam Edition Blue: force the authored Hidden Power Grass on League Manectric
+            // without introducing a second trainer-party construction system.
+            if ((trainerNum == TRAINER_ELITE_FOUR_BLUE_ELECTRIC
+              || trainerNum == TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2)
+             && GetMonData(&party[i], MON_DATA_SPECIES) == SPECIES_MANECTRIC)
+            {
+                static const u8 sBlueManectricGrassIvs[NUM_STATS] = {30, 31, 30, 31, 30, 31};
+                u8 iv;
+
+                for (j = 0; j < NUM_STATS; j++)
+                {
+                    iv = sBlueManectricGrassIvs[j];
+                    SetMonData(&party[i], MON_DATA_HP_IV + j, &iv);
+                }
+                CalculateMonStats(&party[i]);
+            }
             }
         }
 
