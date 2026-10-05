@@ -1,5 +1,41 @@
 CeladonCity_Condominiums_3F_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, CeladonCity_Condominiums_3F_OnTransition
 	.byte 0
+
+CeladonCity_Condominiums_3F_OnTransition::
+	setflag FLAG_TEMP_1
+	goto_if_eq VAR_SQ_CELADON_STATE, 1, CeladonCity_Condominiums_3F_EventScript_ShowRooftopEevee
+	end
+
+CeladonCity_Condominiums_3F_EventScript_ShowRooftopEevee::
+	clearflag FLAG_TEMP_1
+	end
+
+CeladonCity_Condominiums_3F_EventScript_RooftopEevee::
+	lock
+	goto_if_ne VAR_SQ_CELADON_STATE, 1, CeladonCity_Condominiums_3F_EventScript_HideRooftopEevee
+	special GetPlayerFacingDirection
+	goto_if_eq VAR_RESULT, DIR_WEST, CeladonCity_Condominiums_3F_EventScript_RooftopEeveeAdvance
+	setvar VAR_SQ_CELADON_STATE, 0
+	setflag FLAG_TEMP_1
+	removeobject LOCALID_ROOFTOP_EEVEE_STAGE2
+	msgbox CeladonCity_Condominiums_3F_Text_RooftopEeveeRetreats
+	release
+	end
+
+CeladonCity_Condominiums_3F_EventScript_RooftopEeveeAdvance::
+	setvar VAR_SQ_CELADON_STATE, 2
+	setflag FLAG_TEMP_1
+	removeobject LOCALID_ROOFTOP_EEVEE_STAGE2
+	msgbox CeladonCity_Condominiums_3F_Text_RooftopEeveeDartsAway
+	release
+	end
+
+CeladonCity_Condominiums_3F_EventScript_HideRooftopEevee::
+	setflag FLAG_TEMP_1
+	removeobject LOCALID_ROOFTOP_EEVEE_STAGE2
+	release
+	end
 
 CeladonCity_Condominiums_3F_EventScript_Programmer::
 	msgbox CeladonCity_Condominiums_3F_Text_ImTheProgrammer, MSGBOX_NPC
