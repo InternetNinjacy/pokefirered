@@ -111,3 +111,41 @@ Route11_Text_DavePostBattle::
 Route11_Text_DiglettsCave::
     .string "DIGLETT'S CAVE$"
 
+Route11_Text_BlueIntroWater::
+    .string "{RIVAL}: {PLAYER}! Look what I found!\p"
+    .string "LOMBRE!\p"
+    .string "Tell me this little guy isn't\n"
+    .string "AWESOME!\p"
+    .string "Okay, okay, battle first.\n"
+    .string "LET'S GOOOOOO!$"
+
+Route11_Text_BlueIntroElectric::
+    .string "{RIVAL}: {PLAYER}! Look what I found!\p"
+    .string "FLAAFFY!\p"
+    .string "Tell me this little guy isn't\n"
+    .string "AWESOME!\p"
+    .string "Okay, okay, battle first.\n"
+    .string "LET'S GOOOOOO!$"
+
+Route11_Text_BlueIntroFire::
+    .string "{RIVAL}: {PLAYER}! Look what I found!\p"
+    .string "GROWLITHE!\p"
+    .string "Tell me GROWLITHE isn't the coolest\n"
+    .string "thing you've ever seen!\p"
+    .string "Okay, okay, battle first.\n"
+    .string "LET'S GOOOOOO!$"
+
+Route11_Text_BlueDefeat::
+    .string "YES! That was GREAT!\p"
+    .string "Dude, you make me wanna train\n"
+    .string "even harder!$"
+
+Route11_Text_BlueVictory::
+    .string "LET'S GOOOOOO!\p"
+    .string "The new guy totally pulled it off!\p"
+    .string "That was GREAT!$"
+
+Route11_Text_BluePostBattle::
+    .string "Man, I LOVE battling you.\p"
+    .string "Next time's gonna be even better!$"
+

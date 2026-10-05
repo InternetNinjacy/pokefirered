@@ -111,3 +111,32 @@ CinnabarIsland_Text_IfYouHaveTriPassYouCanGoAgain::
     .string "VERMILION PORT.\p"
     .string "All right, thanks for your company!$"
 
+CinnabarIsland_Text_BlueIntro::
+    .string "{RIVAL}: {PLAYER}!\p"
+    .string "DUDE! CINNABAR!\p"
+    .string "There's a volcano! There's a giant\n"
+    .string "creepy mansion!\p"
+    .string "There's a LAB where they bring\n"
+    .string "fossils back to life!\p"
+    .string "This island is RADICAL!\p"
+    .string "Oh! And my team's gotten CRAZY\n"
+    .string "strong.\p"
+    .string "You HAVE to battle me.\p"
+    .string "LET'S GOOOOOO!$"
+
+CinnabarIsland_Text_BlueDefeat::
+    .string "HAHAHA!\p"
+    .string "YES!\p"
+    .string "THAT was a battle!$"
+
+CinnabarIsland_Text_BlueVictory::
+    .string "LET'S GOOOOOO!\p"
+    .string "Dude, that was AWESOME!\p"
+    .string "We're getting SO strong!$"
+
+CinnabarIsland_Text_BluePostBattle::
+    .string "Man... every time I think I've\n"
+    .string "caught up, you do THAT.\p"
+    .string "This is great.\p"
+    .string "Now I've gotta get even stronger!$"
+

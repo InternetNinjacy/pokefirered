@@ -104,41 +104,32 @@ SilphCo_7F_Text_Grunt2PostBattle::
     .string "ticked off!$"
 
 SilphCo_7F_Text_RivalWhatKeptYou::
-    .string "{RIVAL}: What kept you, {PLAYER}?$"
+    .string "{RIVAL}: {PLAYER}! {PLAYER}! {PLAYER}!$"
 
 SilphCo_7F_Text_RivalIntro::
-    .string "{RIVAL}: Hahaha! I thought you'd\n"
-    .string "turn up if I waited here!\p"
-    .string "I guess TEAM ROCKET slowed you\n"
-    .string "down! Not that I care!\p"
-    .string "I saw you in SAFFRON, so I decided\n"
-    .string "to see if you got better!$"
+    .string "LOOK AT GROWLITHE!\p"
+    .string "HE'S HUGE NOW!\p"
+    .string "AR-CAN-INE!\p"
+    .string "Dude, everybody's gotten SO strong!\p"
+    .string "I know TEAM ROCKET's all over this\n"
+    .string "place, but you HAVE to battle me.\p"
+    .string "LET'S GOOOOOO!$"
 
 SilphCo_7F_Text_RivalDefeat::
-    .string "Oh, man!\n"
-    .string "So, you are ready for BOSS\l"
-    .string "ROCKET!$"
+    .string "YES!\p"
+    .string "That was AWESOME!\p"
+    .string "Arcanine, you were AMAZING!$"
 
 SilphCo_7F_Text_RivalVictory::
-    .string "{RIVAL}“おまえなあ‥\p"
-    .string "こんな　うでまえじゃ\n"
-    .string "まだまだ‥\l"
-    .string "いちにんまえ　とは　いえないぜ$"
+    .string "LET'S GOOOOOO!\p"
+    .string "Did you SEE Arcanine?!\p"
+    .string "Dude, that was SO GOOD!$"
 
 SilphCo_7F_Text_RivalPostBattle::
-    .string "Well, {PLAYER}!\n"
-    .string "I'm moving on up and ahead!\p"
-    .string "By checking my POKéDEX, I'm\n"
-    .string "starting to see what's strong and\l"
-    .string "how they evolve!\p"
-    .string "Am I a genius or what?\p"
-    .string "I'm going to the POKéMON LEAGUE to\n"
-    .string "boot out the ELITE FOUR.\p"
-    .string "I'll become the world's most\n"
-    .string "powerful TRAINER!\p"
-    .string "{PLAYER}, well, good luck to you!\n"
-    .string "Don't sweat it!\l"
-    .string "Smell ya!$"
+    .string "Okay! You go deal with TEAM ROCKET.\p"
+    .string "I'm gonna keep training.\p"
+    .string "Next time, we're making that battle\n"
+    .string "EVEN BETTER!$"
 
 SilphCo_7F_Text_FloorSign::
     .string "SILPH CO. HEAD OFFICE\n"

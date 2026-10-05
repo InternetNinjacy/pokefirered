@@ -1,34 +1,32 @@
 PokemonTower_2F_Text_RivalIntro::
-    .string "{RIVAL}: Hey, {PLAYER}!\n"
-    .string "What brings you here?\l"
-    .string "Is your POKéMON dead?\p"
-    .string "Hey! It's alive!\p"
-    .string "I can at least make them faint!\n"
-    .string "Let's go!$"
+    .string "{RIVAL}: {PLAYER}! There you are!\p"
+    .string "Dude, this place is CREEPY.\p"
+    .string "I heard something upstairs and I'm,\n"
+    .string "like... ninety percent sure it was\l"
+    .string "a ghost.\p"
+    .string "...Which is AWESOME.\p"
+    .string "Anyway! Look how much stronger\n"
+    .string "everybody's gotten!\p"
+    .string "C'MON! LET'S BATTLE!$"
 
 PokemonTower_2F_Text_RivalDefeat::
-    .string "What?\n"
-    .string "You stinker!\p"
-    .string "I took it easy on you, too!$"
+    .string "WHOA!\p"
+    .string "THAT WAS AWESOME!\p"
+    .string "Dude, even the GHOSTS probably\n"
+    .string "felt that one!$"
 
-@ Unused. Translated below
-@ Aw, man! They really kicked the bucket! Weak! Do them a favor and raise them more properly.
 PokemonTower_2F_Text_RivalVictory::
-    .string "{RIVAL}“あーあ‥！\n"
-    .string "ほんとに　くたばっちまったぞ！\l"
-    .string "よわいなー！\l"
-    .string "もっと　ちゃんと　そだてて　やれよ$"
+    .string "YES!\p"
+    .string "That was AWESOME!\p"
+    .string "Okay, now I REALLY wanna see\n"
+    .string "what's upstairs!$"
 
 PokemonTower_2F_Text_RivalPostBattle::
-    .string "How's your POKéDEX coming?\n"
-    .string "I just caught a CUBONE!\p"
-    .string "I can't find the bigger MAROWAK.\n"
-    .string "Where could they be?\p"
-    .string "I bet there aren't any left!\p"
-    .string "Well, I better get going.\n"
-    .string "I've got a lot to accomplish,\l"
-    .string "unlike you.\p"
-    .string "Smell ya later!$"
+    .string "Man, you're getting REALLY good.\p"
+    .string "Okay! I'm going upstairs.\p"
+    .string "If I see an actual ghost, I'm\n"
+    .string "telling you FIRST.\p"
+    .string "...After I freak out a little.$"
 
 PokemonTower_2F_Text_SilphScopeCouldUnmaskGhosts::
     .string "Even we could not identify the\n"
