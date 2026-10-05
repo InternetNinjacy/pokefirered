@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gflib.h"
+#include "new_game.h"
 #include "random.h"
 #include "overworld.h"
 #include "constants/maps.h"
@@ -30,8 +31,24 @@
 #include "pokemon_jump.h"
 #include "event_scripts.h"
 
+struct NewGamePlusCarryover
+{
+    u8 trainerId[TRAINER_ID_LENGTH];
+    u32 encryptionKey;
+    u16 registeredItem;
+    struct ItemSlot pcItems[PC_ITEMS_COUNT];
+    struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
+    struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
+    struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
+    struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
+    struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
+    struct PokemonStorage pokemonStorage;
+};
+
 // this file's functions
 static void ResetMiniGamesResults(void);
+static struct NewGamePlusCarryover *CreateNewGamePlusCarryover(void);
+static void RestoreNewGamePlusCarryover(struct NewGamePlusCarryover *carryover);
 
 // EWRAM vars
 EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
@@ -85,6 +102,48 @@ static void WarpToPlayersRoom(void)
     WarpIntoMap();
 }
 
+static struct NewGamePlusCarryover *CreateNewGamePlusCarryover(void)
+{
+    struct NewGamePlusCarryover *carryover = Alloc(sizeof(*carryover));
+
+    if (carryover == NULL)
+        return NULL;
+
+    CopyTrainerId(carryover->trainerId, gSaveBlock2Ptr->playerTrainerId);
+    carryover->encryptionKey = gSaveBlock2Ptr->encryptionKey;
+    carryover->registeredItem = gSaveBlock1Ptr->registeredItem;
+    memcpy(carryover->pcItems, gSaveBlock1Ptr->pcItems, sizeof(carryover->pcItems));
+    memcpy(carryover->bagPocket_Items, gSaveBlock1Ptr->bagPocket_Items, sizeof(carryover->bagPocket_Items));
+    memcpy(carryover->bagPocket_KeyItems, gSaveBlock1Ptr->bagPocket_KeyItems, sizeof(carryover->bagPocket_KeyItems));
+    memcpy(carryover->bagPocket_PokeBalls, gSaveBlock1Ptr->bagPocket_PokeBalls, sizeof(carryover->bagPocket_PokeBalls));
+    memcpy(carryover->bagPocket_TMHM, gSaveBlock1Ptr->bagPocket_TMHM, sizeof(carryover->bagPocket_TMHM));
+    memcpy(carryover->bagPocket_Berries, gSaveBlock1Ptr->bagPocket_Berries, sizeof(carryover->bagPocket_Berries));
+    carryover->pokemonStorage = *gPokemonStoragePtr;
+
+    return carryover;
+}
+
+static void RestoreNewGamePlusCarryover(struct NewGamePlusCarryover *carryover)
+{
+    CopyTrainerId(gSaveBlock2Ptr->playerTrainerId, carryover->trainerId);
+    gSaveBlock1Ptr->registeredItem = carryover->registeredItem;
+    memcpy(gSaveBlock1Ptr->pcItems, carryover->pcItems, sizeof(carryover->pcItems));
+    memcpy(gSaveBlock1Ptr->bagPocket_Items, carryover->bagPocket_Items, sizeof(carryover->bagPocket_Items));
+    memcpy(gSaveBlock1Ptr->bagPocket_KeyItems, carryover->bagPocket_KeyItems, sizeof(carryover->bagPocket_KeyItems));
+    memcpy(gSaveBlock1Ptr->bagPocket_PokeBalls, carryover->bagPocket_PokeBalls, sizeof(carryover->bagPocket_PokeBalls));
+    memcpy(gSaveBlock1Ptr->bagPocket_TMHM, carryover->bagPocket_TMHM, sizeof(carryover->bagPocket_TMHM));
+    memcpy(gSaveBlock1Ptr->bagPocket_Berries, carryover->bagPocket_Berries, sizeof(carryover->bagPocket_Berries));
+    *gPokemonStoragePtr = carryover->pokemonStorage;
+
+    // Bag quantities are encrypted with the source save's key. The normal
+    // new-game path uses key 0 until the save blocks are moved later, so
+    // re-key the restored quantities to 0 without disturbing the freshly
+    // initialized money, game stats, or other encrypted new-run fields.
+    gSaveBlock2Ptr->encryptionKey = carryover->encryptionKey;
+    ApplyNewEncryptionKeyToBagItems_(0);
+    gSaveBlock2Ptr->encryptionKey = 0;
+}
+
 void Sav2_ClearSetDefault(void)
 {
     ClearSav2();
@@ -109,6 +168,10 @@ void NewGameInitData(void)
     u8 rivalName[PLAYER_NAME_LENGTH + 1];
     u8 greenName[PLAYER_NAME_LENGTH + 1];
     u16 samGameMode = gSaveBlock1Ptr->vars[VAR_SAM_GAME_MODE - VARS_START];
+    struct NewGamePlusCarryover *newGamePlusCarryover = NULL;
+
+    if (gNewGamePlusRequested)
+        newGamePlusCarryover = CreateNewGamePlusCarryover();
 
     StringCopy(rivalName, gSaveBlock1Ptr->rivalName);
     StringCopy(greenName, gSaveBlock1Ptr->samEdition.greenName);
@@ -154,6 +217,13 @@ void NewGameInitData(void)
     StringCopy(gSaveBlock1Ptr->samEdition.greenName, greenName);
     gSaveBlock1Ptr->vars[VAR_SAM_GAME_MODE - VARS_START] = samGameMode;
     ResetTrainerTowerResults();
+
+    if (newGamePlusCarryover != NULL)
+    {
+        RestoreNewGamePlusCarryover(newGamePlusCarryover);
+        Free(newGamePlusCarryover);
+    }
+    gNewGamePlusRequested = FALSE;
 }
 
 static void ResetMiniGamesResults(void)
