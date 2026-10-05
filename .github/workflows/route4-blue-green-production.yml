@@ -1,0 +1,29 @@
+name: Route 4 Blue Green Production Delta
+
+on:
+  push:
+    branches:
+      - sam/route4-blue-green-double-battle
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: sam/route4-blue-green-double-battle
+          fetch-depth: 0
+      - name: Apply Route 4 shared rival battle
+        run: python3 .github/route4_apply.py
+      - name: Commit production delta
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/route4-blue-green-production.yml .github/route4_apply.py
+          git add include/constants/opponents.h src/data/sam_blue_parties.h src/data/trainers.h data/maps/Route4/map.json data/maps/Route4/scripts.inc data/maps/Route4/text.inc
+          git commit -m "Route4: implement shared Blue Green double battle"
+          git push origin HEAD:sam/route4-blue-green-double-battle
