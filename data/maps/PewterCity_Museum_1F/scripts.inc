@@ -152,8 +152,8 @@ PewterCity_Museum_1F_EventScript_MuseumChallengeInProgress::
 	goto_if_eq VAR_SQ_PEWTER_STAGE, 1, PewterCity_Museum_1F_EventScript_MuseumChallengeStage1
 	goto_if_eq VAR_SQ_PEWTER_STAGE, 2, PewterCity_Museum_1F_EventScript_MuseumChallengeStage2
 	goto_if_eq VAR_SQ_PEWTER_STAGE, 3, PewterCity_Museum_1F_EventScript_MuseumChallengeStage3
-	msgbox PewterCity_Museum_1F_Text_MuseumChallengeRewardPending
-	release
+	goto_if_eq VAR_SQ_PEWTER_STAGE, 4, PewterCity_Museum_1F_EventScript_MuseumChallengeTryReward
+	goto PewterCity_Museum_1F_EventScript_MuseumChallengeComplete
 	end
 
 PewterCity_Museum_1F_EventScript_MuseumChallengeStage1::
@@ -194,11 +194,26 @@ PewterCity_Museum_1F_EventScript_MuseumChallengeStage3::
 	goto_if_eq VAR_RESULT, NO, PewterCity_Museum_1F_EventScript_MuseumChallengeWrong
 	setvar VAR_SQ_PEWTER_STAGE, 4
 	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage3Clear
-	release
+	goto PewterCity_Museum_1F_EventScript_MuseumChallengeTryReward
 	end
 
 PewterCity_Museum_1F_EventScript_MuseumChallengeWrong::
 	msgbox PewterCity_Museum_1F_Text_MuseumChallengeWrong
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeTryReward::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeRewardPending
+	givepreownedmon SPECIES_SANDSHREW, 10, PewterCity_Museum_1F_Text_CuratorOtName, OTID_GIFT_CURATOR, MALE
+	goto_if_eq VAR_RESULT, 2, PewterCity_Museum_1F_EventScript_MuseumChallengeNoRoom
+	setvar VAR_SQ_PEWTER_STAGE, 5
+	setflag FLAG_SQ_PEWTER_COMPLETE
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeRewardSuccess
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeNoRoom::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeNoRoom
 	release
 	end
 
