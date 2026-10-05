@@ -13,7 +13,9 @@ PokedexRating_EventScript_TryOakMilestoneRewards::
 	copyvar VAR_0x800B, VAR_0x8006
 	call_if_unset FLAG_OAK_REWARD_30_CLAIMED, PokedexRating_EventScript_TryOakReward30
 	call_if_unset FLAG_OAK_REWARD_50_CLAIMED, PokedexRating_EventScript_TryOakReward50
+	call_if_unset FLAG_OAK_REWARD_75_CLAIMED, PokedexRating_EventScript_TryOakReward75
 	call_if_unset FLAG_OAK_REWARD_100_CLAIMED, PokedexRating_EventScript_TryOakReward100
+	call_if_unset FLAG_OAK_REWARD_125_CLAIMED, PokedexRating_EventScript_TryOakReward125
 	return
 
 PokedexRating_EventScript_TryOakReward30::
@@ -34,6 +36,16 @@ PokedexRating_EventScript_TryOakReward50::
 	setflag FLAG_OAK_REWARD_50_CLAIMED
 	return
 
+PokedexRating_EventScript_TryOakReward75::
+	goto_if_lt VAR_0x800B, 75, PokedexRating_EventScript_Return
+	msgbox PokedexRating_Text_OakReward75
+	setvar VAR_0x8004, 0
+	callnative GiveSamOakResearchGift
+	goto_if_eq VAR_RESULT, 2, PokedexRating_EventScript_OakGiftNoRoom
+	setflag FLAG_OAK_REWARD_75_CLAIMED
+	msgbox PokedexRating_Text_ReceivedChanseyFromOak
+	return
+
 PokedexRating_EventScript_TryOakReward100::
 	goto_if_lt VAR_0x800B, 100, PokedexRating_EventScript_Return
 	checkitemspace ITEM_TM17_EARTHQUAKE, 1
@@ -41,6 +53,20 @@ PokedexRating_EventScript_TryOakReward100::
 	msgbox PokedexRating_Text_OakReward100
 	giveitem_msg PokedexRating_Text_ReceivedTM17FromOak, ITEM_TM17_EARTHQUAKE, 1
 	setflag FLAG_OAK_REWARD_100_CLAIMED
+	return
+
+PokedexRating_EventScript_TryOakReward125::
+	goto_if_lt VAR_0x800B, 125, PokedexRating_EventScript_Return
+	msgbox PokedexRating_Text_OakReward125
+	setvar VAR_0x8004, 1
+	callnative GiveSamOakResearchGift
+	goto_if_eq VAR_RESULT, 2, PokedexRating_EventScript_OakGiftNoRoom
+	setflag FLAG_OAK_REWARD_125_CLAIMED
+	msgbox PokedexRating_Text_ReceivedDratiniFromOak
+	return
+
+PokedexRating_EventScript_OakGiftNoRoom::
+	msgbox PokedexRating_Text_OakGiftNoRoom
 	return
 
 PokedexRating_EventScript_Return::
