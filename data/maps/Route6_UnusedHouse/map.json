@@ -1,21 +1,43 @@
 {
   "id": "MAP_ROUTE6_UNUSED_HOUSE",
   "name": "Route6_UnusedHouse",
-  "layout": "LAYOUT_HOUSE2",
-  "music": "MUS_ROUTE3",
-  "region_map_section": "MAPSEC_ROUTE_6",
+  "layout": "LAYOUT_UNDERGROUND_PATH_ENTRANCE",
+  "music": "MUS_FUCHSIA",
+  "region_map_section": "MAPSEC_CERULEAN_CITY",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_INDOOR",
   "allow_cycling": false,
   "allow_escaping": false,
-  "allow_running": false,
+  "allow_running": true,
   "show_map_name": false,
   "floor_number": 0,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": null,
   "object_events": [],
-  "warp_events": [],
+  "warp_events": [
+    {
+      "x": 5,
+      "y": 8,
+      "elevation": 3,
+      "dest_map": "MAP_CERULEAN_CITY_HOUSE4",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 6,
+      "y": 8,
+      "elevation": 3,
+      "dest_map": "MAP_CERULEAN_CITY_HOUSE4",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 7,
+      "y": 8,
+      "elevation": 3,
+      "dest_map": "MAP_CERULEAN_CITY_HOUSE4",
+      "dest_warp_id": "0"
+    }
+  ],
   "coord_events": [],
   "bg_events": []
 }
