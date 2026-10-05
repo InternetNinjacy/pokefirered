@@ -131,3 +131,4 @@ jobs:
           git add include/constants/opponents.h src/data.c src/data/trainers.h
           git commit -m "Thomas: wire six trainer records"
           git push origin HEAD:sam/thomas-chunk1-trainer-foundation
+# retrigger
