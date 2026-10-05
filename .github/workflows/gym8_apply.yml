@@ -1,0 +1,148 @@
+name: Gym 8 one-shot apply
+
+on:
+  push:
+    branches:
+      - sam/gym8-viridian-current
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: contains(github.event.head_commit.message, '[GYM8_APPLY]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: sam/gym8-viridian-current
+          fetch-depth: 0
+      - name: Apply locked Viridian trainer package
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          header = r'''// Pokemon: Sam Edition - Viridian Gym 8 locked trainer packages.
+          // Ordinary Gym Trainers use default level-up moves unless a held item was explicitly locked.
+
+          static const struct TrainerMonNoItemDefaultMoves sParty_SamGym8Cole[] = {
+              {.iv = 40, .lvl = 39, .species = SPECIES_HOUNDOOM},
+              {.iv = 40, .lvl = 39, .species = SPECIES_DRAGONAIR},
+          };
+
+          static const struct TrainerMonItemDefaultMoves sParty_SamGym8Kiyo[] = {
+              {.iv = 100, .lvl = 43, .species = SPECIES_SHELGON, .heldItem = ITEM_SITRUS_BERRY},
+          };
+
+          static const struct TrainerMonNoItemDefaultMoves sParty_SamGym8Samuel[] = {
+              {.iv = 100, .lvl = 37, .species = SPECIES_MAGNETON},
+              {.iv = 100, .lvl = 37, .species = SPECIES_MACHAMP},
+              {.iv = 100, .lvl = 38, .species = SPECIES_STARMIE},
+              {.iv = 100, .lvl = 39, .species = SPECIES_SCIZOR},
+              {.iv = 100, .lvl = 39, .species = SPECIES_VIBRAVA},
+          };
+
+          static const struct TrainerMonNoItemDefaultMoves sParty_SamGym8Yuji[] = {
+              {.iv = 100, .lvl = 38, .species = SPECIES_ARCANINE},
+              {.iv = 100, .lvl = 38, .species = SPECIES_LAPRAS},
+              {.iv = 100, .lvl = 38, .species = SPECIES_HERACROSS},
+              {.iv = 100, .lvl = 38, .species = SPECIES_ALAKAZAM},
+              {.iv = 100, .lvl = 38, .species = SPECIES_DRAGONAIR},
+          };
+
+          static const struct TrainerMonNoItemDefaultMoves sParty_SamGym8Atsushi[] = {
+              {.iv = 100, .lvl = 40, .species = SPECIES_HARIYAMA},
+              {.iv = 100, .lvl = 40, .species = SPECIES_SHELGON},
+          };
+
+          static const struct TrainerMonItemDefaultMoves sParty_SamGym8Jason[] = {
+              {.iv = 40, .lvl = 43, .species = SPECIES_VIBRAVA, .heldItem = ITEM_SITRUS_BERRY},
+          };
+
+          static const struct TrainerMonNoItemDefaultMoves sParty_SamGym8Warren[] = {
+              {.iv = 100, .lvl = 37, .species = SPECIES_AMPHAROS},
+              {.iv = 100, .lvl = 37, .species = SPECIES_STEELIX},
+              {.iv = 100, .lvl = 38, .species = SPECIES_GARDEVOIR},
+              {.iv = 100, .lvl = 39, .species = SPECIES_LUDICOLO},
+              {.iv = 100, .lvl = 39, .species = SPECIES_DRAGONAIR},
+          };
+
+          static const struct TrainerMonNoItemDefaultMoves sParty_SamGym8Takashi[] = {
+              {.iv = 100, .lvl = 38, .species = SPECIES_WALREIN},
+              {.iv = 100, .lvl = 38, .species = SPECIES_ELECTABUZZ},
+              {.iv = 100, .lvl = 38, .species = SPECIES_VIBRAVA},
+          };
+
+          static const struct TrainerMonItemCustomMoves sParty_SamGym8Giovanni[] = {
+              {
+                  .iv = 0, .lvl = 42, .species = SPECIES_DRAGONAIR, .heldItem = ITEM_NONE,
+                  .moves = {MOVE_THUNDER_WAVE, MOVE_ICE_BEAM, MOVE_SURF, MOVE_DRAGON_RAGE},
+              },
+              {
+                  .iv = 0, .lvl = 44, .species = SPECIES_KINGDRA, .heldItem = ITEM_MYSTIC_WATER,
+                  .moves = {MOVE_SURF, MOVE_ICE_BEAM, MOVE_DRAGON_BREATH, MOVE_RAIN_DANCE},
+              },
+              {
+                  .iv = 0, .lvl = 45, .species = SPECIES_FLYGON, .heldItem = ITEM_SOFT_SAND,
+                  .moves = {MOVE_EARTHQUAKE, MOVE_DRAGON_BREATH, MOVE_CRUNCH, MOVE_ROCK_SLIDE},
+              },
+              {
+                  .iv = 0, .lvl = 45, .species = SPECIES_ALTARIA, .heldItem = ITEM_NONE,
+                  .moves = {MOVE_AERIAL_ACE, MOVE_DRAGON_BREATH, MOVE_SING, MOVE_SAFEGUARD},
+              },
+              {
+                  .iv = 0, .lvl = 50, .species = SPECIES_SALAMENCE, .heldItem = ITEM_LUM_BERRY,
+                  .moves = {MOVE_DRAGON_CLAW, MOVE_EARTHQUAKE, MOVE_AERIAL_ACE, MOVE_FLAMETHROWER},
+              },
+          };
+          '''.replace('          ', '')
+
+          hp = Path('src/data/sam_gym8_viridian_parties.h')
+          hp.write_text(header)
+
+          data = Path('src/data.c')
+          text = data.read_text()
+          anchor = '#include "data/sam_gym2_cerulean_parties.h"\n'
+          insert = anchor + '#include "data/sam_gym8_viridian_parties.h"\n'
+          if '#include "data/sam_gym8_viridian_parties.h"' not in text:
+              assert text.count(anchor) == 1, 'data.c Gym 8 include anchor drifted'
+              text = text.replace(anchor, insert)
+              data.write_text(text)
+
+          trainers = Path('src/data/trainers.h')
+          text = trainers.read_text()
+          smart = 'AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY'
+          targets = {
+              'TRAINER_TAMER_COLE': ('NO_ITEM_DEFAULT_MOVES', 'sParty_SamGym8Cole'),
+              'TRAINER_BLACK_BELT_KIYO': ('ITEM_DEFAULT_MOVES', 'sParty_SamGym8Kiyo'),
+              'TRAINER_COOLTRAINER_SAMUEL': ('NO_ITEM_DEFAULT_MOVES', 'sParty_SamGym8Samuel'),
+              'TRAINER_COOLTRAINER_YUJI': ('NO_ITEM_DEFAULT_MOVES', 'sParty_SamGym8Yuji'),
+              'TRAINER_BLACK_BELT_ATSUSHI': ('NO_ITEM_DEFAULT_MOVES', 'sParty_SamGym8Atsushi'),
+              'TRAINER_TAMER_JASON': ('ITEM_DEFAULT_MOVES', 'sParty_SamGym8Jason'),
+              'TRAINER_COOLTRAINER_WARREN': ('NO_ITEM_DEFAULT_MOVES', 'sParty_SamGym8Warren'),
+              'TRAINER_BLACK_BELT_TAKASHI': ('NO_ITEM_DEFAULT_MOVES', 'sParty_SamGym8Takashi'),
+              'TRAINER_LEADER_GIOVANNI': ('ITEM_CUSTOM_MOVES', 'sParty_SamGym8Giovanni'),
+          }
+          for trainer, (party_macro, party_name) in targets.items():
+              pat = re.compile(r'(\[' + re.escape(trainer) + r'\]\s*=\s*\{.*?\n\s*\},)', re.S)
+              matches = list(pat.finditer(text))
+              assert len(matches) == 1, f'{trainer}: expected one record, found {len(matches)}'
+              block = matches[0].group(1)
+              block2, n1 = re.subn(r'\.aiFlags\s*=\s*[^,\n]+(?:\s*\|\s*[^,\n]+)*,', '.aiFlags = ' + smart + ',', block, count=1)
+              assert n1 == 1, f'{trainer}: aiFlags line not found'
+              block3, n2 = re.subn(r'\.party\s*=\s*[A-Z_]+\([^\n]+\),', f'.party = {party_macro}({party_name}),', block2, count=1)
+              assert n2 == 1, f'{trainer}: party line not found'
+              text = text[:matches[0].start()] + block3 + text[matches[0].end():]
+          trainers.write_text(text)
+
+          # Self-remove: this workflow exists only to apply the large-file edits once.
+          Path('.github/workflows/gym8_apply.yml').unlink()
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data.c src/data/trainers.h src/data/sam_gym8_viridian_parties.h .github/workflows/gym8_apply.yml
+          git commit -m "GYM8: bind locked Viridian trainer and Giovanni battle packages"
+          git push origin HEAD:sam/gym8-viridian-current
