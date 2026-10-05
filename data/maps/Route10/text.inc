@@ -84,3 +84,48 @@ Route10_Text_RockTunnel::
 Route10_Text_PowerPlant::
     .string "POWER PLANT$"
 
+Route10_Text_BlueIntroWater::
+    .string "{RIVAL}: {PLAYER}! DUDE!\p"
+    .string "You are NOT ready for this one.\p"
+    .string "HORSEA!\p"
+    .string "LOOK AT HIM! HE'S SO COOL!\p"
+    .string "I think I'm starting to get this\n"
+    .string "whole team-building thing.\p"
+    .string "Okay. Battle time.\n"
+    .string "LET'S GOOOOOO!$"
+
+Route10_Text_BlueIntroElectric::
+    .string "{RIVAL}: {PLAYER}! DUDE!\p"
+    .string "You are NOT ready for this one.\p"
+    .string "MAGNEMITE!\p"
+    .string "LOOK AT HIM! HE'S SO COOL!\p"
+    .string "I think I'm starting to get this\n"
+    .string "whole team-building thing.\p"
+    .string "Okay. Battle time.\n"
+    .string "LET'S GOOOOOO!$"
+
+Route10_Text_BlueIntroFire::
+    .string "{RIVAL}: {PLAYER}! DUDE!\p"
+    .string "You are NOT ready for this one.\p"
+    .string "CHARMELEON!\p"
+    .string "LOOK AT HIM! HE'S SO COOL!\p"
+    .string "I think I'm starting to get this\n"
+    .string "whole team-building thing.\p"
+    .string "Okay. Battle time.\n"
+    .string "LET'S GOOOOOO!$"
+
+Route10_Text_BlueDefeat::
+    .string "HAHA! YES!\p"
+    .string "That was AWESOME!\p"
+    .string "Next time's gonna be even better!$"
+
+Route10_Text_BlueVictory::
+    .string "LET'S GOOOOOO!\p"
+    .string "I didn't know if that was gonna work!\p"
+    .string "But it DID!$"
+
+Route10_Text_BluePostBattle::
+    .string "Okay, that taught me SO much.\p"
+    .string "I gotta go try like six new ideas.\n"
+    .string "See you, dude!$"
+
