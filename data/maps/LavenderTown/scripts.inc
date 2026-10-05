@@ -30,6 +30,87 @@ LavenderTown_EventScript_Boy::
 	msgbox LavenderTown_Text_GhostsAppearedInTower, MSGBOX_NPC
 	end
 
+LavenderTown_EventScript_MemorialCaretaker::
+	lock
+	faceplayer
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 0, LavenderTown_EventScript_MemorialCaretakerStart
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 1, LavenderTown_EventScript_MemorialCaretakerActive
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 2, LavenderTown_EventScript_MemorialCaretakerHaunterPending
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 3, LavenderTown_EventScript_MemorialCaretakerRewardPending
+	goto LavenderTown_EventScript_MemorialCaretakerComplete
+	end
+
+LavenderTown_EventScript_MemorialCaretakerStart::
+	msgbox LavenderTown_Text_MemorialCaretakerStart
+	setvar VAR_SQ_LAVENDER_OFFERINGS, 0
+	setvar VAR_SQ_LAVENDER_STATE, 1
+	release
+	end
+
+LavenderTown_EventScript_MemorialCaretakerActive::
+	msgbox LavenderTown_Text_MemorialCaretakerActive
+	release
+	end
+
+LavenderTown_EventScript_MemorialCaretakerHaunterPending::
+	msgbox LavenderTown_Text_MemorialCaretakerHaunterPending
+	release
+	end
+
+LavenderTown_EventScript_MemorialCaretakerRewardPending::
+	msgbox LavenderTown_Text_MemorialCaretakerRewardPending
+	release
+	end
+
+LavenderTown_EventScript_MemorialCaretakerComplete::
+	msgbox LavenderTown_Text_MemorialCaretakerComplete
+	release
+	end
+
+LavenderTown_EventScript_MemorialMeowth::
+	lock
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 0, LavenderTown_EventScript_MemorialDormant
+	msgbox LavenderTown_Text_MemorialMeowthEpitaph
+	release
+	end
+
+LavenderTown_EventScript_MemorialOddish::
+	lock
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 0, LavenderTown_EventScript_MemorialDormant
+	msgbox LavenderTown_Text_MemorialOddishEpitaph
+	release
+	end
+
+LavenderTown_EventScript_MemorialGrowlithe::
+	lock
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 0, LavenderTown_EventScript_MemorialDormant
+	msgbox LavenderTown_Text_MemorialGrowlitheEpitaph
+	release
+	end
+
+LavenderTown_EventScript_MemorialDormant::
+	msgbox LavenderTown_Text_MemorialDormant
+	release
+	end
+
+LavenderTown_EventScript_MemorialMonument::
+	lock
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 4, LavenderTown_EventScript_MemorialMonumentComplete
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 0, LavenderTown_EventScript_MemorialMonumentDormant
+	msgbox LavenderTown_Text_MemorialMonumentActive
+	release
+	end
+
+LavenderTown_EventScript_MemorialMonumentDormant::
+	msgbox LavenderTown_Text_MemorialMonumentDormant
+	release
+	end
+
+LavenderTown_EventScript_MemorialMonumentComplete::
+	msgbox LavenderTown_Text_MemorialMonumentComplete
+	release
+	end
+
 LavenderTown_EventScript_TownSign::
 	msgbox LavenderTown_Text_TownSign, MSGBOX_SIGN
 	end
