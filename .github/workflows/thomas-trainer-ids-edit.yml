@@ -1,0 +1,54 @@
+name: Thomas Trainer IDs Edit
+
+on:
+  push:
+    branches:
+      - sam/thomas-chunk1-trainer-ids
+
+permissions:
+  contents: write
+
+jobs:
+  apply-ids:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: sam/thomas-chunk1-trainer-ids
+          fetch-depth: 0
+      - name: Apply Thomas trainer IDs
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('include/constants/opponents.h')
+          text = p.read_text()
+          if 'TRAINER_THOMAS_NUGGET_BRIDGE' in text:
+              raise SystemExit(0)
+          anchor = '''#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783
+
+// Blue League branch allocations: 800-803.'''
+          replacement = '''#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783
+
+// Thomas Team Rocket rival central allocations: 784-789.
+#define TRAINER_THOMAS_NUGGET_BRIDGE                784
+#define TRAINER_THOMAS_CELADON_HIDEOUT              785
+#define TRAINER_THOMAS_POKEMON_TOWER                786
+#define TRAINER_THOMAS_SILPH_CO                     787
+#define TRAINER_THOMAS_CINNABAR_MANSION             788
+#define TRAINER_THOMAS_VIRIDIAN_GYM                 789
+
+// Blue League branch allocations: 800-803.'''
+          if anchor not in text:
+              raise SystemExit('expected trainer allocation anchor not found')
+          text = text.replace(anchor, replacement, 1)
+          p.write_text(text)
+          PY
+          if git diff --quiet -- include/constants/opponents.h; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add include/constants/opponents.h
+          git commit -m "Thomas: allocate trainer IDs 784-789"
+          git push origin HEAD:sam/thomas-chunk1-trainer-ids
