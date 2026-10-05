@@ -27,6 +27,17 @@ PokedexRating_Text_ReceivedTM54FromOak::
 	.string "{PLAYER} received TM54\n"
 	.string "from PROF. OAK!$"
 
+PokedexRating_Text_OakReward75::
+	.string "OAK: Seventy-five POKéMON!\n"
+	.string "Your POKéDEX is becoming quite a record.\p"
+	.string "I have a POKéMON here that deserves\n"
+	.string "a good TRAINER.\p"
+	.string "Take care of this CHANSEY, won't you?$"
+
+PokedexRating_Text_ReceivedChanseyFromOak::
+	.string "{PLAYER} received CHANSEY\n"
+	.string "from PROF. OAK!$"
+
 PokedexRating_Text_OakReward100::
 	.string "OAK: One hundred POKéMON!\n"
 	.string "Remarkable, {PLAYER}.\p"
@@ -38,6 +49,24 @@ PokedexRating_Text_OakReward100::
 PokedexRating_Text_ReceivedTM17FromOak::
 	.string "{PLAYER} received TM17\n"
 	.string "from PROF. OAK!$"
+
+PokedexRating_Text_OakReward125::
+	.string "OAK: One hundred twenty-five POKéMON!\n"
+	.string "Outstanding!\p"
+	.string "There is very little left for me to teach\n"
+	.string "you about collecting POKéMON.\p"
+	.string "I'd like you to raise this DRATINI.\p"
+	.string "I think you'll do very well together.$"
+
+PokedexRating_Text_ReceivedDratiniFromOak::
+	.string "{PLAYER} received DRATINI\n"
+	.string "from PROF. OAK!$"
+
+PokedexRating_Text_OakGiftNoRoom::
+	.string "OAK: It looks like you don't have room\n"
+	.string "for another POKéMON right now.\p"
+	.string "Make room in your party or PC and\n"
+	.string "come see me again.$"
 
 PokedexRating_Text_SeenXOwnedY::
 	.string "The amount of progress you've made\n"
