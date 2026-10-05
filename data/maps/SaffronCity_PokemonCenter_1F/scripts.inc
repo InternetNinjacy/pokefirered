@@ -39,3 +39,11 @@ SaffronCity_PokemonCenter_1F_EventScript_YoungsterRocketsGone::
 	msgbox SaffronCity_PokemonCenter_1F_Text_TeamRocketTookOff
 	release
 	end
+
+@ Chunk 5 owns Mara's availability/object foundation only. Chunk 6 owns the
+@ Poké Doll dialogue, reward transaction, Tauros package, and epilogue completion.
+SaffronCity_PokemonCenter_1F_EventScript_Mara::
+	lock
+	faceplayer
+	release
+	end
