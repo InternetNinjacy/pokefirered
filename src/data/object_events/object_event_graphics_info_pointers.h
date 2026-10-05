@@ -141,6 +141,7 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Miltank;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Magneton;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Onix;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lickitung;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Eevee;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lapras;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Zapdos;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Moltres;
@@ -334,4 +335,5 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_MAGNETON] = &gObjectEventGraphicsInfo_Magneton,
     [OBJ_EVENT_GFX_ONIX] = &gObjectEventGraphicsInfo_Onix,
     [OBJ_EVENT_GFX_LICKITUNG] = &gObjectEventGraphicsInfo_Lickitung,
+    [OBJ_EVENT_GFX_EEVEE] = &gObjectEventGraphicsInfo_Eevee,
 };
