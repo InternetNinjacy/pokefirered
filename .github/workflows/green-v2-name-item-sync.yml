@@ -1,0 +1,81 @@
+name: Green Champion name and item sync
+on:
+  push:
+    branches:
+      - sam/green-main-rival-production-v2
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: sam/green-main-rival-production-v2
+          fetch-depth: 0
+      - name: Apply current Green identity and item symbols
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          parties = Path('src/data/trainer_parties.h')
+          text = parties.read_text()
+          count = text.count('ITEM_0F5')
+          if count != 2:
+              raise SystemExit(f'expected 2 historical Ditto item aliases, found {count}')
+          parties.write_text(text.replace('ITEM_0F5', 'ITEM_ADAPTIVE_GENE'))
+
+          battle = Path('src/battle_message.c')
+          text = battle.read_text()
+          include_anchor = '#include "battle_ai_switch_items.h"\n'
+          if '#include "rival_names.h"\n' not in text:
+              if include_anchor not in text:
+                  raise SystemExit('battle_message include anchor missing')
+              text = text.replace(include_anchor, include_anchor + '#include "rival_names.h"\n', 1)
+
+          old = '''                    if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_EARLY
+                     || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_LATE
+                     || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION
+                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BRUNO
+                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BRUNO_2
+                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_WATER
+                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_ELECTRIC
+                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_WATER_2
+                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2)
+                        toCpy = GetExpandedPlaceholder(PLACEHOLDER_ID_RIVAL);
+                    else
+                        toCpy = gTrainers[gTrainerBattleOpponent_A].trainerName;'''
+
+          new = '''                    if (gTrainerBattleOpponent_A == TRAINER_CHAMPION_FIRST_SQUIRTLE
+                     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_FIRST_BULBASAUR
+                     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_FIRST_CHARMANDER
+                     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_SQUIRTLE
+                     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_BULBASAUR
+                     || gTrainerBattleOpponent_A == TRAINER_CHAMPION_REMATCH_CHARMANDER)
+                        toCpy = GetSamGreenName();
+                    else if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_EARLY
+                          || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_LATE
+                          || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BRUNO
+                          || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BRUNO_2
+                          || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_WATER
+                          || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_ELECTRIC
+                          || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_WATER_2
+                          || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2)
+                        toCpy = GetExpandedPlaceholder(PLACEHOLDER_ID_RIVAL);
+                    else
+                        toCpy = gTrainers[gTrainerBattleOpponent_A].trainerName;'''
+          if old not in text:
+              raise SystemExit('trainer-name routing anchor missing')
+          battle.write_text(text.replace(old, new, 1))
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/trainer_parties.h src/battle_message.c
+          git commit -m "Green: use chosen name and Adaptive Gene in Champion battles"
+          git rm .github/workflows/green-v2-name-item-sync.yml
+          git commit -m "Green: remove temporary name-item sync workflow"
+          git push origin HEAD:sam/green-main-rival-production-v2
