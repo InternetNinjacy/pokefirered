@@ -6,6 +6,21 @@ ViridianCity_Gym_OnLoad::
 	call EventScript_ThomasSyncVisibility
 	end
 
+ViridianCity_Gym_EventScript_Thomas::
+	lock
+	faceplayer
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_CINNABAR_CLEARED, ViridianCity_Gym_EventScript_ThomasBattle
+	release
+	end
+
+ViridianCity_Gym_EventScript_ThomasBattle::
+	call Thomas_EventScript_ViridianPreBattle
+	trainerbattle_no_intro TRAINER_THOMAS_VIRIDIAN_GYM, Thomas_Text_ViridianDefeat
+	call EventScript_ThomasSetQuitRocket
+	removeobject VAR_LAST_TALKED
+	release
+	end
+
 ViridianCity_Gym_EventScript_Giovanni::
 	famechecker FAMECHECKER_GIOVANNI, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_GIOVANNI, ViridianCity_Gym_Text_GiovanniIntro, ViridianCity_Gym_Text_GiovanniDefeat, ViridianCity_Gym_EventScript_DefeatedGiovanni, NO_MUSIC
