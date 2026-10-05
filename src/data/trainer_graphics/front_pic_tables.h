@@ -152,8 +152,6 @@ const struct MonCoords gTrainerFrontPicCoords[] =
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
-    {.size = 8, .y_offset = 1},
-    {.size = 8, .y_offset = 1},
     // ARCH-006 allocation-only trainer-picture placeholders (148-154).
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
@@ -366,7 +364,7 @@ const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
     TRAINER_PAL(POKEFAN_F, gTrainerPalette_PokefanF),
     TRAINER_PAL(EXPERT_M, gTrainerPalette_ExpertM),
     TRAINER_PAL(EXPERT_F, gTrainerPalette_ExpertF),
-    TRAINER_PAL(RS_YOUNGSTER, gTrainerPalette_RSYoungster),
+    TRAINER_PAL(RS_YOUNGSTER, gTrainerPalette_RSYYoungster),
     TRAINER_PAL(CHAMPION_STEVEN, gTrainerPalette_ChampionSteven),
     TRAINER_PAL(RS_FISHERMAN, gTrainerPalette_RSFisherman),
     TRAINER_PAL(CYCLING_TRIATHLETE_M, gTrainerPalette_CyclingTriathleteM),
