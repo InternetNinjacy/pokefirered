@@ -14,7 +14,7 @@ CeladonCity_Condominiums_2F_EventScript_ShowRooftopEevee::
 CeladonCity_Condominiums_2F_EventScript_RooftopEevee::
 	lock
 	goto_if_ne VAR_SQ_CELADON_STATE, 0, CeladonCity_Condominiums_2F_EventScript_HideRooftopEevee
-	special GetPlayerFacingDirection
+	specialvar VAR_RESULT, GetPlayerFacingDirection
 	goto_if_eq VAR_RESULT, DIR_SOUTH, CeladonCity_Condominiums_2F_EventScript_RooftopEeveeAdvance
 	msgbox CeladonCity_Condominiums_2F_Text_RooftopEeveeWrongApproach
 	release
