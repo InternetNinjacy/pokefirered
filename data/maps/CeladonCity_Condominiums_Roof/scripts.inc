@@ -20,7 +20,7 @@ CeladonCity_Condominiums_Roof_EventScript_ShowStage4::
 CeladonCity_Condominiums_Roof_EventScript_RooftopEeveeStage3::
 	lock
 	goto_if_ne VAR_SQ_CELADON_STATE, 2, CeladonCity_Condominiums_Roof_EventScript_HideStage3
-	special GetPlayerFacingDirection
+	specialvar VAR_RESULT, GetPlayerFacingDirection
 	goto_if_eq VAR_RESULT, DIR_NORTH, CeladonCity_Condominiums_Roof_EventScript_Stage3Advance
 	setvar VAR_SQ_CELADON_STATE, 1
 	setflag FLAG_TEMP_1
@@ -48,7 +48,7 @@ CeladonCity_Condominiums_Roof_EventScript_HideStage3::
 CeladonCity_Condominiums_Roof_EventScript_RooftopEeveeStage4::
 	lock
 	goto_if_ne VAR_SQ_CELADON_STATE, 3, CeladonCity_Condominiums_Roof_EventScript_HideStage4
-	special GetPlayerFacingDirection
+	specialvar VAR_RESULT, GetPlayerFacingDirection
 	goto_if_eq VAR_RESULT, DIR_WEST, CeladonCity_Condominiums_Roof_EventScript_Stage4Calm
 	setvar VAR_SQ_CELADON_STATE, 2
 	setflag FLAG_TEMP_2
