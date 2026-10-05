@@ -159,6 +159,10 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysA;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysN;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SSAnne;
 
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Leilani;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lehua;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Keahi;
+
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
     [OBJ_EVENT_GFX_RED_NORMAL] = &gObjectEventGraphicsInfo_RedNormal,
     [OBJ_EVENT_GFX_RED_BIKE] = &gObjectEventGraphicsInfo_RedBike,
@@ -315,9 +319,9 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
 
     // ARCH-006 allocation-only placeholders. SPRITE tasks replace these safe
     // existing routes with approved Sam assets when those assets are integrated.
-    [OBJ_EVENT_GFX_LEILANI] = &gObjectEventGraphicsInfo_ProfOak,
-    [OBJ_EVENT_GFX_LEHUA] = &gObjectEventGraphicsInfo_ProfOak,
-    [OBJ_EVENT_GFX_KEAHI] = &gObjectEventGraphicsInfo_ProfOak,
+    [OBJ_EVENT_GFX_LEILANI] = &gObjectEventGraphicsInfo_Leilani,
+    [OBJ_EVENT_GFX_LEHUA] = &gObjectEventGraphicsInfo_Lehua,
+    [OBJ_EVENT_GFX_KEAHI] = &gObjectEventGraphicsInfo_Keahi,
     [OBJ_EVENT_GFX_SATOSHI] = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BAZ] = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_M] = &gObjectEventGraphicsInfo_ProfOak,
