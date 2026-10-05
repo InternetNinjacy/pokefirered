@@ -1617,6 +1617,15 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                     nameHash += gSpeciesNames[partyData[i].species][j];
 
                 personalityValue += nameHash << 8;
+                if (trainerNum == TRAINER_YOUNGSTER_JOEY)
+                {
+                    static const u8 sJoeyNatures[PARTY_SIZE] =
+                    {
+                        NATURE_TIMID, NATURE_MODEST, NATURE_MODEST,
+                        NATURE_BOLD, NATURE_ADAMANT, NATURE_TIMID
+                    };
+                    personalityValue += (sJoeyNatures[i] + NUM_NATURES - (personalityValue % NUM_NATURES)) % NUM_NATURES;
+                }
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
                 CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
@@ -1628,6 +1637,32 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 }
                 break;
             }
+            }
+
+            if (trainerNum == TRAINER_YOUNGSTER_JOEY)
+            {
+                static const u8 sJoeyEvs[PARTY_SIZE][NUM_STATS] =
+                {
+                    {  4,   0,   0, 252, 252,   0}, // Zapdos
+                    {252,   0,   0,   0, 252,   4}, // Gardevoir
+                    {  4,   0,   0, 252, 252,   0}, // Moltres
+                    {252,   0, 252,   0,   0,   4}, // Articuno
+                    {  0, 252,   0, 252,   0,   4}, // Dragonite
+                    {  4,   0,   0, 252, 252,   0}, // Mewtwo
+                };
+                static const u8 sJoeyHpGrassIvs[NUM_STATS] = {31, 30, 31, 30, 30, 31};
+                u8 value;
+                u8 abilityNum = 0;
+
+                for (j = 0; j < NUM_STATS; j++)
+                {
+                    value = sJoeyEvs[i][j];
+                    SetMonData(&party[i], MON_DATA_HP_EV + j, &value);
+                    value = (i == 0 || i == 2) ? sJoeyHpGrassIvs[j] : 31;
+                    SetMonData(&party[i], MON_DATA_HP_IV + j, &value);
+                }
+                SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityNum);
+                CalculateMonStats(&party[i]);
             }
 
             // Sam Edition Blue: force the authored Hidden Power Grass on League Manectric
