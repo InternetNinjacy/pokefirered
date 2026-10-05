@@ -3,64 +3,24 @@ name: Gym8 production closure insertion
 on:
   push:
     branches:
-      - sam/gym8-viridian-production-closure
-    paths:
-      - .github/workflows/gym8-production-closure-insert.yml
+      - "sam/gym8-viridian-production-closure"
 
 permissions:
   contents: write
 
 jobs:
-  insert-viridian-satoshi-trainers:
+  patch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: sam/gym8-viridian-production-closure
+          ref: "sam/gym8-viridian-production-closure"
           fetch-depth: 0
-
-      - name: Insert Viridian Satoshi trainer records
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          path = Path("src/data/trainers.h")
-          text = path.read_text()
-
-          if "[TRAINER_SATOSHI_VIRIDIAN_PRACTICE]" not in text:
-              anchor = "    [TRAINER_HIKER_CLIFF_PEWTER] = {"
-              block = '''    [TRAINER_SATOSHI_VIRIDIAN_PRACTICE] = {
-                  .trainerClass = TRAINER_CLASS_PKMN_TRAINER,
-                  .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-                  .trainerPic = TRAINER_PIC_SATOSHI,
-                  .trainerName = _("SATOSHI"),
-                  .items = {},
-                  .doubleBattle = FALSE,
-                  .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-                  .party = NO_ITEM_CUSTOM_MOVES(sParty_SatoshiViridianPractice),
-              },
-              [TRAINER_SATOSHI_VIRIDIAN_REMATCH] = {
-                  .trainerClass = TRAINER_CLASS_PKMN_TRAINER,
-                  .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-                  .trainerPic = TRAINER_PIC_SATOSHI,
-                  .trainerName = _("SATOSHI"),
-                  .items = {ITEM_FULL_RESTORE},
-                  .doubleBattle = FALSE,
-                  .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-                  .party = ITEM_CUSTOM_MOVES(sParty_SatoshiViridianRematch),
-              },
-'''
-              if anchor not in text:
-                  raise SystemExit("expected trainer insertion anchor not found")
-              text = text.replace(anchor, block + anchor, 1)
-              path.write_text(text)
-          PY
-
-      - name: Commit production edit and remove one-shot workflow
-        run: |
+      - run: python3 tools/gym8_patch_trainers.py
+      - run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/data/trainers.h
-          git rm .github/workflows/gym8-production-closure-insert.yml
+          git rm .github/workflows/gym8-production-closure-insert.yml tools/gym8_patch_trainers.py
           git commit -m "GYM8: bind Viridian Satoshi trainer records"
           git push origin HEAD:sam/gym8-viridian-production-closure
