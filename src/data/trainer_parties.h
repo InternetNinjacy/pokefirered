@@ -363,16 +363,18 @@ static const struct TrainerMonNoItemDefaultMoves sParty_BugCatcherJames[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_BugCatcherKent[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_BugCatcherKent[] = {
     {
         .iv = 0,
         .lvl = 11,
         .species = SPECIES_WEEDLE,
+        .moves = {MOVE_POISON_STING, MOVE_STRING_SHOT, MOVE_FURY_CUTTER, MOVE_SECRET_POWER},
     },
     {
         .iv = 0,
         .lvl = 11,
         .species = SPECIES_KAKUNA,
+        .moves = {MOVE_HARDEN, MOVE_IRON_DEFENSE, MOVE_POISON_STING, MOVE_PROTECT},
     },
 };
 
@@ -5763,7 +5765,12 @@ static const struct TrainerMonNoItemDefaultMoves sParty_GentlemanThomas[] = {
     {
         .iv = 0,
         .lvl = 18,
-        .species = SPECIES_GROWLITHE,
+        .species = SPECIES_LICKITUNG,
+    },
+    {
+        .iv = 0,
+        .lvl = 20,
+        .species = SPECIES_PERSIAN,
     },
 };
 

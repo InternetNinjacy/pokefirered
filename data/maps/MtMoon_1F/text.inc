@@ -69,6 +69,10 @@ MtMoon_1F_Text_KentPostBattle::
     .string "I saw them!\n"
     .string "I'm sure they're from TEAM ROCKET!$"
 
+MtMoon_1F_Text_KentNotEnoughMons::
+    .string "You need at least two POKéMON\n"
+    .string "for a Double Battle.$"
+
 MtMoon_1F_Text_RobbyIntro::
     .string "You need to go through this cave\n"
     .string "to get to CERULEAN CITY.$"
