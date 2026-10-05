@@ -73,6 +73,32 @@ PewterCity_Museum_1F_Text_WeHaveTwoFossilsOnExhibit::
     .string "We have two fossils of rare,\n"
     .string "prehistoric POKéMON on exhibit.$"
 
+PewterCity_Museum_1F_Text_MuseumChallengeOffer::
+    .string "We're offering a three-part\n"
+    .string "MUSEUM CHALLENGE today.\p"
+    .string "It starts with FOSSIL MATCHING.\n"
+    .string "Would you like to try it?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStarted::
+    .string "Excellent! Study the exhibits\n"
+    .string "carefully.\p"
+    .string "Your first task is FOSSIL\n"
+    .string "MATCHING.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeDecline::
+    .string "No problem. The challenge will be\n"
+    .string "here if you change your mind.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeInProgress::
+    .string "The MUSEUM CHALLENGE is still\n"
+    .string "underway.\p"
+    .string "Check the exhibits for your current\n"
+    .string "task.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeComplete::
+    .string "You completed our MUSEUM\n"
+    .string "CHALLENGE. Well done!$"
+
 PewterCity_Museum_1F_Text_BeautifulPieceOfAmber::
     .string "There is a beautiful piece of\n"
     .string "AMBER in a clear gold color.$"
