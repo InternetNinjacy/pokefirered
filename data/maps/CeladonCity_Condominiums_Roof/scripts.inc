@@ -1,5 +1,77 @@
 CeladonCity_Condominiums_Roof_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, CeladonCity_Condominiums_Roof_OnTransition
 	.byte 0
+
+CeladonCity_Condominiums_Roof_OnTransition::
+	setflag FLAG_TEMP_1
+	setflag FLAG_TEMP_2
+	goto_if_eq VAR_SQ_CELADON_STATE, 2, CeladonCity_Condominiums_Roof_EventScript_ShowStage3
+	goto_if_eq VAR_SQ_CELADON_STATE, 3, CeladonCity_Condominiums_Roof_EventScript_ShowStage4
+	end
+
+CeladonCity_Condominiums_Roof_EventScript_ShowStage3::
+	clearflag FLAG_TEMP_1
+	end
+
+CeladonCity_Condominiums_Roof_EventScript_ShowStage4::
+	clearflag FLAG_TEMP_2
+	end
+
+CeladonCity_Condominiums_Roof_EventScript_RooftopEeveeStage3::
+	lock
+	goto_if_ne VAR_SQ_CELADON_STATE, 2, CeladonCity_Condominiums_Roof_EventScript_HideStage3
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_eq VAR_RESULT, DIR_NORTH, CeladonCity_Condominiums_Roof_EventScript_Stage3Advance
+	setvar VAR_SQ_CELADON_STATE, 1
+	setflag FLAG_TEMP_1
+	removeobject LOCALID_ROOFTOP_EEVEE_STAGE3
+	msgbox CeladonCity_Condominiums_Roof_Text_RooftopEeveeRetreats
+	release
+	end
+
+CeladonCity_Condominiums_Roof_EventScript_Stage3Advance::
+	setvar VAR_SQ_CELADON_STATE, 3
+	setflag FLAG_TEMP_1
+	removeobject LOCALID_ROOFTOP_EEVEE_STAGE3
+	clearflag FLAG_TEMP_2
+	addobject LOCALID_ROOFTOP_EEVEE_STAGE4
+	msgbox CeladonCity_Condominiums_Roof_Text_RooftopEeveeDartsAcrossRoof
+	release
+	end
+
+CeladonCity_Condominiums_Roof_EventScript_HideStage3::
+	setflag FLAG_TEMP_1
+	removeobject LOCALID_ROOFTOP_EEVEE_STAGE3
+	release
+	end
+
+CeladonCity_Condominiums_Roof_EventScript_RooftopEeveeStage4::
+	lock
+	goto_if_ne VAR_SQ_CELADON_STATE, 3, CeladonCity_Condominiums_Roof_EventScript_HideStage4
+	specialvar VAR_RESULT, GetPlayerFacingDirection
+	goto_if_eq VAR_RESULT, DIR_WEST, CeladonCity_Condominiums_Roof_EventScript_Stage4Calm
+	setvar VAR_SQ_CELADON_STATE, 2
+	setflag FLAG_TEMP_2
+	removeobject LOCALID_ROOFTOP_EEVEE_STAGE4
+	clearflag FLAG_TEMP_1
+	addobject LOCALID_ROOFTOP_EEVEE_STAGE3
+	msgbox CeladonCity_Condominiums_Roof_Text_RooftopEeveeRetreatsOneStage
+	release
+	end
+
+CeladonCity_Condominiums_Roof_EventScript_Stage4Calm::
+	setvar VAR_SQ_CELADON_STATE, 4
+	setflag FLAG_TEMP_2
+	removeobject LOCALID_ROOFTOP_EEVEE_STAGE4
+	msgbox CeladonCity_Condominiums_Roof_Text_RooftopEeveeCalm
+	release
+	end
+
+CeladonCity_Condominiums_Roof_EventScript_HideStage4::
+	setflag FLAG_TEMP_2
+	removeobject LOCALID_ROOFTOP_EEVEE_STAGE4
+	release
+	end
 
 CeladonCity_Condominiums_Roof_EventScript_Sign::
 	msgbox CeladonCity_Condominiums_Roof_Text_IKnowEverything, MSGBOX_SIGN

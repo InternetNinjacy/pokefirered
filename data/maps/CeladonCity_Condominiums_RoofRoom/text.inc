@@ -6,6 +6,10 @@ CeladonCity_Condominiums_RoofRoom_Text_TheresNothingIDontKnow::
     .string "Get together with your friends and\n"
     .string "enjoy trading POKéMON!$"
 
+CeladonCity_Condominiums_RoofRoom_Text_EeveeWentWithYou::
+    .string "That EEVEE finally trusted someone.\p"
+    .string "Take good care of her.$"
+
 CeladonCity_Condominiums_RoofRoom_Text_ObtainedAnEevee::
     .string "{PLAYER} obtained an EEVEE!$"
 

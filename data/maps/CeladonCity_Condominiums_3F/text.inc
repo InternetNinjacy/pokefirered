@@ -40,3 +40,11 @@ CeladonCity_Condominiums_3F_Text_ItsScriptBetterNotLookAtEnding::
 CeladonCity_Condominiums_3F_Text_GameFreakDevelopmentRoom::
     .string "GAME FREAK Development Room$"
 
+CeladonCity_Condominiums_3F_Text_RooftopEeveeRetreats::
+    .string "EEVEE flinches at your approach and\n"
+    .string "doubles back downstairs.$"
+
+CeladonCity_Condominiums_3F_Text_RooftopEeveeDartsAway::
+    .string "EEVEE seems less wary, then races\n"
+    .string "up toward the roof.$"
+
