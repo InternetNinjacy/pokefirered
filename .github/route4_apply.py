@@ -10,93 +10,74 @@ def replace_once(text, old, new, label):
     return text.replace(old, new, 1)
 
 
-opp = Path("include/constants/opponents.h")
-s = opp.read_text()
-anchor = """#define TRAINER_BLUE_ONE_ISLAND_WATER              804
-#define TRAINER_BLUE_ONE_ISLAND_ELECTRIC           805
-#define TRAINER_BLUE_ONE_ISLAND_FIRE               806
-"""
-block = anchor + """
-// Route 4 mandatory shared Blue + Green Double Battle.
-#define TRAINER_BLUE_GREEN_ROUTE4_WATER_PIKACHU    807
-#define TRAINER_BLUE_GREEN_ROUTE4_FIRE_DITTO       808
-#define TRAINER_BLUE_GREEN_ROUTE4_ELECTRIC_EEVEE   809
-"""
-s = replace_once(s, anchor, block, "Route 4 trainer IDs")
-s = s.replace("#define NUM_TRAINERS                             807", "#define NUM_TRAINERS                             810")
-opp.write_text(s)
+def replace_record_double(text, trainer_key):
+    marker = f"    [{trainer_key}] = {{"
+    start = text.find(marker)
+    if start < 0:
+        raise SystemExit(f"missing trainer record: {trainer_key}")
+    end = text.find("    },", start)
+    if end < 0:
+        raise SystemExit(f"unterminated trainer record: {trainer_key}")
+    record = text[start:end + 6]
+    if ".doubleBattle = TRUE" in record:
+        return text
+    if ".doubleBattle = FALSE" not in record:
+        raise SystemExit(f"doubleBattle field missing: {trainer_key}")
+    record2 = record.replace(".doubleBattle = FALSE", ".doubleBattle = TRUE", 1)
+    return text[:start] + record2 + text[end + 6:]
 
+
+# Reuse the already-authoritative vanilla Cerulean rival slots (332-334), which
+# Blue's foundation already repointed to the Sam Route 4 parties. This avoids
+# allocating any new trainer IDs or save flags for the shared battle.
 parties = Path("src/data/sam_blue_parties.h")
 s = parties.read_text()
-if "sParty_BlueGreenRoute4WaterPikachu" not in s:
-    s += r'''
-
-// Route 4 mandatory shared Blue + Green Double Battle.
-// Player Eevee -> Blue Water + Green Raichu branch.
-static const struct TrainerMonNoItemCustomMoves sParty_BlueGreenRoute4WaterPikachu[] = {
+old_water = '''static const struct TrainerMonNoItemCustomMoves sParty_BlueRoute4Water[] = {
+    {.iv = 70, .lvl = 16, .species = SPECIES_DITTO, .moves = {MOVE_TRANSFORM, MOVE_WILL_O_WISP, MOVE_NONE, MOVE_NONE}},
+    {.iv = 70, .lvl = 14, .species = SPECIES_CHINCHOU, .moves = {MOVE_WATER_GUN, MOVE_THUNDER_SHOCK, MOVE_THUNDER_WAVE, MOVE_SUPERSONIC}},
+};'''
+new_water = '''static const struct TrainerMonNoItemCustomMoves sParty_BlueRoute4Water[] = {
+    // Blue lead / Green lead, then Blue replacement / Green replacement.
     {.iv = 70, .lvl = 16, .species = SPECIES_DITTO, .moves = {MOVE_TRANSFORM, MOVE_WILL_O_WISP, MOVE_NONE, MOVE_NONE}},
     {.iv = 255, .lvl = 16, .species = SPECIES_PIKACHU, .moves = {MOVE_THUNDER_SHOCK, MOVE_QUICK_ATTACK, MOVE_THUNDER_WAVE, MOVE_TAIL_WHIP}},
     {.iv = 70, .lvl = 14, .species = SPECIES_CHINCHOU, .moves = {MOVE_WATER_GUN, MOVE_THUNDER_SHOCK, MOVE_THUNDER_WAVE, MOVE_SUPERSONIC}},
     {.iv = 255, .lvl = 14, .species = SPECIES_BULBASAUR, .moves = {MOVE_VINE_WHIP, MOVE_LEECH_SEED, MOVE_TACKLE, MOVE_GROWL}},
-};
-
-// Player Pichu -> Blue Fire + Green Ditto branch.
-static const struct TrainerMonNoItemCustomMoves sParty_BlueGreenRoute4FireDitto[] = {
-    {.iv = 70, .lvl = 16, .species = SPECIES_FLAREON, .moves = {MOVE_EMBER, MOVE_QUICK_ATTACK, MOVE_SAND_ATTACK, MOVE_HELPING_HAND}},
-    {.iv = 255, .lvl = 16, .species = SPECIES_DITTO, .moves = {MOVE_TRANSFORM, MOVE_TOXIC, MOVE_NONE, MOVE_NONE}},
-    {.iv = 70, .lvl = 14, .species = SPECIES_PONYTA, .moves = {MOVE_EMBER, MOVE_TACKLE, MOVE_TAIL_WHIP, MOVE_GROWL}},
-    {.iv = 255, .lvl = 14, .species = SPECIES_GROWLITHE, .moves = {MOVE_EMBER, MOVE_BITE, MOVE_LEER, MOVE_ROAR}},
-};
-
-// Player Ditto -> Blue Electric + Green Espeon branch.
-static const struct TrainerMonNoItemCustomMoves sParty_BlueGreenRoute4ElectricEevee[] = {
+};'''
+old_electric = '''static const struct TrainerMonNoItemCustomMoves sParty_BlueRoute4Electric[] = {
+    {.iv = 70, .lvl = 16, .species = SPECIES_PIKACHU, .moves = {MOVE_THUNDERBOLT, MOVE_QUICK_ATTACK, MOVE_BRICK_BREAK, MOVE_THUNDER_WAVE}},
+    {.iv = 70, .lvl = 14, .species = SPECIES_VOLTORB, .moves = {MOVE_THUNDERBOLT, MOVE_RAIN_DANCE, MOVE_SONIC_BOOM, MOVE_ROLLOUT}},
+};'''
+new_electric = '''static const struct TrainerMonNoItemCustomMoves sParty_BlueRoute4Electric[] = {
     {.iv = 70, .lvl = 16, .species = SPECIES_PIKACHU, .moves = {MOVE_THUNDERBOLT, MOVE_QUICK_ATTACK, MOVE_BRICK_BREAK, MOVE_THUNDER_WAVE}},
     {.iv = 255, .lvl = 16, .species = SPECIES_EEVEE, .moves = {MOVE_TACKLE, MOVE_HELPING_HAND, MOVE_SAND_ATTACK, MOVE_GROWL}},
     {.iv = 70, .lvl = 14, .species = SPECIES_VOLTORB, .moves = {MOVE_THUNDERBOLT, MOVE_RAIN_DANCE, MOVE_SONIC_BOOM, MOVE_ROLLOUT}},
     {.iv = 255, .lvl = 15, .species = SPECIES_MAGIKARP, .moves = {MOVE_TACKLE, MOVE_SPLASH, MOVE_NONE, MOVE_NONE}},
-};
-'''
+};'''
+old_fire = '''static const struct TrainerMonNoItemCustomMoves sParty_BlueRoute4Fire[] = {
+    {.iv = 70, .lvl = 16, .species = SPECIES_FLAREON, .moves = {MOVE_EMBER, MOVE_QUICK_ATTACK, MOVE_SAND_ATTACK, MOVE_HELPING_HAND}},
+    {.iv = 70, .lvl = 14, .species = SPECIES_PONYTA, .moves = {MOVE_EMBER, MOVE_TACKLE, MOVE_TAIL_WHIP, MOVE_GROWL}},
+};'''
+new_fire = '''static const struct TrainerMonNoItemCustomMoves sParty_BlueRoute4Fire[] = {
+    {.iv = 70, .lvl = 16, .species = SPECIES_FLAREON, .moves = {MOVE_EMBER, MOVE_QUICK_ATTACK, MOVE_SAND_ATTACK, MOVE_HELPING_HAND}},
+    {.iv = 255, .lvl = 16, .species = SPECIES_DITTO, .moves = {MOVE_TRANSFORM, MOVE_TOXIC, MOVE_NONE, MOVE_NONE}},
+    {.iv = 70, .lvl = 14, .species = SPECIES_PONYTA, .moves = {MOVE_EMBER, MOVE_TACKLE, MOVE_TAIL_WHIP, MOVE_GROWL}},
+    {.iv = 255, .lvl = 14, .species = SPECIES_GROWLITHE, .moves = {MOVE_EMBER, MOVE_BITE, MOVE_LEER, MOVE_ROAR}},
+};'''
+s = replace_once(s, old_water, new_water, "Route 4 Water shared party")
+s = replace_once(s, old_electric, new_electric, "Route 4 Electric shared party")
+s = replace_once(s, old_fire, new_fire, "Route 4 Fire shared party")
 parties.write_text(s)
 
+# The three existing Cerulean rival records now host the shared battle and must
+# advertise Double Battle so the early-rival heal/retry battle mode can be reused.
 trainers = Path("src/data/trainers.h")
 s = trainers.read_text()
-if "[TRAINER_BLUE_GREEN_ROUTE4_WATER_PIKACHU]" not in s:
-    records = r'''
-    [TRAINER_BLUE_GREEN_ROUTE4_WATER_PIKACHU] = {
-        .trainerClass = TRAINER_CLASS_PKMN_TRAINER,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_RIVAL_LATE,
-        .trainerName = _("BLUE & GREEN"),
-        .items = {},
-        .doubleBattle = TRUE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_BlueGreenRoute4WaterPikachu),
-    },
-    [TRAINER_BLUE_GREEN_ROUTE4_FIRE_DITTO] = {
-        .trainerClass = TRAINER_CLASS_PKMN_TRAINER,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_RIVAL_LATE,
-        .trainerName = _("BLUE & GREEN"),
-        .items = {},
-        .doubleBattle = TRUE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_BlueGreenRoute4FireDitto),
-    },
-    [TRAINER_BLUE_GREEN_ROUTE4_ELECTRIC_EEVEE] = {
-        .trainerClass = TRAINER_CLASS_PKMN_TRAINER,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_RIVAL_LATE,
-        .trainerName = _("BLUE & GREEN"),
-        .items = {},
-        .doubleBattle = TRUE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_BlueGreenRoute4ElectricEevee),
-    },
-'''
-    close = s.rfind("\n};")
-    if close < 0:
-        raise SystemExit("trainer table closing brace not found")
-    s = s[:close] + "\n" + records + s[close:]
+for key in (
+    "TRAINER_RIVAL_CERULEAN_SQUIRTLE",
+    "TRAINER_RIVAL_CERULEAN_BULBASAUR",
+    "TRAINER_RIVAL_CERULEAN_CHARMANDER",
+):
+    s = replace_record_double(s, key)
 trainers.write_text(s)
 
 scripts = Path("data/maps/Route4/scripts.inc")
@@ -106,27 +87,27 @@ scripts.write_text(r'''Route4_MapScripts::
 
 Route4_OnTransition::
 	setvar VAR_TEMP_1, 0
-	call_if_eq VAR_STARTER_MON, 0, Route4_EventScript_CheckWaterPikachu
-	call_if_eq VAR_STARTER_MON, 1, Route4_EventScript_CheckFireDitto
-	call_if_eq VAR_STARTER_MON, 2, Route4_EventScript_CheckElectricEevee
+	call_if_eq VAR_STARTER_MON, 0, Route4_EventScript_CheckWater
+	call_if_eq VAR_STARTER_MON, 1, Route4_EventScript_CheckFire
+	call_if_eq VAR_STARTER_MON, 2, Route4_EventScript_CheckElectric
 	goto_if_eq VAR_TEMP_1, 1, Route4_EventScript_ShowBlueGreen
 	goto Route4_EventScript_HideBlueGreen
 	end
 
-Route4_EventScript_CheckWaterPikachu::
-	checktrainerflag TRAINER_BLUE_GREEN_ROUTE4_WATER_PIKACHU
+Route4_EventScript_CheckWater::
+	checktrainerflag TRAINER_RIVAL_CERULEAN_SQUIRTLE
 	goto_if TRUE, Route4_EventScript_CheckDone
 	setvar VAR_TEMP_1, 1
 	return
 
-Route4_EventScript_CheckFireDitto::
-	checktrainerflag TRAINER_BLUE_GREEN_ROUTE4_FIRE_DITTO
+Route4_EventScript_CheckFire::
+	checktrainerflag TRAINER_RIVAL_CERULEAN_CHARMANDER
 	goto_if TRUE, Route4_EventScript_CheckDone
 	setvar VAR_TEMP_1, 1
 	return
 
-Route4_EventScript_CheckElectricEevee::
-	checktrainerflag TRAINER_BLUE_GREEN_ROUTE4_ELECTRIC_EEVEE
+Route4_EventScript_CheckElectric::
+	checktrainerflag TRAINER_RIVAL_CERULEAN_BULBASAUR
 	goto_if TRUE, Route4_EventScript_CheckDone
 	setvar VAR_TEMP_1, 1
 	return
@@ -151,8 +132,6 @@ Route4_EventScript_BlueGreenTrigger::
 
 Route4_EventScript_BlueGreen::
 	lockall
-	special HasEnoughMonsForDoubleBattle
-	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, Route4_EventScript_NotEnoughMons
 	textcolor NPC_TEXT_COLOR_MALE
 	playbgm MUS_ENCOUNTER_RIVAL, 0
 	faceplayer
@@ -163,10 +142,12 @@ Route4_EventScript_BlueGreen::
 	msgbox Route4_Text_BlueCallsGreen
 	textcolor NPC_TEXT_COLOR_FEMALE
 	msgbox Route4_Text_GreenReply
-	goto_if_eq VAR_STARTER_MON, 0, Route4_EventScript_BattleWaterPikachu
-	goto_if_eq VAR_STARTER_MON, 1, Route4_EventScript_BattleFireDitto
-	goto_if_eq VAR_STARTER_MON, 2, Route4_EventScript_BattleElectricEevee
-	releaseall
+	fadescreen FADE_TO_WHITE
+	special HealPlayerParty
+	fadescreen FADE_FROM_WHITE
+	special HasEnoughMonsForDoubleBattle
+	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, Route4_EventScript_NotEnoughMons
+	goto Route4_EventScript_StartBattle
 	end
 
 Route4_EventScript_BlueWaterIntro::
@@ -181,19 +162,35 @@ Route4_EventScript_BlueElectricIntro::
 	msgbox Route4_Text_BlueElectricIntro
 	return
 
-Route4_EventScript_BattleWaterPikachu::
-	trainerbattle_double TRAINER_BLUE_GREEN_ROUTE4_WATER_PIKACHU, Route4_Text_GreenReady, Route4_Text_BlueGreenDefeat, Route4_Text_NeedTwoPokemon, Route4_EventScript_BlueGreenAfterBattle
+Route4_EventScript_StartBattle::
+	textcolor NPC_TEXT_COLOR_FEMALE
+	msgbox Route4_Text_GreenReady
+	call_if_eq VAR_STARTER_MON, 0, Route4_EventScript_BattleWater
+	call_if_eq VAR_STARTER_MON, 1, Route4_EventScript_BattleFire
+	call_if_eq VAR_STARTER_MON, 2, Route4_EventScript_BattleElectric
+	goto_if_eq VAR_RESULT, TRUE, Route4_EventScript_LostBattle
+	goto Route4_EventScript_WonBattle
 	end
 
-Route4_EventScript_BattleFireDitto::
-	trainerbattle_double TRAINER_BLUE_GREEN_ROUTE4_FIRE_DITTO, Route4_Text_GreenReady, Route4_Text_BlueGreenDefeat, Route4_Text_NeedTwoPokemon, Route4_EventScript_BlueGreenAfterBattle
+Route4_EventScript_BattleWater::
+	trainerbattle_earlyrival TRAINER_RIVAL_CERULEAN_SQUIRTLE, RIVAL_BATTLE_HEAL_AFTER, Route4_Text_BlueGreenDefeat, Route4_Text_BlueGreenVictory
+	return
+
+Route4_EventScript_BattleFire::
+	trainerbattle_earlyrival TRAINER_RIVAL_CERULEAN_CHARMANDER, RIVAL_BATTLE_HEAL_AFTER, Route4_Text_BlueGreenDefeat, Route4_Text_BlueGreenVictory
+	return
+
+Route4_EventScript_BattleElectric::
+	trainerbattle_earlyrival TRAINER_RIVAL_CERULEAN_BULBASAUR, RIVAL_BATTLE_HEAL_AFTER, Route4_Text_BlueGreenDefeat, Route4_Text_BlueGreenVictory
+	return
+
+Route4_EventScript_LostBattle::
+	textcolor NPC_TEXT_COLOR_MALE
+	msgbox Route4_Text_BlueRetry
+	goto Route4_EventScript_StartBattle
 	end
 
-Route4_EventScript_BattleElectricEevee::
-	trainerbattle_double TRAINER_BLUE_GREEN_ROUTE4_ELECTRIC_EEVEE, Route4_Text_GreenReady, Route4_Text_BlueGreenDefeat, Route4_Text_NeedTwoPokemon, Route4_EventScript_BlueGreenAfterBattle
-	end
-
-Route4_EventScript_BlueGreenAfterBattle::
+Route4_EventScript_WonBattle::
 	textcolor NPC_TEXT_COLOR_MALE
 	msgbox Route4_Text_BluePostBattle
 	textcolor NPC_TEXT_COLOR_FEMALE
@@ -262,6 +259,12 @@ Route4_Text_GreenReady::
 
 Route4_Text_BlueGreenDefeat::
     .string "No way! You beat both of us?$"
+
+Route4_Text_BlueGreenVictory::
+    .string "WHOA! THAT WAS AWESOME!$"
+
+Route4_Text_BlueRetry::
+    .string "Heal up. We're doing that again.$"
 
 Route4_Text_BluePostBattle::
     .string "THAT WAS SICK!\p"
