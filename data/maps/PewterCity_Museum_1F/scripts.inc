@@ -132,7 +132,94 @@ PewterCity_Museum_1F_Movement_ApproachCounterRight::
 	step_end
 
 PewterCity_Museum_1F_EventScript_Scientist2::
-	msgbox PewterCity_Museum_1F_Text_WeHaveTwoFossilsOnExhibit, MSGBOX_NPC
+	lock
+	faceplayer
+	goto_if_set FLAG_SQ_PEWTER_COMPLETE, PewterCity_Museum_1F_EventScript_MuseumChallengeComplete
+	goto_if_ne VAR_SQ_PEWTER_STAGE, 0, PewterCity_Museum_1F_EventScript_MuseumChallengeInProgress
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_Museum_1F_EventScript_MuseumChallengeDecline
+	setvar VAR_SQ_PEWTER_STAGE, 1
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStarted
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeDecline::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeDecline
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeInProgress::
+	goto_if_eq VAR_SQ_PEWTER_STAGE, 1, PewterCity_Museum_1F_EventScript_MuseumChallengeStage1
+	goto_if_eq VAR_SQ_PEWTER_STAGE, 2, PewterCity_Museum_1F_EventScript_MuseumChallengeStage2
+	goto_if_eq VAR_SQ_PEWTER_STAGE, 3, PewterCity_Museum_1F_EventScript_MuseumChallengeStage3
+	goto_if_eq VAR_SQ_PEWTER_STAGE, 4, PewterCity_Museum_1F_EventScript_MuseumChallengeTryReward
+	goto PewterCity_Museum_1F_EventScript_MuseumChallengeComplete
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeStage1::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage1Intro
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage1Helix, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, PewterCity_Museum_1F_EventScript_MuseumChallengeWrong
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage1Dome, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_Museum_1F_EventScript_MuseumChallengeWrong
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage1Amber, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_Museum_1F_EventScript_MuseumChallengeWrong
+	setvar VAR_SQ_PEWTER_STAGE, 2
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage1Clear
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeStage2::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage2Intro
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage2Kabuto, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, PewterCity_Museum_1F_EventScript_MuseumChallengeWrong
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage2Omanyte, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_Museum_1F_EventScript_MuseumChallengeWrong
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage2Aerodactyl, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_Museum_1F_EventScript_MuseumChallengeWrong
+	setvar VAR_SQ_PEWTER_STAGE, 3
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage2Clear
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeStage3::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage3Intro
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage3Plant, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_Museum_1F_EventScript_MuseumChallengeWrong
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage3AerodactylSecond, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, PewterCity_Museum_1F_EventScript_MuseumChallengeWrong
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage3OmanyteSecond, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_Museum_1F_EventScript_MuseumChallengeWrong
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage3AerodactylLast, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_Museum_1F_EventScript_MuseumChallengeWrong
+	setvar VAR_SQ_PEWTER_STAGE, 4
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStage3Clear
+	goto PewterCity_Museum_1F_EventScript_MuseumChallengeTryReward
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeWrong::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeWrong
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeTryReward::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeRewardPending
+	givepreownedmon SPECIES_SANDSHREW, 10, PewterCity_Museum_1F_Text_CuratorOtName, OTID_GIFT_CURATOR, MALE
+	goto_if_eq VAR_RESULT, 2, PewterCity_Museum_1F_EventScript_MuseumChallengeNoRoom
+	setvar VAR_SQ_PEWTER_STAGE, 5
+	setflag FLAG_SQ_PEWTER_COMPLETE
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeRewardSuccess
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeNoRoom::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeNoRoom
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeComplete::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeComplete
+	release
 	end
 
 PewterCity_Museum_1F_EventScript_OldMan::
