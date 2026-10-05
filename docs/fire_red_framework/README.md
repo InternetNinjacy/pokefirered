@@ -17,7 +17,10 @@ The framework exists to reduce repeated discovery work. A project should preserv
 - build and runtime QA evidence;
 - known-good ROM/build hashes;
 - resource allocations;
-- implementation status.
+- implementation status;
+- reusable design-to-implementation methods;
+- recurring theme and presentation checks;
+- optional advanced-system architecture without forcing those systems into a project.
 
 The normal workflow is therefore:
 
@@ -26,7 +29,7 @@ The normal workflow is therefore:
 3. Load only the authority sections and code surfaces relevant to the selected work item.
 4. Verify deltas from the recorded state.
 5. Implement on a feature branch.
-6. Build and run required QA.
+6. Build and run required QA when the project requires it.
 7. Update the project index and authoritative project registry.
 8. Merge only when the project's merge gate is satisfied.
 
@@ -49,7 +52,9 @@ Reusable across FireRed hacks:
 - source-locator structure;
 - dependency tracking;
 - QA evidence structure;
-- live-state refresh rules.
+- live-state refresh rules;
+- Gym, trainer, League-room, map, dialogue, sprite, breeding, and optional-system implementation patterns;
+- theme-consistency checks.
 
 ### Layer 2 — Project instance
 
@@ -64,7 +69,8 @@ Specific to one ROM hack:
 - feature branches and PRs;
 - current implementation status;
 - known-good builds;
-- project-specific source locations.
+- project-specific source locations;
+- actual creative choices such as characters, specialties, rosters, dialogue, rewards, and optional features.
 
 ## Trust model
 
@@ -154,7 +160,7 @@ The project index should make this explicit so scheduling does not have to be re
 
 "Code exists" is not equivalent to "complete."
 
-Record separately:
+Record separately when applicable to the project:
 
 - compile/build pass;
 - static/source verification;
@@ -163,6 +169,8 @@ Record separately:
 - regression pass;
 - artifact hash;
 - source commit used for QA.
+
+A project may choose a production-completion policy that does not make runtime QA a merge blocker. The framework should record that policy rather than imposing one universal gate.
 
 ## Branch discipline
 
@@ -181,8 +189,8 @@ For a new project:
 5. Import the project's implementation backlog/dependency graph.
 6. Record resource allocations.
 7. Establish the integration branch and feature-branch convention.
-8. Begin implementation using delta verification rather than repeated discovery.
-
+8. Choose only the optional change categories the new project actually wants.
+9. Begin implementation using delta verification rather than repeated discovery.
 
 ## Reusable FireRed source map
 
@@ -191,3 +199,29 @@ The verified baseline engine map is maintained in:
 - `docs/fire_red_framework/FIRERED_SOURCE_LOCATOR.md`
 
 Future FireRed projects should inherit that map first and record only project-specific deltas unless they use a materially different pokefirered baseline.
+
+## Reusable design and implementation methods
+
+The framework now also maintains:
+
+- `docs/fire_red_framework/DESIGN_IMPLEMENTATION_PLAYBOOK.md`
+  - how to rebuild and theme Gyms;
+  - how to coordinate map, trainers, sprites, dialogue, puzzle state, rewards, and progression;
+  - how to handle pre-battle versus post-battle visual states;
+  - how to assemble or replace Elite Four/League room content while preserving progression;
+  - how to extend an early Day Care into a breeding facility;
+  - how to treat New Game+ as a supported but optional system;
+  - how to keep reusable implementation knowledge separate from a project's creative decisions.
+
+- `docs/fire_red_framework/OPTIONAL_CHANGE_MENU.md`
+  - a plain-language menu of possible FireRed changes for new creators;
+  - organized by category;
+  - intentionally non-prescriptive.
+
+## Non-prescription rule
+
+No Sam Edition creative choice is a framework default.
+
+The framework may know **how** to replace an Elite Four member, rebuild a Gym, alter trainer sprites, enable early breeding, or add New Game+.
+
+It must not decide **who** to replace, **what** a Gym's type should be, **which** dialogue a character should say, **what** should carry into New Game+, or whether a project should use any of those features at all.
