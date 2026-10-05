@@ -2,12 +2,12 @@
 #define GUARD_DATA_SAM_SATOSHI_VIRIDIAN_PARTIES_H
 
 // Pokemon: Sam Edition - Viridian Dragon Gym Satoshi practice/rematch package.
-// Practice remains below the current regular-trainer floor (Lv. 37).
+// Dratini Lv. 37 remains weaker than the Gym's Lv. 37 Dragonair floor by evolutionary stage and raw power.
 
 static const struct TrainerMonNoItemCustomMoves sParty_SatoshiViridianPractice[] = {
     {
         .iv = 50,
-        .lvl = 36,
+        .lvl = 37,
         .species = SPECIES_DRATINI,
         .moves = {MOVE_DRAGON_RAGE, MOVE_THUNDER_WAVE, MOVE_SLAM, MOVE_AGILITY},
     },
