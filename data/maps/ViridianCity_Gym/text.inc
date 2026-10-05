@@ -35,11 +35,15 @@ ViridianCity_Gym_Text_GiovanniDefeat::
 ViridianCity_Gym_Text_GiovanniPostBattle::
     .string "You have already proven yourself\n"
     .string "here.\p"
-    .string "There is nothing more this GYM can\n"
-    .string "teach you.\p"
+    .string "There is little value in repeating\n"
+    .string "a lesson once it has been\l"
+    .string "understood.\p"
     .string "Go to the POKéMON LEAGUE.\p"
-    .string "What remains of your journey is no\n"
-    .string "longer my concern.$"
+    .string "There you will face TRAINERS who\n"
+    .string "will not simply test whether you\l"
+    .string "are strong.\p"
+    .string "They will test whether you\n"
+    .string "understand why you are winning.$"
 
 ViridianCity_Gym_Text_DominionBadgeTakeThis::
     .string "You have earned the DOMINION BADGE.\n"
