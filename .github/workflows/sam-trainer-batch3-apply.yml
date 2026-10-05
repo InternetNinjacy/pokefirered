@@ -1,0 +1,142 @@
+name: Sam trainer batch 3 apply
+
+on:
+  push:
+    branches:
+      - sam/trainers-batch3-cerulean-area
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: sam/trainers-batch3-cerulean-area
+
+      - name: Apply Cerulean area ordinary trainer batch
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          parties_path = Path('src/data/trainer_parties.h')
+          trainers_path = Path('src/data/trainers.h')
+          scripts_path = Path('data/scripts/trainers.inc')
+          parties = parties_path.read_text()
+          trainers = trainers_path.read_text()
+          scripts = scripts_path.read_text()
+
+          # Existing NPC/trainer identities are preserved. Each trainer ID below maps to
+          # the already-settled area team in live map progression/object order.
+          teams = {
+              # Route 24
+              'TRAINER_BUG_CATCHER_CALE': [(14,'SPECIES_SPINARAK'),(14,'SPECIES_CASCOON'),(15,'SPECIES_BEAUTIFLY')],
+              'TRAINER_LASS_ALI': [(15,'SPECIES_PARAS'),(15,'SPECIES_CLEFAIRY')],
+              'TRAINER_YOUNGSTER_TIMMY': [(15,'SPECIES_KRABBY'),(16,'SPECIES_TENTACOOL')],
+              'TRAINER_LASS_RELI': [(16,'SPECIES_MACHOP'),(17,'SPECIES_ONIX')],
+              'TRAINER_CAMPER_ETHAN': [(17,'SPECIES_GASTLY'),(17,'SPECIES_CUBONE'),(18,'SPECIES_HAUNTER')],
+              'TRAINER_CAMPER_SHANE': [(17,'SPECIES_ABRA'),(16,'SPECIES_ODDISH'),(17,'SPECIES_PONYTA')],
+
+              # Route 25, all nine are four-Pokémon Double Battles in route object order.
+              'TRAINER_HIKER_FRANKLIN': [(16,'SPECIES_CLEFAIRY'),(16,'SPECIES_MEOWTH'),(16,'SPECIES_JIGGLYPUFF'),(17,'SPECIES_RATICATE')],
+              'TRAINER_YOUNGSTER_JOEY_VANILLA': [(16,'SPECIES_BUTTERFREE'),(16,'SPECIES_PARAS'),(17,'SPECIES_VENONAT'),(17,'SPECIES_BEEDRILL')],
+              'TRAINER_HIKER_WAYNE': [(17,'SPECIES_EKANS'),(17,'SPECIES_KOFFING'),(18,'SPECIES_NIDORINO'),(18,'SPECIES_NIDORINA')],
+              'TRAINER_YOUNGSTER_DAN': [(17,'SPECIES_DIGLETT'),(17,'SPECIES_SANDSHREW'),(18,'SPECIES_CUBONE'),(18,'SPECIES_RHYHORN')],
+              'TRAINER_PICNICKER_KELSEY': [(17,'SPECIES_PIKACHU'),(17,'SPECIES_VOLTORB'),(18,'SPECIES_MAGNEMITE'),(18,'SPECIES_ELECTABUZZ')],
+              'TRAINER_HIKER_NOB': [(18,'SPECIES_EXEGGCUTE'),(18,'SPECIES_TANGELA'),(17,'SPECIES_ODDISH'),(17,'SPECIES_BELLSPROUT')],
+              'TRAINER_CAMPER_FLINT': [(18,'SPECIES_ONIX'),(18,'SPECIES_GEODUDE'),(19,'SPECIES_OMANYTE'),(19,'SPECIES_KABUTO')],
+              'TRAINER_YOUNGSTER_CHAD': [(18,'SPECIES_POLIWAG'),(18,'SPECIES_HORSEA'),(19,'SPECIES_STARYU'),(19,'SPECIES_TENTACOOL')],
+              'TRAINER_LASS_HALEY': [(18,'SPECIES_VULPIX'),(18,'SPECIES_GROWLITHE'),(19,'SPECIES_PONYTA'),(19,'SPECIES_MAGMAR')],
+
+              # Route 6
+              'TRAINER_BUG_CATCHER_KEIGO': [(18,'SPECIES_DUSTOX'),(18,'SPECIES_BEEDRILL')],
+              'TRAINER_CAMPER_RICKY': [(20,'SPECIES_SQUIRTLE')],
+              'TRAINER_PICNICKER_NANCY': [(18,'SPECIES_PIKACHU'),(18,'SPECIES_PSYDUCK')],
+              'TRAINER_BUG_CATCHER_ELIJAH': [(20,'SPECIES_BUTTERFREE')],
+              'TRAINER_PICNICKER_ISABELLE': [(18,'SPECIES_MEOWTH'),(18,'SPECIES_ODDISH'),(18,'SPECIES_BELLSPROUT')],
+              'TRAINER_CAMPER_JEFF': [(18,'SPECIES_SPEAROW'),(19,'SPECIES_RATICATE'),(19,'SPECIES_MANKEY')],
+          }
+
+          doubles = {
+              'TRAINER_YOUNGSTER_TIMMY','TRAINER_CAMPER_ETHAN',
+              'TRAINER_HIKER_FRANKLIN','TRAINER_YOUNGSTER_JOEY_VANILLA','TRAINER_HIKER_WAYNE',
+              'TRAINER_YOUNGSTER_DAN','TRAINER_PICNICKER_KELSEY','TRAINER_HIKER_NOB',
+              'TRAINER_CAMPER_FLINT','TRAINER_YOUNGSTER_CHAD','TRAINER_LASS_HALEY',
+              'TRAINER_PICNICKER_NANCY','TRAINER_CAMPER_JEFF',
+          }
+
+          record_pat = re.compile(r'(?ms)(^    \[(TRAINER_[A-Z0-9_]+)\] = \{\n)(.*?)(^    \},)')
+          records = {m.group(2): m for m in record_pat.finditer(trainers)}
+
+          party_names = {}
+          for tid in teams:
+              m = records.get(tid)
+              if not m:
+                  raise SystemExit(f'missing trainer record {tid}')
+              block = m.group(3)
+              pm = re.search(r'\.party\s*=\s*[A-Z_]+\((sParty_[A-Za-z0-9_]+)\)', block)
+              if not pm:
+                  raise SystemExit(f'missing party ref for {tid}')
+              party_names[tid] = pm.group(1)
+
+          def party_decl(name, mons):
+              lines = [f'static const struct TrainerMonNoItemDefaultMoves {name}[] = {{']
+              for lvl, species in mons:
+                  lines.extend(['    {','        .iv = 0,',f'        .lvl = {lvl},',f'        .species = {species},','    },'])
+              lines.append('};')
+              return '\n'.join(lines)
+
+          # Replace only each live trainer's current base party declaration.
+          seen_parties = set()
+          for tid, mons in teams.items():
+              pname = party_names[tid]
+              if pname in seen_parties:
+                  raise SystemExit(f'unexpected shared base party {pname}')
+              seen_parties.add(pname)
+              pat = re.compile(r'(?ms)^static const struct TrainerMon(?:NoItem|Item)(?:DefaultMoves|CustomMoves) ' + re.escape(pname) + r'\[\] = \{\n.*?^\};')
+              parties, count = pat.subn(party_decl(pname, mons), parties, count=1)
+              if count != 1:
+                  raise SystemExit(f'expected one party declaration for {pname}, got {count}')
+
+          # Normalize party macro and Single/Double metadata without changing IDs, classes,
+          # display names, AI, item bags, sprites, dialogue, or rematch tables.
+          out, pos, seen = [], 0, set()
+          for m in record_pat.finditer(trainers):
+              out.append(trainers[pos:m.start()])
+              tid, block = m.group(2), m.group(3)
+              if tid in teams:
+                  seen.add(tid)
+                  block = re.sub(r'(\.doubleBattle\s*=\s*)(TRUE|FALSE)', r'\g<1>' + ('TRUE' if tid in doubles else 'FALSE'), block, count=1)
+                  pname = party_names[tid]
+                  block = re.sub(r'(\.party\s*=\s*)[A-Z_]+\(' + re.escape(pname) + r'\)', r'\1NO_ITEM_DEFAULT_MOVES(' + pname + ')', block, count=1)
+              out.append(m.group(1) + block + m.group(4))
+              pos = m.end()
+          out.append(trainers[pos:])
+          trainers = ''.join(out)
+          if seen != set(teams):
+              raise SystemExit(f'unprocessed records: {sorted(set(teams)-seen)}')
+
+          # Change only the initial battle command for designated Doubles. The existing
+          # dialogue remains intact; the already-authored neutral two-Pokémon message is reused.
+          for tid in doubles:
+              pat = re.compile(r'(trainerbattle_)single (' + re.escape(tid) + r'), ([A-Za-z0-9_]+), ([A-Za-z0-9_]+)')
+              scripts, count = pat.subn(r'\1double \2, \3, \4, MtMoon_1F_Text_KentNotEnoughMons', scripts, count=1)
+              if count != 1:
+                  raise SystemExit(f'expected one initial single-battle script for {tid}, got {count}')
+
+          parties_path.write_text(parties)
+          trainers_path.write_text(trainers)
+          scripts_path.write_text(scripts)
+          PY
+
+          rm -f .github/workflows/sam-trainer-batch3-apply.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/trainer_parties.h src/data/trainers.h data/scripts/trainers.inc .github/workflows/sam-trainer-batch3-apply.yml
+          git commit -m "Apply Cerulean area trainer batch"
+          git push origin HEAD:sam/trainers-batch3-cerulean-area
