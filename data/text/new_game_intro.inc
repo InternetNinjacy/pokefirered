@@ -235,6 +235,22 @@ gOakSpeech_Text_RememberRivalsName::
     .string "That's right! I remember now!\n"
     .string "His name is {RIVAL}!\p$"
 
+gOakSpeech_Text_WhatWasHerName::
+    .string "And this is the other Trainer\n"
+    .string "I mentioned.\p"
+    .string "What shall we call her?$"
+
+gOakSpeech_Text_YourGreenNameWhatWasIt::
+    .string "What shall we call her?$"
+
+gOakSpeech_Text_ConfirmGreenName::
+    .string "We'll call her {STR_VAR_1},\n"
+    .string "correct?$"
+
+gOakSpeech_Text_GreenNameConfirmed::
+    .string "Very well.\n"
+    .string "We'll call her {STR_VAR_1}.$"
+
 gOakSpeech_Text_LetsGo::
     .string "{PLAYER}!\p"
     .string "Your very own POKéMON legend is\n"
