@@ -32,26 +32,28 @@ if "sParty_BlueGreenRoute4WaterPikachu" not in s:
     s += r'''
 
 // Route 4 mandatory shared Blue + Green Double Battle.
-// Party order preserves one Blue lead and one Green lead on the field together.
+// Player Eevee -> Blue Water + Green Raichu branch.
 static const struct TrainerMonNoItemCustomMoves sParty_BlueGreenRoute4WaterPikachu[] = {
     {.iv = 70, .lvl = 16, .species = SPECIES_DITTO, .moves = {MOVE_TRANSFORM, MOVE_WILL_O_WISP, MOVE_NONE, MOVE_NONE}},
-    {.iv = 70, .lvl = 16, .species = SPECIES_PIKACHU, .moves = {MOVE_THUNDER_SHOCK, MOVE_QUICK_ATTACK, MOVE_THUNDER_WAVE, MOVE_TAIL_WHIP}},
+    {.iv = 255, .lvl = 16, .species = SPECIES_PIKACHU, .moves = {MOVE_THUNDER_SHOCK, MOVE_QUICK_ATTACK, MOVE_THUNDER_WAVE, MOVE_TAIL_WHIP}},
     {.iv = 70, .lvl = 14, .species = SPECIES_CHINCHOU, .moves = {MOVE_WATER_GUN, MOVE_THUNDER_SHOCK, MOVE_THUNDER_WAVE, MOVE_SUPERSONIC}},
-    {.iv = 70, .lvl = 14, .species = SPECIES_BULBASAUR, .moves = {MOVE_VINE_WHIP, MOVE_LEECH_SEED, MOVE_TACKLE, MOVE_GROWL}},
+    {.iv = 255, .lvl = 14, .species = SPECIES_BULBASAUR, .moves = {MOVE_VINE_WHIP, MOVE_LEECH_SEED, MOVE_TACKLE, MOVE_GROWL}},
 };
 
+// Player Pichu -> Blue Fire + Green Ditto branch.
 static const struct TrainerMonNoItemCustomMoves sParty_BlueGreenRoute4FireDitto[] = {
     {.iv = 70, .lvl = 16, .species = SPECIES_FLAREON, .moves = {MOVE_EMBER, MOVE_QUICK_ATTACK, MOVE_SAND_ATTACK, MOVE_HELPING_HAND}},
-    {.iv = 70, .lvl = 16, .species = SPECIES_DITTO, .moves = {MOVE_TRANSFORM, MOVE_TOXIC, MOVE_NONE, MOVE_NONE}},
+    {.iv = 255, .lvl = 16, .species = SPECIES_DITTO, .moves = {MOVE_TRANSFORM, MOVE_TOXIC, MOVE_NONE, MOVE_NONE}},
     {.iv = 70, .lvl = 14, .species = SPECIES_PONYTA, .moves = {MOVE_EMBER, MOVE_TACKLE, MOVE_TAIL_WHIP, MOVE_GROWL}},
-    {.iv = 70, .lvl = 14, .species = SPECIES_HOUNDOUR, .moves = {MOVE_EMBER, MOVE_BITE, MOVE_LEER, MOVE_ROAR}},
+    {.iv = 255, .lvl = 14, .species = SPECIES_GROWLITHE, .moves = {MOVE_EMBER, MOVE_BITE, MOVE_LEER, MOVE_ROAR}},
 };
 
+// Player Ditto -> Blue Electric + Green Espeon branch.
 static const struct TrainerMonNoItemCustomMoves sParty_BlueGreenRoute4ElectricEevee[] = {
     {.iv = 70, .lvl = 16, .species = SPECIES_PIKACHU, .moves = {MOVE_THUNDERBOLT, MOVE_QUICK_ATTACK, MOVE_BRICK_BREAK, MOVE_THUNDER_WAVE}},
-    {.iv = 70, .lvl = 16, .species = SPECIES_EEVEE, .moves = {MOVE_TACKLE, MOVE_HELPING_HAND, MOVE_SAND_ATTACK, MOVE_GROWL}},
+    {.iv = 255, .lvl = 16, .species = SPECIES_EEVEE, .moves = {MOVE_TACKLE, MOVE_HELPING_HAND, MOVE_SAND_ATTACK, MOVE_GROWL}},
     {.iv = 70, .lvl = 14, .species = SPECIES_VOLTORB, .moves = {MOVE_THUNDERBOLT, MOVE_RAIN_DANCE, MOVE_SONIC_BOOM, MOVE_ROLLOUT}},
-    {.iv = 70, .lvl = 15, .species = SPECIES_MAGIKARP, .moves = {MOVE_TACKLE, MOVE_SPLASH, MOVE_NONE, MOVE_NONE}},
+    {.iv = 255, .lvl = 15, .species = SPECIES_MAGIKARP, .moves = {MOVE_TACKLE, MOVE_SPLASH, MOVE_NONE, MOVE_NONE}},
 };
 '''
 parties.write_text(s)
@@ -235,41 +237,44 @@ Route4_Text_BlueArrival::
     .string "LET'S GOOOOOO!$"
 
 Route4_Text_BlueWaterIntro::
-    .string "Ditto's been doing some CRAZY stuff!\p"
-    .string "And check out Chinchou!$"
+    .string "Okay, you HAVE to see this.\p"
+    .string "Ditto and Chinchou are ready!$"
 
 Route4_Text_BlueFireIntro::
+    .string "Okay, you HAVE to see this.\p"
     .string "Remember Eevee? Check him out now!\p"
     .string "And dude, I found a PONYTA!$"
 
 Route4_Text_BlueElectricIntro::
-    .string "Pichu evolved! PIKACHU!\p"
+    .string "Okay, you HAVE to see this.\p"
+    .string "Pichu evolved! Check out PIKACHU!\p"
     .string "And I found a Voltorb!$"
 
 Route4_Text_BlueCallsGreen::
-    .string "Green! We're doing this!$"
+    .string "GREEN! We're doing this!$"
 
 Route4_Text_GreenReply::
-    .string "Or we could not do that.\p"
-    .string "Red can handle it.$"
+    .string "Two against one?\p"
+    .string "That was the idea.$"
 
 Route4_Text_GreenReady::
-    .string "Ready, Red?$"
+    .string "Ready, RED?$"
 
 Route4_Text_BlueGreenDefeat::
-    .string "THAT WAS SICK!$"
+    .string "No way! You beat both of us?$"
 
 Route4_Text_BluePostBattle::
-    .string "We actually worked together!$"
+    .string "THAT WAS SICK!\p"
+    .string "We gotta do that again!$"
 
 Route4_Text_GreenPostBattle::
-    .string "Obviously.\p"
-    .string "Separately next time. I want to know\n"
-    .string "which one of us was the problem.$"
+    .string "Separately next time.\p"
+    .string "I want to know which one of us\n"
+    .string "was the problem.$"
 
 Route4_Text_NeedTwoPokemon::
     .string "Bring at least two POKéMON that can\n"
-    .string "battle. Then we'll do this.$"
+    .string "battle. Then we're doing this.$"
 '''
 text.write_text(s)
 
