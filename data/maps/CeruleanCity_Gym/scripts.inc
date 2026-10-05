@@ -119,9 +119,7 @@ CeruleanCity_Gym_EventScript_KeahiCheckpointDone::
 CeruleanCity_Gym_EventScript_Satoshi::
 	lock
 	faceplayer
-	goto_if_set FLAG_SYS_GAME_CLEAR, CeruleanCity_Gym_EventScript_SatoshiPostgameRematch
-	goto_if_set FLAG_BADGE02_GET, CeruleanCity_Gym_EventScript_SatoshiPostBadge
-	goto_if_set FLAG_SATOSHI_CERULEAN_PRACTICE_WON, CeruleanCity_Gym_EventScript_SatoshiRepeatHint
+	satoshi_route_by_state CeruleanCity_Gym_EventScript_SatoshiPostgameOffer, FLAG_BADGE02_GET, CeruleanCity_Gym_EventScript_SatoshiPostBadge, FLAG_SATOSHI_CERULEAN_PRACTICE_WON, CeruleanCity_Gym_EventScript_SatoshiRepeatHint
 	checktrainerflag TRAINER_SATOSHI_CERULEAN_PRACTICE
 	goto_if_eq VAR_RESULT, TRUE, CeruleanCity_Gym_EventScript_SatoshiRetryOffer
 	msgbox CeruleanCity_Gym_Text_SatoshiFirstApproach, MSGBOX_YESNO
@@ -170,10 +168,16 @@ CeruleanCity_Gym_EventScript_SatoshiRepeatHint::
 	release
 	end
 
+CeruleanCity_Gym_EventScript_SatoshiPostgameOffer::
+	@ Hall of Fame state supersedes every main-story Satoshi state. Reuse the
+	@ already-approved neutral retry wording rather than inventing rematch text.
+	msgbox CeruleanCity_Gym_Text_SatoshiRetryOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, CeruleanCity_Gym_EventScript_SatoshiPostgameRematch
+	goto CeruleanCity_Gym_EventScript_SatoshiRetryNo
+	end
+
 CeruleanCity_Gym_EventScript_SatoshiPostgameRematch::
-	@ Hall of Fame routing supersedes the original practice state.
-	@ Dedicated rematch dialogue is not yet locked, so reuse approved Cerulean
-	@ battle lines rather than inventing new dialogue.
+	@ Rematches are repeatable and never consume/close a persistent Satoshi state.
 	cleartrainerflag TRAINER_SATOSHI_CERULEAN_REMATCH
 	trainerbattle_single TRAINER_SATOSHI_CERULEAN_REMATCH, CeruleanCity_Gym_Text_SatoshiAccept, CeruleanCity_Gym_Text_SatoshiWin
 	release
