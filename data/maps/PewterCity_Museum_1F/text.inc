@@ -89,11 +89,80 @@ PewterCity_Museum_1F_Text_MuseumChallengeDecline::
     .string "No problem. The challenge will be\n"
     .string "here if you change your mind.$"
 
-PewterCity_Museum_1F_Text_MuseumChallengeInProgress::
-    .string "The MUSEUM CHALLENGE is still\n"
-    .string "underway.\p"
-    .string "Check the exhibits for your current\n"
-    .string "task.$"
+PewterCity_Museum_1F_Text_MuseumChallengeRewardPending::
+    .string "You solved all three exhibits.\n"
+    .string "Your prize is ready.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage1Intro::
+    .string "Stage one: FOSSIL MATCHING.\p"
+    .string "Judge each proposed fossil match.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage1Helix::
+    .string "HELIX FOSSIL belonged to KABUTO.\n"
+    .string "Is that match correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage1Dome::
+    .string "DOME FOSSIL belonged to KABUTO.\n"
+    .string "Is that match correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage1Amber::
+    .string "OLD AMBER belonged to AERODACTYL.\n"
+    .string "Is that match correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage1Clear::
+    .string "Correct! HELIX matches OMANYTE,\n"
+    .string "DOME matches KABUTO, and OLD\l"
+    .string "AMBER matches AERODACTYL.\p"
+    .string "Next is HABITAT ORDER.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage2Intro::
+    .string "Stage two: HABITAT ORDER.\p"
+    .string "Judge where each ancient POKéMON\n"
+    .string "belonged.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage2Kabuto::
+    .string "KABUTO belonged in the open\n"
+    .string "ancient sea. Correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage2Omanyte::
+    .string "OMANYTE belonged in the open\n"
+    .string "ancient sea. Correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage2Aerodactyl::
+    .string "AERODACTYL belonged on coastal\n"
+    .string "cliffs. Correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage2Clear::
+    .string "Correct! KABUTO belongs on the\n"
+    .string "shallow seafloor, OMANYTE in the\l"
+    .string "open sea, and AERODACTYL on cliffs.\p"
+    .string "One stage remains.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3Intro::
+    .string "Stage three: ANCIENT FOOD CHAIN.\p"
+    .string "Build the chain from food source\n"
+    .string "to top predator.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3Plant::
+    .string "Start with FOSSILIZED PLANT?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3AerodactylSecond::
+    .string "Place AERODACTYL second?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3OmanyteSecond::
+    .string "Place OMANYTE second?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3AerodactylLast::
+    .string "Finish with AERODACTYL?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3Clear::
+    .string "Exactly right! FOSSILIZED PLANT,\n"
+    .string "then OMANYTE, then AERODACTYL.\p"
+    .string "You cleared the MUSEUM CHALLENGE!$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeWrong::
+    .string "That answer breaks this exhibit's\n"
+    .string "logic. Try this stage again.$"
 
 PewterCity_Museum_1F_Text_MuseumChallengeComplete::
     .string "You completed our MUSEUM\n"
