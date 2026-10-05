@@ -132,7 +132,30 @@ PewterCity_Museum_1F_Movement_ApproachCounterRight::
 	step_end
 
 PewterCity_Museum_1F_EventScript_Scientist2::
-	msgbox PewterCity_Museum_1F_Text_WeHaveTwoFossilsOnExhibit, MSGBOX_NPC
+	lock
+	faceplayer
+	goto_if_set FLAG_SQ_PEWTER_COMPLETE, PewterCity_Museum_1F_EventScript_MuseumChallengeComplete
+	goto_if_ne VAR_SQ_PEWTER_STAGE, 0, PewterCity_Museum_1F_EventScript_MuseumChallengeInProgress
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PewterCity_Museum_1F_EventScript_MuseumChallengeDecline
+	setvar VAR_SQ_PEWTER_STAGE, 1
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeStarted
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeDecline::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeDecline
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeInProgress::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeInProgress
+	release
+	end
+
+PewterCity_Museum_1F_EventScript_MuseumChallengeComplete::
+	msgbox PewterCity_Museum_1F_Text_MuseumChallengeComplete
+	release
 	end
 
 PewterCity_Museum_1F_EventScript_OldMan::
