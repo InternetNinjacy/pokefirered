@@ -89,7 +89,6 @@ Route24_EventScript_BattleRocket::
 
 Route24_EventScript_ThomasBattle::
 	call Thomas_EventScript_NuggetPreBattle
-	setvar VAR_LAST_TALKED, LOCALID_ROUTE24_THOMAS
 	trainerbattle_no_intro TRAINER_THOMAS_NUGGET_BRIDGE, Thomas_Text_NuggetDefeat
 	call EventScript_ThomasSetRecruited
 	removeobject LOCALID_ROUTE24_THOMAS
