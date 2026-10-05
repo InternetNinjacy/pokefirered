@@ -102,10 +102,25 @@ Route4_EventScript_BattleElectric::
 	return
 
 Route4_EventScript_LostBattle::
+	call_if_eq VAR_STARTER_MON, 0, Route4_EventScript_ClearWaterBattleFlag
+	call_if_eq VAR_STARTER_MON, 1, Route4_EventScript_ClearFireBattleFlag
+	call_if_eq VAR_STARTER_MON, 2, Route4_EventScript_ClearElectricBattleFlag
 	textcolor NPC_TEXT_COLOR_MALE
 	msgbox Route4_Text_BlueRetry
 	goto Route4_EventScript_StartBattle
 	end
+
+Route4_EventScript_ClearWaterBattleFlag::
+	cleartrainerflag TRAINER_RIVAL_CERULEAN_SQUIRTLE
+	return
+
+Route4_EventScript_ClearFireBattleFlag::
+	cleartrainerflag TRAINER_RIVAL_CERULEAN_CHARMANDER
+	return
+
+Route4_EventScript_ClearElectricBattleFlag::
+	cleartrainerflag TRAINER_RIVAL_CERULEAN_BULBASAUR
+	return
 
 Route4_EventScript_WonBattle::
 	textcolor NPC_TEXT_COLOR_MALE
