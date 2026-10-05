@@ -41,6 +41,7 @@ Route11_EventScript_HideBlue::
 
 Route11_EventScript_BlueTrigger::
 	lockall
+	setvar VAR_LAST_TALKED, LOCALID_ROUTE11_BLUE
 	goto Route11_EventScript_Blue
 	end
 
