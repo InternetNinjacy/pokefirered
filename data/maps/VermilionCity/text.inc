@@ -44,6 +44,17 @@ VermilionCity_Text_PollutionActive::
     .string "The GRIMER and MUK are still fouling\n"
     .string "the dock. Clear them out when ready.$"
 
+VermilionCity_Text_PollutionBattlePrompt::
+    .string "Are you ready to take them on?$"
+
+VermilionCity_Text_PollutionNeedsTwoPokemon::
+    .string "They fight as a pair. You'll need two\n"
+    .string "POKéMON ready to battle them.$"
+
+VermilionCity_Text_PollutionBattleCleared::
+    .string "The GRIMER and MUK have been driven\n"
+    .string "off. The dock can reopen now.$"
+
 VermilionCity_Text_PollutionRewardPending::
     .string "The sludge POKéMON are gone and the\n"
     .string "dock is usable again.\p"
