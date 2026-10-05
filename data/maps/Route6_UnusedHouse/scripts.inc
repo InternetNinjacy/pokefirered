@@ -107,8 +107,6 @@ Route6_UnusedHouse_EventScript_ValveC_6::
 	goto Route6_UnusedHouse_EventScript_AfterValve
 
 Route6_UnusedHouse_EventScript_AfterValve::
-	playse SE_M_SWITCH
-	waitse
 	goto_if_eq VAR_SQ_CERULEAN_VALVES, 7, Route6_UnusedHouse_EventScript_Solved
 	call Route6_UnusedHouse_EventScript_ShowTankStatus
 	releaseall
@@ -196,12 +194,26 @@ Route6_UnusedHouse_EventScript_SouthOn::
 
 Route6_UnusedHouse_EventScript_DrainedAlcove::
 	lockall
-	goto_if_ge VAR_SQ_CERULEAN_STATE, 2, Route6_UnusedHouse_EventScript_AlcoveDrained
-	msgbox Route6_UnusedHouse_Text_AlcoveFlooded
+	goto_if_eq VAR_SQ_CERULEAN_STATE, 0, Route6_UnusedHouse_EventScript_AlcoveFlooded
+	goto_if_eq VAR_SQ_CERULEAN_STATE, 1, Route6_UnusedHouse_EventScript_AlcoveFlooded
+	goto_if_set FLAG_SQ_CERULEAN_RARE_CANDY_TAKEN, Route6_UnusedHouse_EventScript_AlcoveEmpty
+	msgbox Route6_UnusedHouse_Text_AlcoveRareCandy
+	giveitem ITEM_RARE_CANDY
+	goto_if_eq VAR_RESULT, FALSE, Route6_UnusedHouse_EventScript_AlcoveNoRoom
+	setflag FLAG_SQ_CERULEAN_RARE_CANDY_TAKEN
+	msgbox Route6_UnusedHouse_Text_AlcoveRareCandyTaken
 	releaseall
 	end
-Route6_UnusedHouse_EventScript_AlcoveDrained::
-	msgbox Route6_UnusedHouse_Text_AlcoveDrained
+Route6_UnusedHouse_EventScript_AlcoveNoRoom::
+	msgbox Route6_UnusedHouse_Text_AlcoveNoRoom
+	releaseall
+	end
+Route6_UnusedHouse_EventScript_AlcoveEmpty::
+	msgbox Route6_UnusedHouse_Text_AlcoveEmpty
+	releaseall
+	end
+Route6_UnusedHouse_EventScript_AlcoveFlooded::
+	msgbox Route6_UnusedHouse_Text_AlcoveFlooded
 	releaseall
 	end
 
