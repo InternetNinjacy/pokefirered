@@ -4,6 +4,42 @@
 CeruleanCity_House4_MapScripts::
 	.byte 0
 
+CeruleanCity_House4_EventScript_WaterworksWorker::
+	lock
+	faceplayer
+	goto_if_set FLAG_SQ_CERULEAN_COMPLETE, CeruleanCity_House4_EventScript_WaterworksComplete
+	goto_if_eq VAR_SQ_CERULEAN_STATE, 0, CeruleanCity_House4_EventScript_WaterworksOffer
+	goto CeruleanCity_House4_EventScript_WaterworksReturn
+	end
+
+CeruleanCity_House4_EventScript_WaterworksOffer::
+	msgbox CeruleanCity_House4_Text_WaterworksOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, CeruleanCity_House4_EventScript_WaterworksDecline
+	setvar VAR_SQ_CERULEAN_STATE, 1
+	setvar VAR_SQ_CERULEAN_VALVES, 5
+	msgbox CeruleanCity_House4_Text_WaterworksStart
+	warp MAP_ROUTE6_UNUSED_HOUSE, 6, 7
+	waitstate
+	release
+	end
+
+CeruleanCity_House4_EventScript_WaterworksDecline::
+	msgbox CeruleanCity_House4_Text_WaterworksDecline
+	release
+	end
+
+CeruleanCity_House4_EventScript_WaterworksReturn::
+	msgbox CeruleanCity_House4_Text_WaterworksReturn
+	warp MAP_ROUTE6_UNUSED_HOUSE, 6, 7
+	waitstate
+	release
+	end
+
+CeruleanCity_House4_EventScript_WaterworksComplete::
+	msgbox CeruleanCity_House4_Text_WaterworksComplete
+	release
+	end
+
 CeruleanCity_House4_EventScript_WonderNewsBerryMan::
 	goto_if_questlog EventScript_ReleaseEnd
 	special QuestLog_CutRecording
