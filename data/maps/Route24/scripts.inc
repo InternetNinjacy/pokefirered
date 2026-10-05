@@ -10,6 +10,7 @@ Route24_EventScript_Rocket::
 	lock
 	faceplayer
 	goto_if_eq VAR_MAP_SCENE_ROUTE24, 1, Route24_EventScript_RocketPostBattle
+	goto_if_eq VAR_MAP_SCENE_ROUTE24, 2, Route24_EventScript_ThomasRetry
 	msgbox Route24_Text_JustEarnedFabulousPrize
 	checkitemspace ITEM_NUGGET
 	goto_if_eq VAR_RESULT, FALSE, Route24_EventScript_NoRoomForNugget
@@ -27,6 +28,24 @@ Route24_EventScript_RocketPostBattle::
 	release
 	end
 
+Route24_EventScript_ThomasRetry::
+	call Route24_EventScript_ThomasBattle
+	release
+	end
+
+Route24_EventScript_Thomas::
+	lock
+	faceplayer
+	goto_if_eq VAR_MAP_SCENE_ROUTE24, 2, Route24_EventScript_ThomasObjectBattle
+	msgbox Thomas_Text_NuggetIntro
+	release
+	end
+
+Route24_EventScript_ThomasObjectBattle::
+	call Route24_EventScript_ThomasBattle
+	release
+	end
+
 Route24_EventScript_RocketTriggerLeft::
 	lockall
 	setvar VAR_TEMP_1, 0
@@ -41,6 +60,7 @@ Route24_EventScript_RocketTriggerRight::
 
 Route24_EventScript_RocketTrigger::
 	textcolor NPC_TEXT_COLOR_MALE
+	goto_if_eq VAR_MAP_SCENE_ROUTE24, 2, Route24_EventScript_ThomasRetryTrigger
 	call_if_eq VAR_TEMP_1, 0, Route24_EventScript_RocketApproachPlayer
 	call_if_eq VAR_TEMP_1, 1, Route24_EventScript_RocketMotionToPlayer
 	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterRight
@@ -52,14 +72,26 @@ Route24_EventScript_RocketTrigger::
 	releaseall
 	end
 
+Route24_EventScript_ThomasRetryTrigger::
+	call Route24_EventScript_ThomasBattle
+	releaseall
+	end
+
 Route24_EventScript_BattleRocket::
 	giveitem_msg Route24_Text_ReceivedNuggetFromMysteryTrainer, ITEM_NUGGET
+	setvar VAR_MAP_SCENE_ROUTE24, 2
 	message Route24_Text_JoinTeamRocket
 	waitmessage
 	playbgm MUS_ENCOUNTER_ROCKET, 0
 	waitbuttonpress
-	setvar VAR_LAST_TALKED, LOCALID_ROUTE24_ROCKET
-	trainerbattle_no_intro TRAINER_TEAM_ROCKET_GRUNT_6, Route24_Text_RocketDefeat
+	call Route24_EventScript_ThomasBattle
+	return
+
+Route24_EventScript_ThomasBattle::
+	call Thomas_EventScript_NuggetPreBattle
+	trainerbattle_no_intro TRAINER_THOMAS_NUGGET_BRIDGE, Thomas_Text_NuggetDefeat
+	call EventScript_ThomasSetRecruited
+	removeobject LOCALID_ROUTE24_THOMAS
 	msgbox Route24_Text_YoudBecomeTopRocketLeader
 	setvar VAR_MAP_SCENE_ROUTE24, 1
 	return
