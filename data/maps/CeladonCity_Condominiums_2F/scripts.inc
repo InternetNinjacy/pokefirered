@@ -1,5 +1,38 @@
 CeladonCity_Condominiums_2F_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, CeladonCity_Condominiums_2F_OnTransition
 	.byte 0
+
+CeladonCity_Condominiums_2F_OnTransition::
+	setflag FLAG_TEMP_1
+	goto_if_eq VAR_SQ_CELADON_STATE, 0, CeladonCity_Condominiums_2F_EventScript_ShowRooftopEevee
+	end
+
+CeladonCity_Condominiums_2F_EventScript_ShowRooftopEevee::
+	clearflag FLAG_TEMP_1
+	end
+
+CeladonCity_Condominiums_2F_EventScript_RooftopEevee::
+	lock
+	goto_if_ne VAR_SQ_CELADON_STATE, 0, CeladonCity_Condominiums_2F_EventScript_HideRooftopEevee
+	special GetPlayerFacingDirection
+	goto_if_eq VAR_RESULT, DIR_SOUTH, CeladonCity_Condominiums_2F_EventScript_RooftopEeveeAdvance
+	msgbox CeladonCity_Condominiums_2F_Text_RooftopEeveeWrongApproach
+	release
+	end
+
+CeladonCity_Condominiums_2F_EventScript_RooftopEeveeAdvance::
+	setvar VAR_SQ_CELADON_STATE, 1
+	setflag FLAG_TEMP_1
+	removeobject LOCALID_ROOFTOP_EEVEE_STAGE1
+	msgbox CeladonCity_Condominiums_2F_Text_RooftopEeveeDartsAway
+	release
+	end
+
+CeladonCity_Condominiums_2F_EventScript_HideRooftopEevee::
+	setflag FLAG_TEMP_1
+	removeobject LOCALID_ROOFTOP_EEVEE_STAGE1
+	release
+	end
 
 CeladonCity_Condominiums_2F_EventScript_MeetingRoomSign::
 	msgbox CeladonCity_Condominiums_2F_Text_GameFreakMeetingRoom, MSGBOX_SIGN
