@@ -1,0 +1,164 @@
+name: Blue Chunk 1 Production Apply
+
+on:
+  pull_request:
+    branches:
+      - sam/enc-002-gfx-onix-assets
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.head_ref == 'sam/blue-main-rival'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: sam/blue-main-rival
+          fetch-depth: 0
+
+      - name: Apply Blue trainer foundation delta
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_once(text, old, new, label):
+              if new in text:
+                  return text
+              if old not in text:
+                  raise SystemExit(f"missing anchor: {label}")
+              return text.replace(old, new, 1)
+
+          def replace_record(text, key, record):
+              marker = f"    [{key}] = {{"
+              start = text.find(marker)
+              if start < 0:
+                  raise SystemExit(f"missing trainer record {key}")
+              brace = text.find('{', start)
+              depth = 0
+              end = None
+              for i in range(brace, len(text)):
+                  if text[i] == '{':
+                      depth += 1
+                  elif text[i] == '}':
+                      depth -= 1
+                      if depth == 0:
+                          end = i + 1
+                          while end < len(text) and text[end] in ' \t':
+                              end += 1
+                          if end < len(text) and text[end] == ',':
+                              end += 1
+                          break
+              if end is None:
+                  raise SystemExit(f"unterminated trainer record {key}")
+              return text[:start] + record.rstrip() + text[end:]
+
+          # Central trainer IDs: reuse structurally suitable vanilla rival slots and
+          # allocate only supplemental Sam Edition Blue encounters.
+          opp = Path('include/constants/opponents.h')
+          otxt = opp.read_text()
+          anchor = '''// Blue League branch allocations: 800-803.\n#define TRAINER_ELITE_FOUR_BLUE_WATER             800\n#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC          801\n#define TRAINER_ELITE_FOUR_BLUE_WATER_2           802\n#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2        803\n'''
+          replacement = '''// Blue supplemental rival allocations. Vanilla rival IDs remain in use for Route 22,\n// Route 4 (legacy Cerulean slot), Pokémon Tower, and Silph Co.\n#define TRAINER_BLUE_ROUTE11_WATER                 790\n#define TRAINER_BLUE_ROUTE11_ELECTRIC              791\n#define TRAINER_BLUE_ROUTE11_FIRE                  792\n#define TRAINER_BLUE_ROUTE10_WATER                 793\n#define TRAINER_BLUE_ROUTE10_ELECTRIC              794\n#define TRAINER_BLUE_ROUTE10_FIRE                  795\n#define TRAINER_BLUE_CINNABAR_WATER                796\n#define TRAINER_BLUE_CINNABAR_ELECTRIC             797\n#define TRAINER_BLUE_CINNABAR_FIRE                 798\n\n// Blue League branch allocations: 800-803. Fire reuses the legacy Bruno slots.\n#define TRAINER_ELITE_FOUR_BLUE_WATER             800\n#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC          801\n#define TRAINER_ELITE_FOUR_BLUE_WATER_2           802\n#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2        803\n\n#define TRAINER_BLUE_ONE_ISLAND_WATER              804\n#define TRAINER_BLUE_ONE_ISLAND_ELECTRIC           805\n#define TRAINER_BLUE_ONE_ISLAND_FIRE               806\n'''
+          if 'TRAINER_BLUE_ROUTE11_WATER' not in otxt:
+              otxt = replace_once(otxt, anchor, replacement, 'Blue ID block')
+          otxt = otxt.replace('#define NUM_TRAINERS                             790', '#define NUM_TRAINERS                             807')
+          opp.write_text(otxt)
+
+          # Repoint structurally reusable vanilla rival records to the authoritative
+          # nine-battle Sam Edition party package.
+          trainers = Path('src/data/trainers.h')
+          ttxt = trainers.read_text()
+          party_repoints = {
+              'sParty_RivalRoute22EarlySquirtle': 'sParty_BlueRoute22Water',
+              'sParty_RivalRoute22EarlyBulbasaur': 'sParty_BlueRoute22Electric',
+              'sParty_RivalRoute22EarlyCharmander': 'sParty_BlueRoute22Fire',
+              'sParty_RivalCeruleanSquirtle': 'sParty_BlueRoute4Water',
+              'sParty_RivalCeruleanBulbasaur': 'sParty_BlueRoute4Electric',
+              'sParty_RivalCeruleanCharmander': 'sParty_BlueRoute4Fire',
+              'sParty_RivalPokemonTowerSquirtle': 'sParty_BlueTowerWater',
+              'sParty_RivalPokemonTowerBulbasaur': 'sParty_BlueTowerElectric',
+              'sParty_RivalPokemonTowerCharmander': 'sParty_BlueTowerFire',
+              'sParty_RivalSilphSquirtle': 'sParty_BlueSilphWater',
+              'sParty_RivalSilphBulbasaur': 'sParty_BlueSilphElectric',
+              'sParty_RivalSilphCharmander': 'sParty_BlueSilphFire',
+          }
+          for old, new in party_repoints.items():
+              if old in ttxt:
+                  ttxt = ttxt.replace(old, new)
+
+          elite_ai = 'AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_SETUP_FIRST_TURN | AI_SCRIPT_PREFER_STRONGEST_MOVE | AI_SCRIPT_HP_AWARE'
+          fire_first = f'''    [TRAINER_ELITE_FOUR_BRUNO] = {{\n        .trainerClass = TRAINER_CLASS_ELITE_FOUR,\n        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,\n        .trainerPic = TRAINER_PIC_RIVAL_LATE,\n        .trainerName = _("BLUE"),\n        .items = {{ITEM_FULL_RESTORE, ITEM_FULL_RESTORE}},\n        .doubleBattle = FALSE,\n        .aiFlags = {elite_ai},\n        .party = ITEM_CUSTOM_MOVES(sParty_BlueEliteFire),\n    }},'''
+          fire_rematch = f'''    [TRAINER_ELITE_FOUR_BRUNO_2] = {{\n        .trainerClass = TRAINER_CLASS_ELITE_FOUR,\n        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,\n        .trainerPic = TRAINER_PIC_RIVAL_LATE,\n        .trainerName = _("BLUE"),\n        .items = {{ITEM_FULL_RESTORE, ITEM_FULL_RESTORE}},\n        .doubleBattle = FALSE,\n        .aiFlags = {elite_ai},\n        .party = ITEM_CUSTOM_MOVES(sParty_BlueEliteFireRematch),\n    }},'''
+          ttxt = replace_record(ttxt, 'TRAINER_ELITE_FOUR_BRUNO', fire_first)
+          ttxt = replace_record(ttxt, 'TRAINER_ELITE_FOUR_BRUNO_2', fire_rematch)
+
+          if '[TRAINER_BLUE_ROUTE11_WATER]' not in ttxt:
+              def rival_record(key, party):
+                  return f'''    [{key}] = {{\n        .trainerClass = TRAINER_CLASS_RIVAL_LATE,\n        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,\n        .trainerPic = TRAINER_PIC_RIVAL_LATE,\n        .trainerName = _("BLUE"),\n        .items = {{}},\n        .doubleBattle = FALSE,\n        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,\n        .party = NO_ITEM_CUSTOM_MOVES({party}),\n    }},\n'''
+
+              def elite_record(key, party):
+                  return f'''    [{key}] = {{\n        .trainerClass = TRAINER_CLASS_ELITE_FOUR,\n        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,\n        .trainerPic = TRAINER_PIC_RIVAL_LATE,\n        .trainerName = _("BLUE"),\n        .items = {{ITEM_FULL_RESTORE, ITEM_FULL_RESTORE}},\n        .doubleBattle = FALSE,\n        .aiFlags = {elite_ai},\n        .party = ITEM_CUSTOM_MOVES({party}),\n    }},\n'''
+
+              entries = ''
+              for key, party in [
+                  ('TRAINER_BLUE_ROUTE11_WATER','sParty_BlueRoute11Water'),
+                  ('TRAINER_BLUE_ROUTE11_ELECTRIC','sParty_BlueRoute11Electric'),
+                  ('TRAINER_BLUE_ROUTE11_FIRE','sParty_BlueRoute11Fire'),
+                  ('TRAINER_BLUE_ROUTE10_WATER','sParty_BlueRoute10Water'),
+                  ('TRAINER_BLUE_ROUTE10_ELECTRIC','sParty_BlueRoute10Electric'),
+                  ('TRAINER_BLUE_ROUTE10_FIRE','sParty_BlueRoute10Fire'),
+                  ('TRAINER_BLUE_CINNABAR_WATER','sParty_BlueCinnabarWater'),
+                  ('TRAINER_BLUE_CINNABAR_ELECTRIC','sParty_BlueCinnabarElectric'),
+                  ('TRAINER_BLUE_CINNABAR_FIRE','sParty_BlueCinnabarFire'),
+                  ('TRAINER_BLUE_ONE_ISLAND_WATER','sParty_BlueOneIslandWater'),
+                  ('TRAINER_BLUE_ONE_ISLAND_ELECTRIC','sParty_BlueOneIslandElectric'),
+                  ('TRAINER_BLUE_ONE_ISLAND_FIRE','sParty_BlueOneIslandFire'),
+              ]:
+                  entries += rival_record(key, party)
+
+              for key, party in [
+                  ('TRAINER_ELITE_FOUR_BLUE_WATER','sParty_BlueEliteWater'),
+                  ('TRAINER_ELITE_FOUR_BLUE_ELECTRIC','sParty_BlueEliteElectric'),
+                  ('TRAINER_ELITE_FOUR_BLUE_WATER_2','sParty_BlueEliteWaterRematch'),
+                  ('TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2','sParty_BlueEliteElectricRematch'),
+              ]:
+                  entries += elite_record(key, party)
+
+              close = ttxt.rfind('\n};')
+              if close < 0:
+                  close = ttxt.rfind('\n    };')
+              if close < 0:
+                  raise SystemExit('trainer table closing brace not found')
+              ttxt = ttxt[:close] + '\n' + entries + ttxt[close:]
+
+          trainers.write_text(ttxt)
+
+          # Nameable Blue keeps using the existing rival-name placeholder as Elite Four #4.
+          bmsg = Path('src/battle_message.c')
+          btxt = bmsg.read_text()
+          old = '''                    if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_EARLY\n                     || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_LATE\n                     || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION)\n                        toCpy = GetExpandedPlaceholder(PLACEHOLDER_ID_RIVAL);'''
+          new = '''                    if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_EARLY\n                     || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_LATE\n                     || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION\n                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BRUNO\n                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BRUNO_2\n                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_WATER\n                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_ELECTRIC\n                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_WATER_2\n                     || gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2)\n                        toCpy = GetExpandedPlaceholder(PLACEHOLDER_ID_RIVAL);'''
+          if 'gTrainerBattleOpponent_A == TRAINER_ELITE_FOUR_BLUE_WATER' not in btxt:
+              btxt = replace_once(btxt, old, new, 'Blue battle-name hook')
+          bmsg.write_text(btxt)
+
+          # Manectric's authored League Hidden Power is Grass. Stock trainer IVs are scalar,
+          # so force the needed mixed-parity IV spread only for Blue's League Manectric.
+          bmain = Path('src/battle_main.c')
+          mtxt = bmain.read_text()
+          if 'Sam Edition Blue: force the authored Hidden Power Grass' not in mtxt:
+              anchor = '''            }\n            }\n        }\n\n        gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;'''
+              replacement = '''            }\n\n            // Sam Edition Blue: force the authored Hidden Power Grass on League Manectric\n            // without introducing a second trainer-party construction system.\n            if ((trainerNum == TRAINER_ELITE_FOUR_BLUE_ELECTRIC\n              || trainerNum == TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2)\n             && GetMonData(&party[i], MON_DATA_SPECIES) == SPECIES_MANECTRIC)\n            {\n                static const u8 sBlueManectricGrassIvs[NUM_STATS] = {30, 31, 30, 31, 30, 31};\n                u8 iv;\n\n                for (j = 0; j < NUM_STATS; j++)\n                {\n                    iv = sBlueManectricGrassIvs[j];\n                    SetMonData(&party[i], MON_DATA_HP_IV + j, &iv);\n                }\n                CalculateMonStats(&party[i]);\n            }\n            }\n        }\n\n        gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;'''
+              mtxt = replace_once(mtxt, anchor, replacement, 'trainer party loop')
+          bmain.write_text(mtxt)
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/blue-chunk1-production-apply.yml
+          git add include/constants/opponents.h src/data/trainers.h src/battle_message.c src/battle_main.c
+          git commit -m "Blue: implement trainer foundation and party branches"
+          git push origin HEAD:sam/blue-main-rival
