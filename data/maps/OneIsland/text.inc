@@ -60,3 +60,36 @@ OneIsland_Text_IsntWarmClimateHereGreat::
     .string "Hi, sight-seeing, are you?\n"
     .string "Isn't the warm climate here great?$"
 
+OneIsland_Text_BlueIntro::
+    .string "{RIVAL}: {PLAYER}?!\p"
+    .string "NO WAY!\p"
+    .string "Dude, what are YOU doing out here?!\p"
+    .string "I came over because somebody told me\n"
+    .string "there were POKéMON around here you\l"
+    .string "don't see back home.\p"
+    .string "And they were RIGHT!\p"
+    .string "This place is AWESOME!\p"
+    .string "...You know what would make it even\n"
+    .string "better?\p"
+    .string "A BATTLE!\p"
+    .string "C'MON!$"
+
+OneIsland_Text_BlueDefeat::
+    .string "YES!\p"
+    .string "HAHAHA!\p"
+    .string "I knew running into you out here\n"
+    .string "was gonna be awesome!$"
+
+OneIsland_Text_BlueVictory::
+    .string "LET'S GOOOOOO!\p"
+    .string "Dude, that was GREAT!\p"
+    .string "What are the odds we even ran into\n"
+    .string "each other out here?!$"
+
+OneIsland_Text_BluePostBattle::
+    .string "I've gotta keep looking around.\p"
+    .string "There could be something AMAZING\n"
+    .string "like ten steps from here and we'd\l"
+    .string "never know!\p"
+    .string "See you around, dude!$"
+
