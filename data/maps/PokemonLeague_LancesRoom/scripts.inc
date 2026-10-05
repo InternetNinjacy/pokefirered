@@ -99,10 +99,7 @@ PokemonLeague_LancesRoom_Movement_WalkThroughCorridor::
 PokemonLeague_LancesRoom_EventScript_Lance::
 	lock
 	faceplayer
-	famechecker FAMECHECKER_LANCE, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	goto_if_set FLAG_DEFEATED_LANCE, PokemonLeague_LancesRoom_EventScript_PostBattle
-	famechecker FAMECHECKER_LANCE, 0
-	famechecker FAMECHECKER_LANCE, 1
 	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_LancesRoom_EventScript_Intro
 	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_LancesRoom_EventScript_RematchIntro
 	setflag FLAG_TEMP_3
@@ -115,6 +112,21 @@ PokemonLeague_LancesRoom_EventScript_Lance::
 
 PokemonLeague_LancesRoom_EventScript_Intro::
 	msgbox PokemonLeague_LancesRoom_Text_Intro
+	call_if_eq VAR_STARTER_MON, 0, PokemonLeague_LancesRoom_EventScript_IntroWater
+	call_if_eq VAR_STARTER_MON, 1, PokemonLeague_LancesRoom_EventScript_IntroFire
+	call_if_eq VAR_STARTER_MON, 2, PokemonLeague_LancesRoom_EventScript_IntroElectric
+	return
+
+PokemonLeague_LancesRoom_EventScript_IntroWater::
+	msgbox PokemonLeague_LancesRoom_Text_IntroWater
+	return
+
+PokemonLeague_LancesRoom_EventScript_IntroElectric::
+	msgbox PokemonLeague_LancesRoom_Text_IntroElectric
+	return
+
+PokemonLeague_LancesRoom_EventScript_IntroFire::
+	msgbox PokemonLeague_LancesRoom_Text_IntroFire
 	return
 
 PokemonLeague_LancesRoom_EventScript_RematchIntro::
@@ -122,11 +134,39 @@ PokemonLeague_LancesRoom_EventScript_RematchIntro::
 	return
 
 PokemonLeague_LancesRoom_EventScript_Battle::
-	trainerbattle_no_intro TRAINER_ELITE_FOUR_LANCE, PokemonLeague_LancesRoom_Text_Defeat
+	call_if_eq VAR_STARTER_MON, 0, PokemonLeague_LancesRoom_EventScript_BattleWater
+	call_if_eq VAR_STARTER_MON, 1, PokemonLeague_LancesRoom_EventScript_BattleFire
+	call_if_eq VAR_STARTER_MON, 2, PokemonLeague_LancesRoom_EventScript_BattleElectric
+	return
+
+PokemonLeague_LancesRoom_EventScript_BattleWater::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BLUE_WATER, PokemonLeague_LancesRoom_Text_Defeat
+	return
+
+PokemonLeague_LancesRoom_EventScript_BattleElectric::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BLUE_ELECTRIC, PokemonLeague_LancesRoom_Text_Defeat
+	return
+
+PokemonLeague_LancesRoom_EventScript_BattleFire::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BRUNO, PokemonLeague_LancesRoom_Text_Defeat
 	return
 
 PokemonLeague_LancesRoom_EventScript_Rematch::
-	trainerbattle_no_intro TRAINER_ELITE_FOUR_LANCE_2, PokemonLeague_LancesRoom_Text_Defeat
+	call_if_eq VAR_STARTER_MON, 0, PokemonLeague_LancesRoom_EventScript_RematchWater
+	call_if_eq VAR_STARTER_MON, 1, PokemonLeague_LancesRoom_EventScript_RematchFire
+	call_if_eq VAR_STARTER_MON, 2, PokemonLeague_LancesRoom_EventScript_RematchElectric
+	return
+
+PokemonLeague_LancesRoom_EventScript_RematchWater::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BLUE_WATER_2, PokemonLeague_LancesRoom_Text_RematchDefeat
+	return
+
+PokemonLeague_LancesRoom_EventScript_RematchElectric::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2, PokemonLeague_LancesRoom_Text_RematchDefeat
+	return
+
+PokemonLeague_LancesRoom_EventScript_RematchFire::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BRUNO_2, PokemonLeague_LancesRoom_Text_RematchDefeat
 	return
 
 PokemonLeague_LancesRoom_EventScript_PostBattle::
