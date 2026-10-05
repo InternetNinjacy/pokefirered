@@ -1,5 +1,86 @@
+@ QUEST-010 persistent state model.
+@ Reuses the centrally allocated Saffron quest variable and completion flag.
+@ Bits 0-2 independently record submitted species so submission order is arbitrary.
+@ Bit 3 records that the quest has started. Bit 4 records reward-pending state.
+@ Completion is FLAG_SQ_SAFFRON_COMPLETE; no additional persistent storage is allocated.
+.set VAR_SQ_SAFFRON_STATE,              VAR_SQ_SAFFRON_COUNT
+.set SQ_SAFFRON_SUBMITTED_PIDGEY,       0x0001
+.set SQ_SAFFRON_SUBMITTED_RATTATA,      0x0002
+.set SQ_SAFFRON_SUBMITTED_ODDISH,       0x0004
+.set SQ_SAFFRON_SUBMISSION_MASK,        0x0007
+.set SQ_SAFFRON_STARTED_BIT,            0x0008
+.set SQ_SAFFRON_REWARD_PENDING_BIT,     0x0010
+.set SQ_SAFFRON_STATE_NOT_STARTED,      0x0000
+.set SQ_SAFFRON_STATE_STARTED,          0x0008
+.set SQ_SAFFRON_STATE_PIDGEY,           0x0009
+.set SQ_SAFFRON_STATE_RATTATA,          0x000A
+.set SQ_SAFFRON_STATE_PIDGEY_RATTATA,   0x000B
+.set SQ_SAFFRON_STATE_ODDISH,           0x000C
+.set SQ_SAFFRON_STATE_PIDGEY_ODDISH,    0x000D
+.set SQ_SAFFRON_STATE_RATTATA_ODDISH,   0x000E
+.set SQ_SAFFRON_STATE_ALL_SUBMITTED,    0x000F
+.set SQ_SAFFRON_STATE_REWARD_PENDING,   0x001F
+
+@ The three room-display objects use temporary hide flags rebuilt from persistent quest state
+@ on every entry. No new permanent flags are consumed.
+.set FLAG_SQ_SAFFRON_HIDE_PIDGEY_OBJECT,  FLAG_TEMP_1
+.set FLAG_SQ_SAFFRON_HIDE_RATTATA_OBJECT, FLAG_TEMP_2
+.set FLAG_SQ_SAFFRON_HIDE_ODDISH_OBJECT,  FLAG_TEMP_3
+.set LOCALID_SQ_SAFFRON_PIDGEY_OBJECT,    5
+.set LOCALID_SQ_SAFFRON_RATTATA_OBJECT,   6
+.set LOCALID_SQ_SAFFRON_ODDISH_OBJECT,    7
+
 SaffronCity_CopycatsHouse_2F_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, SaffronCity_CopycatsHouse_2F_OnTransition
 	.byte 0
+
+SaffronCity_CopycatsHouse_2F_OnTransition::
+	setflag FLAG_SQ_SAFFRON_HIDE_PIDGEY_OBJECT
+	setflag FLAG_SQ_SAFFRON_HIDE_RATTATA_OBJECT
+	setflag FLAG_SQ_SAFFRON_HIDE_ODDISH_OBJECT
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowPidgeyObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_RATTATA
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowPidgeyObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_ODDISH
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowPidgeyObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowPidgeyObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_REWARD_PENDING
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowPidgeyObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_RATTATA
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowRattataObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_RATTATA
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowRattataObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_RATTATA_ODDISH
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowRattataObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowRattataObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_REWARD_PENDING
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowRattataObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ODDISH
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowOddishObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_ODDISH
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowOddishObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_RATTATA_ODDISH
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowOddishObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowOddishObject
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_REWARD_PENDING
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_ShowOddishObject
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_ShowPidgeyObject::
+	clearflag FLAG_SQ_SAFFRON_HIDE_PIDGEY_OBJECT
+	return
+
+SaffronCity_CopycatsHouse_2F_EventScript_ShowRattataObject::
+	clearflag FLAG_SQ_SAFFRON_HIDE_RATTATA_OBJECT
+	return
+
+SaffronCity_CopycatsHouse_2F_EventScript_ShowOddishObject::
+	clearflag FLAG_SQ_SAFFRON_HIDE_ODDISH_OBJECT
+	return
 
 SaffronCity_CopycatsHouse_2F_EventScript_Doduo::
 	lock
@@ -17,6 +98,38 @@ SaffronCity_CopycatsHouse_2F_EventScript_Doll::
 	release
 	end
 
+SaffronCity_CopycatsHouse_2F_EventScript_PidgeyFriend::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_PIDGEY, CRY_MODE_NORMAL
+	msgbox SaffronCity_CopycatsHouse_2F_Text_PidgeyFriend
+	waitmoncry
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_RattataFriend::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_RATTATA, CRY_MODE_NORMAL
+	msgbox SaffronCity_CopycatsHouse_2F_Text_RattataFriend
+	waitmoncry
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_OddishFriend::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_ODDISH, CRY_MODE_NORMAL
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OddishFriend
+	waitmoncry
+	release
+	end
+
+@ Preserve the vanilla Poké Doll / Mimic tutor route with first priority. If the player
+@ does not have a Poké Doll, Copycat's Collection owns the normal interaction.
 SaffronCity_CopycatsHouse_2F_EventScript_Copycat::
 	goto_if_questlog EventScript_ReleaseEnd
 	special QuestLog_CutRecording
@@ -24,9 +137,292 @@ SaffronCity_CopycatsHouse_2F_EventScript_Copycat::
 	faceplayer
 	checkitem ITEM_POKE_DOLL
 	goto_if_eq VAR_RESULT, TRUE, EventScript_MimicTutor
-	checkplayergender
-	call_if_eq VAR_RESULT, MALE, SaffronCity_CopycatsHouse_2F_EventScript_MimicPlayerMale
-	call_if_eq VAR_RESULT, FEMALE, SaffronCity_CopycatsHouse_2F_EventScript_MimicPlayerFemale
+	checkflag FLAG_SQ_SAFFRON_COMPLETE
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_QuestComplete
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_NOT_STARTED
+	call_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_QuestIntro
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RewardFirstAttempt
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_REWARD_PENDING
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RewardRetry
+	call SaffronCity_CopycatsHouse_2F_EventScript_OfferPidgey
+	call SaffronCity_CopycatsHouse_2F_EventScript_OfferRattata
+	call SaffronCity_CopycatsHouse_2F_EventScript_OfferOddish
+	msgbox SaffronCity_CopycatsHouse_2F_Text_StillLooking
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_QuestIntro::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_QuestIntro
+	setvar VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_STARTED
+	return
+
+SaffronCity_CopycatsHouse_2F_EventScript_OfferPidgey::
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OfferPidgeyReturn
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_RATTATA
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OfferPidgeyReturn
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OfferPidgeyReturn
+	msgbox SaffronCity_CopycatsHouse_2F_Text_PidgeyClue
+	setvar VAR_0x8004, SPECIES_PIDGEY
+	special DoesPlayerPartyContainSpecies
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_OfferPidgeyReturn
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OfferPidgey, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SaffronCity_CopycatsHouse_2F_EventScript_SubmitPidgey
+SaffronCity_CopycatsHouse_2F_EventScript_OfferPidgeyReturn::
+	return
+
+SaffronCity_CopycatsHouse_2F_EventScript_OfferRattata::
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_RATTATA
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OfferRattataReturn
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_RATTATA
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OfferRattataReturn
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_RATTATA_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OfferRattataReturn
+	msgbox SaffronCity_CopycatsHouse_2F_Text_RattataClue
+	setvar VAR_0x8004, SPECIES_RATTATA
+	special DoesPlayerPartyContainSpecies
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_OfferRattataReturn
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OfferRattata, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SaffronCity_CopycatsHouse_2F_EventScript_SubmitRattata
+SaffronCity_CopycatsHouse_2F_EventScript_OfferRattataReturn::
+	return
+
+SaffronCity_CopycatsHouse_2F_EventScript_OfferOddish::
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OfferOddishReturn
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OfferOddishReturn
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_RATTATA_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OfferOddishReturn
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OddishClue
+	setvar VAR_0x8004, SPECIES_ODDISH
+	special DoesPlayerPartyContainSpecies
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_OfferOddishReturn
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OfferOddish, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SaffronCity_CopycatsHouse_2F_EventScript_SubmitOddish
+SaffronCity_CopycatsHouse_2F_EventScript_OfferOddishReturn::
+	return
+
+@ QUEST-010C safe Pidgey transaction. Current policy is party-only; PC storage is never scanned or modified.
+SaffronCity_CopycatsHouse_2F_EventScript_SubmitPidgey::
+	lock
+	faceplayer
+	checkflag FLAG_SQ_SAFFRON_COMPLETE
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionUnavailable
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_RATTATA
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_REWARD_PENDING
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted
+	setvar VAR_0x8004, SPECIES_PIDGEY
+	special DoesPlayerPartyContainSpecies
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_NoPidgeyInParty
+	msgbox SaffronCity_CopycatsHouse_2F_Text_ChoosePidgey
+	fadescreen FADE_TO_BLACK
+	special ChoosePartyMon
+	waitstate
+	goto_if_ge VAR_0x8004, PARTY_SIZE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionCancelled
+	bufferpartymonnick STR_VAR_1, VAR_0x8004
+	callnative SamQuest010PreparePidgeySubmission
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_InvalidPidgeySelection
+	msgbox SaffronCity_CopycatsHouse_2F_Text_ConfirmPidgeySubmission, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionCancelled
+	callnative SamQuest010CommitPidgeySubmission
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionUnavailable
+	clearflag FLAG_SQ_SAFFRON_HIDE_PIDGEY_OBJECT
+	addobject LOCALID_SQ_SAFFRON_PIDGEY_OBJECT
+	msgbox SaffronCity_CopycatsHouse_2F_Text_PidgeySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RewardFirstAttempt
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_NoPidgeyInParty::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_NoPidgeyInParty
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_InvalidPidgeySelection::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_InvalidPidgeySelection
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionUnavailable::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_PidgeySubmissionUnavailable
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_PidgeyAlreadySubmitted::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_PidgeyAlreadySubmitted
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_PidgeySubmissionCancelled::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_PidgeySubmissionCancelled
+	release
+	end
+
+@ QUEST-010D safe Rattata transaction. Mirrors the proven party-only safety contract.
+SaffronCity_CopycatsHouse_2F_EventScript_SubmitRattata::
+	lock
+	faceplayer
+	checkflag FLAG_SQ_SAFFRON_COMPLETE
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RattataSubmissionUnavailable
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_RATTATA
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RattataAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_RATTATA
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RattataAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_RATTATA_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RattataAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RattataAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_REWARD_PENDING
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RattataAlreadySubmitted
+	setvar VAR_0x8004, SPECIES_RATTATA
+	special DoesPlayerPartyContainSpecies
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_NoRattataInParty
+	msgbox SaffronCity_CopycatsHouse_2F_Text_ChooseRattata
+	fadescreen FADE_TO_BLACK
+	special ChoosePartyMon
+	waitstate
+	goto_if_ge VAR_0x8004, PARTY_SIZE, SaffronCity_CopycatsHouse_2F_EventScript_RattataSubmissionCancelled
+	bufferpartymonnick STR_VAR_1, VAR_0x8004
+	callnative SamQuest010PrepareRattataSubmission
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_InvalidRattataSelection
+	msgbox SaffronCity_CopycatsHouse_2F_Text_ConfirmRattataSubmission, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, SaffronCity_CopycatsHouse_2F_EventScript_RattataSubmissionCancelled
+	callnative SamQuest010CommitRattataSubmission
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_RattataSubmissionUnavailable
+	clearflag FLAG_SQ_SAFFRON_HIDE_RATTATA_OBJECT
+	addobject LOCALID_SQ_SAFFRON_RATTATA_OBJECT
+	msgbox SaffronCity_CopycatsHouse_2F_Text_RattataSubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RewardFirstAttempt
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_NoRattataInParty::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_NoRattataInParty
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_InvalidRattataSelection::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_InvalidRattataSelection
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_RattataSubmissionUnavailable::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_RattataSubmissionUnavailable
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_RattataAlreadySubmitted::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_RattataAlreadySubmitted
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_RattataSubmissionCancelled::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_RattataSubmissionCancelled
+	release
+	end
+
+@ QUEST-010E safe Oddish transaction. Mirrors the proven party-only safety contract.
+SaffronCity_CopycatsHouse_2F_EventScript_SubmitOddish::
+	lock
+	faceplayer
+	checkflag FLAG_SQ_SAFFRON_COMPLETE
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionUnavailable
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_PIDGEY_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_RATTATA_ODDISH
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_REWARD_PENDING
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted
+	setvar VAR_0x8004, SPECIES_ODDISH
+	special DoesPlayerPartyContainSpecies
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_NoOddishInParty
+	msgbox SaffronCity_CopycatsHouse_2F_Text_ChooseOddish
+	fadescreen FADE_TO_BLACK
+	special ChoosePartyMon
+	waitstate
+	goto_if_ge VAR_0x8004, PARTY_SIZE, SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionCancelled
+	bufferpartymonnick STR_VAR_1, VAR_0x8004
+	callnative SamQuest010PrepareOddishSubmission
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_InvalidOddishSelection
+	msgbox SaffronCity_CopycatsHouse_2F_Text_ConfirmOddishSubmission, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionCancelled
+	callnative SamQuest010CommitOddishSubmission
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionUnavailable
+	clearflag FLAG_SQ_SAFFRON_HIDE_ODDISH_OBJECT
+	addobject LOCALID_SQ_SAFFRON_ODDISH_OBJECT
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OddishSubmitted
+	compare VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_ALL_SUBMITTED
+	goto_if_eq VAR_RESULT, TRUE, SaffronCity_CopycatsHouse_2F_EventScript_RewardFirstAttempt
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_NoOddishInParty::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_NoOddishInParty
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_InvalidOddishSelection::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_InvalidOddishSelection
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionUnavailable::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OddishSubmissionUnavailable
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_OddishAlreadySubmitted::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OddishAlreadySubmitted
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_OddishSubmissionCancelled::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_OddishSubmissionCancelled
+	release
+	end
+
+@ QUEST-010G reward transaction. 0x001F is a durable pending state: if both party and
+@ storage are full, no completion flag is set and Mr. Mime remains retryable.
+SaffronCity_CopycatsHouse_2F_EventScript_RewardFirstAttempt::
+	setvar VAR_SQ_SAFFRON_STATE, SQ_SAFFRON_STATE_REWARD_PENDING
+	msgbox SaffronCity_CopycatsHouse_2F_Text_RewardOffer
+	goto SaffronCity_CopycatsHouse_2F_EventScript_TryReward
+
+SaffronCity_CopycatsHouse_2F_EventScript_RewardRetry::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_RewardRetry
+	goto SaffronCity_CopycatsHouse_2F_EventScript_TryReward
+
+SaffronCity_CopycatsHouse_2F_EventScript_TryReward::
+	callnative SamQuest010GiveMrMimeReward
+	goto_if_eq VAR_RESULT, 2, SaffronCity_CopycatsHouse_2F_EventScript_RewardNoRoom
+	setflag FLAG_SQ_SAFFRON_COMPLETE
+	msgbox SaffronCity_CopycatsHouse_2F_Text_RewardReceived
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_RewardNoRoom::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_RewardNoRoom
+	release
+	end
+
+SaffronCity_CopycatsHouse_2F_EventScript_QuestComplete::
+	msgbox SaffronCity_CopycatsHouse_2F_Text_QuestComplete
 	release
 	end
 
