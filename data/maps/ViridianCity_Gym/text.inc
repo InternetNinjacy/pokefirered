@@ -186,16 +186,119 @@ ViridianCity_Gym_Text_SamuelPostBattle::
     .string "can prepare the answer before the\l"
     .string "question is even asked.$"
 
-ViridianCity_Gym_Text_GymGuyAdvice::
-    .string "Yo!\n"
-    .string "Champ in the making!\p"
-    .string "GIOVANNI's final GYM is about more\n"
-    .string "than raw power. Watch the choices\l"
-    .string "his TRAINERS try to take away.$"
+ViridianCity_Gym_Text_SatoshiFirstApproach::
+    .string "Last GYM.\p"
+    .string "GIOVANNI trains DRAGON POKéMON.\p"
+    .string "The spinner tiles are simple once\n"
+    .string "you stop rushing them. Look where\l"
+    .string "the arrow points and where you'll\l"
+    .string "land before you step on one.\p"
+    .string "ICE and DRAGON attacks are the\n"
+    .string "basic weaknesses of Dragon.\p"
+    .string "But don't expect GIOVANNI to give\n"
+    .string "you a clean target just because you\l"
+    .string "brought the right move.\p"
+    .string "Strong POKéMON are dangerous.\n"
+    .string "Strong POKéMON that control when\l"
+    .string "you get to act are worse.\p"
+    .string "I've got a DRATINI with me.\n"
+    .string "Want one last practice battle?$"
 
-ViridianCity_Gym_Text_GymGuyPostVictory::
-    .string "You did it! Eight BADGES!\n"
-    .string "The POKéMON LEAGUE is next.$"
+ViridianCity_Gym_Text_SatoshiAccept::
+    .string "Good.\p"
+    .string "Don't just look for the weakness.\n"
+    .string "Watch who controls the pace.$"
+
+ViridianCity_Gym_Text_SatoshiBattleDefeatEmpty::
+    .string "$"
+
+ViridianCity_Gym_Text_SatoshiWin::
+    .string "That's it.\p"
+    .string "ICE and DRAGON can hit Dragon hard.\p"
+    .string "But you saw what THUNDER WAVE and\n"
+    .string "AGILITY can do.\p"
+    .string "Knowing the right attack doesn't\n"
+    .string "help much if the battle stops\l"
+    .string "happening on your terms.\p"
+    .string "GIOVANNI will try to make your\n"
+    .string "choices predictable. Don't let him.$"
+
+ViridianCity_Gym_Text_SatoshiLoss::
+    .string "You know what hurts Dragon.\p"
+    .string "That wasn't the problem.\p"
+    .string "Pay attention to when you were\n"
+    .string "allowed to attack, and when DRATINI\l"
+    .string "made you react instead.\p"
+    .string "Think about that, then try again.$"
+
+ViridianCity_Gym_Text_SatoshiRetryOffer::
+    .string "One last practice round?$"
+
+ViridianCity_Gym_Text_SatoshiRetryYes::
+    .string "Good.\p"
+    .string "This time, take control before\n"
+    .string "DRATINI does.$"
+
+ViridianCity_Gym_Text_SatoshiRetryNo::
+    .string "Fair enough.\p"
+    .string "GIOVANNI's waiting.$"
+
+ViridianCity_Gym_Text_SatoshiDecline::
+    .string "All right.\p"
+    .string "Then remember the short version:\p"
+    .string "ICE. DRAGON.\p"
+    .string "Watch the spinner arrows.\p"
+    .string "And don't let GIOVANNI decide every\n"
+    .string "exchange.\p"
+    .string "The rest is yours.$"
+
+ViridianCity_Gym_Text_SatoshiRepeatHint::
+    .string "You really want the short version?\p"
+    .string "ICE. DRAGON.\p"
+    .string "Follow the spinner arrows.\p"
+    .string "Control the pace.\p"
+    .string "You know the rest.$"
+
+ViridianCity_Gym_Text_SatoshiPostBadgePracticed::
+    .string "That's eight.\p"
+    .string "When we met in PEWTER, I was giving\n"
+    .string "you answers.\p"
+    .string "By the time you reached GIOVANNI,\n"
+    .string "you were finding your own.\p"
+    .string "That's all I was trying to teach you.\p"
+    .string "The POKéMON LEAGUE is next.\n"
+    .string "I think you're ready.\p"
+    .string "Good luck.$"
+
+ViridianCity_Gym_Text_SatoshiPostBadgeSkipped::
+    .string "Eight BADGES.\p"
+    .string "And you didn't need my last\n"
+    .string "practice battle.\p"
+    .string "That's probably the best answer\n"
+    .string "you could've given me.\p"
+    .string "You know how to read a battle for\n"
+    .string "yourself now.\p"
+    .string "The LEAGUE is next. Go show them.$"
+
+ViridianCity_Gym_Text_SatoshiRematchOffer::
+    .string "Back for another practice round?\p"
+    .string "I've brought a stronger team.\n"
+    .string "Want to see how far you've come?$"
+
+ViridianCity_Gym_Text_SatoshiRematchDecline::
+    .string "Fair enough.\n"
+    .string "I'll be right here.$"
+
+ViridianCity_Gym_Text_SatoshiRematchStart::
+    .string "Good.\n"
+    .string "Show me what you can do.$"
+
+ViridianCity_Gym_Text_SatoshiRematchDefeat::
+    .string "That's the answer I wanted to see.$"
+
+ViridianCity_Gym_Text_SatoshiRematchAfter::
+    .string "You've come a long way.\n"
+    .string "Keep trusting what you see.$"
 
 ViridianCity_Gym_Text_GymStatue::
     .string "VIRIDIAN POKéMON GYM\n"
