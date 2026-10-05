@@ -1,18 +1,38 @@
 CeladonCity_Condominiums_RoofRoom_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, CeladonCity_Condominiums_RoofRoom_OnTransition
 	.byte 0
 
+CeladonCity_Condominiums_RoofRoom_OnTransition::
+	setflag FLAG_TEMP_1
+	goto_if_eq VAR_SQ_CELADON_STATE, 4, CeladonCity_Condominiums_RoofRoom_EventScript_ShowEeveeBall
+	end
+
+CeladonCity_Condominiums_RoofRoom_EventScript_ShowEeveeBall::
+	clearflag FLAG_TEMP_1
+	end
+
 CeladonCity_Condominiums_RoofRoom_EventScript_BlackBelt::
+	goto_if_eq VAR_SQ_CELADON_STATE, 5, CeladonCity_Condominiums_RoofRoom_EventScript_BlackBeltQuestComplete
 	msgbox CeladonCity_Condominiums_RoofRoom_Text_TheresNothingIDontKnow, MSGBOX_NPC
+	end
+
+CeladonCity_Condominiums_RoofRoom_EventScript_BlackBeltQuestComplete::
+	msgbox CeladonCity_Condominiums_RoofRoom_Text_EeveeWentWithYou, MSGBOX_NPC
 	end
 
 CeladonCity_Condominiums_RoofRoom_EventScript_EeveeBall::
 	lock
 	faceplayer
+	goto_if_ne VAR_SQ_CELADON_STATE, 4, CeladonCity_Condominiums_RoofRoom_EventScript_EeveeBallUnavailable
 	setvar VAR_TEMP_1, SPECIES_EEVEE
-	givemon SPECIES_EEVEE, 25
+	callnative GiveSamQuest008Eevee
 	goto_if_eq VAR_RESULT, 0, CeladonCity_Condominiums_RoofRoom_EventScript_GetEeveeParty
 	goto_if_eq VAR_RESULT, 1, CeladonCity_Condominiums_RoofRoom_EventScript_GetEeveePC
 	goto_if_eq VAR_RESULT, 2, EventScript_NoMoreRoomForPokemon
+	release
+	end
+
+CeladonCity_Condominiums_RoofRoom_EventScript_EeveeBallUnavailable::
 	release
 	end
 
@@ -49,7 +69,7 @@ CeladonCity_Condominiums_RoofRoom_EventScript_TransferEeveeToPC::
 	end
 
 CeladonCity_Condominiums_RoofRoom_EventScript_SetGotEevee::
-	setflag FLAG_GOT_EEVEE
+	setvar VAR_SQ_CELADON_STATE, 5
 	release
 	end
 
