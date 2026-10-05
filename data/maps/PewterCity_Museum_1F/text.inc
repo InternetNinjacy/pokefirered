@@ -73,6 +73,114 @@ PewterCity_Museum_1F_Text_WeHaveTwoFossilsOnExhibit::
     .string "We have two fossils of rare,\n"
     .string "prehistoric POKéMON on exhibit.$"
 
+PewterCity_Museum_1F_Text_MuseumChallengeOffer::
+    .string "We're offering a three-part\n"
+    .string "MUSEUM CHALLENGE today.\p"
+    .string "It starts with FOSSIL MATCHING.\n"
+    .string "Would you like to try it?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStarted::
+    .string "Excellent! Study the exhibits\n"
+    .string "carefully.\p"
+    .string "Your first task is FOSSIL\n"
+    .string "MATCHING.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeDecline::
+    .string "No problem. The challenge will be\n"
+    .string "here if you change your mind.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeRewardPending::
+    .string "You solved all three exhibits.\n"
+    .string "Your prize is this SANDSHREW.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage1Intro::
+    .string "Stage one: FOSSIL MATCHING.\p"
+    .string "Judge each proposed fossil match.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage1Helix::
+    .string "HELIX FOSSIL belonged to KABUTO.\n"
+    .string "Is that match correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage1Dome::
+    .string "DOME FOSSIL belonged to KABUTO.\n"
+    .string "Is that match correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage1Amber::
+    .string "OLD AMBER belonged to AERODACTYL.\n"
+    .string "Is that match correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage1Clear::
+    .string "Correct! HELIX matches OMANYTE,\n"
+    .string "DOME matches KABUTO, and OLD\l"
+    .string "AMBER matches AERODACTYL.\p"
+    .string "Next is HABITAT ORDER.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage2Intro::
+    .string "Stage two: HABITAT ORDER.\p"
+    .string "Judge where each ancient POKéMON\n"
+    .string "belonged.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage2Kabuto::
+    .string "KABUTO belonged in the open\n"
+    .string "ancient sea. Correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage2Omanyte::
+    .string "OMANYTE belonged in the open\n"
+    .string "ancient sea. Correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage2Aerodactyl::
+    .string "AERODACTYL belonged on coastal\n"
+    .string "cliffs. Correct?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage2Clear::
+    .string "Correct! KABUTO belongs on the\n"
+    .string "shallow seafloor, OMANYTE in the\l"
+    .string "open sea, and AERODACTYL on cliffs.\p"
+    .string "One stage remains.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3Intro::
+    .string "Stage three: ANCIENT FOOD CHAIN.\p"
+    .string "Build the chain from food source\n"
+    .string "to top predator.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3Plant::
+    .string "Start with FOSSILIZED PLANT?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3AerodactylSecond::
+    .string "Place AERODACTYL second?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3OmanyteSecond::
+    .string "Place OMANYTE second?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3AerodactylLast::
+    .string "Finish with AERODACTYL?$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeStage3Clear::
+    .string "Exactly right! FOSSILIZED PLANT,\n"
+    .string "then OMANYTE, then AERODACTYL.\p"
+    .string "You cleared the MUSEUM CHALLENGE!$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeWrong::
+    .string "That answer breaks this exhibit's\n"
+    .string "logic. Try this stage again.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeNoRoom::
+    .string "Your party and storage are full.\n"
+    .string "Make room, then come back for\l"
+    .string "SANDSHREW.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeRewardSuccess::
+    .string "Take good care of SANDSHREW.\n"
+    .string "You've earned a real piece of\l"
+    .string "PEWTER's natural history.$"
+
+PewterCity_Museum_1F_Text_MuseumChallengeComplete::
+    .string "You completed our MUSEUM\n"
+    .string "CHALLENGE. Well done!$"
+
+PewterCity_Museum_1F_Text_CuratorOtName::
+    .string "CURATOR$"
+
 PewterCity_Museum_1F_Text_BeautifulPieceOfAmber::
     .string "There is a beautiful piece of\n"
     .string "AMBER in a clear gold color.$"
