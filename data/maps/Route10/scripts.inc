@@ -80,6 +80,10 @@ Route10_EventScript_BlueFire::
 	trainerbattle_no_intro TRAINER_BLUE_ROUTE10_FIRE, Route10_Text_BlueDefeat
 	return
 
+Route10_EventScript_ItemHM05Flash::
+	finditem ITEM_HM05
+	end
+
 Route10_EventScript_Unused::
 	end
 
