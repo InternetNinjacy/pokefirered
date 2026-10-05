@@ -3,6 +3,7 @@
 
 // TODO: document trade.c and trade_scene.c with corresponding macros
 // and examine if these are correct
+
 #define TRADE_PLAYER  0
 #define TRADE_PARTNER 1
 
@@ -81,5 +82,12 @@
 #define UR_TRADE_MSG_PARTNERS_MON_CANT_BE_TRADED  5
 #define UR_TRADE_MSG_EGG_CANT_BE_TRADED           6
 #define UR_TRADE_MSG_PARTNER_CANT_ACCEPT_MON      7
+#define UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_1    8
+#define UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_2    9
+
+// Return values for CanRegisterMonForTradingBoard
+#define CAN_REGISTER_MON   0
+#define CANT_REGISTER_MON  1
+#define CANT_REGISTER_EGG  2
 
 #endif // GUARD_CONSTANTS_TRADE_H
