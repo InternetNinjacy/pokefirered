@@ -13,6 +13,44 @@ CinnabarIsland_Text_ScientistsExperimentInMansion::
     .string "You know, the one they call the\n"
     .string "POKéMON MANSION.$"
 
+CinnabarIsland_Text_FieldResearchFoundSampleCase::
+    .string "Wedged against the rock is a battered\n"
+    .string "SAMPLE CASE.\p"
+    .string "You recovered the SAMPLE CASE!$"
+
+CinnabarIsland_Text_FieldResearchFoundNotebook::
+    .string "A soaked FIELD NOTEBOOK is caught\n"
+    .string "between the rocks.\p"
+    .string "You recovered the FIELD NOTEBOOK!$"
+
+CinnabarIsland_Text_FieldResearchTentacruelAppears::
+    .string "The GEOLOGY KIT is visible beneath\n"
+    .string "the water…\p"
+    .string "A TENTACRUEL surges up beside it!$"
+
+CinnabarIsland_Text_FieldResearchTentacruelCleared::
+    .string "TENTACRUEL has cleared away from\n"
+    .string "the equipment.$"
+
+CinnabarIsland_Text_FieldResearchFoundGeologyKit::
+    .string "You pull the GEOLOGY KIT free from\n"
+    .string "the rocks.\p"
+    .string "You recovered the GEOLOGY KIT!$"
+
+CinnabarIsland_Text_FieldResearchAllRecovered::
+    .string "That's all three pieces of field\n"
+    .string "equipment.\p"
+    .string "Return them to the geology student\n"
+    .string "at the POKéMON LAB.$"
+
+CinnabarIsland_Text_FieldResearchInactiveSpot::
+    .string "Sea spray breaks against the rock.\n"
+    .string "Nothing here concerns you yet.$"
+
+CinnabarIsland_Text_FieldResearchEmptySpot::
+    .string "You've already searched this spot.\n"
+    .string "There's nothing else here.$"
+
 CinnabarIsland_Text_IslandSign::
     .string "CINNABAR ISLAND\n"
     .string "The Fiery Town of Burning Desire$"
