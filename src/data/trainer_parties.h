@@ -10785,7 +10785,7 @@ static const struct TrainerMonItemCustomMoves sParty_SatoshiVermilionRematch[] =
     {.iv = 200, .lvl = 62, .species = SPECIES_POLIWRATH, .heldItem = ITEM_BLACK_BELT, .moves = {MOVE_SURF, MOVE_BRICK_BREAK, MOVE_ICE_BEAM, MOVE_HYPNOSIS}},
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_LifeguardTylerVermilion[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_LifeguardTylerVermilion[] = {
     {.iv = 50, .lvl = 21, .species = SPECIES_TENTACOOL, .moves = {MOVE_POISON_STING, MOVE_SUPERSONIC, MOVE_CONSTRICT, MOVE_ACID}},
     {.iv = 50, .lvl = 23, .species = SPECIES_KRABBY, .moves = {MOVE_LEER, MOVE_VICE_GRIP, MOVE_HARDEN, MOVE_MUD_SHOT}},
 };
@@ -10796,7 +10796,7 @@ static const struct TrainerMonNoItemCustomMoves sParty_SurferCodyVermilion[] = {
     {.iv = 50, .lvl = 24, .species = SPECIES_STARYU, .moves = {MOVE_WATER_GUN, MOVE_RAPID_SPIN, MOVE_RECOVER, MOVE_SWIFT}},
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_BeachFamilyLisaBenVermilion[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_BeachFamilyLisaBenVermilion[] = {
     {.iv = 50, .lvl = 22, .species = SPECIES_SEEL, .moves = {MOVE_WATER_GUN, MOVE_ICY_WIND, MOVE_ENCORE, MOVE_AURORA_BEAM}},
     {.iv = 50, .lvl = 22, .species = SPECIES_HORSEA, .moves = {MOVE_BUBBLE, MOVE_SMOKESCREEN, MOVE_LEER, MOVE_WATER_GUN}},
     {.iv = 50, .lvl = 23, .species = SPECIES_SHELLDER, .moves = {MOVE_ICICLE_SPEAR, MOVE_SUPERSONIC, MOVE_CLAMP, MOVE_AURORA_BEAM}},
