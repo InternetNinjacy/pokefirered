@@ -27,6 +27,17 @@ PokedexRating_Text_ReceivedTM54FromOak::
 	.string "{PLAYER} received TM54\n"
 	.string "from PROF. OAK!$"
 
+PokedexRating_Text_OakReward75::
+	.string "OAK: Seventy-five POKéMON!\n"
+	.string "Your POKéDEX is becoming quite a record.\p"
+	.string "I have a POKéMON here that deserves\n"
+	.string "a good TRAINER.\p"
+	.string "Take care of this CHANSEY, won't you?$"
+
+PokedexRating_Text_ReceivedChanseyFromOak::
+	.string "{PLAYER} received CHANSEY\n"
+	.string "from PROF. OAK!$"
+
 PokedexRating_Text_OakReward100::
 	.string "OAK: One hundred POKéMON!\n"
 	.string "Remarkable, {PLAYER}.\p"
@@ -38,6 +49,24 @@ PokedexRating_Text_OakReward100::
 PokedexRating_Text_ReceivedTM17FromOak::
 	.string "{PLAYER} received TM17\n"
 	.string "from PROF. OAK!$"
+
+PokedexRating_Text_OakReward125::
+	.string "OAK: One hundred twenty-five POKéMON!\n"
+	.string "Outstanding!\p"
+	.string "There is very little left for me to teach\n"
+	.string "you about collecting POKéMON.\p"
+	.string "I'd like you to raise this DRATINI.\p"
+	.string "I think you'll do very well together.$"
+
+PokedexRating_Text_ReceivedDratiniFromOak::
+	.string "{PLAYER} received DRATINI\n"
+	.string "from PROF. OAK!$"
+
+PokedexRating_Text_OakGiftNoRoom::
+	.string "OAK: It looks like you don't have room\n"
+	.string "for another POKéMON right now.\p"
+	.string "Make room in your party or PC and\n"
+	.string "come see me again.$"
 
 PokedexRating_Text_SeenXOwnedY::
 	.string "The amount of progress you've made\n"
@@ -54,8 +83,8 @@ PokedexRating_Text_LessThan10::
 PokedexRating_Text_LessThan20::
 	.string "It looks as if you're getting on\n"
 	.string "the right track!\p"
-	.string "I've given one of my AIDES a FLASH\n"
-	.string "HM. Make sure you go get it!$"
+	.string "Keep exploring new areas and recording\n"
+	.string "the POKéMON you find.$"
 
 PokedexRating_Text_LessThan30::
 	.string "Your POKéDEX could use a bit more\n"
@@ -66,8 +95,8 @@ PokedexRating_Text_LessThan30::
 PokedexRating_Text_LessThan40::
 	.string "Good, it's apparent that you're\n"
 	.string "trying hard!\p"
-	.string "I've given one of my AIDES an\n"
-	.string "ITEMFINDER. Be sure to collect it!$"
+	.string "Keep looking in places you haven't\n"
+	.string "searched carefully yet.$"
 
 PokedexRating_Text_LessThan50::
 	.string "Your POKéDEX is coming along quite\n"
@@ -78,8 +107,8 @@ PokedexRating_Text_LessThan50::
 PokedexRating_Text_LessThan60::
 	.string "Ah, you've finally topped 50\n"
 	.string "species!\p"
-	.string "I've given one of my AIDES an EXP.\n"
-	.string "SHARE. Be sure to go get it!$"
+	.string "You're building a very respectable\n"
+	.string "collection, {PLAYER}!$"
 
 PokedexRating_Text_LessThan70::
 	.string "Hoho! This is turning into quite the\n"
