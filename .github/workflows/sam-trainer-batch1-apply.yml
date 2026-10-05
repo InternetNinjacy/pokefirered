@@ -29,54 +29,24 @@ jobs:
           parties_path = Path('src/data/trainer_parties.h')
           text = parties_path.read_text()
 
+          def party(name, mons):
+              lines = [f'static const struct TrainerMonNoItemDefaultMoves {name}[] = {{']
+              for level, species in mons:
+                  lines += ['    {', '        .iv = 0,', f'        .lvl = {level},', f'        .species = {species},', '    },']
+              lines.append('};')
+              return '\n'.join(lines)
+
           replacements = {
-              'sParty_BugCatcherRick': '''static const struct TrainerMonNoItemDefaultMoves sParty_BugCatcherRick[] = {
-    {
-        .iv = 0,
-        .lvl = 6,
-        .species = SPECIES_WEEDLE,
-    },
-    {
-        .iv = 0,
-        .lvl = 6,
-        .species = SPECIES_CATERPIE,
-    },
-};''',
-              'sParty_BugCatcherDoug': '''static const struct TrainerMonNoItemDefaultMoves sParty_BugCatcherDoug[] = {
-    {
-        .iv = 0,
-        .lvl = 7,
-        .species = SPECIES_WURMPLE,
-    },
-    {
-        .iv = 0,
-        .lvl = 7,
-        .species = SPECIES_KAKUNA,
-    },
-    {
-        .iv = 0,
-        .lvl = 7,
-        .species = SPECIES_SPINARAK,
-    },
-};''',
-              'sParty_BugCatcherSammy': '''static const struct TrainerMonNoItemDefaultMoves sParty_BugCatcherSammy[] = {
-    {
-        .iv = 0,
-        .lvl = 9,
-        .species = SPECIES_SPINARAK,
-    },
-};''',
+              'sParty_BugCatcherRick': party('sParty_BugCatcherRick', [(6, 'SPECIES_WEEDLE'), (6, 'SPECIES_CATERPIE')]),
+              'sParty_BugCatcherDoug': party('sParty_BugCatcherDoug', [(7, 'SPECIES_WURMPLE'), (7, 'SPECIES_KAKUNA'), (7, 'SPECIES_SPINARAK')]),
+              'sParty_BugCatcherSammy': party('sParty_BugCatcherSammy', [(9, 'SPECIES_SPINARAK')]),
           }
 
-          for party, replacement in replacements.items():
-              pat = re.compile(
-                  r'(?ms)^static const struct TrainerMon(?:NoItem|Item)(?:DefaultMoves|CustomMoves) '
-                  + re.escape(party) + r'\[\] = \{\n.*?^\};'
-              )
+          for name, replacement in replacements.items():
+              pat = re.compile(r'(?ms)^static const struct TrainerMon(?:NoItem|Item)(?:DefaultMoves|CustomMoves) ' + re.escape(name) + r'\[\] = \{\n.*?^\};')
               text, count = pat.subn(replacement, text, count=1)
               if count != 1:
-                  raise SystemExit(f'expected one declaration for {party}, found {count}')
-
+                  raise SystemExit(f'expected one declaration for {name}, found {count}')
           parties_path.write_text(text)
 
           map_path = Path('data/maps/ViridianForest/map.json')
