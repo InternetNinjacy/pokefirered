@@ -49,6 +49,7 @@ struct NewGamePlusCarryover
 static void ResetMiniGamesResults(void);
 static struct NewGamePlusCarryover *CreateNewGamePlusCarryover(void);
 static void RestoreNewGamePlusCarryover(struct NewGamePlusCarryover *carryover);
+static bool8 MigrateNewGamePlusPartyToStorage(struct NewGamePlusCarryover *carryover);
 
 // EWRAM vars
 EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
@@ -102,6 +103,36 @@ static void WarpToPlayersRoom(void)
     WarpIntoMap();
 }
 
+static bool8 MigrateNewGamePlusPartyToStorage(struct NewGamePlusCarryover *carryover)
+{
+    u8 partyIndex;
+    u8 box;
+    u8 slot;
+
+    for (partyIndex = 0; partyIndex < gSaveBlock1Ptr->playerPartyCount; partyIndex++)
+    {
+        bool8 placed = FALSE;
+
+        for (box = 0; box < TOTAL_BOXES_COUNT && !placed; box++)
+        {
+            for (slot = 0; slot < IN_BOX_COUNT; slot++)
+            {
+                if (GetBoxMonData(&carryover->pokemonStorage.boxes[box][slot], MON_DATA_SPECIES) == SPECIES_NONE)
+                {
+                    carryover->pokemonStorage.boxes[box][slot] = gSaveBlock1Ptr->playerParty[partyIndex].box;
+                    placed = TRUE;
+                    break;
+                }
+            }
+        }
+
+        if (!placed)
+            return FALSE;
+    }
+
+    return TRUE;
+}
+
 static struct NewGamePlusCarryover *CreateNewGamePlusCarryover(void)
 {
     struct NewGamePlusCarryover *carryover = Alloc(sizeof(*carryover));
@@ -119,6 +150,12 @@ static struct NewGamePlusCarryover *CreateNewGamePlusCarryover(void)
     memcpy(carryover->bagPocket_TMHM, gSaveBlock1Ptr->bagPocket_TMHM, sizeof(carryover->bagPocket_TMHM));
     memcpy(carryover->bagPocket_Berries, gSaveBlock1Ptr->bagPocket_Berries, sizeof(carryover->bagPocket_Berries));
     carryover->pokemonStorage = *gPokemonStoragePtr;
+
+    if (!MigrateNewGamePlusPartyToStorage(carryover))
+    {
+        Free(carryover);
+        return NULL;
+    }
 
     return carryover;
 }
