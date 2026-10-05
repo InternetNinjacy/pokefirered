@@ -122,6 +122,7 @@ static const u8 sSamGiftOtVendor[] = _("VENDOR");
 static const u8 sSamGiftOtCeladon[] = _("CELADON");
 static const u8 sSamGiftOtLab[] = _("LAB");
 static const u8 sSamGiftOtSilph[] = _("SILPH");
+static const u8 sSamGiftOtMira[] = _("MIRA");
 
 static const struct SamStarterFamilyGift sSamStarterFamilyGifts[SAM_STARTER_FAMILY_GIFT_COUNT] =
 {
@@ -256,6 +257,11 @@ void GiveSamPreOwnedMon(void)
     case SAM_PREOWNED_OT_SILPH:
         otName = sSamGiftOtSilph;
         otId = OTID_SILPH;
+        break;
+    case SAM_PREOWNED_OT_MIRA:
+        otName = sSamGiftOtMira;
+        otId = OTID_GIFT_MIRA;
+        otGender = FEMALE;
         break;
     default:
         gSpecialVar_Result = MON_CANT_GIVE;

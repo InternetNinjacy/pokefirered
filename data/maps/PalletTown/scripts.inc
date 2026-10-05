@@ -386,6 +386,83 @@ PalletTown_Movement_SignLadyMoveOutOfWayLeft::
 	walk_in_place_faster_right
 	step_end
 
+PalletTown_EventScript_Mira::
+	lock
+	faceplayer
+	goto_if_set FLAG_SQ_PALLET_COMPLETE, PalletTown_EventScript_MiraComplete
+	goto_if_eq VAR_SQ_PALLET_STATE, 2, PalletTown_EventScript_MiraTryTyrogue
+	goto_if_eq VAR_SQ_PALLET_STATE, 1, PalletTown_EventScript_MiraNeedMedicine
+	goto_if_unset FLAG_SYS_POKEDEX_GET, PalletTown_EventScript_MiraPreEligibility
+	setvar VAR_SQ_PALLET_STATE, 1
+	msgbox PalletTown_Text_MiraRequest
+	goto PalletTown_EventScript_MiraCheckMedicine
+	end
+
+PalletTown_EventScript_MiraPreEligibility::
+	msgbox PalletTown_Text_MiraPreEligibility
+	release
+	end
+
+PalletTown_EventScript_MiraNeedMedicine::
+	msgbox PalletTown_Text_MiraReminder
+
+PalletTown_EventScript_MiraCheckMedicine::
+	checkitem ITEM_PARALYZE_HEAL, 1
+	goto_if_eq VAR_RESULT, FALSE, PalletTown_EventScript_MiraNoMedicine
+	msgbox PalletTown_Text_MiraConfirm, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, PalletTown_EventScript_MiraDecline
+	removeitem ITEM_PARALYZE_HEAL, 1
+	setvar VAR_SQ_PALLET_STATE, 2
+	msgbox PalletTown_Text_MiraHealed
+	goto PalletTown_EventScript_MiraTryTyrogue
+	end
+
+PalletTown_EventScript_MiraNoMedicine::
+	msgbox PalletTown_Text_MiraNoMedicine
+	release
+	end
+
+PalletTown_EventScript_MiraDecline::
+	msgbox PalletTown_Text_MiraDecline
+	release
+	end
+
+PalletTown_EventScript_MiraTryTyrogue::
+	msgbox PalletTown_Text_MiraTyrogueOffer
+	setvar VAR_0x8004, SPECIES_TYROGUE
+	setvar VAR_0x8005, 5
+	setvar VAR_0x8006, SAM_PREOWNED_OT_MIRA
+	special GiveSamPreOwnedMon
+	goto_if_eq VAR_RESULT, 2, PalletTown_EventScript_MiraNoRoom
+	setvar VAR_SQ_PALLET_STATE, 3
+	setflag FLAG_SQ_PALLET_COMPLETE
+	msgbox PalletTown_Text_MiraTyrogueSuccess
+	release
+	end
+
+PalletTown_EventScript_MiraNoRoom::
+	msgbox PalletTown_Text_MiraNoRoom
+	release
+	end
+
+PalletTown_EventScript_MiraComplete::
+	msgbox PalletTown_Text_MiraComplete
+	release
+	end
+
+PalletTown_EventScript_Jigglypuff::
+	lock
+	faceplayer
+	goto_if_ge VAR_SQ_PALLET_STATE, 2, PalletTown_EventScript_JigglypuffHealed
+	msgbox PalletTown_Text_JigglypuffUnwell
+	release
+	end
+
+PalletTown_EventScript_JigglypuffHealed::
+	msgbox PalletTown_Text_JigglypuffHealed
+	release
+	end
+
 PalletTown_EventScript_FatMan::
 	msgbox PalletTown_Text_CanStoreItemsAndMonsInPC, MSGBOX_NPC
 	end
