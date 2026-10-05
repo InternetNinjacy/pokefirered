@@ -1,161 +1,177 @@
 ViridianCity_Gym_Text_GiovanniIntro::
-    .string "Fwahahaha!\n"
-    .string "Welcome to my hideout!\p"
-    .string "It shall be so until I can restore\n"
-    .string "TEAM ROCKET to its former glory.\p"
-    .string "But, you have found me again.\n"
-    .string "So be it.\l"
-    .string "This time, I'm not holding back!\p"
-    .string "Once more, you shall face\n"
-    .string "GIOVANNI, the greatest TRAINER!{PLAY_BGM}{MUS_ENCOUNTER_ROCKET}$"
+    .string "So. You have reached the\n"
+    .string "VIRIDIAN GYM at last.\p"
+    .string "Seven LEADERS stand behind you.\n"
+    .string "Strength alone did not bring you\l"
+    .string "this far.\p"
+    .string "Every battle is a contest of\n"
+    .string "information.\p"
+    .string "What does your opponent want?\n"
+    .string "What choice appears safest?\p"
+    .string "Understand that, and you need not\n"
+    .string "control every possibility.\l"
+    .string "Only the ones that matter.\p"
+    .string "Show me which kind of TRAINER\n"
+    .string "you have become.{PLAY_BGM}{MUS_ENCOUNTER_ROCKET}$"
 
 ViridianCity_Gym_Text_GiovanniDefeat::
-    .string "Ha!\n"
-    .string "That was a truly intense fight.\l"
-    .string "You have won!\p"
-    .string "As proof, here is the EARTHBADGE!\n"
+    .string "...Excellent.\p"
+    .string "I tried to narrow your choices,\n"
+    .string "and you refused to become\l"
+    .string "predictable.\p"
+    .string "When I prepared for your answer,\n"
+    .string "you changed the question.\p"
+    .string "You understood the battle.\p"
+    .string "You have earned the\n"
+    .string "DOMINION BADGE!\n"
     .string "{PAUSE_MUSIC}{PLAY_BGM}{MUS_OBTAIN_BADGE}{PAUSE 0xFE}{PAUSE 0x56}{RESUME_MUSIC}$"
 
 ViridianCity_Gym_Text_GiovanniPostBattle::
-    .string "Having lost in this fashion, \n"
-    .string "I can't face my followers.\l"
-    .string "I have betrayed their trust.\p"
-    .string "As of today, TEAM ROCKET is\n"
-    .string "finished forever!\p"
-    .string "As for myself, I shall dedicate\n"
-    .string "my life to training again.\p"
-    .string "Let us meet again someday!\n"
-    .string "Farewell!$"
+    .string "You have already proven yourself\n"
+    .string "here.\p"
+    .string "There is nothing more this GYM\n"
+    .string "can teach you.\p"
+    .string "Go to the POKéMON LEAGUE.\p"
+    .string "What remains of your journey is\n"
+    .string "no longer my concern.$"
 
-ViridianCity_Gym_Text_ExplainEarthBadgeTakeThis::
-    .string "The EARTHBADGE makes POKéMON of\n"
-    .string "any level obey without question.\p"
-    .string "It is evidence of your mastery as\n"
-    .string "a POKéMON TRAINER.\p"
-    .string "With it, you can challenge the\n"
-    .string "POKéMON LEAGUE.\p"
-    .string "Also, take this TM.\p"
-    .string "Consider it a gift for your POKéMON\n"
-    .string "LEAGUE challenge.$"
+ViridianCity_Gym_Text_ExplainDominionBadgeTakeThis::
+    .string "The DOMINION BADGE is your eighth\n"
+    .string "and final BADGE.\p"
+    .string "The POKéMON LEAGUE can no longer\n"
+    .string "deny you entry.\p"
+    .string "Take this as well.$"
 
-ViridianCity_Gym_Text_ReceivedTM26FromGiovanni::
-    .string "{PLAYER} received TM26\n"
+ViridianCity_Gym_Text_ReceivedTM54FromGiovanni::
+    .string "{PLAYER} received TM54\n"
     .string "from GIOVANNI.$"
 
-ViridianCity_Gym_Text_ExplainTM26::
-    .string "TM26 contains EARTHQUAKE.\p"
-    .string "It is a powerful attack that causes\n"
-    .string "a massive tremor.\p"
-    .string "I made it when I ran the GYM here,\n"
-    .string "far too long ago… $"
+ViridianCity_Gym_Text_ExplainTM54::
+    .string "TM54 contains PSYCHIC.\p"
+    .string "Its value is not merely its power.\p"
+    .string "A strong attack at the expected\n"
+    .string "moment can be answered.\p"
+    .string "Use it after your opponent has\n"
+    .string "committed to the wrong response.\p"
+    .string "Prediction without action is\n"
+    .string "useless. Power without thought\l"
+    .string "is wasteful.$"
 
 ViridianCity_Gym_Text_YouDoNotHaveSpace::
     .string "You do not have space for this!$"
 
 ViridianCity_Gym_Text_YujiIntro::
-    .string "Heh!\n"
-    .string "You must be running out of steam\l"
-    .string "by now!$"
+    .string "Every battle begins with choices.\n"
+    .string "Let's see how many of yours I can\l"
+    .string "take away!$"
 
 ViridianCity_Gym_Text_YujiDefeat::
-    .string "I ran out of gas!$"
+    .string "You kept creating new options!$"
 
 ViridianCity_Gym_Text_YujiPostBattle::
-    .string "You'll need power to keep up with\n"
-    .string "our GYM LEADER.$"
+    .string "Control isn't having every choice.\n"
+    .string "It's preserving the ones that\l"
+    .string "matter.$"
 
 ViridianCity_Gym_Text_AtsushiIntro::
-    .string "Rrrroar!\n"
-    .string "I'm working myself into a rage!$"
+    .string "I'll take the advantage and hold it!\n"
+    .string "If you want control back, earn it!$"
 
 ViridianCity_Gym_Text_AtsushiDefeat::
-    .string "Wargh!$"
+    .string "You broke my rhythm completely!$"
 
 ViridianCity_Gym_Text_AtsushiPostBattle::
-    .string "I'm still not worthy!$"
+    .string "GIOVANNI doesn't expect a perfect\n"
+    .string "plan. He expects you to know when\l"
+    .string "it must change.$"
 
 ViridianCity_Gym_Text_JasonIntro::
-    .string "POKéMON and I, we make wonderful\n"
-    .string "music together!$"
+    .string "Powerful POKéMON are dangerous in\n"
+    .string "anyone's hands.\p"
+    .string "What matters is knowing exactly\n"
+    .string "what to ask of them.$"
 
 ViridianCity_Gym_Text_JasonDefeat::
-    .string "You are in perfect harmony!$"
+    .string "Your POKéMON never hesitated!$"
 
 ViridianCity_Gym_Text_JasonPostBattle::
-    .string "Do you know the identity of our\n"
-    .string "GYM LEADER?$"
+    .string "A command at the right moment is\n"
+    .string "worth more than ten given too late.$"
 
 ViridianCity_Gym_Text_KiyoIntro::
-    .string "Karate is the ultimate form of\n"
-    .string "martial arts!$"
+    .string "Once I put you under pressure, I\n"
+    .string "won't let up!\p"
+    .string "Find your opening before I close it!$"
 
 ViridianCity_Gym_Text_KiyoDefeat::
-    .string "Aiyah!$"
+    .string "You knew exactly when to strike!$"
 
 ViridianCity_Gym_Text_KiyoPostBattle::
-    .string "If my POKéMON were as good at\n"
-    .string "karate as I…$"
+    .string "Pressure makes people predictable.\n"
+    .string "GIOVANNI uses that better than\l"
+    .string "anyone.$"
 
 ViridianCity_Gym_Text_WarrenIntro::
-    .string "The truly talented win with style.$"
+    .string "I don't need every move you could\n"
+    .string "make. Only the ones you're most\l"
+    .string "likely to choose.$"
 
 ViridianCity_Gym_Text_WarrenDefeat::
-    .string "I lost my grip!$"
+    .string "You made the obvious answer wrong!$"
 
 ViridianCity_Gym_Text_WarrenPostBattle::
-    .string "The LEADER will scold me for\n"
-    .string "losing this way…$"
+    .string "Once your opponent thinks they\n"
+    .string "understand the battle, change what\l"
+    .string "the battle asks of them.$"
 
 ViridianCity_Gym_Text_TakashiIntro::
-    .string "I'm the KARATE KING!\n"
-    .string "Your fate rests with me!$"
+    .string "GIOVANNI is ahead. Don't wait to\n"
+    .string "see what he does. Make him answer\l"
+    .string "you!$"
 
 ViridianCity_Gym_Text_TakashiDefeat::
-    .string "Ayah!$"
+    .string "That's it! You took the initiative!$"
 
 ViridianCity_Gym_Text_TakashiPostBattle::
-    .string "The POKéMON LEAGUE?\n"
-    .string "You? Don't get cocky!$"
+    .string "If GIOVANNI controls the pace,\n"
+    .string "you'll spend the whole fight trying\l"
+    .string "to catch him.$"
 
 ViridianCity_Gym_Text_ColeIntro::
-    .string "Your POKéMON will cower at the\n"
-    .string "crack of my whip!$"
+    .string "You made it to the final GYM.\p"
+    .string "Brute strength stopped being enough\n"
+    .string "a long time ago. Think ahead!$"
 
 ViridianCity_Gym_Text_ColeDefeat::
-    .string "Yowch!\n"
-    .string "Whiplash!$"
+    .string "You were ready for my answer!$"
 
 ViridianCity_Gym_Text_ColePostBattle::
-    .string "Wait!\n"
-    .string "I was just careless!$"
+    .string "GIOVANNI watches what a TRAINER\n"
+    .string "does before the obvious move.$"
 
 ViridianCity_Gym_Text_SamuelIntro::
-    .string "VIRIDIAN GYM was closed for a\n"
-    .string "long time.\p"
-    .string "But now, our LEADER is back!$"
+    .string "A good TRAINER chooses a move.\p"
+    .string "A great TRAINER knows what that move\n"
+    .string "will make the opponent do next.$"
 
 ViridianCity_Gym_Text_SamuelDefeat::
-    .string "I was beaten?$"
+    .string "You kept steering me where you wanted!$"
 
 ViridianCity_Gym_Text_SamuelPostBattle::
-    .string "You can go on to the POKéMON\n"
-    .string "LEAGUE only by defeating our GYM\l"
-    .string "LEADER!$"
+    .string "Predict the response, and you can\n"
+    .string "prepare the answer before the\l"
+    .string "question is asked.$"
 
 ViridianCity_Gym_Text_GymGuyAdvice::
-    .string "Yo!\n"
-    .string "Champ in the making!\p"
-    .string "Even I don't know the VIRIDIAN\n"
-    .string "LEADER's identity.\p"
-    .string "But one thing's certain.\n"
-    .string "This will be the toughest of all\l"
-    .string "the GYM LEADERS.\p"
-    .string "Also, I heard that the TRAINERS\n"
-    .string "here like GROUND-type POKéMON.$"
+    .string "The final GYM demands more than\n"
+    .string "power.\p"
+    .string "Watch what each TRAINER is trying\n"
+    .string "to force you to do, and don't let\l"
+    .string "them control the pace.$"
 
 ViridianCity_Gym_Text_GymGuyPostVictory::
-    .string "Blow me away! GIOVANNI was the\n"
-    .string "GYM LEADER of VIRIDIAN?$"
+    .string "You did it! Eight BADGES!\p"
+    .string "The POKéMON LEAGUE is next.$"
 
 ViridianCity_Gym_Text_GymStatue::
     .string "VIRIDIAN POKéMON GYM\n"
