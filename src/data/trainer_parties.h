@@ -256,48 +256,58 @@ static const struct TrainerMonNoItemDefaultMoves sParty_YoungsterEddie[] = {
         .lvl = 21,
         .species = SPECIES_EKANS,
     },
+    {
+        .iv = 0,
+        .lvl = 20,
+        .species = SPECIES_DROWZEE,
+    },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_YoungsterDillon[] = {
     {
         .iv = 0,
-        .lvl = 19,
-        .species = SPECIES_SANDSHREW,
+        .lvl = 21,
+        .species = SPECIES_PSYDUCK,
     },
     {
         .iv = 0,
-        .lvl = 19,
-        .species = SPECIES_ZUBAT,
+        .lvl = 21,
+        .species = SPECIES_DROWZEE,
+    },
+    {
+        .iv = 0,
+        .lvl = 21,
+        .species = SPECIES_EKANS,
     },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_YoungsterYasu[] = {
     {
         .iv = 0,
-        .lvl = 17,
-        .species = SPECIES_RATTATA,
-    },
-    {
-        .iv = 0,
-        .lvl = 17,
-        .species = SPECIES_RATTATA,
-    },
-    {
-        .iv = 0,
-        .lvl = 17,
+        .lvl = 21,
         .species = SPECIES_RATICATE,
+    },
+    {
+        .iv = 0,
+        .lvl = 21,
+        .species = SPECIES_DROWZEE,
+    },
+    {
+        .iv = 0,
+        .lvl = 21,
+        .species = SPECIES_PSYDUCK,
     },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_YoungsterDave[] = {
     {
         .iv = 0,
-        .lvl = 18,
+        .lvl = 20,
         .species = SPECIES_NIDORAN_M,
     },
     {
         .iv = 0,
-        .lvl = 18,
+        .lvl = 22,
         .species = SPECIES_NIDORINO,
     },
 };
@@ -2098,25 +2108,25 @@ static const struct TrainerMonNoItemDefaultMoves sParty_EngineerBaily[] = {
 static const struct TrainerMonNoItemDefaultMoves sParty_EngineerBraxton[] = {
     {
         .iv = 0,
-        .lvl = 21,
-        .species = SPECIES_MAGNEMITE,
+        .lvl = 23,
+        .species = SPECIES_MAGNETON,
     },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_EngineerBernie[] = {
     {
         .iv = 0,
-        .lvl = 18,
+        .lvl = 20,
         .species = SPECIES_MAGNEMITE,
     },
     {
         .iv = 0,
-        .lvl = 18,
-        .species = SPECIES_MAGNEMITE,
+        .lvl = 20,
+        .species = SPECIES_VOLTORB,
     },
     {
         .iv = 0,
-        .lvl = 18,
+        .lvl = 21,
         .species = SPECIES_MAGNETON,
     },
 };
@@ -2684,52 +2694,72 @@ static const struct TrainerMonNoItemDefaultMoves sParty_CueBallChase[] = {
 static const struct TrainerMonNoItemDefaultMoves sParty_GamerHugo[] = {
     {
         .iv = 0,
-        .lvl = 18,
+        .lvl = 20,
         .species = SPECIES_POLIWAG,
     },
     {
         .iv = 0,
-        .lvl = 18,
+        .lvl = 20,
         .species = SPECIES_HORSEA,
+    },
+    {
+        .iv = 0,
+        .lvl = 21,
+        .species = SPECIES_PSYDUCK,
     },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_GamerJasper[] = {
     {
         .iv = 0,
-        .lvl = 18,
+        .lvl = 20,
         .species = SPECIES_BELLSPROUT,
     },
     {
         .iv = 0,
-        .lvl = 18,
+        .lvl = 20,
         .species = SPECIES_ODDISH,
+    },
+    {
+        .iv = 0,
+        .lvl = 21,
+        .species = SPECIES_EXEGGCUTE,
     },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_GamerDirk[] = {
     {
         .iv = 0,
-        .lvl = 18,
+        .lvl = 21,
+        .species = SPECIES_PIKACHU,
+    },
+    {
+        .iv = 0,
+        .lvl = 21,
         .species = SPECIES_VOLTORB,
     },
     {
         .iv = 0,
-        .lvl = 18,
-        .species = SPECIES_MAGNEMITE,
+        .lvl = 22,
+        .species = SPECIES_ELECTABUZZ,
     },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_GamerDarian[] = {
     {
         .iv = 0,
-        .lvl = 18,
+        .lvl = 21,
+        .species = SPECIES_VULPIX,
+    },
+    {
+        .iv = 0,
+        .lvl = 22,
         .species = SPECIES_GROWLITHE,
     },
     {
         .iv = 0,
-        .lvl = 18,
-        .species = SPECIES_VULPIX,
+        .lvl = 21,
+        .species = SPECIES_PONYTA,
     },
 };
 
