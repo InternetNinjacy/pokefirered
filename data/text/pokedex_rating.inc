@@ -3,6 +3,42 @@ PokedexRating_Text_HowIsPokedexComingAlong::
 	.string "How is your POKéDEX coming along?\p"
 	.string "Here, let me take a look.$"
 
+PokedexRating_Text_OakReward30::
+	.string "OAK: Ah, {PLAYER}!\n"
+	.string "Your POKéDEX is coming along splendidly!\p"
+	.string "You've registered 30 different\n"
+	.string "POKéMON as owned.\p"
+	.string "Take this EXP. SHARE.\p"
+	.string "It should help you with your research.$"
+
+PokedexRating_Text_ReceivedExpShareFromOak::
+	.string "{PLAYER} received the EXP. SHARE\n"
+	.string "from PROF. OAK!$"
+
+PokedexRating_Text_OakReward50::
+	.string "OAK: Fifty POKéMON!\n"
+	.string "Excellent work, {PLAYER}.\p"
+	.string "You've learned a great deal about\n"
+	.string "raising many different kinds of POKéMON.\p"
+	.string "I think you've earned this.\p"
+	.string "It contains PSYCHIC.$"
+
+PokedexRating_Text_ReceivedTM54FromOak::
+	.string "{PLAYER} received TM54\n"
+	.string "from PROF. OAK!$"
+
+PokedexRating_Text_OakReward100::
+	.string "OAK: One hundred POKéMON!\n"
+	.string "Remarkable, {PLAYER}.\p"
+	.string "Very few TRAINERS ever study such a\n"
+	.string "wide variety of POKéMON so closely.\p"
+	.string "You've earned this.\p"
+	.string "It contains EARTHQUAKE.$"
+
+PokedexRating_Text_ReceivedTM17FromOak::
+	.string "{PLAYER} received TM17\n"
+	.string "from PROF. OAK!$"
+
 PokedexRating_Text_SeenXOwnedY::
 	.string "The amount of progress you've made\n"
 	.string "on your POKéDEX is:\p"
