@@ -9,7 +9,9 @@ CeruleanCity_House4_EventScript_WaterworksWorker::
 	faceplayer
 	goto_if_set FLAG_SQ_CERULEAN_COMPLETE, CeruleanCity_House4_EventScript_WaterworksComplete
 	goto_if_eq VAR_SQ_CERULEAN_STATE, 0, CeruleanCity_House4_EventScript_WaterworksOffer
-	goto CeruleanCity_House4_EventScript_WaterworksReturn
+	goto_if_eq VAR_SQ_CERULEAN_STATE, 1, CeruleanCity_House4_EventScript_WaterworksReturn
+	goto_if_eq VAR_SQ_CERULEAN_STATE, 2, CeruleanCity_House4_EventScript_WaterworksReward
+	goto CeruleanCity_House4_EventScript_WaterworksComplete
 	end
 
 CeruleanCity_House4_EventScript_WaterworksOffer::
@@ -32,6 +34,21 @@ CeruleanCity_House4_EventScript_WaterworksReturn::
 	msgbox CeruleanCity_House4_Text_WaterworksReturn
 	warp MAP_ROUTE6_UNUSED_HOUSE, 6, 7
 	waitstate
+	release
+	end
+
+CeruleanCity_House4_EventScript_WaterworksReward::
+	msgbox CeruleanCity_House4_Text_WaterworksReward
+	giveitem ITEM_MYSTIC_WATER
+	goto_if_eq VAR_RESULT, FALSE, CeruleanCity_House4_EventScript_WaterworksNoRoom
+	setvar VAR_SQ_CERULEAN_STATE, 3
+	setflag FLAG_SQ_CERULEAN_COMPLETE
+	msgbox CeruleanCity_House4_Text_WaterworksRewardSuccess
+	release
+	end
+
+CeruleanCity_House4_EventScript_WaterworksNoRoom::
+	msgbox CeruleanCity_House4_Text_WaterworksNoRoom
 	release
 	end
 
