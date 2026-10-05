@@ -69,7 +69,6 @@
 // Return values for GetGameProgressForLinkTrade
 #define TRADE_BOTH_PLAYERS_READY      0
 #define TRADE_PLAYER_NOT_READY        1
-
 #define TRADE_PARTNER_NOT_READY       2
 
 // Message indexes for sUnionRoomTradeMessages
