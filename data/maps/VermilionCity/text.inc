@@ -24,6 +24,55 @@ VermilionCity_Text_Machop::
 VermilionCity_Text_MachopStompingLandFlat::
     .string "A MACHOP is stomping the land flat.$"
 
+VermilionCity_Text_PollutionOffer::
+    .string "The water by this dock has turned\n"
+    .string "thick with sludge.\p"
+    .string "A GRIMER and MUK have settled in,\n"
+    .string "and nobody can work the pier safely.\p"
+    .string "Could you clear them out?$"
+
+VermilionCity_Text_PollutionStart::
+    .string "Thanks. They're gathered along the\n"
+    .string "polluted edge of the dock.\p"
+    .string "Be careful. They fight together.$"
+
+VermilionCity_Text_PollutionDecline::
+    .string "Fair enough. The dock will stay\n"
+    .string "closed until someone can help.$"
+
+VermilionCity_Text_PollutionActive::
+    .string "The GRIMER and MUK are still fouling\n"
+    .string "the dock. Clear them out when ready.$"
+
+VermilionCity_Text_PollutionBattlePrompt::
+    .string "Are you ready to take them on?$"
+
+VermilionCity_Text_PollutionNeedsTwoPokemon::
+    .string "They fight as a pair. You'll need two\n"
+    .string "POKéMON ready to battle them.$"
+
+VermilionCity_Text_PollutionBattleCleared::
+    .string "The GRIMER and MUK have been driven\n"
+    .string "off. The dock can reopen now.$"
+
+VermilionCity_Text_PollutionRewardPending::
+    .string "The sludge POKéMON are gone and the\n"
+    .string "dock is usable again.\p"
+    .string "I've got something for your help.$"
+
+VermilionCity_Text_PollutionRewardNoRoom::
+    .string "Your BAG is too full right now.\p"
+    .string "Make some room and come back. I'll\n"
+    .string "keep your reward here for you.$"
+
+VermilionCity_Text_PollutionRewardReceived::
+    .string "Please take this POISON BARB.\p"
+    .string "You earned it for clearing the dock.$"
+
+VermilionCity_Text_PollutionComplete::
+    .string "The water's clearing and the dock is\n"
+    .string "back in service. Thanks again.$"
+
 VermilionCity_Text_SSAnneVisitsOnceAYear::
     .string "The S.S. ANNE is a famous luxury\n"
     .string "cruise ship.\p"

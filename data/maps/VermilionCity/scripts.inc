@@ -216,7 +216,78 @@ VermilionCity_EventScript_CheckSeagallopPresentTrigger::
 	end
 
 VermilionCity_EventScript_Sailor::
-	msgbox VermilionCity_Text_SSAnneVisitsOnceAYear, MSGBOX_NPC
+	lock
+	faceplayer
+	goto_if_set FLAG_SQ_VERMILION_COMPLETE, VermilionCity_EventScript_PollutionComplete
+	goto_if_eq VAR_SQ_VERMILION_STATE, 0, VermilionCity_EventScript_PollutionOffer
+	goto_if_eq VAR_SQ_VERMILION_STATE, 1, VermilionCity_EventScript_PollutionActive
+	goto_if_eq VAR_SQ_VERMILION_STATE, 2, VermilionCity_EventScript_PollutionRewardPending
+	goto VermilionCity_EventScript_PollutionComplete
+	end
+
+VermilionCity_EventScript_PollutionOffer::
+	msgbox VermilionCity_Text_PollutionOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, VermilionCity_EventScript_PollutionDecline
+	setvar VAR_SQ_VERMILION_STATE, 1
+	msgbox VermilionCity_Text_PollutionStart
+	release
+	end
+
+VermilionCity_EventScript_PollutionDecline::
+	msgbox VermilionCity_Text_PollutionDecline
+	release
+	end
+
+VermilionCity_EventScript_PollutionActive::
+	msgbox VermilionCity_Text_PollutionActive
+	msgbox VermilionCity_Text_PollutionBattlePrompt, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, VermilionCity_EventScript_PollutionBattleNotReady
+	special HasEnoughMonsForDoubleBattle
+	goto_if_ne VAR_RESULT, 0, VermilionCity_EventScript_PollutionNeedsTwoPokemon
+	closemessage
+	callnative StartVermilionPollutionBattle
+	waitstate
+	special GetBattleOutcome
+	goto_if_eq VAR_RESULT, 1, VermilionCity_EventScript_PollutionBattleCleared
+	goto_if_eq VAR_RESULT, 7, VermilionCity_EventScript_PollutionBattleCleared
+	release
+	end
+
+VermilionCity_EventScript_PollutionBattleNotReady::
+	release
+	end
+
+VermilionCity_EventScript_PollutionNeedsTwoPokemon::
+	msgbox VermilionCity_Text_PollutionNeedsTwoPokemon
+	release
+	end
+
+VermilionCity_EventScript_PollutionBattleCleared::
+	setvar VAR_SQ_VERMILION_STATE, 2
+	msgbox VermilionCity_Text_PollutionBattleCleared
+	release
+	end
+
+VermilionCity_EventScript_PollutionRewardPending::
+	msgbox VermilionCity_Text_PollutionRewardPending
+	checkitemspace ITEM_POISON_BARB, 1
+	goto_if_eq VAR_RESULT, FALSE, VermilionCity_EventScript_PollutionRewardNoRoom
+	additem ITEM_POISON_BARB, 1
+	goto_if_eq VAR_RESULT, FALSE, VermilionCity_EventScript_PollutionRewardNoRoom
+	setvar VAR_SQ_VERMILION_STATE, 3
+	setflag FLAG_SQ_VERMILION_COMPLETE
+	msgbox VermilionCity_Text_PollutionRewardReceived
+	release
+	end
+
+VermilionCity_EventScript_PollutionRewardNoRoom::
+	msgbox VermilionCity_Text_PollutionRewardNoRoom
+	release
+	end
+
+VermilionCity_EventScript_PollutionComplete::
+	msgbox VermilionCity_Text_PollutionComplete
+	release
 	end
 
 VermilionCity_EventScript_OaksAide::
