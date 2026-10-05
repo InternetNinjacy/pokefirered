@@ -22,20 +22,28 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          from textwrap import dedent
 
-          # 1) Central trainer IDs.
           path = Path('include/constants/opponents.h')
           text = path.read_text()
           if 'TRAINER_THOMAS_NUGGET_BRIDGE' not in text:
-              marker = '''#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783\n'''
-              insert = '''#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783\n\n// Thomas Team Rocket rival allocations: 784-789.\n#define TRAINER_THOMAS_NUGGET_BRIDGE               784\n#define TRAINER_THOMAS_CELADON_HIDEOUT             785\n#define TRAINER_THOMAS_POKEMON_TOWER               786\n#define TRAINER_THOMAS_SILPH_CO                     787\n#define TRAINER_THOMAS_CINNABAR_MANSION            788\n#define TRAINER_THOMAS_VIRIDIAN_GYM                 789\n'''
+              marker = '#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783\n'
+              insert = marker + dedent('''
+
+              // Thomas Team Rocket rival allocations: 784-789.
+              #define TRAINER_THOMAS_NUGGET_BRIDGE               784
+              #define TRAINER_THOMAS_CELADON_HIDEOUT             785
+              #define TRAINER_THOMAS_POKEMON_TOWER               786
+              #define TRAINER_THOMAS_SILPH_CO                     787
+              #define TRAINER_THOMAS_CINNABAR_MANSION            788
+              #define TRAINER_THOMAS_VIRIDIAN_GYM                 789
+              ''')
               if marker not in text:
                   raise SystemExit('opponents.h insertion marker not found')
               text = text.replace(marker, insert, 1)
           text = text.replace('#define NUM_TRAINERS                             784', '#define NUM_TRAINERS                             790')
           path.write_text(text)
 
-          # 2) Bind staged Thomas party header into data compilation.
           path = Path('src/data.c')
           text = path.read_text()
           include = '#include "data/sam_thomas_trainer_parties.h"\n'
@@ -46,72 +54,72 @@ jobs:
               text = text.replace(marker, marker + include, 1)
           path.write_text(text)
 
-          # 3) Six usable gTrainers records, no map integration.
           path = Path('src/data/trainers.h')
           text = path.read_text()
           if '[TRAINER_THOMAS_NUGGET_BRIDGE]' not in text:
-              records = r'''
-    [TRAINER_THOMAS_NUGGET_BRIDGE] = {
-        .trainerClass = TRAINER_CLASS_PKMN_TRAINER,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-        .trainerPic = TRAINER_PIC_COOLTRAINER_M,
-        .trainerName = _("THOMAS"),
-        .items = {},
-        .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_ThomasNugget),
-    },
-    [TRAINER_THOMAS_CELADON_HIDEOUT] = {
-        .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
-        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
-        .trainerName = _("THOMAS"),
-        .items = {},
-        .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_ThomasCeladon),
-    },
-    [TRAINER_THOMAS_POKEMON_TOWER] = {
-        .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
-        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
-        .trainerName = _("THOMAS"),
-        .items = {},
-        .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_ThomasPokemonTower),
-    },
-    [TRAINER_THOMAS_SILPH_CO] = {
-        .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
-        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
-        .trainerName = _("THOMAS"),
-        .items = {},
-        .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = ITEM_CUSTOM_MOVES(sParty_ThomasSilph),
-    },
-    [TRAINER_THOMAS_CINNABAR_MANSION] = {
-        .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
-        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
-        .trainerName = _("THOMAS"),
-        .items = {},
-        .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = ITEM_CUSTOM_MOVES(sParty_ThomasCinnabar),
-    },
-    [TRAINER_THOMAS_VIRIDIAN_GYM] = {
-        .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
-        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
-        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
-        .trainerName = _("THOMAS"),
-        .items = {},
-        .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = ITEM_CUSTOM_MOVES(sParty_ThomasViridian),
-    },
-'''
+              records = dedent('''
+
+                  [TRAINER_THOMAS_NUGGET_BRIDGE] = {
+                      .trainerClass = TRAINER_CLASS_PKMN_TRAINER,
+                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
+                      .trainerPic = TRAINER_PIC_COOLTRAINER_M,
+                      .trainerName = _("THOMAS"),
+                      .items = {},
+                      .doubleBattle = FALSE,
+                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT,
+                      .party = NO_ITEM_CUSTOM_MOVES(sParty_ThomasNugget),
+                  },
+                  [TRAINER_THOMAS_CELADON_HIDEOUT] = {
+                      .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
+                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+                      .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
+                      .trainerName = _("THOMAS"),
+                      .items = {},
+                      .doubleBattle = FALSE,
+                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+                      .party = NO_ITEM_CUSTOM_MOVES(sParty_ThomasCeladon),
+                  },
+                  [TRAINER_THOMAS_POKEMON_TOWER] = {
+                      .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
+                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+                      .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
+                      .trainerName = _("THOMAS"),
+                      .items = {},
+                      .doubleBattle = FALSE,
+                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+                      .party = NO_ITEM_CUSTOM_MOVES(sParty_ThomasPokemonTower),
+                  },
+                  [TRAINER_THOMAS_SILPH_CO] = {
+                      .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
+                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+                      .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
+                      .trainerName = _("THOMAS"),
+                      .items = {},
+                      .doubleBattle = FALSE,
+                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+                      .party = ITEM_CUSTOM_MOVES(sParty_ThomasSilph),
+                  },
+                  [TRAINER_THOMAS_CINNABAR_MANSION] = {
+                      .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
+                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+                      .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
+                      .trainerName = _("THOMAS"),
+                      .items = {},
+                      .doubleBattle = FALSE,
+                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+                      .party = ITEM_CUSTOM_MOVES(sParty_ThomasCinnabar),
+                  },
+                  [TRAINER_THOMAS_VIRIDIAN_GYM] = {
+                      .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
+                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+                      .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
+                      .trainerName = _("THOMAS"),
+                      .items = {},
+                      .doubleBattle = FALSE,
+                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+                      .party = ITEM_CUSTOM_MOVES(sParty_ThomasViridian),
+                  },
+              ''')
               closing = '    };'
               pos = text.rfind(closing)
               if pos == -1:
