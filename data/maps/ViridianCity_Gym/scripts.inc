@@ -4,13 +4,8 @@ ViridianCity_Gym_MapScripts::
 ViridianCity_Gym_EventScript_Giovanni::
 	famechecker FAMECHECKER_GIOVANNI, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_GIOVANNI, ViridianCity_Gym_Text_GiovanniIntro, ViridianCity_Gym_Text_GiovanniDefeat, ViridianCity_Gym_EventScript_DefeatedGiovanni, NO_MUSIC
-	goto_if_unset FLAG_GOT_TM26_FROM_GIOVANNI, ViridianCity_Gym_EventScript_GiveTM26
-	msgbox ViridianCity_Gym_Text_GiovanniPostBattle
-	closemessage
-	fadescreen FADE_TO_BLACK
-	removeobject LOCALID_VIRIDIAN_GIOVANNI
-	fadescreen FADE_FROM_BLACK
-	release
+	goto_if_unset FLAG_GOT_TM26_FROM_GIOVANNI, ViridianCity_Gym_EventScript_GiveTM54
+	goto ViridianCity_Gym_EventScript_GiovanniLeave
 	end
 
 ViridianCity_Gym_EventScript_DefeatedGiovanni::
@@ -20,21 +15,32 @@ ViridianCity_Gym_EventScript_DefeatedGiovanni::
 	setflag FLAG_BADGE08_GET
 	setvar VAR_MAP_SCENE_ROUTE22, 3
 	set_gym_trainers 8
-	goto ViridianCity_Gym_EventScript_GiveTM26
+	goto ViridianCity_Gym_EventScript_GiveTM54
 	end
 
-ViridianCity_Gym_EventScript_GiveTM26::
-	msgbox ViridianCity_Gym_Text_ExplainEarthBadgeTakeThis
-	checkitemspace ITEM_TM26
-	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_NoRoomForTM26
-	giveitem_msg ViridianCity_Gym_Text_ReceivedTM26FromGiovanni, ITEM_TM26
+ViridianCity_Gym_EventScript_GiveTM54::
+	msgbox ViridianCity_Gym_Text_ExplainDominionBadgeTakeThis
+	checkitemspace ITEM_TM54_PSYCHIC
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_NoRoomForTM54
+	giveitem_msg ViridianCity_Gym_Text_ReceivedTM54FromGiovanni, ITEM_TM54_PSYCHIC
+	@ Retain the vanilla Giovanni reward-state slot; only the Sam Edition reward identity changes.
 	setflag FLAG_GOT_TM26_FROM_GIOVANNI
-	msgbox ViridianCity_Gym_Text_ExplainTM26
+	msgbox ViridianCity_Gym_Text_ExplainTM54
+	goto ViridianCity_Gym_EventScript_GiovanniLeave
+	end
+
+ViridianCity_Gym_EventScript_NoRoomForTM54::
+	msgbox ViridianCity_Gym_Text_YouDoNotHaveSpace
 	release
 	end
 
-ViridianCity_Gym_EventScript_NoRoomForTM26::
-	msgbox ViridianCity_Gym_Text_YouDoNotHaveSpace
+ViridianCity_Gym_EventScript_GiovanniLeave::
+	msgbox ViridianCity_Gym_Text_GiovanniPostBattle
+	closemessage
+	setflag FLAG_HIDE_VIRIDIAN_GIOVANNI
+	fadescreen FADE_TO_BLACK
+	removeobject LOCALID_VIRIDIAN_GIOVANNI
+	fadescreen FADE_FROM_BLACK
 	release
 	end
 
