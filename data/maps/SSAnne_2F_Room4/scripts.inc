@@ -2,7 +2,7 @@ SSAnne_2F_Room4_MapScripts::
 	.byte 0
 
 SSAnne_2F_Room4_EventScript_Lamar::
-	trainerbattle_single TRAINER_GENTLEMAN_LAMAR, SSAnne_2F_Room4_Text_LamarIntro, SSAnne_2F_Room4_Text_LamarDefeat
+	trainerbattle_double TRAINER_GENTLEMAN_LAMAR, SSAnne_2F_Room4_Text_LamarIntro, SSAnne_2F_Room4_Text_LamarDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SSAnne_2F_Room4_Text_LamarPostBattle, MSGBOX_AUTOCLOSE
 	end
 

@@ -17,3 +17,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SamRoute24CamperShane[] 
         .species = SPECIES_PONYTA,
     },
 };
+
+// Batch 4 is included here so its party remaps are active before trainers.h is
+// consumed by src/data.c, while leaving the shared vanilla party table untouched.
+#include "data/sam_vermilion_trainer_parties.h"
