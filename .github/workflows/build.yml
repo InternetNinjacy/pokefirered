@@ -2,103 +2,50 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
+    branches: [ sam/thomas-chunk1-trainer-ids ]
+
+permissions:
+  contents: write
 
 jobs:
-  build:
+  apply-thomas-trainer-ids:
     runs-on: ubuntu-latest
-    env:
-      GAME_VERSION: FIRERED
-      GAME_LANGUAGE: ENGLISH
-      GAME_REVISION: 0
-      MODERN: 0
-      COMPARE: 0
     steps:
       - name: Checkout
-        uses: actions/checkout@master
-
-      - name: Checkout agbcc
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
         with:
-          path: 'agbcc'
-          repository: 'pret/agbcc'
-
-      - name: Checkout symbols
-        if: ${{ github.event_name == 'push' }}
-        uses: actions/checkout@master
-        with:
-          path: 'symbols'
-          ref: 'symbols'
-
-      - name: Install binutils
+          ref: sam/thomas-chunk1-trainer-ids
+          fetch-depth: 0
+      - name: Apply Thomas trainer IDs
         run: |
-          sudo apt update
-          sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
-        # build-essential and git are already installed
-        # gcc-arm-none-eabi is only needed for the modern build
-        # as an alternative to dkP
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('include/constants/opponents.h')
+          text = p.read_text()
+          if 'TRAINER_THOMAS_NUGGET_BRIDGE' not in text:
+              anchor = '''#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783
 
-      - name: Install agbcc
-        run: |
-          ./build.sh
-          ./install.sh ../
-        working-directory: ./agbcc
+// Blue League branch allocations: 800-803.'''
+              replacement = '''#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783
 
-      - name: Compare FireRed
-        run: |
-          make -j${nproc} all syms
+// Thomas Team Rocket rival central allocations: 784-789.
+#define TRAINER_THOMAS_NUGGET_BRIDGE                784
+#define TRAINER_THOMAS_CELADON_HIDEOUT              785
+#define TRAINER_THOMAS_POKEMON_TOWER                786
+#define TRAINER_THOMAS_SILPH_CO                     787
+#define TRAINER_THOMAS_CINNABAR_MANSION             788
+#define TRAINER_THOMAS_VIRIDIAN_GYM                 789
 
-      - name: Compare FireRed rev1
-        env:
-          GAME_REVISION: 1
-        run: |
-          make -j${nproc} all syms
-
-      - name: Compare FireRed rev10
-        env:
-          GAME_REVISION: 10
-        run: |
-          make -j${nproc} all syms
-
-      - name: Compare LeafGreen
-        env:
-          GAME_VERSION: LEAFGREEN
-        run: |
-          make -j${nproc} all syms
-
-      - name: Compare LeafGreen rev1
-        env:
-          GAME_VERSION: LEAFGREEN
-          GAME_REVISION: 1
-        run: |
-          make -j${nproc} all syms
-
-      - name: Compare LeafGreen rev10
-        env:
-          GAME_VERSION: LEAFGREEN
-          GAME_REVISION: 10
-        run: |
-          make -j${nproc} all syms
-
-      - name: Build Modern
-        env:
-          MODERN: 1
-          COMPARE: 0
-        run: |
-          make -j${nproc} all
-
-      - name: Move symfiles
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          cp *.sym symbols/
-          echo "SYMBOLS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
-
-      - name: Update symfiles
-        if: ${{ github.event_name == 'push' }}
-        uses: EndBug/add-and-commit@v7
-        with:
-          branch: symbols
-          cwd: "./symbols"
-          add: "*.sym"
-          message: ${{ env.SYMBOLS_COMMIT_MSG }}
+// Blue League branch allocations: 800-803.'''
+              if anchor not in text:
+                  raise SystemExit('expected trainer allocation anchor not found')
+              p.write_text(text.replace(anchor, replacement, 1))
+          PY
+          if git diff --quiet -- include/constants/opponents.h; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add include/constants/opponents.h
+          git commit -m "Thomas: allocate trainer IDs 784-789"
+          git push origin HEAD:sam/thomas-chunk1-trainer-ids
