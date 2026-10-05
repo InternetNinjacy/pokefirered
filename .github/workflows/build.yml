@@ -1,139 +1,104 @@
-name: Thomas trainer foundation source edit
+name: CI
 
 on:
   push:
-    branches:
-      - sam/thomas-chunk1-trainer-foundation-v2
-
-permissions:
-  contents: write
+    branches: [ master ]
+  pull_request:
 
 jobs:
-  apply:
+  build:
     runs-on: ubuntu-latest
+    env:
+      GAME_VERSION: FIRERED
+      GAME_LANGUAGE: ENGLISH
+      GAME_REVISION: 0
+      MODERN: 0
+      COMPARE: 0
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@master
+
+      - name: Checkout agbcc
+        uses: actions/checkout@master
         with:
-          fetch-depth: 0
+          path: 'agbcc'
+          repository: 'pret/agbcc'
 
-      - name: Apply Thomas trainer foundation
-        shell: bash
+      - name: Checkout symbols
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@master
+        with:
+          path: 'symbols'
+          ref: 'symbols'
+
+      - name: Install binutils
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          from textwrap import dedent
+          sudo apt update
+          sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
+        # build-essential and git are already installed
+        # gcc-arm-none-eabi is only needed for the modern build
+        # as an alternative to dkP
 
-          path = Path('include/constants/opponents.h')
-          text = path.read_text()
-          if 'TRAINER_THOMAS_NUGGET_BRIDGE' not in text:
-              marker = '#define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783\n'
-              insert = marker + dedent('''
+      - name: Install agbcc
+        run: |
+          ./build.sh
+          ./install.sh ../
+        working-directory: ./agbcc
 
-              // Thomas Team Rocket rival allocations: 784-789.
-              #define TRAINER_THOMAS_NUGGET_BRIDGE               784
-              #define TRAINER_THOMAS_CELADON_HIDEOUT             785
-              #define TRAINER_THOMAS_POKEMON_TOWER               786
-              #define TRAINER_THOMAS_SILPH_CO                     787
-              #define TRAINER_THOMAS_CINNABAR_MANSION            788
-              #define TRAINER_THOMAS_VIRIDIAN_GYM                 789
-              ''')
-              if marker not in text:
-                  raise SystemExit('opponents.h insertion marker not found')
-              text = text.replace(marker, insert, 1)
-          text = text.replace('#define NUM_TRAINERS                             784', '#define NUM_TRAINERS                             790')
-          path.write_text(text)
+      - name: Compare FireRed
+        run: |
+          make -j${nproc} all syms
 
-          path = Path('src/data.c')
-          text = path.read_text()
-          include = '#include "data/sam_thomas_trainer_parties.h"\n'
-          if include not in text:
-              marker = '#include "data/trainer_parties.h"\n'
-              if marker not in text:
-                  raise SystemExit('src/data.c trainer party include marker not found')
-              text = text.replace(marker, marker + include, 1)
-          path.write_text(text)
+      - name: Compare FireRed rev1
+        env:
+          GAME_REVISION: 1
+        run: |
+          make -j${nproc} all syms
 
-          path = Path('src/data/trainers.h')
-          text = path.read_text()
-          if '[TRAINER_THOMAS_NUGGET_BRIDGE]' not in text:
-              records = dedent('''
+      - name: Compare FireRed rev10
+        env:
+          GAME_REVISION: 10
+        run: |
+          make -j${nproc} all syms
 
-                  [TRAINER_THOMAS_NUGGET_BRIDGE] = {
-                      .trainerClass = TRAINER_CLASS_PKMN_TRAINER,
-                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
-                      .trainerPic = TRAINER_PIC_COOLTRAINER_M,
-                      .trainerName = _("THOMAS"),
-                      .items = {},
-                      .doubleBattle = FALSE,
-                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT,
-                      .party = NO_ITEM_CUSTOM_MOVES(sParty_ThomasNugget),
-                  },
-                  [TRAINER_THOMAS_CELADON_HIDEOUT] = {
-                      .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
-                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
-                      .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
-                      .trainerName = _("THOMAS"),
-                      .items = {},
-                      .doubleBattle = FALSE,
-                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-                      .party = NO_ITEM_CUSTOM_MOVES(sParty_ThomasCeladon),
-                  },
-                  [TRAINER_THOMAS_POKEMON_TOWER] = {
-                      .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
-                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
-                      .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
-                      .trainerName = _("THOMAS"),
-                      .items = {},
-                      .doubleBattle = FALSE,
-                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-                      .party = NO_ITEM_CUSTOM_MOVES(sParty_ThomasPokemonTower),
-                  },
-                  [TRAINER_THOMAS_SILPH_CO] = {
-                      .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
-                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
-                      .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
-                      .trainerName = _("THOMAS"),
-                      .items = {},
-                      .doubleBattle = FALSE,
-                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-                      .party = ITEM_CUSTOM_MOVES(sParty_ThomasSilph),
-                  },
-                  [TRAINER_THOMAS_CINNABAR_MANSION] = {
-                      .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
-                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
-                      .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
-                      .trainerName = _("THOMAS"),
-                      .items = {},
-                      .doubleBattle = FALSE,
-                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-                      .party = ITEM_CUSTOM_MOVES(sParty_ThomasCinnabar),
-                  },
-                  [TRAINER_THOMAS_VIRIDIAN_GYM] = {
-                      .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
-                      .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
-                      .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
-                      .trainerName = _("THOMAS"),
-                      .items = {},
-                      .doubleBattle = FALSE,
-                      .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-                      .party = ITEM_CUSTOM_MOVES(sParty_ThomasViridian),
-                  },
-              ''')
-              closing = '    };'
-              pos = text.rfind(closing)
-              if pos == -1:
-                  raise SystemExit('src/data/trainers.h final array close not found')
-              text = text[:pos] + records + text[pos:]
-          path.write_text(text)
-          PY
+      - name: Compare LeafGreen
+        env:
+          GAME_VERSION: LEAFGREEN
+        run: |
+          make -j${nproc} all syms
 
-          git config user.name "InternetNinjacy"
-          git config user.email "45226145+InternetNinjacy@users.noreply.github.com"
-          git add include/constants/opponents.h src/data.c src/data/trainers.h
-          if git diff --cached --quiet; then
-            echo "No source changes needed"
-            exit 0
-          fi
-          git commit -m "THOMAS: bind six trainer records"
-          git push origin HEAD:sam/thomas-chunk1-trainer-foundation-v2
+      - name: Compare LeafGreen rev1
+        env:
+          GAME_VERSION: LEAFGREEN
+          GAME_REVISION: 1
+        run: |
+          make -j${nproc} all syms
+
+      - name: Compare LeafGreen rev10
+        env:
+          GAME_VERSION: LEAFGREEN
+          GAME_REVISION: 10
+        run: |
+          make -j${nproc} all syms
+
+      - name: Build Modern
+        env:
+          MODERN: 1
+          COMPARE: 0
+        run: |
+          make -j${nproc} all
+
+      - name: Move symfiles
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          cp *.sym symbols/
+          echo "SYMBOLS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
+
+      - name: Update symfiles
+        if: ${{ github.event_name == 'push' }}
+        uses: EndBug/add-and-commit@v7
+        with:
+          branch: symbols
+          cwd: "./symbols"
+          add: "*.sym"
+          message: ${{ env.SYMBOLS_COMMIT_MSG }}
