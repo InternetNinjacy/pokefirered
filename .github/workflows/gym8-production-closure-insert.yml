@@ -20,8 +20,8 @@ jobs:
           fetch-depth: 0
 
       - name: Insert Viridian Satoshi trainer records
-        shell: python
         run: |
+          python3 - <<'PY'
           from pathlib import Path
 
           path = Path("src/data/trainers.h")
@@ -54,6 +54,7 @@ jobs:
                   raise SystemExit("expected trainer insertion anchor not found")
               text = text.replace(anchor, block + anchor, 1)
               path.write_text(text)
+          PY
 
       - name: Commit production edit and remove one-shot workflow
         run: |
