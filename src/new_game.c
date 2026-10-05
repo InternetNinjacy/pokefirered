@@ -108,6 +108,9 @@ static bool8 MigrateNewGamePlusPartyToStorage(struct NewGamePlusCarryover *carry
     u8 partyIndex;
     u8 box;
     u8 slot;
+    u8 reserveSlot;
+
+    InitNewGamePlusStorageReserve(&carryover->pokemonStorage);
 
     for (partyIndex = 0; partyIndex < gSaveBlock1Ptr->playerPartyCount; partyIndex++)
     {
@@ -120,6 +123,19 @@ static bool8 MigrateNewGamePlusPartyToStorage(struct NewGamePlusCarryover *carry
                 if (GetBoxMonData(&carryover->pokemonStorage.boxes[box][slot], MON_DATA_SPECIES) == SPECIES_NONE)
                 {
                     carryover->pokemonStorage.boxes[box][slot] = gSaveBlock1Ptr->playerParty[partyIndex].box;
+                    placed = TRUE;
+                    break;
+                }
+            }
+        }
+
+        if (!placed)
+        {
+            for (reserveSlot = 0; reserveSlot < NG_PLUS_STORAGE_COUNT; reserveSlot++)
+            {
+                if (GetBoxMonData(&carryover->pokemonStorage.ngPlusStorage[reserveSlot], MON_DATA_SPECIES) == SPECIES_NONE)
+                {
+                    carryover->pokemonStorage.ngPlusStorage[reserveSlot] = gSaveBlock1Ptr->playerParty[partyIndex].box;
                     placed = TRUE;
                     break;
                 }
