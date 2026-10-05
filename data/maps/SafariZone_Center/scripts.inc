@@ -15,5 +15,48 @@ SafariZone_Center_EventScript_TrainerTips::
 	end
 
 SafariZone_Center_EventScript_AreaSign::
+	goto_if_eq VAR_SQ_FUCHSIA_STATE, 2, SafariZone_Center_EventScript_CensusCheck
+	goto_if_eq VAR_SQ_FUCHSIA_STATE, 3, SafariZone_Center_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_STATE, 4, SafariZone_Center_EventScript_CensusAlreadyRecorded
 	msgbox SafariZone_Center_Text_CenterArea, MSGBOX_SIGN
+	end
+
+SafariZone_Center_EventScript_CensusCheck::
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 1, SafariZone_Center_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 3, SafariZone_Center_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 5, SafariZone_Center_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 7, SafariZone_Center_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 9, SafariZone_Center_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 11, SafariZone_Center_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 13, SafariZone_Center_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 15, SafariZone_Center_EventScript_CensusAlreadyRecorded
+	msgbox SafariZone_Center_Text_CensusClue
+	msgbox SafariZone_Center_Text_GuessNidorino, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SafariZone_Center_EventScript_CensusCorrect
+	msgbox SafariZone_Center_Text_GuessParasect, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SafariZone_Center_EventScript_CensusWrong
+	msgbox SafariZone_Center_Text_GuessRhyhorn, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SafariZone_Center_EventScript_CensusWrong
+	msgbox SafariZone_Center_Text_GuessExeggcute, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SafariZone_Center_EventScript_CensusWrong
+	goto SafariZone_Center_EventScript_CensusWrong
+	end
+
+SafariZone_Center_EventScript_CensusCorrect::
+	msgbox SafariZone_Center_Text_CensusCorrect
+	addvar VAR_SQ_FUCHSIA_CENSUS_BITS, 1
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 15, SafariZone_Center_EventScript_CensusAllRecorded
+	end
+
+SafariZone_Center_EventScript_CensusWrong::
+	msgbox SafariZone_Center_Text_CensusHint
+	end
+
+SafariZone_Center_EventScript_CensusAlreadyRecorded::
+	msgbox SafariZone_Center_Text_CensusAlreadyRecorded, MSGBOX_SIGN
+	end
+
+SafariZone_Center_EventScript_CensusAllRecorded::
+	setvar VAR_SQ_FUCHSIA_STATE, 3
+	msgbox SafariZone_Center_Text_CensusAllRecorded, MSGBOX_SIGN
 	end
