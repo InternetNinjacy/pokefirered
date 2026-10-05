@@ -1,0 +1,298 @@
+name: Sam trainer rules application
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - sam/enc-002-gfx-onix-assets
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.head_ref == 'sam/trainer-rules-application'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: sam/trainer-rules-application
+
+      - name: Apply trainer construction rules
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          trainers_path = Path('src/data/trainers.h')
+          parties_path = Path('src/data/trainer_parties.h')
+          text = trainers_path.read_text()
+          parties = parties_path.read_text()
+
+          gym_specs = {
+              'PewterCity_Gym': ('ICE', ['FROST', 'CRYSTAL', 'COLE', 'NEVA', 'EIRA', 'WINTER', 'JACK', 'HOLLY']),
+              'CeruleanCity_Gym': ('FIRE', ['ASH', 'BLAISE', 'EMBER', 'CINDER', 'FLINT', 'IGNACIO', 'PYRA', 'SOL']),
+              'VermilionCity_Gym': ('WATER', ['WADE', 'BROOKE', 'MARINA', 'RIVER', 'PEARL', 'FINN', 'CORAL', 'DELTA']),
+              'CeladonCity_Gym': ('BUG', ['BEA', 'ANTONIA', 'WEBB', 'MIDGE', 'FLYNN', 'CRICKET', 'ARACHNE', 'BEETRICE']),
+              'FuchsiaCity_Gym': ('NORMAL', ['NORM', 'NORMA', 'GENE', 'AVERY', 'STAN', 'PLAIN', 'BASIC', 'ORDIN']),
+              'SaffronCity_Gym': ('GRASS', ['IVY', 'FERN', 'ROSE', 'BASIL', 'REED', 'FLORA', 'SAGE', 'LAUREL']),
+              'CinnabarIsland_Gym': ('GHOST', ['MORT', 'SPIRA', 'CASPER', 'HAUNTLY', 'SPECTRA', 'WRAITH', 'GHOULIA', 'SHADE']),
+              'ViridianCity_Gym': ('DRAGON', ['DRAKE', 'RYU', 'DRACO', 'WYVERN', 'DRAKEON', 'SCALA', 'TALON', 'DRAKON']),
+          }
+          gym_cool = {
+              'ICE': ['KRYSTYL','FROSTEIGH','WYNTR','NEVAEH'],
+              'FIRE': ['BLAEZE','EMBYR','SYNDYR','ASHLEIGH'],
+              'WATER': ['RAYNE','BROOKLYN','MAERYN','RIVYRR'],
+              'BUG': ['BEEIGH','ANTONIE','FLYNN','MYDGE'],
+              'NORMAL': ['NORMYNN','AVEREIGH','GENERYK','PLAEYN'],
+              'GRASS': ['IVEIGH','FERYN','ROZLYN','SAEJ'],
+              'GHOST': ['MORTEIGH','SPYRIT','GHASTYN','SPEKTRA'],
+              'DRAGON': ['DRAYKE','RYUU','DRAEKON','WYVRYN'],
+          }
+          cool_m = [
+              'JAYSYNN','BRAEDYN','DYLHAAN','TREIVOR','KHAEDEN','ZAYVIER','JAXSYN','RYLEIGH',
+              'KOLBYN','AUSTYNN','MYKHAEL','JORDYNN','KAMRYN','BENTLEE','TYLUR','KONNOR',
+              'BRENDYN','GRAYCEN','KAYSON','TRYSTYN','BRAYLON','JAXXON','KAELUM','RYDERR',
+          ]
+          cool_f = [
+              'ASHLEIGH','KHAETLYN','MEIGHGAN','KALEIGH','JESSYKAH','BRYTNEE','EMYLEIGH','MACKYNZIE',
+              'KHLOEE','MADYSYN','RAYCHEL','ALYXXA','KAROLYNN','SHANNYN','KAYDYNCE','MAKENNAH',
+              'AUBREE','PAISLEE','ADDYSYN','KYNZLEE','BRAELYN','JAZMYNN','KASSYDEE','RYLEEIGH',
+          ]
+          evo_items = [
+              'ITEM_MOON_STONE','ITEM_FIRE_STONE','ITEM_THUNDER_STONE',
+              'ITEM_WATER_STONE','ITEM_LEAF_STONE','ITEM_SUN_STONE',
+          ]
+
+          def ids_from_script(path):
+              if not path.exists():
+                  return []
+              seen, out = set(), []
+              for tid in re.findall(r'\b(TRAINER_[A-Z0-9_]+)\b', path.read_text()):
+                  if tid not in seen:
+                      seen.add(tid)
+                      out.append(tid)
+              return out
+
+          gym_ids, trainer_to_gym = {}, {}
+          for map_name in gym_specs:
+              ids = ids_from_script(Path('data/maps') / map_name / 'scripts.inc')
+              gym_ids[map_name] = ids
+              for tid in ids:
+                  trainer_to_gym.setdefault(tid, map_name)
+
+          protected_special = set()
+          for p in [Path('data/maps/SaffronCity_Dojo/scripts.inc')]:
+              protected_special.update(ids_from_script(p))
+          for p in Path('data/maps').glob('TrainerTower*/scripts.inc'):
+              protected_special.update(ids_from_script(p))
+
+          record_re = re.compile(r'(?ms)^    \[(TRAINER_[A-Z0-9_]+)\] = \{\n(.*?)^    \},')
+          matches = list(record_re.finditer(text))
+          records = {m.group(1): m for m in matches}
+
+          def field(block, name):
+              m = re.search(rf'\.{name}\s*=\s*([^,\n]+)', block)
+              return m.group(1).strip() if m else ''
+
+          def old_name(block):
+              m = re.search(r'\.trainerName\s*=\s*_\("([^"]*)"\)', block)
+              return m.group(1) if m else None
+
+          def party_ref(block):
+              m = re.search(r'\.party\s*=\s*([A-Z_]+)\((sParty_[A-Za-z0-9_]+)\)', block)
+              return (m.group(1), m.group(2)) if m else (None, None)
+
+          major_tokens = (
+              'LEADER','RIVAL','CHAMPION','ELITE','SATOSHI','THOMAS','GIOVANNI',
+              'BROCK','LEILANI','MISTY','LT_SURGE','ERIKA','KOGA','SABRINA','BLAINE',
+              'LORELEI','AGATHA','LANCE','BLUE','GREEN','PKMN_PROF','PLAYER_',
+          )
+          protected_classes = (
+              'TRAINER_CLASS_LEADER','TRAINER_CLASS_RIVAL','TRAINER_CLASS_CHAMPION',
+              'TRAINER_CLASS_ELITE_FOUR','TRAINER_CLASS_BOSS','TRAINER_CLASS_TEAM_ROCKET',
+              'TRAINER_CLASS_TEAM_AQUA','TRAINER_CLASS_TEAM_MAGMA','TRAINER_CLASS_AQUA_',
+              'TRAINER_CLASS_MAGMA_','TRAINER_CLASS_PLAYER','TRAINER_CLASS_PKMN_PROF',
+              'TRAINER_CLASS_PKMN_TRAINER',
+          )
+
+          def is_major(tid, block):
+              tc = field(block, 'trainerClass')
+              return (
+                  tid in protected_special
+                  or any(tok in tid for tok in major_tokens)
+                  or any(tok in tc for tok in protected_classes)
+              )
+
+          # ---------- display names ----------
+          name_changes = {}
+          for map_name, ids in gym_ids.items():
+              theme, normal_pool = gym_specs[map_name]
+              ni = ci = 0
+              for tid in ids:
+                  m = records.get(tid)
+                  if not m:
+                      continue
+                  block = m.group(2)
+                  tc = field(block, 'trainerClass')
+                  if is_major(tid, block) or 'LEADER' in tc:
+                      continue
+                  current = old_name(block)
+                  if current is None:
+                      continue
+                  is_cool = 'COOLTRAINER' in tc or 'COOLTRAINER' in tid
+                  if is_cool:
+                      pool = gym_cool[theme]
+                      new = pool[ci % len(pool)]
+                      ci += 1
+                  else:
+                      new = normal_pool[ni % len(normal_pool)]
+                      ni += 1
+                  if len(new) > 10:
+                      raise SystemExit(f'name too long: {new}')
+                  if current != new:
+                      name_changes[tid] = new
+
+          male_map, female_map = {}, {}
+          mi = fi = 0
+          for m in matches:
+              tid, block = m.group(1), m.group(2)
+              tc = field(block, 'trainerClass')
+              if 'COOLTRAINER' not in tc and 'COOLTRAINER' not in tid:
+                  continue
+              if tid in trainer_to_gym or is_major(tid, block):
+                  continue
+              current = old_name(block)
+              if not current:
+                  continue
+              base = re.sub(r'_\d+$', '', tid)
+              female = 'F_TRAINER_FEMALE' in block or 'COOLTRAINER_F' in field(block, 'trainerPic')
+              if female:
+                  if base not in female_map:
+                      female_map[base] = cool_f[fi % len(cool_f)]
+                      fi += 1
+                  new = female_map[base]
+              else:
+                  if base not in male_map:
+                      male_map[base] = cool_m[mi % len(cool_m)]
+                      mi += 1
+                  new = male_map[base]
+              if current != new:
+                  name_changes[tid] = new
+
+          # ---------- party normalization ----------
+          # Ordinary trainers get engine-generated level-up moves and no held items.
+          # This guarantees no TM/HM moves or authored held items are injected by their
+          # trainer table. Cooltrainers remain eligible for later deliberate HM additions;
+          # access is optional, so default level-up sets are compliant.
+          # Gym and other specialist-authored battles are untouched.
+          party_modes = {}  # party -> 'ordinary' or 'scientist'
+          for m in matches:
+              tid, block = m.group(1), m.group(2)
+              name = old_name(block)
+              if not name or tid in trainer_to_gym or is_major(tid, block):
+                  continue
+              macro, party = party_ref(block)
+              if not party:
+                  continue
+              tc = field(block, 'trainerClass')
+              mode = 'scientist' if tc == 'TRAINER_CLASS_SCIENTIST' else 'ordinary'
+              prior = party_modes.get(party)
+              if prior and prior != mode:
+                  raise SystemExit(f'party reused across conflicting modes: {party}')
+              party_modes[party] = mode
+
+          party_decl_re = re.compile(
+              r'(?ms)^static const struct (TrainerMon(?:NoItem|Item)(?:DefaultMoves|CustomMoves)) '
+              r'(sParty_[A-Za-z0-9_]+)\[\] = \{\n(.*?)^\};'
+          )
+          party_matches = list(party_decl_re.finditer(parties))
+          party_by_name = {m.group(2): m for m in party_matches}
+          transformed = {}
+          scientist_counter = 0
+
+          for party, mode in party_modes.items():
+              pm = party_by_name.get(party)
+              if pm is None:
+                  # A specialist include owns this party; do not guess or rewrite it here.
+                  continue
+              body = pm.group(3)
+              # Remove custom moves and any authored held item from ordinary trainer data.
+              body = re.sub(r'(?ms)^\s*\.moves\s*=\s*\{.*?\},\n', '', body)
+              body = re.sub(r'(?m)^\s*\.heldItem\s*=\s*[^,\n]+,\n', '', body)
+
+              if mode == 'scientist':
+                  # Evolution-item tendency: 2 of each 3 party slots receive an evolution
+                  # stone. The third remains unheld so this is a tendency, not a mandate.
+                  slot = 0
+                  lines = body.splitlines(True)
+                  new_lines = []
+                  for line in lines:
+                      new_lines.append(line)
+                      sm = re.match(r'(\s*)\.species\s*=\s*([^,]+),\s*$', line.rstrip('\n'))
+                      if sm:
+                          if slot % 3 != 2:
+                              item = evo_items[scientist_counter % len(evo_items)]
+                              scientist_counter += 1
+                              new_lines.append(f'{sm.group(1)}.heldItem = {item},\n')
+                          else:
+                              new_lines.append(f'{sm.group(1)}.heldItem = ITEM_NONE,\n')
+                          slot += 1
+                  body = ''.join(new_lines)
+                  transformed[party] = ('TrainerMonItemDefaultMoves', body)
+              else:
+                  transformed[party] = ('TrainerMonNoItemDefaultMoves', body)
+
+          # Rewrite party declarations.
+          pout, pos = [], 0
+          for pm in party_matches:
+              pout.append(parties[pos:pm.start()])
+              typ, party, body = pm.group(1), pm.group(2), pm.group(3)
+              if party in transformed:
+                  typ, body = transformed[party]
+              pout.append(f'static const struct {typ} {party}[] = {{\n{body}}};')
+              pos = pm.end()
+          pout.append(parties[pos:])
+          parties_path.write_text(''.join(pout))
+
+          # Rewrite trainer records: names plus the correct party macro for normalized data.
+          tout, pos = [], 0
+          normalized_records = 0
+          for m in matches:
+              tout.append(text[pos:m.start()])
+              tid, block = m.group(1), m.group(2)
+              if tid in name_changes:
+                  new = name_changes[tid]
+                  block = re.sub(
+                      r'(\.trainerName\s*=\s*_\(")[^"]*("\))',
+                      lambda x: x.group(1) + new + x.group(2), block, count=1)
+              macro, party = party_ref(block)
+              if party in transformed:
+                  target_macro = 'ITEM_DEFAULT_MOVES' if party_modes[party] == 'scientist' else 'NO_ITEM_DEFAULT_MOVES'
+                  block = re.sub(
+                      r'(\.party\s*=\s*)[A-Z_]+(\(' + re.escape(party) + r'\))',
+                      lambda x: x.group(1) + target_macro + x.group(2), block, count=1)
+                  normalized_records += 1
+              tout.append(f'    [{tid}] = {{\n{block}    }},')
+              pos = m.end()
+          tout.append(text[pos:])
+          trainers_path.write_text(''.join(tout))
+
+          doc = Path('docs/sam_edition/TRAINER_CONSTRUCTION_RULES.md')
+          doc.parent.mkdir(parents=True, exist_ok=True)
+          doc.write_text('''# Pokémon: Sam Edition — Trainer Construction Rules\n\nThis file records the current explicit trainer-data authority applied to production. It does not reopen already-authored major battles, Gym scripts, trainer IDs, maps, flags, or dialogue packages.\n\n## Ordinary trainers\n- Build coherent Pokémon for their level from level-up moves.\n- No TM or HM moves.\n- No held items unless a later specific package deliberately preserves a species-natural held item.\n- Useful earlier level-up moves may be retained when a hand-built set is warranted; the default production baseline is the engine's level-up move construction.\n\n## Cooltrainers\n- Follow the ordinary baseline.\n- They may use HM moves that are reasonable for the player's current point in progression when deliberately authored.\n- Non-Gym Cooltrainers use intentionally over-stylized / “tragedeigh” spellings of recognizable human names.\n\n## Gym trainers\n- Preserve existing trainer IDs, party bindings, scripts, flags, dialogue, and map choreography.\n- A Gym trainer may use that Gym's awarded TM on a compatible Pokémon.\n- Gym trainer display names are puns related to the Gym's current specialty.\n- Gym Cooltrainers use the type-pun rule first and may use trendy spelling.\n\n## Scientists\n- Scientist Pokémon tend to hold evolution items. Production uses evolution stones on two of each three Scientist party slots as a consistent tendency rather than a universal mandate.\n- Their moves otherwise follow the ordinary level-up baseline.\n\n## Dialogue\n- Preserve ordinary trainer dialogue by default.\n- Rewrite ordinary trainer dialogue only when that trainer's overworld sprite/presentation changed and the old text no longer fits.\n- Preserve already-authored Gym trainer dialogue; a display-name change alone does not reopen Gym dialogue.\n- Major/story-character dialogue remains controlled by that character's specialist authority.\n\n## Major / specialist battles\nRivals, Gym Leaders, Elite Four, Team Rocket/Aqua/Magma story opponents, Satoshi, Thomas, the Fighting Dojo package, Trainer Tower packages, and other explicitly authored specialist encounters are not normalized by the ordinary-trainer cleanup.\n''')
+
+          print(f'display names changed: {len(name_changes)}')
+          print(f'ordinary/scientist trainer records normalized: {normalized_records}')
+          print(f'party tables transformed: {len(transformed)}')
+          PY
+
+          rm -f .github/workflows/sam-trainer-rules-apply.yml
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/trainers.h src/data/trainer_parties.h docs/sam_edition/TRAINER_CONSTRUCTION_RULES.md .github/workflows/sam-trainer-rules-apply.yml
+          git commit -m "Apply Sam trainer construction rules"
+          git push origin HEAD:sam/trainer-rules-application
