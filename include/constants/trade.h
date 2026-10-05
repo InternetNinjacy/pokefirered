@@ -71,6 +71,7 @@
 // Return values for GetGameProgressForLinkTrade
 #define TRADE_BOTH_PLAYERS_READY      0
 #define TRADE_PLAYER_NOT_READY        1
+#define TRADE_PARTNER_NOT_READY       2
 
 // Message indexes for sUnionRoomTradeMessages
 #define UR_TRADE_MSG_NONE                         0
@@ -78,9 +79,8 @@
 #define UR_TRADE_MSG_NOT_EGG                      2
 #define UR_TRADE_MSG_MON_CANT_BE_TRADED_1         3
 #define UR_TRADE_MSG_MON_CANT_BE_TRADED_2         4
-#define UR_TRADE_MSG_PARTNERS_MON_INVALID         5
-#define UR_TRADE_MSG_PARTNERS_MON_CANT_BE_TRADED  6
-#define UR_TRADE_MSG_EGG_CANT_BE_TRADED           7
-#define UR_TRADE_MSG_PARTNER_CANT_ACCEPT_MON      8
+#define UR_TRADE_MSG_PARTNERS_MON_CANT_BE_TRADED  5
+#define UR_TRADE_MSG_EGG_CANT_BE_TRADED           6
+#define UR_TRADE_MSG_PARTNER_CANT_ACCEPT_MON      7
 
 #endif // GUARD_CONSTANTS_TRADE_H
