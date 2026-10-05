@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gflib.h"
 #include "event_data.h"
 #include "pokedex.h"
 #include "pokemon.h"
