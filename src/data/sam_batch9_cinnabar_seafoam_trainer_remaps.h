@@ -13,14 +13,15 @@
 #define sParty_SwimmerFemaleConnie sParty_SamBatch9_Connie
 #define sParty_SwimmerFemaleAnya sParty_SamBatch9_Anya
 
-// Route 20
+// Route 20. Roger retains the authority's Bird Keeper package so his existing
+// bird-specific identity/dialogue remains coherent; Barry takes the remaining Single.
 #define sParty_SwimmerFemaleMelissa sParty_SamBatch9_Melissa
 #define sParty_PicnickerMissy sParty_SamBatch9_Missy
 #define sParty_SwimmerFemaleNora sParty_SamBatch9_Nora
-#define sParty_BirdKeeperRoger sParty_SamBatch9_Roger
+#define sParty_BirdKeeperRoger sParty_SamBatch9_Barry
 #define sParty_SwimmerMaleDean sParty_SamBatch9_Dean
 #define sParty_PicnickerIrene sParty_SamBatch9_Irene
-#define sParty_SwimmerMaleBarry sParty_SamBatch9_Barry
+#define sParty_SwimmerMaleBarry sParty_SamBatch9_Roger
 
 // Route 21
 #define sParty_FishermanRonald sParty_SamBatch9_Ronald
