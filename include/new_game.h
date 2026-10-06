@@ -4,9 +4,11 @@
 #include "global.h"
 
 extern bool8 gDifferentSaveFile;
+extern bool8 gNewGamePlusRequested;
 
 void SetTrainerId(u32 trainerId, u8 *dst);
 void CopyTrainerId(u8 *dst, u8 *src);
+bool8 CanStartNewGamePlus(void);
 void NewGameInitData(void);
 void ResetMenuAndMonGlobals(void);
 void Sav2_ClearSetDefault(void);
