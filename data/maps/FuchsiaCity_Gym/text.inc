@@ -1,146 +1,163 @@
 FuchsiaCity_Gym_Text_KogaIntro::
-    .string "KOGA: Fwahahaha!\p"
-    .string "A mere child like you dares to\n"
+    .string "KOGA: Fwahahaha! A mere child dares\n"
     .string "challenge me?\p"
-    .string "The very idea makes me shiver\n"
-    .string "with mirth!\p"
-    .string "Very well, I shall show you true\n"
-    .string "terror as a ninja master.\p"
-    .string "Poison brings steady doom.\n"
-    .string "Sleep renders foes helpless.\p"
-    .string "Despair to the creeping horror of\n"
-    .string "POISON-type POKéMON!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
+    .string "Very well. I am KOGA, master of\n"
+    .string "techniques that leave an opponent\l"
+    .string "doubting their own eyes.\p"
+    .string "A careless TRAINER sees what stands\n"
+    .string "before them and assumes they\l"
+    .string "understand it. A skilled one asks\l"
+    .string "what has been hidden... and why.\p"
+    .string "My POKéMON may appear ordinary.\n"
+    .string "That is precisely when you should\l"
+    .string "be most cautious.\p"
+    .string "Come! Let us see whether you can\n"
+    .string "find the truth before the illusion\l"
+    .string "closes around you!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
 
 FuchsiaCity_Gym_Text_KogaDefeat::
-    .string "Humph!\n"
-    .string "You have proven your worth!\p"
-    .string "Here!\n"
-    .string "Take the SOULBADGE!$"
+    .string "Humph! You refused every false\n"
+    .string "trail I laid before you.\p"
+    .string "You did not battle the opponent you\n"
+    .string "expected. You battled the one\l"
+    .string "actually in front of you.\p"
+    .string "Excellent. That kind of awareness\n"
+    .string "is difficult to deceive.$"
 
 FuchsiaCity_Gym_Text_KogaPostBattle::
-    .string "When afflicted by TOXIC, a POKéMON\n"
-    .string "suffers more and more.\p"
-    .string "It suffers worsening damage as the\n"
-    .string "battle wears on!\p"
-    .string "It will surely terrorize foes!$"
+    .string "Do not battle the opponent you\n"
+    .string "imagine. Battle the one who is\l"
+    .string "truly before you.\p"
+    .string "Question what seems obvious, and\n"
+    .string "even the finest deception will\l"
+    .string "eventually reveal its seams.$"
 
-FuchsiaCity_Gym_Text_KogaExplainSoulBadge::
-    .string "Now that you have the SOULBADGE,\n"
-    .string "the DEFENSE of your POKéMON rises.\p"
-    .string "It also lets you SURF outside of\n"
-    .string "battle.\p"
-    .string "Ah!\n"
-    .string "Take this, too!$"
+FuchsiaCity_Gym_Text_KogaExplainVeilBadge::
+    .string "Fwahahaha! You have earned this -\n"
+    .string "the VEIL BADGE!\p"
+    .string "It is proof that you can look past\n"
+    .string "appearances and find the truth\l"
+    .string "hidden beneath them.\p"
+    .string "The VEIL BADGE also allows you to\n"
+    .string "use SURF outside of battle, as long\l"
+    .string "as one of your POKéMON knows the\l"
+    .string "move.$"
 
-FuchsiaCity_Gym_Text_ReceivedTM06FromKoga::
-    .string "{PLAYER} received TM06\n"
+FuchsiaCity_Gym_Text_ReceivedTM42FromKoga::
+    .string "{PLAYER} received TM42\n"
     .string "from KOGA.$"
 
-FuchsiaCity_Gym_Text_KogaExplainTM06::
-    .string "Sealed within that TM06 lies\n"
-    .string "TOXIC!\p"
-    .string "It is a secret technique dating\n"
-    .string "back some four hundred years.$"
+FuchsiaCity_Gym_Text_KogaExplainTM42::
+    .string "Take this as well. TM42 contains\n"
+    .string "FACADE.\p"
+    .string "It appears to be a simple attack...\n"
+    .string "until its user is poisoned,\l"
+    .string "paralyzed, or burned. Then its true\l"
+    .string "strength is revealed.\p"
+    .string "Remember that lesson. What seems\n"
+    .string "like a weakness may be hiding a\l"
+    .string "weapon.$"
 
 FuchsiaCity_Gym_Text_MakeSpaceForThis::
     .string "Make space for this, child!$"
 
-FuchsiaCity_Gym_Text_KaydenIntro::
-    .string "Strength isn't the key for POKéMON.\n"
-    .string "Do you understand this?\p"
-    .string "POKéMON is about strategy!\p"
-    .string "I'll show you how strategy can\n"
-    .string "beat brute strength.$"
-
-FuchsiaCity_Gym_Text_KaydenDefeat::
-    .string "What?\n"
-    .string "Extraordinary!$"
-
-FuchsiaCity_Gym_Text_KaydenPostBattle::
-    .string "So, you mix brawn with brains?\n"
-    .string "Good strategy!\p"
-    .string "That's remarkable for a child\n"
-    .string "TRAINER.$"
-
-FuchsiaCity_Gym_Text_KirkIntro::
-    .string "I was a magician once upon a time.\p"
-    .string "But I dreamt of becoming a ninja,\n"
-    .string "so I joined this GYM.$"
-
-FuchsiaCity_Gym_Text_KirkDefeat::
-    .string "I'm done for!$"
-
-FuchsiaCity_Gym_Text_KirkPostBattle::
-    .string "Even though I've lost, I will keep\n"
-    .string "training according to the teachings\l"
-    .string "of KOGA, my ninja master.$"
-
 FuchsiaCity_Gym_Text_NateIntro::
-    .string "Let's see you beat my special\n"
-    .string "techniques!$"
+    .string "What you notice first is exactly\n"
+    .string "what I want you looking at.\p"
+    .string "Keep your eyes on the obvious...\n"
+    .string "and you may miss the real attack!$"
 
 FuchsiaCity_Gym_Text_NateDefeat::
-    .string "You had me fooled!$"
+    .string "You saw through the distraction!$"
 
 FuchsiaCity_Gym_Text_NatePostBattle::
-    .string "I like poison and sleep techniques,\n"
-    .string "as they linger after battle!$"
+    .string "A good feint does not have to fool\n"
+    .string "you forever. It only needs to fool\l"
+    .string "you for one move.$"
 
-FuchsiaCity_Gym_Text_PhilIntro::
-    .string "Stop right there!\p"
-    .string "The famed invisible walls of\n"
-    .string "FUCHSIA GYM have you frustrated?$"
+FuchsiaCity_Gym_Text_KaydenIntro::
+    .string "I'll show you something easy to\n"
+    .string "read. The question is whether\l"
+    .string "you'll believe it.$"
 
-FuchsiaCity_Gym_Text_PhilDefeat::
-    .string "Whoa!\n"
-    .string "You've got it!$"
+FuchsiaCity_Gym_Text_KaydenDefeat::
+    .string "Hah! You didn't take the bait!$"
 
-FuchsiaCity_Gym_Text_PhilPostBattle::
-    .string "You impressed me!\n"
-    .string "Here's a hint!\p"
-    .string "Look very closely for gaps in the\n"
-    .string "invisible walls!$"
+FuchsiaCity_Gym_Text_KaydenPostBattle::
+    .string "KOGA says an opponent who thinks\n"
+    .string "they understand you is easier to\l"
+    .string "control than one who knows they\l"
+    .string "don't.$"
+
+FuchsiaCity_Gym_Text_KirkIntro::
+    .string "Watch closely! The trick is not\n"
+    .string "making something disappear.\p"
+    .string "It is making you look in the wrong\n"
+    .string "place.$"
+
+FuchsiaCity_Gym_Text_KirkDefeat::
+    .string "You kept your attention where it\n"
+    .string "mattered!$"
+
+FuchsiaCity_Gym_Text_KirkPostBattle::
+    .string "Battles are full of little\n"
+    .string "distractions. Moves, types, habits...\l"
+    .string "even confidence can be used against\l"
+    .string "you.$"
 
 FuchsiaCity_Gym_Text_EdgarIntro::
-    .string "I also study the way of the ninja\n"
-    .string "with Master KOGA!\p"
-    .string "Ninja have a long history of using\n"
-    .string "animals!$"
+    .string "Normal POKéMON can look\n"
+    .string "straightforward. That makes it easy\l"
+    .string "to forget how many different ways\l"
+    .string "they can fight.$"
 
 FuchsiaCity_Gym_Text_EdgarDefeat::
-    .string "Awoo!$"
+    .string "You were ready for more than one\n"
+    .string "answer!$"
 
 FuchsiaCity_Gym_Text_EdgarPostBattle::
-    .string "I still have much to learn.$"
+    .string "Never confuse ordinary with\n"
+    .string "predictable. KOGA certainly\l"
+    .string "doesn't.$"
+
+FuchsiaCity_Gym_Text_PhilIntro::
+    .string "Go ahead. Decide what my plan is\n"
+    .string "before we start. I'd love that.$"
+
+FuchsiaCity_Gym_Text_PhilDefeat::
+    .string "So much for catching you by\n"
+    .string "surprise!$"
+
+FuchsiaCity_Gym_Text_PhilPostBattle::
+    .string "Assumptions save time... right up\n"
+    .string "until somebody builds a trap around\l"
+    .string "them.$"
 
 FuchsiaCity_Gym_Text_ShawnIntro::
-    .string "Master KOGA comes from a long line\n"
-    .string "of ninjas.\p"
-    .string "What did you descend from?$"
+    .string "By the time you reach KOGA, you\n"
+    .string "should know better than to trust\l"
+    .string "the first thing you see.\p"
+    .string "Shall I test that?$"
 
 FuchsiaCity_Gym_Text_ShawnDefeat::
-    .string "You're more skilled than I'd\n"
-    .string "thought!$"
+    .string "You didn't give me the opening I\n"
+    .string "wanted.$"
 
 FuchsiaCity_Gym_Text_ShawnPostBattle::
-    .string "Where there is light, there is\n"
-    .string "shadow!\p"
-    .string "Light and shadow!\n"
-    .string "Which do you choose?$"
+    .string "Good. KOGA's strongest weapon is\n"
+    .string "not secrecy. It is making you\l"
+    .string "certain about the wrong thing.$"
 
 FuchsiaCity_Gym_Text_GymGuyAdvice::
-    .string "Yo!\n"
-    .string "Champ in the making!\p"
-    .string "FUCHSIA GYM is a tricked-up place.\n"
-    .string "It's riddled with invisible walls!\p"
-    .string "KOGA might appear close, but he's\n"
-    .string "blocked off.\p"
-    .string "You have to find gaps in the walls\n"
-    .string "to reach him.$"
+    .string "Yo! Champ in the making!\p"
+    .string "FUCHSIA GYM is built to make you\n"
+    .string "trust what you see. Don't.\p"
+    .string "Its invisible walls hide the path\n"
+    .string "to KOGA. Look closely for the gaps.$"
 
 FuchsiaCity_Gym_Text_GymGuyPostVictory::
-    .string "It's amazing how ninja can terrify,\n"
-    .string "even now!$"
+    .string "You saw through KOGA's tricks.\n"
+    .string "That's what a champ needs!$"
 
 FuchsiaCity_Gym_Text_GymStatue::
     .string "FUCHSIA POKéMON GYM\n"
@@ -153,4 +170,3 @@ FuchsiaCity_Gym_Text_GymStatuePlayerWon::
     .string "LEADER: KOGA\p"
     .string "WINNING TRAINERS:\n"
     .string "{RIVAL}, {PLAYER}$"
-
