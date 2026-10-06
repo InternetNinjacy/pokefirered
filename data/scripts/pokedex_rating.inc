@@ -1,7 +1,9 @@
 PokedexRating_EventScript_RateInPerson::
 	goto_if_questlog EventScript_ReleaseEnd
 	special QuestLog_CutRecording
+	setvar VAR_0x800C, 0
 	call PokedexRating_EventScript_TryOakMilestoneRewards
+	goto_if_eq VAR_0x800C, 1, PokedexRating_EventScript_Return
 	call_if_set FLAG_OAK_SAW_DEX_COMPLETION, PokedexRating_EventScript_DexCompleteIntro
 	call_if_unset FLAG_OAK_SAW_DEX_COMPLETION, PokedexRating_EventScript_NormalIntro
 	call PokedexRating_EventScript_Rate
@@ -16,6 +18,7 @@ PokedexRating_EventScript_TryOakMilestoneRewards::
 	call_if_unset FLAG_OAK_REWARD_75_CLAIMED, PokedexRating_EventScript_TryOakReward75
 	call_if_unset FLAG_OAK_REWARD_100_CLAIMED, PokedexRating_EventScript_TryOakReward100
 	call_if_unset FLAG_OAK_REWARD_125_CLAIMED, PokedexRating_EventScript_TryOakReward125
+	call_if_unset FLAG_JOEY_UNLOCKED, PokedexRating_EventScript_TryUnlockJoey
 	return
 
 PokedexRating_EventScript_TryOakReward30::
@@ -64,6 +67,59 @@ PokedexRating_EventScript_TryOakReward125::
 	setflag FLAG_OAK_REWARD_125_CLAIMED
 	msgbox PokedexRating_Text_ReceivedDratiniFromOak
 	return
+
+PokedexRating_EventScript_TryUnlockJoey::
+	goto_if_lt VAR_0x800B, 151, PokedexRating_EventScript_Return
+	setflag FLAG_JOEY_UNLOCKED
+	clearflag FLAG_JOEY_DEFEATED_THIS_CYCLE
+	clearflag FLAG_JOEY_RESUMMON_PENDING
+	msgbox PokedexRating_Text_OakJoeyUnlockIntro
+	msgbox PokedexRating_Text_OakCallJoey
+	closemessage
+	removeobject LOCALID_OAKS_LAB_JOEY
+	setobjectxyperm LOCALID_OAKS_LAB_JOEY, 6, 11
+	setobjectmovementtype LOCALID_OAKS_LAB_JOEY, MOVEMENT_TYPE_FACE_UP
+	addobject LOCALID_OAKS_LAB_JOEY
+	applymovement LOCALID_OAKS_LAB_JOEY, PokedexRating_Movement_JoeyEnter
+	waitmovement LOCALID_OAKS_LAB_JOEY
+	setflag FLAG_JOEY_INTRO_SEEN
+	msgbox PokedexRating_Text_OakIntroduceJoey
+	msgbox PokedexRating_Text_JoeyFirstChallenge, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, PokedexRating_EventScript_JoeyAcceptBattle
+	msgbox PokedexRating_Text_JoeyDecline
+	setvar VAR_0x800C, 1
+	return
+
+PokedexRating_EventScript_JoeyAcceptBattle::
+	trainerbattle_no_intro TRAINER_YOUNGSTER_JOEY, PokedexRating_Text_JoeyPlayerWin
+	setvar VAR_0x800C, 1
+	return
+
+PokedexRating_EventScript_JoeyDirectChallenge::
+	lock
+	faceplayer
+	msgbox PokedexRating_Text_JoeyShortChallenge, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, PokedexRating_EventScript_JoeyDirectAcceptBattle
+	msgbox PokedexRating_Text_JoeyDecline
+	release
+	end
+
+PokedexRating_EventScript_JoeyDirectAcceptBattle::
+	trainerbattle_no_intro TRAINER_YOUNGSTER_JOEY, PokedexRating_Text_JoeyPlayerWin
+	release
+	end
+
+PokedexRating_Movement_JoeyEnter::
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_right
+	walk_right
+	walk_in_place_faster_up
+	step_end
 
 PokedexRating_EventScript_OakGiftNoRoom::
 	msgbox PokedexRating_Text_OakGiftNoRoom
