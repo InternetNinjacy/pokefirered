@@ -410,6 +410,11 @@ static void CB2_PokeStorage(void)
 
 void EnterPokeStorage(u8 boxOption)
 {
+    // The PC script has already checked the new starter and Pokedex gate.
+    // Reopening storage exposes reserve records as visible slots become free.
+    if (gPokemonStoragePtr->ngPlusStorageMagic == NG_PLUS_STORAGE_MAGIC)
+        CompactNewGamePlusStorageReserve();
+
     ResetTasks();
     sCurrentBoxOption = boxOption;
     gStorage = Alloc(sizeof(struct PokemonStorageSystemData));
