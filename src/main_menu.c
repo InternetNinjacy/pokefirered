@@ -240,7 +240,7 @@ static void Task_SetWin0BldRegsAndCheckSaveFile(u8 taskId)
         {
         case SAVE_STATUS_OK:
             LoadUserFrameToBg(0);
-            gTasks[taskId].tNewGamePlusAvailable = FlagGet(FLAG_SYS_GAME_CLEAR) && CanStartNewGamePlus();
+            gTasks[taskId].tNewGamePlusAvailable = FlagGet(FLAG_SYS_GAME_CLEAR);
             if (IsMysteryGiftEnabled() == TRUE)
             {
                 gTasks[taskId].tMenuType = MAIN_MENU_MYSTERYGIFT;
@@ -582,6 +582,15 @@ static bool8 HandleMenuInput(u8 taskId)
 {
     if (JOY_NEW(A_BUTTON))
     {
+        // A completed save must never fall back to a destructive normal new
+        // game merely because the carried collection has reached capacity.
+        if (gTasks[taskId].tNewGamePlusAvailable
+         && gTasks[taskId].tCursorPos == 1
+         && !CanStartNewGamePlus())
+        {
+            PlaySE(SE_BOO);
+            return FALSE;
+        }
         PlaySE(SE_SELECT);
         IsWirelessAdapterConnected(); // called for its side effects only
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
