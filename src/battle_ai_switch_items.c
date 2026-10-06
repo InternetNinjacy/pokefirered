@@ -543,8 +543,10 @@ u8 GetMostSuitableMonToSwitchInto(void)
     return bestMonId;
 }
 
-static u8 GetAI_ItemType(u8 itemId, const u8 *itemEffect) // NOTE: should take u16 as item Id argument
+static u8 GetAI_ItemType(u16 itemId, const u8 *itemEffect)
 {
+    if (itemId == ITEM_MAX_REVIVE)
+        return AI_ITEM_REVIVE;
     if (itemId == ITEM_FULL_RESTORE)
         return AI_ITEM_FULL_RESTORE;
     else if (itemEffect[4] & ITEM4_HEAL_HP)
@@ -658,6 +660,21 @@ static bool8 ShouldUseItem(void)
             battlerSide = GetBattlerSide(gActiveBattler);
             if (gDisableStructs[gActiveBattler].isFirstTurn && gSideTimers[battlerSide].mistTimer == 0)
                 shouldUse = TRUE;
+            break;
+        case AI_ITEM_REVIVE:
+            *(gBattleStruct->AI_itemFlags + gActiveBattler / 2) = 0;
+            for (paramOffset = 0; paramOffset < PARTY_SIZE; paramOffset++)
+            {
+                u16 species = GetMonData(&gEnemyParty[paramOffset], MON_DATA_SPECIES_OR_EGG);
+                if (species != SPECIES_NONE
+                 && species != SPECIES_EGG
+                 && GetMonData(&gEnemyParty[paramOffset], MON_DATA_HP) == 0)
+                {
+                    *(gBattleStruct->AI_itemFlags + gActiveBattler / 2) = paramOffset + 1;
+                    shouldUse = TRUE;
+                    break;
+                }
+            }
             break;
         case AI_ITEM_NOT_RECOGNIZABLE:
             return FALSE;

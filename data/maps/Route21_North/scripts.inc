@@ -1,2 +1,14 @@
 Route21_North_MapScripts::
 	.byte 0
+
+Route21_North_EventScript_WadeBatch9::
+	trainerbattle_double TRAINER_FISHERMAN_WADE, Route21_North_Text_WadeIntro, Route21_North_Text_WadeDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route21_North_EventScript_WadeBatch9Rematch
+	msgbox Route21_North_Text_WadePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route21_North_EventScript_WadeBatch9Rematch::
+	trainerbattle_rematch_double TRAINER_FISHERMAN_WADE, Route21_North_Text_WadeRematchIntro, Route21_North_Text_WadeDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	msgbox Route21_North_Text_WadePostBattle, MSGBOX_AUTOCLOSE
+	end

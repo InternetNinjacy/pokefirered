@@ -25,6 +25,7 @@
 #include "graphics.h"
 #include "constants/songs.h"
 #include "constants/maps.h"
+#include "constants/flags.h"
 
 #define HALL_OF_FAME_MAX_TEAMS 50
 #define HALL_OF_FAME_BG_PAL    RGB(22, 24, 29)
@@ -423,6 +424,12 @@ static void Task_Hof_InitTeamSaveData(u8 taskId)
 {
     u16 i;
     struct HallofFameTeam* lastSavedTeam = (struct HallofFameTeam *)(gDecompressionBuffer);
+
+    if (FlagGet(FLAG_JOEY_UNLOCKED) && FlagGet(FLAG_JOEY_DEFEATED_THIS_CYCLE))
+    {
+        FlagClear(FLAG_JOEY_DEFEATED_THIS_CYCLE);
+        FlagSet(FLAG_JOEY_RESUMMON_PENDING);
+    }
 
     SaveQuestLogData();
     if (!gHasHallOfFameRecords)

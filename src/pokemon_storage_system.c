@@ -12,6 +12,53 @@ void RestorePokemonStorage(struct PokemonStorage * src)
     *gPokemonStoragePtr = *src;
 }
 
+u16 IsNewGamePlusStorageActive(void)
+{
+    return gPokemonStoragePtr->ngPlusStorageMagic == NG_PLUS_STORAGE_MAGIC;
+}
+
+void InitNewGamePlusStorageReserve(struct PokemonStorage *storage)
+{
+    if (storage->ngPlusStorageMagic != NG_PLUS_STORAGE_MAGIC)
+    {
+        memset(storage->ngPlusStorage, 0, sizeof(storage->ngPlusStorage));
+        storage->ngPlusStorageMagic = NG_PLUS_STORAGE_MAGIC;
+    }
+}
+
+bool8 CompactNewGamePlusStorageReserve(void)
+{
+    u8 reserveSlot;
+    u8 box;
+    u8 slot;
+    bool8 moved = FALSE;
+
+    InitNewGamePlusStorageReserve(gPokemonStoragePtr);
+
+    for (reserveSlot = 0; reserveSlot < NG_PLUS_STORAGE_COUNT; reserveSlot++)
+    {
+        if (GetBoxMonData(&gPokemonStoragePtr->ngPlusStorage[reserveSlot], MON_DATA_SPECIES) == SPECIES_NONE)
+            continue;
+
+        for (box = 0; box < TOTAL_BOXES_COUNT; box++)
+        {
+            for (slot = 0; slot < IN_BOX_COUNT; slot++)
+            {
+                if (GetBoxMonData(&gPokemonStoragePtr->boxes[box][slot], MON_DATA_SPECIES) == SPECIES_NONE)
+                {
+                    gPokemonStoragePtr->boxes[box][slot] = gPokemonStoragePtr->ngPlusStorage[reserveSlot];
+                    ZeroBoxMonData(&gPokemonStoragePtr->ngPlusStorage[reserveSlot]);
+                    moved = TRUE;
+                    box = TOTAL_BOXES_COUNT;
+                    break;
+                }
+            }
+        }
+    }
+
+    return moved;
+}
+
 // Functions here are general utility functions.
 u8 StorageGetCurrentBox(void)
 {

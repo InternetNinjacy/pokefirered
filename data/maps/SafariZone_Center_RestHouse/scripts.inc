@@ -6,5 +6,39 @@ SafariZone_Center_RestHouse_EventScript_Sara::
 	end
 
 SafariZone_Center_RestHouse_EventScript_Scientist::
-	msgbox SafariZone_Center_Text_CatchingMonsAsGifts, MSGBOX_NPC
+	lock
+	faceplayer
+	goto_if_set FLAG_SQ_FUCHSIA_COMPLETE, SafariZone_Center_RestHouse_EventScript_CensusComplete
+	goto_if_eq VAR_SQ_FUCHSIA_STATE, 3, SafariZone_Center_RestHouse_EventScript_CensusReward
+	goto_if_eq VAR_SQ_FUCHSIA_STATE, 2, SafariZone_Center_RestHouse_EventScript_CensusActive
+	setvar VAR_SQ_FUCHSIA_CENSUS_BITS, 0
+	setvar VAR_SQ_FUCHSIA_STATE, 2
+	msgbox SafariZone_Center_Text_CensusIntro
+	release
+	end
+
+SafariZone_Center_RestHouse_EventScript_CensusActive::
+	msgbox SafariZone_Center_Text_CensusActive
+	release
+	end
+
+SafariZone_Center_RestHouse_EventScript_CensusReward::
+	checkitemspace ITEM_SCOPE_LENS
+	goto_if_eq VAR_RESULT, FALSE, SafariZone_Center_RestHouse_EventScript_CensusNoRoom
+	msgbox SafariZone_Center_Text_CensusFinished
+	giveitem_msg SafariZone_Center_Text_ReceivedScopeLens, ITEM_SCOPE_LENS, 1, MUS_OBTAIN_ITEM
+	setflag FLAG_SQ_FUCHSIA_COMPLETE
+	setvar VAR_SQ_FUCHSIA_STATE, 4
+	msgbox SafariZone_Center_Text_CensusThanks
+	release
+	end
+
+SafariZone_Center_RestHouse_EventScript_CensusNoRoom::
+	msgbox SafariZone_Center_Text_CensusNoRoom
+	release
+	end
+
+SafariZone_Center_RestHouse_EventScript_CensusComplete::
+	msgbox SafariZone_Center_Text_CensusThanks
+	release
 	end

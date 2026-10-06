@@ -1,25 +1,26 @@
 Route22_Text_EarlyRivalIntro::
-	.string "{RIVAL}: Hey! {PLAYER}!\p"
-	.string "You're off to the POKéMON LEAGUE?\n"
-	.string "Forget about it!\p"
-	.string "You probably don't have any\n"
-	.string "BADGES, do you?\p"
-	.string "The guard won't let you through\n"
-	.string "without them.\p"
-	.string "By the way, did your POKéMON get\n"
-	.string "any stronger?$"
+	.string "{RIVAL}: {PLAYER}! Dude! Perfect timing!\p"
+	.string "I've been DYING to try this!\p"
+	.string "Check out my EEVEE!\n"
+	.string "This little guy is RADICAL!\p"
+	.string "C'MON! LET'S BATTLE!$"
 
 Route22_Text_EarlyRivalDefeat::
-	.string "Awww!\n"
-	.string "You just lucked out!$"
+	.string "WHOA! That was AWESOME!\p"
+	.string "EEVEE, you were incredible!\p"
+	.string "{PLAYER}, we are DEFINITELY\n"
+	.string "doing that again!$"
+
+Route22_Text_EarlyRivalVictory::
+	.string "LET'S GOOOOOO!\p"
+	.string "Did you SEE EEVEE out there?!\p"
+	.string "That was sick! We gotta battle\n"
+	.string "again sometime!$"
 
 Route22_Text_EarlyRivalPostBattle::
-	.string "I heard the POKéMON LEAGUE is\n"
-	.string "crawling with tough TRAINERS.\p"
-	.string "I have to figure out how to get\n"
-	.string "past them.\p"
-	.string "You should quit dawdling and get a\n"
-	.string "move on!$"
+	.string "Man, that was FUN!\p"
+	.string "I'm gonna keep training EEVEE.\n"
+	.string "Next time'll be even better!$"
 
 @ Translated in RB as "{RIVAL}: What? Why do I have 2 POKéMON? You should catch some more too!"
 Route22_Text_RivalShouldCatchSomeMons::

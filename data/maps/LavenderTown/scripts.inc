@@ -30,6 +30,183 @@ LavenderTown_EventScript_Boy::
 	msgbox LavenderTown_Text_GhostsAppearedInTower, MSGBOX_NPC
 	end
 
+LavenderTown_EventScript_MemorialCaretaker::
+	lock
+	faceplayer
+	goto_if_set FLAG_SQ_LAVENDER_COMPLETE, LavenderTown_EventScript_MemorialCaretakerComplete
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 0, LavenderTown_EventScript_MemorialCaretakerStart
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 1, LavenderTown_EventScript_MemorialCaretakerActive
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 2, LavenderTown_EventScript_MemorialCaretakerHaunterPending
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 3, LavenderTown_EventScript_MemorialCaretakerRewardPending
+	goto LavenderTown_EventScript_MemorialCaretakerComplete
+	end
+
+LavenderTown_EventScript_MemorialCaretakerStart::
+	msgbox LavenderTown_Text_MemorialCaretakerStart
+	setvar VAR_SQ_LAVENDER_OFFERINGS, 0
+	setvar VAR_SQ_LAVENDER_STATE, 1
+	release
+	end
+
+LavenderTown_EventScript_MemorialCaretakerActive::
+	msgbox LavenderTown_Text_MemorialCaretakerActive
+	release
+	end
+
+LavenderTown_EventScript_MemorialCaretakerHaunterPending::
+	msgbox LavenderTown_Text_MemorialCaretakerHaunterPending
+	release
+	end
+
+LavenderTown_EventScript_MemorialCaretakerRewardPending::
+	msgbox LavenderTown_Text_MemorialCaretakerRewardPending
+	checkitemspace ITEM_SPELL_TAG, 1
+	goto_if_eq VAR_RESULT, FALSE, LavenderTown_EventScript_MemorialCaretakerRewardNoRoom
+	additem ITEM_SPELL_TAG, 1
+	goto_if_eq VAR_RESULT, FALSE, LavenderTown_EventScript_MemorialCaretakerRewardNoRoom
+	setvar VAR_SQ_LAVENDER_STATE, 4
+	setflag FLAG_SQ_LAVENDER_COMPLETE
+	msgbox LavenderTown_Text_MemorialCaretakerRewardReceived
+	release
+	end
+
+LavenderTown_EventScript_MemorialCaretakerRewardNoRoom::
+	msgbox LavenderTown_Text_MemorialCaretakerRewardNoRoom
+	release
+	end
+
+LavenderTown_EventScript_MemorialCaretakerComplete::
+	msgbox LavenderTown_Text_MemorialCaretakerComplete
+	release
+	end
+
+LavenderTown_EventScript_MemorialMeowth::
+	lock
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 0, LavenderTown_EventScript_MemorialDormant
+	msgbox LavenderTown_Text_MemorialMeowthEpitaph
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 1, LavenderTown_EventScript_MemorialMeowthChoose
+	msgbox LavenderTown_Text_MemorialOfferingFixed
+	release
+	end
+
+LavenderTown_EventScript_MemorialMeowthChoose::
+	setvar VAR_0x8004, 0
+	goto LavenderTown_EventScript_MemorialChooseOffering
+	end
+
+LavenderTown_EventScript_MemorialOddish::
+	lock
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 0, LavenderTown_EventScript_MemorialDormant
+	msgbox LavenderTown_Text_MemorialOddishEpitaph
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 1, LavenderTown_EventScript_MemorialOddishChoose
+	msgbox LavenderTown_Text_MemorialOfferingFixed
+	release
+	end
+
+LavenderTown_EventScript_MemorialOddishChoose::
+	setvar VAR_0x8004, 1
+	goto LavenderTown_EventScript_MemorialChooseOffering
+	end
+
+LavenderTown_EventScript_MemorialGrowlithe::
+	lock
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 0, LavenderTown_EventScript_MemorialDormant
+	msgbox LavenderTown_Text_MemorialGrowlitheEpitaph
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 1, LavenderTown_EventScript_MemorialGrowlitheChoose
+	msgbox LavenderTown_Text_MemorialOfferingFixed
+	release
+	end
+
+LavenderTown_EventScript_MemorialGrowlitheChoose::
+	setvar VAR_0x8004, 2
+	goto LavenderTown_EventScript_MemorialChooseOffering
+	end
+
+LavenderTown_EventScript_MemorialChooseOffering::
+	msgbox LavenderTown_Text_MemorialPlaceBell, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, LavenderTown_EventScript_MemorialAssignBell
+	msgbox LavenderTown_Text_MemorialPlaceFlowers, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, LavenderTown_EventScript_MemorialAssignFlowers
+	msgbox LavenderTown_Text_MemorialPlaceTreat, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, LavenderTown_EventScript_MemorialAssignTreat
+	msgbox LavenderTown_Text_MemorialNoChange
+	release
+	end
+
+LavenderTown_EventScript_MemorialAssignBell::
+	setvar VAR_0x8005, 1
+	goto LavenderTown_EventScript_MemorialCommitOffering
+	end
+
+LavenderTown_EventScript_MemorialAssignFlowers::
+	setvar VAR_0x8005, 2
+	goto LavenderTown_EventScript_MemorialCommitOffering
+	end
+
+LavenderTown_EventScript_MemorialAssignTreat::
+	setvar VAR_0x8005, 3
+	goto LavenderTown_EventScript_MemorialCommitOffering
+	end
+
+LavenderTown_EventScript_MemorialCommitOffering::
+	callnative SetLavenderMemorialOffering
+	goto_if_eq VAR_RESULT, TRUE, LavenderTown_EventScript_MemorialPuzzleSolved
+	msgbox LavenderTown_Text_MemorialOfferingPlaced
+	release
+	end
+
+LavenderTown_EventScript_MemorialPuzzleSolved::
+	setvar VAR_SQ_LAVENDER_STATE, 2
+	msgbox LavenderTown_Text_MemorialPuzzleSolved
+	goto LavenderTown_EventScript_MemorialHaunterBattle
+	end
+
+LavenderTown_EventScript_MemorialDormant::
+	msgbox LavenderTown_Text_MemorialDormant
+	release
+	end
+
+LavenderTown_EventScript_MemorialMonument::
+	lock
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 4, LavenderTown_EventScript_MemorialMonumentComplete
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 3, LavenderTown_EventScript_MemorialMonumentQuiet
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 2, LavenderTown_EventScript_MemorialHaunterBattle
+	goto_if_eq VAR_SQ_LAVENDER_STATE, 0, LavenderTown_EventScript_MemorialMonumentDormant
+	msgbox LavenderTown_Text_MemorialMonumentActive
+	release
+	end
+
+LavenderTown_EventScript_MemorialHaunterBattle::
+	msgbox LavenderTown_Text_MemorialHaunterAppears
+	closemessage
+	callnative StartLavenderMemorialHaunterBattle
+	waitstate
+	special GetBattleOutcome
+	goto_if_eq VAR_RESULT, 1, LavenderTown_EventScript_MemorialHaunterDefeated
+	release
+	end
+
+LavenderTown_EventScript_MemorialHaunterDefeated::
+	setvar VAR_SQ_LAVENDER_STATE, 3
+	msgbox LavenderTown_Text_MemorialHaunterDefeated
+	release
+	end
+
+LavenderTown_EventScript_MemorialMonumentDormant::
+	msgbox LavenderTown_Text_MemorialMonumentDormant
+	release
+	end
+
+LavenderTown_EventScript_MemorialMonumentQuiet::
+	msgbox LavenderTown_Text_MemorialMonumentQuiet
+	release
+	end
+
+LavenderTown_EventScript_MemorialMonumentComplete::
+	msgbox LavenderTown_Text_MemorialMonumentComplete
+	release
+	end
+
 LavenderTown_EventScript_TownSign::
 	msgbox LavenderTown_Text_TownSign, MSGBOX_SIGN
 	end

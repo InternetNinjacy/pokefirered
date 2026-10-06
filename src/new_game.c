@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gflib.h"
+#include "new_game.h"
 #include "random.h"
 #include "overworld.h"
 #include "constants/maps.h"
@@ -30,8 +31,25 @@
 #include "pokemon_jump.h"
 #include "event_scripts.h"
 
+struct NewGamePlusCarryover
+{
+    u8 trainerId[TRAINER_ID_LENGTH];
+    u32 encryptionKey;
+    u16 registeredItem;
+    struct ItemSlot pcItems[PC_ITEMS_COUNT];
+    struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
+    struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
+    struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
+    struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
+    struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
+    struct PokemonStorage pokemonStorage;
+};
+
 // this file's functions
 static void ResetMiniGamesResults(void);
+static struct NewGamePlusCarryover *CreateNewGamePlusCarryover(void);
+static void RestoreNewGamePlusCarryover(struct NewGamePlusCarryover *carryover);
+static bool8 MigrateNewGamePlusPartyToStorage(struct NewGamePlusCarryover *carryover);
 
 // EWRAM vars
 EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
@@ -49,6 +67,41 @@ void CopyTrainerId(u8 *dst, u8 *src)
     s32 i;
     for (i = 0; i < 4; i++)
         dst[i] = src[i];
+}
+
+bool8 CanStartNewGamePlus(void)
+{
+    u16 freeStorageSlots = 0;
+    u8 box;
+    u8 slot;
+
+    // Every active party member is migrated into boxed storage before the
+    // ordinary new-game reset. Refuse NG+ unless the complete collection can
+    // be represented without dropping a Pokemon.
+    for (box = 0; box < TOTAL_BOXES_COUNT; box++)
+    {
+        for (slot = 0; slot < IN_BOX_COUNT; slot++)
+        {
+            if (GetBoxMonData(&gPokemonStoragePtr->boxes[box][slot], MON_DATA_SPECIES) == SPECIES_NONE)
+                freeStorageSlots++;
+        }
+    }
+
+    if (gPokemonStoragePtr->ngPlusStorageMagic == NG_PLUS_STORAGE_MAGIC)
+    {
+        for (slot = 0; slot < NG_PLUS_STORAGE_COUNT; slot++)
+        {
+            if (GetBoxMonData(&gPokemonStoragePtr->ngPlusStorage[slot], MON_DATA_SPECIES) == SPECIES_NONE)
+                freeStorageSlots++;
+        }
+    }
+    else
+    {
+        // Legacy/non-NG+ saves have never used the reserve tail.
+        freeStorageSlots += NG_PLUS_STORAGE_COUNT;
+    }
+
+    return gSaveBlock1Ptr->playerPartyCount <= freeStorageSlots;
 }
 
 static void InitPlayerTrainerId(void)
@@ -85,6 +138,104 @@ static void WarpToPlayersRoom(void)
     WarpIntoMap();
 }
 
+static bool8 MigrateNewGamePlusPartyToStorage(struct NewGamePlusCarryover *carryover)
+{
+    u8 partyIndex;
+    u8 box;
+    u8 slot;
+    u8 reserveSlot;
+
+    InitNewGamePlusStorageReserve(&carryover->pokemonStorage);
+
+    for (partyIndex = 0; partyIndex < gSaveBlock1Ptr->playerPartyCount; partyIndex++)
+    {
+        bool8 placed = FALSE;
+
+        for (box = 0; box < TOTAL_BOXES_COUNT && !placed; box++)
+        {
+            for (slot = 0; slot < IN_BOX_COUNT; slot++)
+            {
+                if (GetBoxMonData(&carryover->pokemonStorage.boxes[box][slot], MON_DATA_SPECIES) == SPECIES_NONE)
+                {
+                    carryover->pokemonStorage.boxes[box][slot] = gSaveBlock1Ptr->playerParty[partyIndex].box;
+                    placed = TRUE;
+                    break;
+                }
+            }
+        }
+
+        if (!placed)
+        {
+            for (reserveSlot = 0; reserveSlot < NG_PLUS_STORAGE_COUNT; reserveSlot++)
+            {
+                if (GetBoxMonData(&carryover->pokemonStorage.ngPlusStorage[reserveSlot], MON_DATA_SPECIES) == SPECIES_NONE)
+                {
+                    carryover->pokemonStorage.ngPlusStorage[reserveSlot] = gSaveBlock1Ptr->playerParty[partyIndex].box;
+                    placed = TRUE;
+                    break;
+                }
+            }
+        }
+
+        if (!placed)
+            return FALSE;
+    }
+
+    return TRUE;
+}
+
+static struct NewGamePlusCarryover *CreateNewGamePlusCarryover(void)
+{
+    struct NewGamePlusCarryover *carryover;
+
+    if (!CanStartNewGamePlus())
+        return NULL;
+
+    carryover = Alloc(sizeof(*carryover));
+    if (carryover == NULL)
+        return NULL;
+
+    CopyTrainerId(carryover->trainerId, gSaveBlock2Ptr->playerTrainerId);
+    carryover->encryptionKey = gSaveBlock2Ptr->encryptionKey;
+    carryover->registeredItem = gSaveBlock1Ptr->registeredItem;
+    memcpy(carryover->pcItems, gSaveBlock1Ptr->pcItems, sizeof(carryover->pcItems));
+    memcpy(carryover->bagPocket_Items, gSaveBlock1Ptr->bagPocket_Items, sizeof(carryover->bagPocket_Items));
+    memcpy(carryover->bagPocket_KeyItems, gSaveBlock1Ptr->bagPocket_KeyItems, sizeof(carryover->bagPocket_KeyItems));
+    memcpy(carryover->bagPocket_PokeBalls, gSaveBlock1Ptr->bagPocket_PokeBalls, sizeof(carryover->bagPocket_PokeBalls));
+    memcpy(carryover->bagPocket_TMHM, gSaveBlock1Ptr->bagPocket_TMHM, sizeof(carryover->bagPocket_TMHM));
+    memcpy(carryover->bagPocket_Berries, gSaveBlock1Ptr->bagPocket_Berries, sizeof(carryover->bagPocket_Berries));
+    carryover->pokemonStorage = *gPokemonStoragePtr;
+
+    if (!MigrateNewGamePlusPartyToStorage(carryover))
+    {
+        Free(carryover);
+        return NULL;
+    }
+
+    return carryover;
+}
+
+static void RestoreNewGamePlusCarryover(struct NewGamePlusCarryover *carryover)
+{
+    CopyTrainerId(gSaveBlock2Ptr->playerTrainerId, carryover->trainerId);
+    gSaveBlock1Ptr->registeredItem = carryover->registeredItem;
+    memcpy(gSaveBlock1Ptr->pcItems, carryover->pcItems, sizeof(carryover->pcItems));
+    memcpy(gSaveBlock1Ptr->bagPocket_Items, carryover->bagPocket_Items, sizeof(carryover->bagPocket_Items));
+    memcpy(gSaveBlock1Ptr->bagPocket_KeyItems, carryover->bagPocket_KeyItems, sizeof(carryover->bagPocket_KeyItems));
+    memcpy(gSaveBlock1Ptr->bagPocket_PokeBalls, carryover->bagPocket_PokeBalls, sizeof(carryover->bagPocket_PokeBalls));
+    memcpy(gSaveBlock1Ptr->bagPocket_TMHM, carryover->bagPocket_TMHM, sizeof(carryover->bagPocket_TMHM));
+    memcpy(gSaveBlock1Ptr->bagPocket_Berries, carryover->bagPocket_Berries, sizeof(carryover->bagPocket_Berries));
+    *gPokemonStoragePtr = carryover->pokemonStorage;
+
+    // Bag quantities are encrypted with the source save's key. The normal
+    // new-game path uses key 0 until the save blocks are moved later, so
+    // re-key the restored quantities to 0 without disturbing the freshly
+    // initialized money, game stats, or other encrypted new-run fields.
+    gSaveBlock2Ptr->encryptionKey = carryover->encryptionKey;
+    ApplyNewEncryptionKeyToBagItems_(0);
+    gSaveBlock2Ptr->encryptionKey = 0;
+}
+
 void Sav2_ClearSetDefault(void)
 {
     ClearSav2();
@@ -104,11 +255,22 @@ void ResetMenuAndMonGlobals(void)
     ResetSpecialVars();
 }
 
-void NewGameInitData(void)
+bool8 NewGameInitData(void)
 {
     u8 rivalName[PLAYER_NAME_LENGTH + 1];
     u8 greenName[PLAYER_NAME_LENGTH + 1];
     u16 samGameMode = gSaveBlock1Ptr->vars[VAR_SAM_GAME_MODE - VARS_START];
+    struct NewGamePlusCarryover *newGamePlusCarryover = NULL;
+
+    if (gNewGamePlusRequested)
+    {
+        newGamePlusCarryover = CreateNewGamePlusCarryover();
+        if (newGamePlusCarryover == NULL)
+        {
+            gNewGamePlusRequested = FALSE;
+            return FALSE;
+        }
+    }
 
     StringCopy(rivalName, gSaveBlock1Ptr->rivalName);
     StringCopy(greenName, gSaveBlock1Ptr->samEdition.greenName);
@@ -127,6 +289,8 @@ void NewGameInitData(void)
     PlayTimeCounter_Reset();
     ClearPokedexFlags();
     InitEventData();
+    if (gNewGamePlusRequested)
+        FlagClear(FLAG_SYS_GAME_CLEAR);
     ResetFameChecker();
     SetMoney(&gSaveBlock1Ptr->money, 3000);
     ResetGameStats();
@@ -154,6 +318,14 @@ void NewGameInitData(void)
     StringCopy(gSaveBlock1Ptr->samEdition.greenName, greenName);
     gSaveBlock1Ptr->vars[VAR_SAM_GAME_MODE - VARS_START] = samGameMode;
     ResetTrainerTowerResults();
+
+    if (newGamePlusCarryover != NULL)
+    {
+        RestoreNewGamePlusCarryover(newGamePlusCarryover);
+        Free(newGamePlusCarryover);
+    }
+    gNewGamePlusRequested = FALSE;
+    return TRUE;
 }
 
 static void ResetMiniGamesResults(void)

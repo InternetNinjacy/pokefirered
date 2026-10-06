@@ -44,6 +44,8 @@
 #define OTID_PURCHASE_MAGIKARP_VENDOR 52008
 #define OTID_GAME_CORNER_CELADON      52009
 #define OTID_FOSSIL_CINNABAR_LAB      52010
+#define OTID_GIFT_COPYCAT              52012
+#define OTID_GIFT_CURATOR              52013
 
 // Authored-OT profiles used by stock special-acquisition scripts.
 #define SAM_PREOWNED_OT_VENDOR      0

@@ -77,3 +77,54 @@ Route4_Text_PeopleLikeAndRespectBrock::
     .string "People like and respect him.\p"
     .string "I want to become a GYM LEADER\n"
     .string "like him.$"
+
+
+Route4_Text_BlueArrival::
+    .string "RED! You made it through MT. MOON!\n"
+    .string "LET'S GOOOOOO!$"
+
+Route4_Text_BlueWaterIntro::
+    .string "Okay, you HAVE to see this.\p"
+    .string "Ditto and Chinchou are ready!$"
+
+Route4_Text_BlueFireIntro::
+    .string "Okay, you HAVE to see this.\p"
+    .string "Remember Eevee? Check him out now!\p"
+    .string "And dude, I found a PONYTA!$"
+
+Route4_Text_BlueElectricIntro::
+    .string "Okay, you HAVE to see this.\p"
+    .string "Pichu evolved! Check out PIKACHU!\p"
+    .string "And I found a Voltorb!$"
+
+Route4_Text_BlueCallsGreen::
+    .string "GREEN! We're doing this!$"
+
+Route4_Text_GreenReply::
+    .string "Two against one?\p"
+    .string "That was the idea.$"
+
+Route4_Text_GreenReady::
+    .string "Ready, RED?$"
+
+Route4_Text_BlueGreenDefeat::
+    .string "No way! You beat both of us?$"
+
+Route4_Text_BlueGreenVictory::
+    .string "WHOA! THAT WAS AWESOME!$"
+
+Route4_Text_BlueRetry::
+    .string "Heal up. We're doing that again.$"
+
+Route4_Text_BluePostBattle::
+    .string "THAT WAS SICK!\p"
+    .string "We gotta do that again!$"
+
+Route4_Text_GreenPostBattle::
+    .string "Separately next time.\p"
+    .string "I want to know which one of us\n"
+    .string "was the problem.$"
+
+Route4_Text_NeedTwoPokemon::
+    .string "Bring at least two POKéMON that can\n"
+    .string "battle. Then we're doing this.$"

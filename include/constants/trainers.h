@@ -326,6 +326,7 @@
 #define TRAINER_CLASS_LIFEGUARD          109
 #define TRAINER_CLASS_SURFER             110
 #define TRAINER_CLASS_BEACH_FAMILY       111
+#define TRAINER_CLASS_TEACHING_ASSISTANT  112
 
 #if TRAINER_CLASS_PAINTER != 106
 #error "ARCH-006: vanilla trainer-class boundary drifted"

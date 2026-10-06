@@ -14,5 +14,48 @@ SafariZone_West_EventScript_TrainerTips::
 	end
 
 SafariZone_West_EventScript_AreaSign::
+	goto_if_eq VAR_SQ_FUCHSIA_STATE, 2, SafariZone_West_EventScript_CensusCheck
+	goto_if_eq VAR_SQ_FUCHSIA_STATE, 3, SafariZone_West_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_STATE, 4, SafariZone_West_EventScript_CensusAlreadyRecorded
 	msgbox SafariZone_West_Text_AreaSign, MSGBOX_SIGN
+	end
+
+SafariZone_West_EventScript_CensusCheck::
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 8, SafariZone_West_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 9, SafariZone_West_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 10, SafariZone_West_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 11, SafariZone_West_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 12, SafariZone_West_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 13, SafariZone_West_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 14, SafariZone_West_EventScript_CensusAlreadyRecorded
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 15, SafariZone_West_EventScript_CensusAlreadyRecorded
+	msgbox SafariZone_West_Text_CensusClue
+	msgbox SafariZone_West_Text_GuessNidorino, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SafariZone_West_EventScript_CensusWrong
+	msgbox SafariZone_West_Text_GuessParasect, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SafariZone_West_EventScript_CensusWrong
+	msgbox SafariZone_West_Text_GuessRhyhorn, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SafariZone_West_EventScript_CensusWrong
+	msgbox SafariZone_West_Text_GuessExeggcute, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SafariZone_West_EventScript_CensusCorrect
+	goto SafariZone_West_EventScript_CensusWrong
+	end
+
+SafariZone_West_EventScript_CensusCorrect::
+	msgbox SafariZone_West_Text_CensusCorrect
+	addvar VAR_SQ_FUCHSIA_CENSUS_BITS, 8
+	goto_if_eq VAR_SQ_FUCHSIA_CENSUS_BITS, 15, SafariZone_West_EventScript_CensusAllRecorded
+	end
+
+SafariZone_West_EventScript_CensusWrong::
+	msgbox SafariZone_West_Text_CensusHint
+	end
+
+SafariZone_West_EventScript_CensusAlreadyRecorded::
+	msgbox SafariZone_West_Text_CensusAlreadyRecorded, MSGBOX_SIGN
+	end
+
+SafariZone_West_EventScript_CensusAllRecorded::
+	setvar VAR_SQ_FUCHSIA_STATE, 3
+	msgbox SafariZone_West_Text_CensusAllRecorded, MSGBOX_SIGN
 	end

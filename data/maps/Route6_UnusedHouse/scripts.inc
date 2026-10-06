@@ -1,2 +1,223 @@
 Route6_UnusedHouse_MapScripts::
 	.byte 0
+
+Route6_UnusedHouse_EventScript_ValveA::
+	lockall
+	goto_if_ne VAR_SQ_CERULEAN_STATE, 1, Route6_UnusedHouse_EventScript_RepairedControls
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 0, Route6_UnusedHouse_EventScript_ValveA_0
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 1, Route6_UnusedHouse_EventScript_ValveA_1
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 2, Route6_UnusedHouse_EventScript_ValveA_2
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 3, Route6_UnusedHouse_EventScript_ValveA_3
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 4, Route6_UnusedHouse_EventScript_ValveA_4
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 5, Route6_UnusedHouse_EventScript_ValveA_5
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 6, Route6_UnusedHouse_EventScript_ValveA_6
+	setvar VAR_SQ_CERULEAN_VALVES, 1
+	goto Route6_UnusedHouse_EventScript_AfterValve
+	end
+Route6_UnusedHouse_EventScript_ValveA_0::
+	setvar VAR_SQ_CERULEAN_VALVES, 6
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveA_1::
+	setvar VAR_SQ_CERULEAN_VALVES, 7
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveA_2::
+	setvar VAR_SQ_CERULEAN_VALVES, 4
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveA_3::
+	setvar VAR_SQ_CERULEAN_VALVES, 5
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveA_4::
+	setvar VAR_SQ_CERULEAN_VALVES, 2
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveA_5::
+	setvar VAR_SQ_CERULEAN_VALVES, 3
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveA_6::
+	setvar VAR_SQ_CERULEAN_VALVES, 0
+	goto Route6_UnusedHouse_EventScript_AfterValve
+
+Route6_UnusedHouse_EventScript_ValveB::
+	lockall
+	goto_if_ne VAR_SQ_CERULEAN_STATE, 1, Route6_UnusedHouse_EventScript_RepairedControls
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 0, Route6_UnusedHouse_EventScript_ValveB_0
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 1, Route6_UnusedHouse_EventScript_ValveB_1
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 2, Route6_UnusedHouse_EventScript_ValveB_2
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 3, Route6_UnusedHouse_EventScript_ValveB_3
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 4, Route6_UnusedHouse_EventScript_ValveB_4
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 5, Route6_UnusedHouse_EventScript_ValveB_5
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 6, Route6_UnusedHouse_EventScript_ValveB_6
+	setvar VAR_SQ_CERULEAN_VALVES, 4
+	goto Route6_UnusedHouse_EventScript_AfterValve
+	end
+Route6_UnusedHouse_EventScript_ValveB_0::
+	setvar VAR_SQ_CERULEAN_VALVES, 3
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveB_1::
+	setvar VAR_SQ_CERULEAN_VALVES, 2
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveB_2::
+	setvar VAR_SQ_CERULEAN_VALVES, 1
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveB_3::
+	setvar VAR_SQ_CERULEAN_VALVES, 0
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveB_4::
+	setvar VAR_SQ_CERULEAN_VALVES, 7
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveB_5::
+	setvar VAR_SQ_CERULEAN_VALVES, 6
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveB_6::
+	setvar VAR_SQ_CERULEAN_VALVES, 5
+	goto Route6_UnusedHouse_EventScript_AfterValve
+
+Route6_UnusedHouse_EventScript_ValveC::
+	lockall
+	goto_if_ne VAR_SQ_CERULEAN_STATE, 1, Route6_UnusedHouse_EventScript_RepairedControls
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 0, Route6_UnusedHouse_EventScript_ValveC_0
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 1, Route6_UnusedHouse_EventScript_ValveC_1
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 2, Route6_UnusedHouse_EventScript_ValveC_2
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 3, Route6_UnusedHouse_EventScript_ValveC_3
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 4, Route6_UnusedHouse_EventScript_ValveC_4
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 5, Route6_UnusedHouse_EventScript_ValveC_5
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 6, Route6_UnusedHouse_EventScript_ValveC_6
+	setvar VAR_SQ_CERULEAN_VALVES, 0
+	goto Route6_UnusedHouse_EventScript_AfterValve
+	end
+Route6_UnusedHouse_EventScript_ValveC_0::
+	setvar VAR_SQ_CERULEAN_VALVES, 7
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveC_1::
+	setvar VAR_SQ_CERULEAN_VALVES, 6
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveC_2::
+	setvar VAR_SQ_CERULEAN_VALVES, 5
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveC_3::
+	setvar VAR_SQ_CERULEAN_VALVES, 4
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveC_4::
+	setvar VAR_SQ_CERULEAN_VALVES, 3
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveC_5::
+	setvar VAR_SQ_CERULEAN_VALVES, 2
+	goto Route6_UnusedHouse_EventScript_AfterValve
+Route6_UnusedHouse_EventScript_ValveC_6::
+	setvar VAR_SQ_CERULEAN_VALVES, 1
+	goto Route6_UnusedHouse_EventScript_AfterValve
+
+Route6_UnusedHouse_EventScript_AfterValve::
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 7, Route6_UnusedHouse_EventScript_Solved
+	call Route6_UnusedHouse_EventScript_ShowTankStatus
+	releaseall
+	end
+
+Route6_UnusedHouse_EventScript_Solved::
+	setvar VAR_SQ_CERULEAN_STATE, 2
+	msgbox Route6_UnusedHouse_Text_WaterworksSolved
+	releaseall
+	end
+
+Route6_UnusedHouse_EventScript_ShowTankStatus::
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 0, Route6_UnusedHouse_EventScript_Status000
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 1, Route6_UnusedHouse_EventScript_Status001
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 2, Route6_UnusedHouse_EventScript_Status010
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 3, Route6_UnusedHouse_EventScript_Status011
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 4, Route6_UnusedHouse_EventScript_Status100
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 5, Route6_UnusedHouse_EventScript_Status101
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 6, Route6_UnusedHouse_EventScript_Status110
+	msgbox Route6_UnusedHouse_Text_Status111
+	return
+Route6_UnusedHouse_EventScript_Status000::
+	msgbox Route6_UnusedHouse_Text_Status000
+	return
+Route6_UnusedHouse_EventScript_Status001::
+	msgbox Route6_UnusedHouse_Text_Status001
+	return
+Route6_UnusedHouse_EventScript_Status010::
+	msgbox Route6_UnusedHouse_Text_Status010
+	return
+Route6_UnusedHouse_EventScript_Status011::
+	msgbox Route6_UnusedHouse_Text_Status011
+	return
+Route6_UnusedHouse_EventScript_Status100::
+	msgbox Route6_UnusedHouse_Text_Status100
+	return
+Route6_UnusedHouse_EventScript_Status101::
+	msgbox Route6_UnusedHouse_Text_Status101
+	return
+Route6_UnusedHouse_EventScript_Status110::
+	msgbox Route6_UnusedHouse_Text_Status110
+	return
+
+Route6_UnusedHouse_EventScript_NorthGauge::
+	lockall
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 4, Route6_UnusedHouse_EventScript_NorthOn
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 5, Route6_UnusedHouse_EventScript_NorthOn
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 6, Route6_UnusedHouse_EventScript_NorthOn
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 7, Route6_UnusedHouse_EventScript_NorthOn
+	msgbox Route6_UnusedHouse_Text_NorthOff
+	releaseall
+	end
+Route6_UnusedHouse_EventScript_NorthOn::
+	msgbox Route6_UnusedHouse_Text_NorthOn
+	releaseall
+	end
+
+Route6_UnusedHouse_EventScript_CentralGauge::
+	lockall
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 2, Route6_UnusedHouse_EventScript_CentralOn
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 3, Route6_UnusedHouse_EventScript_CentralOn
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 6, Route6_UnusedHouse_EventScript_CentralOn
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 7, Route6_UnusedHouse_EventScript_CentralOn
+	msgbox Route6_UnusedHouse_Text_CentralOff
+	releaseall
+	end
+Route6_UnusedHouse_EventScript_CentralOn::
+	msgbox Route6_UnusedHouse_Text_CentralOn
+	releaseall
+	end
+
+Route6_UnusedHouse_EventScript_SouthGauge::
+	lockall
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 1, Route6_UnusedHouse_EventScript_SouthOn
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 3, Route6_UnusedHouse_EventScript_SouthOn
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 5, Route6_UnusedHouse_EventScript_SouthOn
+	goto_if_eq VAR_SQ_CERULEAN_VALVES, 7, Route6_UnusedHouse_EventScript_SouthOn
+	msgbox Route6_UnusedHouse_Text_SouthOff
+	releaseall
+	end
+Route6_UnusedHouse_EventScript_SouthOn::
+	msgbox Route6_UnusedHouse_Text_SouthOn
+	releaseall
+	end
+
+Route6_UnusedHouse_EventScript_DrainedAlcove::
+	lockall
+	goto_if_eq VAR_SQ_CERULEAN_STATE, 0, Route6_UnusedHouse_EventScript_AlcoveFlooded
+	goto_if_eq VAR_SQ_CERULEAN_STATE, 1, Route6_UnusedHouse_EventScript_AlcoveFlooded
+	goto_if_set FLAG_SQ_CERULEAN_RARE_CANDY_TAKEN, Route6_UnusedHouse_EventScript_AlcoveEmpty
+	msgbox Route6_UnusedHouse_Text_AlcoveRareCandy
+	giveitem ITEM_RARE_CANDY
+	goto_if_eq VAR_RESULT, FALSE, Route6_UnusedHouse_EventScript_AlcoveNoRoom
+	setflag FLAG_SQ_CERULEAN_RARE_CANDY_TAKEN
+	msgbox Route6_UnusedHouse_Text_AlcoveRareCandyTaken
+	releaseall
+	end
+Route6_UnusedHouse_EventScript_AlcoveNoRoom::
+	msgbox Route6_UnusedHouse_Text_AlcoveNoRoom
+	releaseall
+	end
+Route6_UnusedHouse_EventScript_AlcoveEmpty::
+	msgbox Route6_UnusedHouse_Text_AlcoveEmpty
+	releaseall
+	end
+Route6_UnusedHouse_EventScript_AlcoveFlooded::
+	msgbox Route6_UnusedHouse_Text_AlcoveFlooded
+	releaseall
+	end
+
+Route6_UnusedHouse_EventScript_RepairedControls::
+	msgbox Route6_UnusedHouse_Text_ControlsRepaired
+	releaseall
+	end

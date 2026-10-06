@@ -1,0 +1,46 @@
+// Pokemon Sam Edition - TRAINERS Batch 5 party remaps.
+#include "data/sam_batch5_lavender_trainer_parties.h"
+
+#define sParty_PicnickerAlicia sParty_SamB5PicnickerAlicia
+#define sParty_HikerJeremy sParty_SamB5HikerJeremy
+#define sParty_BugCatcherBrent sParty_SamB5BugCatcherBrent
+#define sParty_CamperChris sParty_SamB5CamperChris
+#define sParty_HikerAlan sParty_SamB5HikerAlan
+#define sParty_BugCatcherConner sParty_SamB5BugCatcherConner
+#define sParty_CamperDrew sParty_SamB5CamperDrew
+#define sParty_HikerBrice sParty_SamB5HikerBrice
+#define sParty_PicnickerCaitlin sParty_SamB5PicnickerCaitlin
+#define sParty_PicnickerHeidi sParty_SamB5PicnickerHeidi
+
+#define sParty_PokemaniacAshton sParty_SamB5PokemaniacAshton
+#define sParty_PokemaniacWinston sParty_SamB5PokemaniacWinston
+#define sParty_PicnickerMartha sParty_SamB5PicnickerMartha
+#define sParty_PokemaniacSteve sParty_SamB5PokemaniacSteve
+#define sParty_HikerAllen sParty_SamB5HikerAllen
+#define sParty_HikerEric sParty_SamB5HikerEric
+#define sParty_HikerLenny sParty_SamB5HikerLenny
+#define sParty_HikerOliver sParty_SamB5HikerOliver
+#define sParty_HikerLucas sParty_SamB5HikerLucas
+#define sParty_PicnickerSofia sParty_SamB5PicnickerSofia
+#define sParty_HikerDudley sParty_SamB5HikerDudley
+#define sParty_PokemaniacCooper sParty_SamB5PokemaniacCooper
+#define sParty_PicnickerLeah sParty_SamB5PicnickerLeah
+#define sParty_PicnickerDana sParty_SamB5PicnickerDana
+#define sParty_PicnickerAriana sParty_SamB5PicnickerAriana
+
+#define sParty_ChannelerPatricia sParty_SamB5ChannelerPatricia
+#define sParty_ChannelerCarly sParty_SamB5ChannelerCarly
+#define sParty_ChannelerHope sParty_SamB5ChannelerHope
+#define sParty_ChannelerLaurel sParty_SamB5ChannelerLaurel
+#define sParty_ChannelerJody sParty_SamB5ChannelerJody
+#define sParty_ChannelerPaula sParty_SamB5ChannelerPaula
+#define sParty_ChannelerRuth sParty_SamB5ChannelerRuth
+#define sParty_ChannelerTammy sParty_SamB5ChannelerTammy
+#define sParty_ChannelerKarina sParty_SamB5ChannelerKarina
+#define sParty_ChannelerJanae sParty_SamB5ChannelerJanae
+#define sParty_ChannelerAngelica sParty_SamB5ChannelerAngelica
+#define sParty_ChannelerJennifer sParty_SamB5ChannelerJennifer
+#define sParty_ChannelerEmilia sParty_SamB5ChannelerEmilia
+
+#define sParty_TeamRocketGrunt20 sParty_SamB5RocketGrunt20
+#define sParty_TeamRocketGrunt21 sParty_SamB5RocketGrunt21

@@ -60,3 +60,103 @@ OneIsland_Text_IsntWarmClimateHereGreat::
     .string "Hi, sight-seeing, are you?\n"
     .string "Isn't the warm climate here great?$"
 
+OneIsland_Text_BlueIntro::
+    .string "{RIVAL}: {PLAYER}?!\p"
+    .string "NO WAY!\p"
+    .string "Dude, what are YOU doing out here?!\p"
+    .string "I came over because somebody told me\n"
+    .string "there were POKéMON around here you\l"
+    .string "don't see back home.\p"
+    .string "And they were RIGHT!\p"
+    .string "This place is AWESOME!\p"
+    .string "...You know what would make it even\n"
+    .string "better?\p"
+    .string "A BATTLE!\p"
+    .string "C'MON!$"
+
+OneIsland_Text_BlueDefeat::
+    .string "YES!\p"
+    .string "HAHAHA!\p"
+    .string "I knew running into you out here\n"
+    .string "was gonna be awesome!$"
+
+OneIsland_Text_BlueVictory::
+    .string "LET'S GOOOOOO!\p"
+    .string "Dude, that was GREAT!\p"
+    .string "What are the odds we even ran into\n"
+    .string "each other out here?!$"
+
+OneIsland_Text_BluePostBattle::
+    .string "I've gotta keep looking around.\p"
+    .string "There could be something AMAZING\n"
+    .string "like ten steps from here and we'd\l"
+    .string "never know!\p"
+    .string "See you around, dude!$"
+
+OneIsland_EventScript_BlueTrigger::
+    lockall
+    setvar VAR_TEMP_3, 0
+    goto_if_lt VAR_MAP_SCENE_ONE_ISLAND_HARBOR, 3, OneIsland_EventScript_BlueUnavailable
+    call_if_eq VAR_STARTER_MON, 0, OneIsland_EventScript_CheckBlueWater
+    call_if_eq VAR_STARTER_MON, 1, OneIsland_EventScript_CheckBlueFire
+    call_if_eq VAR_STARTER_MON, 2, OneIsland_EventScript_CheckBlueElectric
+    goto_if_eq VAR_TEMP_3, 1, OneIsland_EventScript_BlueBegin
+OneIsland_EventScript_BlueUnavailable::
+    releaseall
+    end
+
+OneIsland_EventScript_CheckBlueWater::
+    checktrainerflag TRAINER_BLUE_CINNABAR_WATER
+    goto_if FALSE, OneIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_BLUE_ONE_ISLAND_WATER
+    goto_if TRUE, OneIsland_EventScript_BlueCheckDone
+    setvar VAR_TEMP_3, 1
+OneIsland_EventScript_BlueCheckDone::
+    return
+
+OneIsland_EventScript_CheckBlueElectric::
+    checktrainerflag TRAINER_BLUE_CINNABAR_ELECTRIC
+    goto_if FALSE, OneIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_BLUE_ONE_ISLAND_ELECTRIC
+    goto_if TRUE, OneIsland_EventScript_BlueCheckDone
+    setvar VAR_TEMP_3, 1
+    return
+
+OneIsland_EventScript_CheckBlueFire::
+    checktrainerflag TRAINER_BLUE_CINNABAR_FIRE
+    goto_if FALSE, OneIsland_EventScript_BlueCheckDone
+    checktrainerflag TRAINER_BLUE_ONE_ISLAND_FIRE
+    goto_if TRUE, OneIsland_EventScript_BlueCheckDone
+    setvar VAR_TEMP_3, 1
+    return
+
+OneIsland_EventScript_BlueBegin::
+    addobject LOCALID_ONE_ISLAND_BLUE
+    setvar VAR_LAST_TALKED, LOCALID_ONE_ISLAND_BLUE
+    textcolor NPC_TEXT_COLOR_MALE
+    playbgm MUS_ENCOUNTER_RIVAL, 0
+    faceplayer
+    msgbox OneIsland_Text_BlueIntro
+    call_if_eq VAR_STARTER_MON, 0, OneIsland_EventScript_BlueWater
+    call_if_eq VAR_STARTER_MON, 1, OneIsland_EventScript_BlueFire
+    call_if_eq VAR_STARTER_MON, 2, OneIsland_EventScript_BlueElectric
+    msgbox OneIsland_Text_BluePostBattle
+    closemessage
+    fadedefaultbgm
+    removeobject LOCALID_ONE_ISLAND_BLUE
+    setvar VAR_TEMP_3, 2
+    releaseall
+    end
+
+OneIsland_EventScript_BlueWater::
+    trainerbattle_no_intro TRAINER_BLUE_ONE_ISLAND_WATER, OneIsland_Text_BlueDefeat
+    return
+
+OneIsland_EventScript_BlueElectric::
+    trainerbattle_no_intro TRAINER_BLUE_ONE_ISLAND_ELECTRIC, OneIsland_Text_BlueDefeat
+    return
+
+OneIsland_EventScript_BlueFire::
+    trainerbattle_no_intro TRAINER_BLUE_ONE_ISLAND_FIRE, OneIsland_Text_BlueDefeat
+    return
+

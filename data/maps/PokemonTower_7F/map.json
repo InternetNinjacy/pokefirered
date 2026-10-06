@@ -42,7 +42,7 @@
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "4",
       "script": "PokemonTower_7F_EventScript_Grunt1",
-      "flag": "FLAG_HIDE_TOWER_ROCKET_1"
+      "flag": "FLAG_HIDE_THOMAS_LAVENDER"
     },
     {
       "local_id": "LOCALID_POKEMON_TOWER_GRUNT2",

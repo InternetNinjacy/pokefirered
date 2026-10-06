@@ -1,19 +1,8 @@
-Route11_EastEntrance_2F_Text_GiveItemfinderIfCaught30::
+Route11_EastEntrance_2F_Text_OakEntrustedItemfinder::
     .string "Hi! Remember me?\n"
     .string "I'm one of PROF. OAK's AIDES.\p"
-    .string "If your POKéDEX has complete data\n"
-    .string "on {STR_VAR_1} species, I'm supposed to\l"
-    .string "give you a reward.\p"
     .string "PROF. OAK entrusted me with the\n"
     .string "{STR_VAR_2} for you.\p"
-    .string "So, {PLAYER}, let me ask you.\p"
-    .string "Have you gathered data on at least\n"
-    .string "{STR_VAR_1} kinds of POKéMON?$"
-
-Route11_EastEntrance_2F_Text_GreatHereYouGo::
-    .string "Great! You have caught or owned\n"
-    .string "{STR_VAR_3} kinds of POKéMON!\p"
-    .string "Congratulations!\n"
     .string "Here you go!$"
 
 Route11_EastEntrance_2F_Text_ReceivedItemfinderFromAide::
@@ -49,4 +38,3 @@ Route11_EastEntrance_2F_Text_RockTunnelGoodRouteToLavender::
     .string "CERULEAN CITY…\p"
     .string "ROCK TUNNEL appears to be a good\n"
     .string "route to take.$"
-

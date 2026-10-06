@@ -1,5 +1,10 @@
 RocketHideout_B3F_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, RocketHideout_B3F_OnLoad
 	.byte 0
+
+RocketHideout_B3F_OnLoad::
+	call EventScript_ThomasSyncVisibility
+	end
 
 RocketHideout_B3F_EventScript_Grunt1::
 	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_14, RocketHideout_B3F_Text_Grunt1Intro, RocketHideout_B3F_Text_Grunt1Defeat
@@ -7,6 +12,16 @@ RocketHideout_B3F_EventScript_Grunt1::
 	end
 
 RocketHideout_B3F_EventScript_Grunt2::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_15, RocketHideout_B3F_Text_Grunt2Intro, RocketHideout_B3F_Text_Grunt2Defeat
-	msgbox RocketHideout_B3F_Text_Grunt2PostBattle, MSGBOX_AUTOCLOSE
+	lock
+	faceplayer
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_RECRUITED, RocketHideout_B3F_EventScript_ThomasBattle
+	release
+	end
+
+RocketHideout_B3F_EventScript_ThomasBattle::
+	call Thomas_EventScript_CeladonPreBattle
+	trainerbattle_no_intro TRAINER_THOMAS_CELADON_HIDEOUT, Thomas_Text_CeladonDefeat
+	call EventScript_ThomasSetCeladonCleared
+	removeobject VAR_LAST_TALKED
+	release
 	end

@@ -772,6 +772,9 @@
 #define TRAINER_LEADER_LEILANI                    761
 #define TRAINER_LEADER_LEILANI_REMATCH            762
 
+// Cinnabar Rock Gym rematch allocation.
+#define TRAINER_LEADER_BLAINE_REMATCH              769
+
 // Fuchsia Gym central allocations: 763-768.
 // These replace the branch-local 743-750 assignments that collided with Satoshi.
 #define TRAINER_BUSHRANGER_MICK                   763
@@ -794,11 +797,36 @@
 #define TRAINER_LEADER_SURGE_VERMILION              782
 #define TRAINER_LEADER_SURGE_REMATCH_VERMILION      783
 
-// Blue League branch allocations: 800-803.
+
+// Thomas Team Rocket rival allocations: 784-789.
+#define TRAINER_THOMAS_NUGGET_BRIDGE               784
+#define TRAINER_THOMAS_CELADON_HIDEOUT             785
+#define TRAINER_THOMAS_POKEMON_TOWER               786
+#define TRAINER_THOMAS_SILPH_CO                     787
+#define TRAINER_THOMAS_CINNABAR_MANSION            788
+#define TRAINER_THOMAS_VIRIDIAN_GYM                 789
+
+// Blue supplemental rival allocations. Vanilla rival IDs remain in use for Route 22,
+// Route 4 (legacy Cerulean slot), Pokémon Tower, and Silph Co.
+#define TRAINER_BLUE_ROUTE11_WATER                 790
+#define TRAINER_BLUE_ROUTE11_ELECTRIC              791
+#define TRAINER_BLUE_ROUTE11_FIRE                  792
+#define TRAINER_BLUE_ROUTE10_WATER                 793
+#define TRAINER_BLUE_ROUTE10_ELECTRIC              794
+#define TRAINER_BLUE_ROUTE10_FIRE                  795
+#define TRAINER_BLUE_CINNABAR_WATER                796
+#define TRAINER_BLUE_CINNABAR_ELECTRIC             797
+#define TRAINER_BLUE_CINNABAR_FIRE                 798
+
+// Blue League branch allocations: 800-803. Fire reuses the legacy Bruno slots.
 #define TRAINER_ELITE_FOUR_BLUE_WATER             800
 #define TRAINER_ELITE_FOUR_BLUE_ELECTRIC          801
 #define TRAINER_ELITE_FOUR_BLUE_WATER_2           802
 #define TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2        803
+
+#define TRAINER_BLUE_ONE_ISLAND_WATER              804
+#define TRAINER_BLUE_ONE_ISLAND_ELECTRIC           805
+#define TRAINER_BLUE_ONE_ISLAND_FIRE               806
 
 // Oak research/postgame central allocations.
 #define TRAINER_YOUNGSTER_JOEY                    940
@@ -808,7 +836,7 @@
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             784
+#define NUM_TRAINERS                             941
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H

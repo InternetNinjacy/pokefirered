@@ -3,6 +3,120 @@ PokedexRating_Text_HowIsPokedexComingAlong::
 	.string "How is your POKéDEX coming along?\p"
 	.string "Here, let me take a look.$"
 
+PokedexRating_Text_OakReward30::
+	.string "OAK: Ah, {PLAYER}!\n"
+	.string "Your POKéDEX is coming along splendidly!\p"
+	.string "You've registered 30 different\n"
+	.string "POKéMON as owned.\p"
+	.string "Take this EXP. SHARE.\p"
+	.string "It should help you with your research.$"
+
+PokedexRating_Text_ReceivedExpShareFromOak::
+	.string "{PLAYER} received the EXP. SHARE\n"
+	.string "from PROF. OAK!$"
+
+PokedexRating_Text_OakReward50::
+	.string "OAK: Fifty POKéMON!\n"
+	.string "Excellent work, {PLAYER}.\p"
+	.string "You've learned a great deal about\n"
+	.string "raising many different kinds of POKéMON.\p"
+	.string "I think you've earned this.\p"
+	.string "It contains PSYCHIC.$"
+
+PokedexRating_Text_ReceivedTM54FromOak::
+	.string "{PLAYER} received TM54\n"
+	.string "from PROF. OAK!$"
+
+PokedexRating_Text_OakReward75::
+	.string "OAK: Seventy-five POKéMON!\n"
+	.string "Your POKéDEX is becoming quite a record.\p"
+	.string "I have a POKéMON here that deserves\n"
+	.string "a good TRAINER.\p"
+	.string "Take care of this CHANSEY, won't you?$"
+
+PokedexRating_Text_ReceivedChanseyFromOak::
+	.string "{PLAYER} received CHANSEY\n"
+	.string "from PROF. OAK!$"
+
+PokedexRating_Text_OakReward100::
+	.string "OAK: One hundred POKéMON!\n"
+	.string "Remarkable, {PLAYER}.\p"
+	.string "Very few TRAINERS ever study such a\n"
+	.string "wide variety of POKéMON so closely.\p"
+	.string "You've earned this.\p"
+	.string "It contains EARTHQUAKE.$"
+
+PokedexRating_Text_ReceivedTM17FromOak::
+	.string "{PLAYER} received TM17\n"
+	.string "from PROF. OAK!$"
+
+PokedexRating_Text_OakReward125::
+	.string "OAK: One hundred twenty-five POKéMON!\n"
+	.string "Outstanding!\p"
+	.string "There is very little left for me to teach\n"
+	.string "you about collecting POKéMON.\p"
+	.string "I'd like you to raise this DRATINI.\p"
+	.string "I think you'll do very well together.$"
+
+PokedexRating_Text_ReceivedDratiniFromOak::
+	.string "{PLAYER} received DRATINI\n"
+	.string "from PROF. OAK!$"
+
+PokedexRating_Text_OakGiftNoRoom::
+	.string "OAK: It looks like you don't have room\n"
+	.string "for another POKéMON right now.\p"
+	.string "Make room in your party or PC and\n"
+	.string "come see me again.$"
+
+PokedexRating_Text_OakJoeyUnlockIntro::
+	.string "OAK: {PLAYER}... 151 different species.\p"
+	.string "Remarkable.\p"
+	.string "Your research has reached a point very\n"
+	.string "few Trainers ever achieve.\p"
+	.string "But there is one final test I can offer you.\p"
+	.string "Not of your POKéDEX.\p"
+	.string "Of you.$"
+
+PokedexRating_Text_OakCallJoey::
+	.string "OAK: Joey! You can come in now.$"
+
+PokedexRating_Text_OakIntroduceJoey::
+	.string "OAK: This is Joey.\p"
+	.string "He is the strongest Trainer in the world.$"
+
+PokedexRating_Text_JoeyFirstChallenge::
+	.string "JOEY: Hi! Professor Oak told me you were\n"
+	.string "really strong.\p"
+	.string "Wanna battle?$"
+
+PokedexRating_Text_JoeyShortChallenge::
+	.string "JOEY: Wanna battle?$"
+
+PokedexRating_Text_JoeyDecline::
+	.string "JOEY: Okay! I'll be here when you're ready.$"
+
+PokedexRating_Text_JoeyPlayerWin::
+	.string "JOEY: Whoa! You're really good!\p"
+	.string "I haven't had a battle like that in a\n"
+	.string "long time.$"
+
+PokedexRating_Text_JoeyLemonadeStand::
+	.string "JOEY: Aw, man! There goes all the money I\n"
+	.string "made at my lemonade stand this year!$"
+
+PokedexRating_Text_OakJoeyVictory::
+	.string "OAK: Excellent.\p"
+	.string "There is nothing more I can ask you to prove.$"
+
+PokedexRating_Text_OakJoeyReturnedHome::
+	.string "OAK: Joey has already returned home.\p"
+	.string "If you make another run through the\n"
+	.string "POKéMON LEAGUE, I suspect he'll hear about it.$"
+
+PokedexRating_Text_OakJoeyResummon::
+	.string "OAK: Ah, {PLAYER}. Joey called.\p"
+	.string "He would like another battle.$"
+
 PokedexRating_Text_SeenXOwnedY::
 	.string "The amount of progress you've made\n"
 	.string "on your POKéDEX is:\p"
@@ -18,8 +132,8 @@ PokedexRating_Text_LessThan10::
 PokedexRating_Text_LessThan20::
 	.string "It looks as if you're getting on\n"
 	.string "the right track!\p"
-	.string "I've given one of my AIDES a FLASH\n"
-	.string "HM. Make sure you go get it!$"
+	.string "Keep exploring new areas and recording\n"
+	.string "the POKéMON you find.$"
 
 PokedexRating_Text_LessThan30::
 	.string "Your POKéDEX could use a bit more\n"
@@ -30,8 +144,8 @@ PokedexRating_Text_LessThan30::
 PokedexRating_Text_LessThan40::
 	.string "Good, it's apparent that you're\n"
 	.string "trying hard!\p"
-	.string "I've given one of my AIDES an\n"
-	.string "ITEMFINDER. Be sure to collect it!$"
+	.string "Keep looking in places you haven't\n"
+	.string "searched carefully yet.$"
 
 PokedexRating_Text_LessThan50::
 	.string "Your POKéDEX is coming along quite\n"
@@ -42,8 +156,8 @@ PokedexRating_Text_LessThan50::
 PokedexRating_Text_LessThan60::
 	.string "Ah, you've finally topped 50\n"
 	.string "species!\p"
-	.string "I've given one of my AIDES an EXP.\n"
-	.string "SHARE. Be sure to go get it!$"
+	.string "You're building a very respectable\n"
+	.string "collection, {PLAYER}!$"
 
 PokedexRating_Text_LessThan70::
 	.string "Hoho! This is turning into quite the\n"

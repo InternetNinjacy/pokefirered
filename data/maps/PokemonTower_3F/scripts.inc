@@ -7,7 +7,7 @@ PokemonTower_3F_EventScript_Patricia::
 	end
 
 PokemonTower_3F_EventScript_Carly::
-	trainerbattle_single TRAINER_CHANNELER_CARLY, PokemonTower_3F_Text_CarlyIntro, PokemonTower_3F_Text_CarlyDefeat
+	trainerbattle_double TRAINER_CHANNELER_CARLY, PokemonTower_3F_Text_CarlyIntro, PokemonTower_3F_Text_CarlyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox PokemonTower_3F_Text_CarlyPostBattle, MSGBOX_AUTOCLOSE
 	end
 

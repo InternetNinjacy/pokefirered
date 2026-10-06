@@ -1,41 +1,34 @@
 CinnabarIsland_Gym_Text_BlaineIntro::
-    .string "Hah!\p"
-    .string "I am BLAINE, the red-hot LEADER\n"
-    .string "of CINNABAR GYM!\p"
-    .string "My fiery POKéMON are all rough\n"
-    .string "and ready with intense heat!\p"
-    .string "They incinerate all challengers!\p"
-    .string "Hah!\n"
-    .string "You better have BURN HEAL!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
+    .string "So, you've completed the practicum. Excellent.\\n"
+    .string "My teaching assistants can be rather enthusiastic about terminology. I prefer results.\\n"
+    .string "Geology teaches us that the world is never truly still. Pressure builds. Stone fractures. Continents move.\\n"
+    .string "A good Trainer learns much the same lesson.\\n"
+    .string "I'm Professor Blaine, Chair of the Department of Geology-and Cinnabar's Gym Leader.\\n"
+    .string "Your final examination begins now.$"
 
 CinnabarIsland_Gym_Text_BlaineDefeat::
-    .string "I have burned down to nothing!\n"
-    .string "Not even ashes remain!\p"
-    .string "You have earned the VOLCANOBADGE.$"
+    .string "Excellent work.$"
 
 CinnabarIsland_Gym_Text_FireBlastIsUltimateFireMove::
-    .string "FIRE BLAST is the ultimate fire\n"
-    .string "technique.\p"
-    .string "Don't waste it on WATER POKéMON.$"
+    .string "And take this.\\n"
+    .string "TM23 contains Boulder Bash.\\n"
+    .string "It hits with enough force to fracture stone, and the impact may lower the target's Defense.\\n"
+    .string "Consider it your final piece of field equipment.$"
 
 CinnabarIsland_Gym_Text_ExplainVolcanoBadge::
-    .string "Hah!\p"
-    .string "The VOLCANOBADGE heightens the\n"
-    .string "SPECIAL stats of your POKéMON.\p"
-    .string "Here, you can have this, too!$"
+    .string "You didn't merely endure pressure. You adapted to it.\\n"
+    .string "That's the distinction between something that breaks…and something that changes.\\n"
+    .string "You've earned the Strata Badge.$"
 
 CinnabarIsland_Gym_Text_ReceivedTM38FromBlaine::
-    .string "{PLAYER} received TM38\n"
-    .string "from BLAINE.$"
+    .string "{PLAYER} received TM23 from BLAINE!$"
 
 CinnabarIsland_Gym_Text_BlainePostBattle::
-    .string "TM38 contains FIRE BLAST.\n"
-    .string "Teach it to FIRE-type POKéMON.\p"
-    .string "VULPIX or CHARMELEON would be\n"
-    .string "ideal for that move.$"
+    .string "Geology rewards attention-to what changes, and what refuses to.\\n"
+    .string "Keep doing both.$"
 
 CinnabarIsland_Gym_Text_MakeSpaceForThis::
-    .string "Make space for this, child!$"
+    .string "Make room in your Bag and come back for TM23.$"
 
 CinnabarIsland_Gym_Text_ErikIntro::
     .string "Do you know how hot POKéMON fire\n"
@@ -52,77 +45,58 @@ CinnabarIsland_Gym_Text_ErikPostBattle::
     .string "Blah, blah, blah, blah…$"
 
 CinnabarIsland_Gym_Text_QuinnIntro::
-    .string "I was a thief, but I went straight\n"
-    .string "as a TRAINER.$"
+    .string "Correct. Your terminology is precise. Let's see whether your battling is equally well calibrated.$"
 
 CinnabarIsland_Gym_Text_QuinnDefeat::
-    .string "I surrender!$"
+    .string "Excellent. Empirical instruction remains remarkably effective.$"
 
 CinnabarIsland_Gym_Text_QuinnPostBattle::
-    .string "I get this uncontrollable urge to\n"
-    .string "steal other people's POKéMON.$"
+    .string "Magma below, lava at the surface. Precision in language matters.$"
 
 CinnabarIsland_Gym_Text_AveryIntro::
-    .string "I've studied POKéMON thoroughly.\n"
-    .string "You can't win!$"
+    .string "Correct. You understand the mechanism. A practical application should make the principle memorable.$"
 
 CinnabarIsland_Gym_Text_AveryDefeat::
-    .string "Waah!\n"
-    .string "My studies were insufficient!$"
+    .string "There. Consider the concept experimentally reinforced.$"
 
 CinnabarIsland_Gym_Text_AveryPostBattle::
-    .string "My theories are too complicated\n"
-    .string "for you to understand.$"
+    .string "Cooling melt, crystallizing minerals: the foundation of igneous rock.$"
 
 CinnabarIsland_Gym_Text_RamonIntro::
-    .string "I like using FIRE-type POKéMON.\n"
-    .string "I just do.$"
+    .string "Correct. Your conceptual foundation appears stable. Let's subject it to a brief field test.$"
 
 CinnabarIsland_Gym_Text_RamonDefeat::
-    .string "Too hot to handle!$"
+    .string "A satisfactory correction. Your understanding is beginning to accumulate in layers.$"
 
 CinnabarIsland_Gym_Text_RamonPostBattle::
-    .string "I wish there were a thief POKéMON.\n"
-    .string "I'd use that!$"
+    .string "Sediment accumulates. Given enough time, layers become history.$"
 
 CinnabarIsland_Gym_Text_DerekIntro::
-    .string "I know why BLAINE became a\n"
-    .string "TRAINER.$"
+    .string "Correct. Since the theory is clear, let's introduce some pressure.$"
 
 CinnabarIsland_Gym_Text_DerekDefeat::
-    .string "Ow!$"
+    .string "Good. Evidently the appropriate application of pressure can indeed produce change.$"
 
 CinnabarIsland_Gym_Text_DerekPostBattle::
-    .string "Our LEADER, BLAINE, became lost\n"
-    .string "in the mountains but good.\p"
-    .string "Night fell when a fiery bird\n"
-    .string "POKéMON appeared.\p"
-    .string "Its light allowed BLAINE to find\n"
-    .string "his way down safely.$"
+    .string "Heat and pressure can transform rock without melting it.$"
 
 CinnabarIsland_Gym_Text_DustyIntro::
-    .string "I've been to many GYMS, but this\n"
-    .string "one best suits my style.$"
+    .string "Correct. The evidence supports your conclusion. Now let's test the hypothesis under battle conditions.$"
 
 CinnabarIsland_Gym_Text_DustyDefeat::
-    .string "Yowza!\n"
-    .string "Too hot!$"
+    .string "Quite. The fossil record survives another challenge.$"
 
 CinnabarIsland_Gym_Text_DustyPostBattle::
-    .string "PONYTA, NINETALES…\n"
-    .string "Those are popular FIRE POKéMON.$"
+    .string "Fossils are records. Our task is learning how to read them.$"
 
 CinnabarIsland_Gym_Text_ZacIntro::
-    .string "Fire is weak against H2O.$"
+    .string "Correct. You appreciate the cumulative effect of small forces. I prefer a somewhat faster demonstration.$"
 
 CinnabarIsland_Gym_Text_ZacDefeat::
-    .string "Oh!\n"
-    .string "Snuffed out!$"
+    .string "Precisely. Given sufficient time, even the most durable structures yield.$"
 
 CinnabarIsland_Gym_Text_ZacPostBattle::
-    .string "Water beats fire, of course.\p"
-    .string "But fire melts ice, so the FIRE\n"
-    .string "type beats ICE-type POKéMON.$"
+    .string "Erosion is patient. That patience is precisely what makes it powerful.$"
 
 CinnabarIsland_Gym_Text_GymGuyAdvice::
     .string "Yo!\n"
@@ -138,53 +112,166 @@ CinnabarIsland_Gym_Text_GymGuyPostVictory::
     .string "You beat that firebrand!$"
 
 CinnabarIsland_Gym_Text_GymStatue::
-    .string "CINNABAR POKéMON GYM\n"
-    .string "LEADER: BLAINE\p"
-    .string "WINNING TRAINERS:\n"
-    .string "{RIVAL}$"
+    .string "CINNABAR UNIVERSITY\\n"
+    .string "DEPARTMENT OF GEOLOGY\\n"
+    .string "GYM PRACTICUM - FINAL EXAMINATION\\n"
+    .string "PROF. BLAINE, PRESIDING$"
 
 CinnabarIsland_Gym_Text_GymStatuePlayerWon::
-    .string "CINNABAR POKéMON GYM\n"
-    .string "LEADER: BLAINE\p"
-    .string "WINNING TRAINERS:\n"
-    .string "{RIVAL}, {PLAYER}$"
+    .string "CINNABAR UNIVERSITY\\n"
+    .string "DEPARTMENT OF GEOLOGY\\n"
+    .string "GYM PRACTICUM - FINAL EXAMINATION\\n"
+    .string "PROF. BLAINE, PRESIDING\\n"
+    .string "PASSED: {PLAYER}$"
 
 CinnabarIsland_Gym_Text_PokemonQuizRules::
-    .string "POKéMON Quiz!\p"
-    .string "Get it right, and the door opens to\n"
-    .string "the next room.\p"
-    .string "Get it wrong, and face a TRAINER!\p"
-    .string "If you want to conserve your\n"
-    .string "POKéMON for the GYM LEADER…\p"
-    .string "Then get it right!\n"
-    .string "Here we go!$"
+    .string "GEOLOGY PRACTICUM\\n"
+    .string "Answer YES or NO.\\n"
+    .string "Correct answers open the route.\\n"
+    .string "Incorrect answers require a practical demonstration.$"
 
 CinnabarIsland_Gym_Text_QuizQuestion1::
-    .string "CATERPIE evolves into METAPOD?$"
+    .string "Molten rock that reaches the Earth's surface is called lava. Yes or no?$"
 
 CinnabarIsland_Gym_Text_QuizQuestion2::
-    .string "There are nine certified POKéMON\n"
-    .string "LEAGUE BADGES?$"
+    .string "Igneous rock can form when melted rock cools and hardens. Yes or no?$"
 
 CinnabarIsland_Gym_Text_QuizQuestion3::
-    .string "POLIWAG evolves three times?$"
+    .string "Sedimentary rocks are formed only from cooled lava. Yes or no?$"
 
 CinnabarIsland_Gym_Text_QuizQuestion4::
-    .string "Are electric moves effective\n"
-    .string "against GROUND-type POKéMON?$"
+    .string "Heat and pressure can change one kind of rock into another. Yes or no?$"
 
 CinnabarIsland_Gym_Text_QuizQuestion5::
-    .string "POKéMON of the same kind and level\n"
-    .string "are not identical?$"
+    .string "Fossils can provide evidence about organisms that lived long ago. Yes or no?$"
 
 CinnabarIsland_Gym_Text_QuizQuestion6::
-    .string "TM28 contains TOMBSTONY?$"
+    .string "Wind and water can slowly wear away rock. Yes or no?$"
 
 CinnabarIsland_Gym_Text_CorrectGoOnThrough::
-    .string "You're absolutely correct!\p"
-    .string "Go on through!$"
+    .string "Correct.\\n"
+    .string "The route is open.$"
 
 CinnabarIsland_Gym_Text_SorryBadCall::
-    .string "Sorry!\n"
-    .string "Bad call!$"
+    .string "Incorrect.\\n"
+    .string "Your Teaching Assistant will provide a practical correction.$"
 
+CinnabarIsland_Gym_Text_BlaineRematchPre::
+    .string "Back for another examination?\\n"
+    .string "Excellent.\\n"
+    .string "Geology is not a subject one finishes. New evidence changes old conclusions, and every layer exposes another beneath it.\\n"
+    .string "You've had time to change since our first battle.\\n"
+    .string "So have I.\\n"
+    .string "Let's see what the new data says.$"
+
+CinnabarIsland_Gym_Text_BlaineRematchDefeat::
+    .string "Excellent.\\n"
+    .string "Your results remain reproducible.$"
+
+CinnabarIsland_Gym_Text_BlaineRematchAfter::
+    .string "The first time you came here, I asked whether you could withstand pressure.\\n"
+    .string "This time, you used it.\\n"
+    .string "That is the difference between knowing a principle and understanding it.\\n"
+    .string "No new Badge today. Just a very satisfactory result.$"
+
+CinnabarIsland_Gym_Text_QuinnWrong::
+    .string "You appear to have confused magma with its extrusive counterpart. An elementary distinction, admittedly, but one with rather substantial geological consequences. Perhaps a practical demonstration will improve retention.$"
+
+CinnabarIsland_Gym_Text_AveryWrong::
+    .string "That conclusion would require us to discard one of the fundamental mechanisms of rock formation. Professor Blaine would be understandably distressed. Let us conduct a brief remedial exercise.$"
+
+CinnabarIsland_Gym_Text_RamonWrong::
+    .string "I'm afraid you've conflated two entirely separate geological processes. Sedimentation rewards patience, careful observation, and considerably less lava than your answer implies.$"
+
+CinnabarIsland_Gym_Text_DerekWrong::
+    .string "Transformation under heat and pressure is not merely incidental to metamorphic geology; it is rather the defining premise. I suspect a demonstration involving significant pressure may prove illustrative.$"
+
+CinnabarIsland_Gym_Text_DustyWrong::
+    .string "An intriguing position, although one that would render my entire field of study rather difficult to justify. I have several million years of evidence suggesting otherwise.$"
+
+CinnabarIsland_Gym_Text_ZacWrong::
+    .string "You've underestimated the cumulative influence of extremely modest forces operating across geological time. It is a common mistake. Human intuition is poorly calibrated for several million years.$"
+
+CinnabarIsland_Gym_Text_SatoshiFirst::
+    .string "Back again?\\n"
+    .string "Blaine teaches ROCK through geology.\\n"
+    .string "His assistants can make it sound complicated, but the matchup is simple.\\n"
+    .string "Rock is weak to WATER, GRASS, FIGHTING, GROUND, and STEEL.\\n"
+    .string "Rock Pokémon are usually sturdy on the physical side, so don't waste turns trying to out-muscle them.\\n"
+    .string "And check the second type. Omastar, Kabutops, and Aerodactyl don't all have the same weaknesses.\\n"
+    .string "My Rhyhorn is a pure Rock-type.\\n"
+    .string "Want a quick practice battle?$"
+
+CinnabarIsland_Gym_Text_SatoshiYes::
+    .string "Good.\\n"
+    .string "Find the weakness.\\n"
+    .string "Don't just hammer away.\\n"
+    .string "Let's go.$"
+
+CinnabarIsland_Gym_Text_SatoshiDecline::
+    .string "Fair enough.\\n"
+    .string "Remember the five:\\n"
+    .string "WATER, GRASS, FIGHTING, GROUND, and STEEL.\\n"
+    .string "Then check the second type.$"
+
+CinnabarIsland_Gym_Text_SatoshiWin::
+    .string "That's it.\\n"
+    .string "You read the matchup instead of the shape.\\n"
+    .string "Blaine's assistants will make the lesson sound complicated.\\n"
+    .string "The battle doesn't have to be.$"
+
+CinnabarIsland_Gym_Text_SatoshiLoss::
+    .string "See what I mean?\\n"
+    .string "Rock can take a physical hit.\\n"
+    .string "If you attack the wrong way, it feels like punching a wall.\\n"
+    .string "Want another try?$"
+
+CinnabarIsland_Gym_Text_SatoshiRetry::
+    .string "Want another try?$"
+
+CinnabarIsland_Gym_Text_SatoshiRetryYes::
+    .string "Good.\\n"
+    .string "This time, make the type chart do some of the work.$"
+
+CinnabarIsland_Gym_Text_SatoshiRetryNo::
+    .string "No problem.\\n"
+    .string "Blaine's exam will still be there.$"
+
+CinnabarIsland_Gym_Text_SatoshiRepeat::
+    .string "Short version?\\n"
+    .string "WATER, GRASS, FIGHTING, GROUND, and STEEL all pressure Rock.\\n"
+    .string "Check the second type before you commit.$"
+
+CinnabarIsland_Gym_Text_SatoshiAfterPracticed::
+    .string "Strata Badge.\\n"
+    .string "Nice work.\\n"
+    .string "TM23 contains Boulder Bash-strong Rock damage with a chance to lower Defense.\\n"
+    .string "Looks like you passed both the lecture and the lab.$"
+
+CinnabarIsland_Gym_Text_SatoshiAfterSkipped::
+    .string "You passed without my practice round.\\n"
+    .string "Can't argue with the grade.\\n"
+    .string "TM23 contains Boulder Bash-strong Rock damage with a chance to lower Defense.$"
+
+CinnabarIsland_Gym_Text_SatoshiRematchOffer::
+    .string "Back on campus?\\n"
+    .string "I've expanded the lesson since last time.\\n"
+    .string "Want the advanced course?$"
+
+CinnabarIsland_Gym_Text_SatoshiRematchDecline::
+    .string "Fair enough.\\n"
+    .string "Office hours aren't mandatory.$"
+
+CinnabarIsland_Gym_Text_SatoshiRematchStart::
+    .string "Let's see what the advanced course taught you.$"
+
+CinnabarIsland_Gym_Text_SatoshiRematchDefeat::
+    .string "Excellent.\\n"
+    .string "You've moved well beyond the introductory material.$"
+
+CinnabarIsland_Gym_Text_SatoshiRematchAfter::
+    .string "Excellent.\\n"
+    .string "You've moved well beyond the introductory material.$"
+
+CinnabarIsland_Gym_Text_SatoshiBattleDefeatEmpty::
+    .string "$"
