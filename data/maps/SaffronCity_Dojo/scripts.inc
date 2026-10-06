@@ -60,10 +60,16 @@ EventScript_Sam_Hothouse_HawthorneWon::
 	setflag FLAG_0x32E
 	setvar VAR_0x409F, 3
 	msgbox SaffronCity_Dojo_Text_HawthorneAfterBattle, MSGBOX_DEFAULT
-	goto EventScript_Sam_Hothouse_HawthorneRewardPending
+	goto EventScript_Sam_Hothouse_HawthorneRewardFirstAttempt
+
+EventScript_Sam_Hothouse_HawthorneRewardFirstAttempt::
+	msgbox SaffronCity_Dojo_Text_TropiusChoice, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_TryDeliverTropius
 
 EventScript_Sam_Hothouse_HawthorneRewardPending::
-	msgbox SaffronCity_Dojo_Text_TropiusChoice, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_TryDeliverTropius
+
+EventScript_Sam_Hothouse_TryDeliverTropius::
 	callnative GiveSamHothouseTropius
 	goto_if_eq VAR_RESULT, MON_CANT_GIVE, EventScript_Sam_Hothouse_TropiusNoRoom
 	setflag FLAG_0x32F
