@@ -1,0 +1,430 @@
+name: Apply Fuchsia Gym 5 package
+
+on:
+  push:
+    branches: [ sam/gym5-fuchsia-normal ]
+
+permissions:
+  contents: write
+
+jobs:
+  apply-build-commit:
+    if: github.event.head_commit.message == 'chore: stage one-shot Fuchsia Gym implementation'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: sam/gym5-fuchsia-normal
+          fetch-depth: 0
+
+      - name: Apply locked Gym 5 package
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          parties_path = Path('src/data/trainer_parties.h')
+          trainers_path = Path('src/data/trainers.h')
+          scripts_path = Path('data/maps/FuchsiaCity_Gym/scripts.inc')
+          text_path = Path('data/maps/FuchsiaCity_Gym/text.inc')
+
+          parties = parties_path.read_text()
+          trainers = trainers_path.read_text()
+
+          def replace_party(name, struct_type, mons):
+              global parties
+              pat = re.compile(rf'static const struct \w+ {re.escape(name)}\[\] = \{{.*?\n\}};', re.S)
+              m = pat.search(parties)
+              if not m:
+                  raise SystemExit(f'Party block not found: {name}')
+              old = m.group(0)
+              old_ivs = [int(x) for x in re.findall(r'\.iv\s*=\s*(\d+)', old)] or [0]
+              while len(old_ivs) < len(mons):
+                  old_ivs.append(old_ivs[-1])
+              lines = [f'static const struct {struct_type} {name}[] = {{']
+              for i, mon in enumerate(mons):
+                  species, lvl, moves, item = mon
+                  lines += [
+                      '    {',
+                      f'        .iv = {old_ivs[i]},',
+                      f'        .lvl = {lvl},',
+                      f'        .species = SPECIES_{species},',
+                  ]
+                  if item is not None:
+                      lines.append(f'        .heldItem = {item},')
+                  move_text = ', '.join(f'MOVE_{x}' for x in moves)
+                  lines.append(f'        .moves = {{{move_text}}},')
+                  lines.append('    },')
+              lines.append('};')
+              parties = parties[:m.start()] + '\n'.join(lines) + parties[m.end():]
+
+          regular = {
+              'sParty_JugglerNate': [
+                  ('RATICATE', 34, ['HYPER_FANG','QUICK_ATTACK','PURSUIT','SCARY_FACE'], None),
+                  ('FARFETCHD', 34, ['PECK','KNOCK_OFF','FURY_CUTTER','SWORDS_DANCE'], None),
+              ],
+              'sParty_JugglerKayden': [
+                  ('KANGASKHAN', 38, ['FAKE_OUT','MEGA_PUNCH','BITE','ENDURE'], None),
+              ],
+              'sParty_JugglerKirk': [
+                  ('CLEFAIRY', 31, ['DOUBLE_SLAP','SING','ENCORE','METRONOME'], None),
+                  ('MEOWTH', 31, ['PAY_DAY','BITE','FAINT_ATTACK','SCREECH'], None),
+                  ('EEVEE', 31, ['QUICK_ATTACK','BITE','SAND_ATTACK','GROWL'], None),
+                  ('DODUO', 31, ['TRI_ATTACK','PECK','PURSUIT','FURY_ATTACK'], None),
+              ],
+              'sParty_TamerEdgar': [
+                  ('LICKITUNG', 33, ['BODY_SLAM','KNOCK_OFF','ASTONISH','DISABLE'], None),
+                  ('DODRIO', 33, ['TRI_ATTACK','PECK','PURSUIT','FURY_ATTACK'], None),
+                  ('CHANSEY', 33, ['DOUBLE_SLAP','SOFT_BOILED','SING','TAIL_WHIP'], None),
+              ],
+              'sParty_TamerPhil': [
+                  ('FEAROW', 34, ['PECK','FURY_ATTACK','PURSUIT','MIRROR_MOVE'], None),
+                  ('WIGGLYTUFF', 34, ['BODY_SLAM','ROLLOUT','REST','SING'], None),
+              ],
+              'sParty_JugglerShawn': [
+                  ('PORYGON', 34, ['PSYBEAM','RECOVER','AGILITY','CONVERSION_2'], None),
+                  ('CLEFABLE', 34, ['DOUBLE_SLAP','SING','METRONOME','COSMIC_POWER'], None),
+              ],
+          }
+          for name, mons in regular.items():
+              replace_party(name, 'TrainerMonNoItemCustomMoves', mons)
+
+          replace_party('sParty_LeaderKoga', 'TrainerMonItemCustomMoves', [
+              ('DITTO', 37, ['TRANSFORM','NONE','NONE','NONE'], 'ITEM_QUICK_CLAW'),
+              ('PERSIAN', 38, ['FAKE_OUT','SLASH','BITE','SCREECH'], 'ITEM_NONE'),
+              ('SNORLAX', 39, ['BODY_SLAM','BRICK_BREAK','REST','SHADOW_BALL'], 'ITEM_LEFTOVERS'),
+              ('TAUROS', 41, ['BODY_SLAM','EARTHQUAKE','ROCK_TOMB','SCARY_FACE'], 'ITEM_SILK_SCARF'),
+              ('PORYGON2', 43, ['TRI_ATTACK','PSYCHIC','RECOVER','THUNDER_WAVE'], 'ITEM_LUM_BERRY'),
+          ])
+
+          for party_name in regular:
+              pat = re.compile(rf'\b[A-Z_]+\({re.escape(party_name)}\)')
+              trainers, n = pat.subn(f'NO_ITEM_CUSTOM_MOVES({party_name})', trainers, count=1)
+              if n != 1:
+                  raise SystemExit(f'Trainer party reference not uniquely replaced: {party_name} ({n})')
+
+          trainers, n = re.subn(r'\b[A-Z_]+\(sParty_LeaderKoga\)', 'ITEM_CUSTOM_MOVES(sParty_LeaderKoga)', trainers, count=1)
+          if n != 1:
+              raise SystemExit(f'Koga party reference not uniquely replaced ({n})')
+
+          koga_pat = re.compile(r'(\[TRAINER_LEADER_KOGA\]\s*=\s*\{.*?\n    \},)', re.S)
+          km = koga_pat.search(trainers)
+          if not km:
+              raise SystemExit('Koga trainer record not found')
+          koga = km.group(1)
+          koga, n = re.subn(r'\.aiFlags\s*=\s*[^,]+,', '.aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,', koga, count=1)
+          if n != 1:
+              raise SystemExit('Koga AI flags not replaced')
+          trainers = trainers[:km.start(1)] + koga + trainers[km.end(1):]
+
+          parties_path.write_text(parties)
+          trainers_path.write_text(trainers)
+
+          scripts_path.write_text(r'''FuchsiaCity_Gym_MapScripts::
+	.byte 0
+
+FuchsiaCity_Gym_EventScript_Koga::
+	famechecker FAMECHECKER_KOGA, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	trainerbattle_single TRAINER_LEADER_KOGA, FuchsiaCity_Gym_Text_KogaIntro, FuchsiaCity_Gym_Text_KogaDefeat, FuchsiaCity_Gym_EventScript_DefeatedKoga, NO_MUSIC
+	goto_if_unset FLAG_GOT_TM06_FROM_KOGA, FuchsiaCity_Gym_EventScript_GiveTM42
+	msgbox FuchsiaCity_Gym_Text_KogaPostBattle
+	release
+	end
+
+FuchsiaCity_Gym_EventScript_DefeatedKoga::
+	famechecker FAMECHECKER_KOGA, 1
+	clearflag FLAG_HIDE_FAME_CHECKER_KOGA_JOURNAL
+	setflag FLAG_DEFEATED_KOGA
+	setflag FLAG_BADGE05_GET
+	set_gym_trainers 5
+	goto FuchsiaCity_Gym_EventScript_GiveTM42
+	end
+
+FuchsiaCity_Gym_EventScript_GiveTM42::
+	msgbox FuchsiaCity_Gym_Text_KogaExplainVeilBadge
+	checkitemspace ITEM_TM42
+	goto_if_eq VAR_RESULT, FALSE, FuchsiaCity_Gym_EventScript_NoRoomForTM42
+	giveitem_msg FuchsiaCity_Gym_Text_ReceivedTM42FromKoga, ITEM_TM42
+	setflag FLAG_GOT_TM06_FROM_KOGA
+	msgbox FuchsiaCity_Gym_Text_KogaExplainTM42
+	release
+	end
+
+FuchsiaCity_Gym_EventScript_NoRoomForTM42::
+	msgbox FuchsiaCity_Gym_Text_MakeSpaceForThis
+	release
+	end
+
+FuchsiaCity_Gym_EventScript_Phil::
+	trainerbattle_single TRAINER_TAMER_PHIL, FuchsiaCity_Gym_Text_PhilIntro, FuchsiaCity_Gym_Text_PhilDefeat
+	msgbox FuchsiaCity_Gym_Text_PhilPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+FuchsiaCity_Gym_EventScript_Edgar::
+	trainerbattle_single TRAINER_TAMER_EDGAR, FuchsiaCity_Gym_Text_EdgarIntro, FuchsiaCity_Gym_Text_EdgarDefeat
+	msgbox FuchsiaCity_Gym_Text_EdgarPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+FuchsiaCity_Gym_EventScript_Kirk::
+	trainerbattle_single TRAINER_JUGGLER_KIRK, FuchsiaCity_Gym_Text_KirkIntro, FuchsiaCity_Gym_Text_KirkDefeat
+	famechecker FAMECHECKER_KOGA, 2
+	msgbox FuchsiaCity_Gym_Text_KirkPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+FuchsiaCity_Gym_EventScript_Shawn::
+	trainerbattle_single TRAINER_JUGGLER_SHAWN, FuchsiaCity_Gym_Text_ShawnIntro, FuchsiaCity_Gym_Text_ShawnDefeat
+	msgbox FuchsiaCity_Gym_Text_ShawnPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+FuchsiaCity_Gym_EventScript_Kayden::
+	trainerbattle_single TRAINER_JUGGLER_KAYDEN, FuchsiaCity_Gym_Text_KaydenIntro, FuchsiaCity_Gym_Text_KaydenDefeat
+	msgbox FuchsiaCity_Gym_Text_KaydenPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+FuchsiaCity_Gym_EventScript_Nate::
+	trainerbattle_single TRAINER_JUGGLER_NATE, FuchsiaCity_Gym_Text_NateIntro, FuchsiaCity_Gym_Text_NateDefeat
+	msgbox FuchsiaCity_Gym_Text_NatePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+FuchsiaCity_Gym_EventScript_GymGuy::
+	lock
+	faceplayer
+	goto_if_set FLAG_DEFEATED_KOGA, FuchsiaCity_Gym_EventScript_GymGuyPostVictory
+	msgbox FuchsiaCity_Gym_Text_GymGuyAdvice
+	release
+	end
+
+FuchsiaCity_Gym_EventScript_GymGuyPostVictory::
+	msgbox FuchsiaCity_Gym_Text_GymGuyPostVictory
+	release
+	end
+
+FuchsiaCity_Gym_EventScript_GymStatue::
+	lockall
+	goto_if_set FLAG_BADGE05_GET, FuchsiaCity_Gym_EventScript_GymStatuePostVictory
+	msgbox FuchsiaCity_Gym_Text_GymStatue
+	releaseall
+	end
+
+FuchsiaCity_Gym_EventScript_GymStatuePostVictory::
+	msgbox FuchsiaCity_Gym_Text_GymStatuePlayerWon
+	releaseall
+	end
+''')
+
+          text_path.write_text(r'''FuchsiaCity_Gym_Text_KogaIntro::
+    .string "KOGA: Fwahahaha! A mere child dares\n"
+    .string "challenge me?\p"
+    .string "Very well. I am KOGA, master of\n"
+    .string "techniques that leave an opponent\l"
+    .string "doubting their own eyes.\p"
+    .string "A careless TRAINER sees what stands\n"
+    .string "before them and assumes they\l"
+    .string "understand it. A skilled one asks\l"
+    .string "what has been hidden... and why.\p"
+    .string "My POKéMON may appear ordinary.\n"
+    .string "That is precisely when you should\l"
+    .string "be most cautious.\p"
+    .string "Come! Let us see whether you can\n"
+    .string "find the truth before the illusion\l"
+    .string "closes around you!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
+
+FuchsiaCity_Gym_Text_KogaDefeat::
+    .string "Humph! You refused every false\n"
+    .string "trail I laid before you.\p"
+    .string "You did not battle the opponent you\n"
+    .string "expected. You battled the one\l"
+    .string "actually in front of you.\p"
+    .string "Excellent. That kind of awareness\n"
+    .string "is difficult to deceive.$"
+
+FuchsiaCity_Gym_Text_KogaPostBattle::
+    .string "Do not battle the opponent you\n"
+    .string "imagine. Battle the one who is\l"
+    .string "truly before you.\p"
+    .string "Question what seems obvious, and\n"
+    .string "even the finest deception will\l"
+    .string "eventually reveal its seams.$"
+
+FuchsiaCity_Gym_Text_KogaExplainVeilBadge::
+    .string "Fwahahaha! You have earned this -\n"
+    .string "the VEIL BADGE!\p"
+    .string "It is proof that you can look past\n"
+    .string "appearances and find the truth\l"
+    .string "hidden beneath them.\p"
+    .string "The VEIL BADGE also allows you to\n"
+    .string "use SURF outside of battle, as long\l"
+    .string "as one of your POKéMON knows the\l"
+    .string "move.$"
+
+FuchsiaCity_Gym_Text_ReceivedTM42FromKoga::
+    .string "{PLAYER} received TM42\n"
+    .string "from KOGA.$"
+
+FuchsiaCity_Gym_Text_KogaExplainTM42::
+    .string "Take this as well. TM42 contains\n"
+    .string "FACADE.\p"
+    .string "It appears to be a simple attack...\n"
+    .string "until its user is poisoned,\l"
+    .string "paralyzed, or burned. Then its true\l"
+    .string "strength is revealed.\p"
+    .string "Remember that lesson. What seems\n"
+    .string "like a weakness may be hiding a\l"
+    .string "weapon.$"
+
+FuchsiaCity_Gym_Text_MakeSpaceForThis::
+    .string "Make space for this, child!$"
+
+FuchsiaCity_Gym_Text_NateIntro::
+    .string "What you notice first is exactly\n"
+    .string "what I want you looking at.\p"
+    .string "Keep your eyes on the obvious...\n"
+    .string "and you may miss the real attack!$"
+
+FuchsiaCity_Gym_Text_NateDefeat::
+    .string "You saw through the distraction!$"
+
+FuchsiaCity_Gym_Text_NatePostBattle::
+    .string "A good feint does not have to fool\n"
+    .string "you forever. It only needs to fool\l"
+    .string "you for one move.$"
+
+FuchsiaCity_Gym_Text_KaydenIntro::
+    .string "I'll show you something easy to\n"
+    .string "read. The question is whether\l"
+    .string "you'll believe it.$"
+
+FuchsiaCity_Gym_Text_KaydenDefeat::
+    .string "Hah! You didn't take the bait!$"
+
+FuchsiaCity_Gym_Text_KaydenPostBattle::
+    .string "KOGA says an opponent who thinks\n"
+    .string "they understand you is easier to\l"
+    .string "control than one who knows they\l"
+    .string "don't.$"
+
+FuchsiaCity_Gym_Text_KirkIntro::
+    .string "Watch closely! The trick is not\n"
+    .string "making something disappear.\p"
+    .string "It is making you look in the wrong\n"
+    .string "place.$"
+
+FuchsiaCity_Gym_Text_KirkDefeat::
+    .string "You kept your attention where it\n"
+    .string "mattered!$"
+
+FuchsiaCity_Gym_Text_KirkPostBattle::
+    .string "Battles are full of little\n"
+    .string "distractions. Moves, types, habits...\l"
+    .string "even confidence can be used against\l"
+    .string "you.$"
+
+FuchsiaCity_Gym_Text_EdgarIntro::
+    .string "Normal POKéMON can look\n"
+    .string "straightforward. That makes it easy\l"
+    .string "to forget how many different ways\l"
+    .string "they can fight.$"
+
+FuchsiaCity_Gym_Text_EdgarDefeat::
+    .string "You were ready for more than one\n"
+    .string "answer!$"
+
+FuchsiaCity_Gym_Text_EdgarPostBattle::
+    .string "Never confuse ordinary with\n"
+    .string "predictable. KOGA certainly\l"
+    .string "doesn't.$"
+
+FuchsiaCity_Gym_Text_PhilIntro::
+    .string "Go ahead. Decide what my plan is\n"
+    .string "before we start. I'd love that.$"
+
+FuchsiaCity_Gym_Text_PhilDefeat::
+    .string "So much for catching you by\n"
+    .string "surprise!$"
+
+FuchsiaCity_Gym_Text_PhilPostBattle::
+    .string "Assumptions save time... right up\n"
+    .string "until somebody builds a trap around\l"
+    .string "them.$"
+
+FuchsiaCity_Gym_Text_ShawnIntro::
+    .string "By the time you reach KOGA, you\n"
+    .string "should know better than to trust\l"
+    .string "the first thing you see.\p"
+    .string "Shall I test that?$"
+
+FuchsiaCity_Gym_Text_ShawnDefeat::
+    .string "You didn't give me the opening I\n"
+    .string "wanted.$"
+
+FuchsiaCity_Gym_Text_ShawnPostBattle::
+    .string "Good. KOGA's strongest weapon is\n"
+    .string "not secrecy. It is making you\l"
+    .string "certain about the wrong thing.$"
+
+FuchsiaCity_Gym_Text_GymGuyAdvice::
+    .string "Yo! Champ in the making!\p"
+    .string "FUCHSIA GYM is built to make you\n"
+    .string "trust what you see. Don't.\p"
+    .string "Its invisible walls hide the path\n"
+    .string "to KOGA. Look closely for the gaps.$"
+
+FuchsiaCity_Gym_Text_GymGuyPostVictory::
+    .string "You saw through KOGA's tricks.\n"
+    .string "That's what a champ needs!$"
+
+FuchsiaCity_Gym_Text_GymStatue::
+    .string "FUCHSIA POKéMON GYM\n"
+    .string "LEADER: KOGA\p"
+    .string "WINNING TRAINERS:\n"
+    .string "{RIVAL}$"
+
+FuchsiaCity_Gym_Text_GymStatuePlayerWon::
+    .string "FUCHSIA POKéMON GYM\n"
+    .string "LEADER: KOGA\p"
+    .string "WINNING TRAINERS:\n"
+    .string "{RIVAL}, {PLAYER}$"
+''')
+
+          required = [
+              'SPECIES_PORYGON2', 'ITEM_QUICK_CLAW', 'ITEM_LEFTOVERS', 'ITEM_SILK_SCARF', 'ITEM_LUM_BERRY',
+              'MOVE_KNOCK_OFF', 'MOVE_COSMIC_POWER', 'MOVE_CONVERSION_2', 'MOVE_BRICK_BREAK', 'MOVE_ROCK_TOMB'
+          ]
+          haystack = '\n'.join(p.read_text(errors='ignore') for p in [Path('include/constants/species.h'), Path('include/constants/items.h'), Path('include/constants/moves.h')])
+          missing = [x for x in required if x not in haystack]
+          if missing:
+              raise SystemExit('Missing constants: ' + ', '.join(missing))
+
+          # Guard against stale Poison/Soul/Toxic reward text in this Gym package.
+          combined = scripts_path.read_text() + text_path.read_text()
+          stale = ['ITEM_TM06', 'SOULBADGE', 'POISON-type POKéMON', 'TOXIC!']
+          found = [x for x in stale if x in combined]
+          if found:
+              raise SystemExit('Stale Gym 5 content remains: ' + ', '.join(found))
+          PY
+
+      - name: Diff sanity check
+        run: |
+          git diff --check
+          git diff --stat
+          git diff -- src/data/trainer_parties.h src/data/trainers.h data/maps/FuchsiaCity_Gym/scripts.inc data/maps/FuchsiaCity_Gym/text.inc
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
+
+      - name: Build modern ROM
+        run: make -j2 MODERN=1 COMPARE=0 all
+
+      - name: Commit verified implementation and remove helper workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/apply-gym5-fuchsia.yml
+          git add src/data/trainer_parties.h src/data/trainers.h data/maps/FuchsiaCity_Gym/scripts.inc data/maps/FuchsiaCity_Gym/text.inc
+          git diff --cached --check
+          git commit -m "Implement locked Fuchsia Normal Gym package"
+          git push origin HEAD:sam/gym5-fuchsia-normal
