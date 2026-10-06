@@ -371,7 +371,7 @@ Route11_EventScript_EddieRematch::
 	end
 
 Route11_EventScript_Dillon::
-	trainerbattle_single TRAINER_YOUNGSTER_DILLON, Route11_Text_DillonIntro, Route11_Text_DillonDefeat
+	trainerbattle_double TRAINER_YOUNGSTER_DILLON, Route11_Text_DillonIntro, Route11_Text_DillonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_DillonRematch
 	msgbox Route11_Text_DillonPostBattle, MSGBOX_AUTOCLOSE
@@ -419,7 +419,7 @@ Route11_EventScript_BraxtonRematch::
 	end
 
 Route11_EventScript_Bernie::
-	trainerbattle_single TRAINER_ENGINEER_BERNIE, Route11_Text_BernieIntro, Route11_Text_BernieDefeat
+	trainerbattle_double TRAINER_ENGINEER_BERNIE, Route11_Text_BernieIntro, Route11_Text_BernieDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_BernieRematch
 	msgbox Route11_Text_BerniePostBattle, MSGBOX_AUTOCLOSE
@@ -431,7 +431,7 @@ Route11_EventScript_BernieRematch::
 	end
 
 Route11_EventScript_Hugo::
-	trainerbattle_single TRAINER_GAMER_HUGO, Route11_Text_HugoIntro, Route11_Text_HugoDefeat
+	trainerbattle_double TRAINER_GAMER_HUGO, Route11_Text_HugoIntro, Route11_Text_HugoDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_HugoRematch
 	msgbox Route11_Text_HugoPostBattle, MSGBOX_AUTOCLOSE
@@ -455,7 +455,7 @@ Route11_EventScript_JasperRematch::
 	end
 
 Route11_EventScript_Dirk::
-	trainerbattle_single TRAINER_GAMER_DIRK, Route11_Text_DirkIntro, Route11_Text_DirkDefeat
+	trainerbattle_double TRAINER_GAMER_DIRK, Route11_Text_DirkIntro, Route11_Text_DirkDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_DirkRematch
 	msgbox Route11_Text_DirkPostBattle, MSGBOX_AUTOCLOSE
