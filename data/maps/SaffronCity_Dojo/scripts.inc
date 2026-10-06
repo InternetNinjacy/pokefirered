@@ -1,3 +1,5 @@
+.include "data/maps/SaffronCity_Dojo/hothouse_reward_text.inc"
+
 SaffronCity_Dojo_MapScripts::
 	.byte 0
 
@@ -61,9 +63,17 @@ EventScript_Sam_Hothouse_HawthorneWon::
 	goto EventScript_Sam_Hothouse_HawthorneRewardPending
 
 EventScript_Sam_Hothouse_HawthorneRewardPending::
-	msgbox SaffronCity_Dojo_Text_HawthorneRewardPending, MSGBOX_DEFAULT
-	@ Gift delivery is delegated to the shared authored/pre-owned Special
-	@ Acquisition helper. FLAG_0x32F is set only after successful delivery.
+	msgbox SaffronCity_Dojo_Text_TropiusChoice, MSGBOX_DEFAULT
+	callnative GiveSamHothouseTropius
+	goto_if_eq VAR_RESULT, MON_CANT_GIVE, EventScript_Sam_Hothouse_TropiusNoRoom
+	setflag FLAG_0x32F
+	setvar VAR_0x409F, 4
+	msgbox SaffronCity_Dojo_Text_TropiusReceived, MSGBOX_DEFAULT
+	release
+	end
+
+EventScript_Sam_Hothouse_TropiusNoRoom::
+	msgbox SaffronCity_Dojo_Text_TropiusNoRoom, MSGBOX_DEFAULT
 	release
 	end
 
