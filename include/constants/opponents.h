@@ -772,6 +772,9 @@
 #define TRAINER_LEADER_LEILANI                    761
 #define TRAINER_LEADER_LEILANI_REMATCH            762
 
+// Cinnabar Rock Gym rematch allocation.
+#define TRAINER_LEADER_BLAINE_REMATCH              769
+
 // Fuchsia Gym central allocations: 763-768.
 // These replace the branch-local 743-750 assignments that collided with Satoshi.
 #define TRAINER_BUSHRANGER_MICK                   763
