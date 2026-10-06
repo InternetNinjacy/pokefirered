@@ -17,7 +17,7 @@
 #define sParty_SwimmerFemaleMelissa sParty_SamBatch9_Melissa
 #define sParty_PicnickerMissy sParty_SamBatch9_Missy
 #define sParty_SwimmerFemaleNora sParty_SamBatch9_Nora
-#define sParty_RockerRoger sParty_SamBatch9_Roger
+#define sParty_BirdKeeperRoger sParty_SamBatch9_Roger
 #define sParty_SwimmerMaleDean sParty_SamBatch9_Dean
 #define sParty_PicnickerIrene sParty_SamBatch9_Irene
 #define sParty_SwimmerMaleBarry sParty_SamBatch9_Barry
