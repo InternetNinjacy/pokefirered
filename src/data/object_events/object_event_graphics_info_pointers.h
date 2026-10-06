@@ -133,6 +133,12 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Wigglytuff;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Doduo;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Fearow;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Machoke;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Scyther;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Rhyhorn;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Abra;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Miltank;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Magneton;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Onix;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lickitung;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lapras;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Zapdos;
@@ -316,5 +322,11 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_BAZ]                      = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_M]             = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_F]             = &gObjectEventGraphicsInfo_ProfOak,
+    [OBJ_EVENT_GFX_SCYTHER] = &gObjectEventGraphicsInfo_Scyther,
+    [OBJ_EVENT_GFX_RHYHORN] = &gObjectEventGraphicsInfo_Rhyhorn,
+    [OBJ_EVENT_GFX_ABRA] = &gObjectEventGraphicsInfo_Abra,
+    [OBJ_EVENT_GFX_MILTANK] = &gObjectEventGraphicsInfo_Miltank,
+    [OBJ_EVENT_GFX_MAGNETON] = &gObjectEventGraphicsInfo_Magneton,
+    [OBJ_EVENT_GFX_ONIX] = &gObjectEventGraphicsInfo_Onix,
     [OBJ_EVENT_GFX_LICKITUNG]                = &gObjectEventGraphicsInfo_Lickitung,
 };
