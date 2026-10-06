@@ -4,10 +4,47 @@ ViridianCity_MapScripts::
 
 ViridianCity_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_VIRIDIAN_CITY
+	call ViridianCity_EventScript_SyncRocketOperation
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 0, ViridianCity_EventScript_SetOldManBlockingRoad
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 1, ViridianCity_EventScript_SetOldManStandingByRoad
 	call_if_ge VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 2, ViridianCity_EventScript_SetOldManNormal
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_GYM_DOOR, 0, ViridianCity_EventScript_TryUnlockGym
+	end
+
+ViridianCity_EventScript_SyncRocketOperation::
+	setflag FLAG_HIDE_SAM_ROCKET_VIRIDIAN_EVENT
+	goto_if_unset FLAG_SYS_POKEDEX_GET, EventScript_Return
+	goto_if_set FLAG_SAM_ROCKET_VIRIDIAN_COMPLETE, EventScript_Return
+	checktrainerflag TRAINER_SAM_ROCKET_VIRIDIAN_FENCE
+	goto_if_eq VAR_RESULT, TRUE, EventScript_Return
+	clearflag FLAG_HIDE_SAM_ROCKET_VIRIDIAN_EVENT
+	return
+
+ViridianCity_EventScript_RocketFence::
+	lockall
+	goto_if_set FLAG_SAM_ROCKET_VIRIDIAN_COMPLETE, ViridianCity_EventScript_RocketFenceEnd
+	checktrainerflag TRAINER_SAM_ROCKET_VIRIDIAN_FENCE
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_EventScript_RocketFenceAfterBattle
+	msgbox ViridianCity_Text_RocketThiefHandoff
+	msgbox ViridianCity_Text_RocketThiefSpotsPlayer
+	removeobject LOCALID_SAM_ROCKET_VIRIDIAN_THIEF
+	msgbox ViridianCity_Text_RocketFenceConfrontation
+	setvar VAR_LAST_TALKED, LOCALID_SAM_ROCKET_VIRIDIAN_GRUNT
+	trainerbattle_no_intro TRAINER_SAM_ROCKET_VIRIDIAN_FENCE, ViridianCity_Text_RocketFenceDefeat
+
+ViridianCity_EventScript_RocketFenceAfterBattle::
+	msgbox ViridianCity_Text_RocketFenceLeavesGoods
+	setflag FLAG_HIDE_SAM_ROCKET_VIRIDIAN_EVENT
+	removeobject LOCALID_SAM_ROCKET_VIRIDIAN_GRUNT
+	removeobject LOCALID_SAM_ROCKET_VIRIDIAN_THIEF
+	msgbox ViridianCity_Text_RecoveredGoods
+	setvar VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 2
+	warp MAP_VIRIDIAN_CITY_MART, 4, 6
+	waitstate
+	end
+
+ViridianCity_EventScript_RocketFenceEnd::
+	releaseall
 	end
 
 ViridianCity_EventScript_SetOldManNormal::
