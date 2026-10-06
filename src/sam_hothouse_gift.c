@@ -3,6 +3,7 @@
 #include "event_data.h"
 #include "pokedex.h"
 #include "pokemon.h"
+#include "pokemon_storage_system.h"
 #include "random.h"
 #include "script_pokemon_util.h"
 #include "constants/flags.h"
@@ -10,16 +11,57 @@
 #include "constants/moves.h"
 #include "constants/pokemon.h"
 #include "constants/trade.h"
-
-// script_pokemon_util.h intentionally aliases the existing implementation to
-// GiveSamPreOwnedMonBase. The script-special symbol remains GiveSamPreOwnedMon
-// and is supplied here as a narrow dispatcher for fixed authored Gift profiles.
-#undef GiveSamPreOwnedMon
+#include "constants/vars.h"
 
 // Gen III BoxPokemon storage reserves PLAYER_NAME_LENGTH (7) bytes for OT names.
 // Hawthorne's canonical event-facing name remains HAWTHORNE; HAWTHRN preserves
 // the engine-safe spelling established by the historical Hothouse source work.
 static const u8 sSamGiftOtHawthorne[] = _("HAWTHRN");
+
+static u8 GiveSamHothouseMonToPlayer(struct Pokemon *mon)
+{
+    s32 i;
+    s32 boxNo;
+    s32 boxPos;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) == SPECIES_NONE)
+            break;
+    }
+
+    if (i < PARTY_SIZE)
+    {
+        CopyMon(&gPlayerParty[i], mon, sizeof(*mon));
+        gPlayerPartyCount = i + 1;
+        return MON_GIVEN_TO_PARTY;
+    }
+
+    boxNo = StorageGetCurrentBox();
+    do
+    {
+        for (boxPos = 0; boxPos < IN_BOX_COUNT; boxPos++)
+        {
+            struct BoxPokemon *boxedMon = GetBoxedMonPtr(boxNo, boxPos);
+
+            if (GetBoxMonData(boxedMon, MON_DATA_SPECIES, NULL) == SPECIES_NONE)
+            {
+                MonRestorePP(mon);
+                CopyMon(boxedMon, &mon->box, sizeof(mon->box));
+                gSpecialVar_MonBoxId = boxNo;
+                gSpecialVar_MonBoxPos = boxPos;
+                VarSet(VAR_PC_BOX_TO_SEND_MON, boxNo);
+                return MON_GIVEN_TO_PC;
+            }
+        }
+
+        boxNo++;
+        if (boxNo == TOTAL_BOXES_COUNT)
+            boxNo = 0;
+    } while (boxNo != StorageGetCurrentBox());
+
+    return MON_CANT_GIVE;
+}
 
 static u8 GiveSamHawthorneTropius(void)
 {
@@ -54,7 +96,7 @@ static u8 GiveSamHawthorneTropius(void)
     SetMonMoveSlot(mon, MOVE_STOMP, 2);
     SetMonMoveSlot(mon, MOVE_SYNTHESIS, 3);
 
-    sentToPc = GivePreOwnedMonToPlayer(mon);
+    sentToPc = GiveSamHothouseMonToPlayer(mon);
     if (sentToPc == MON_GIVEN_TO_PARTY || sentToPc == MON_GIVEN_TO_PC)
     {
         nationalDexNum = SpeciesToNationalPokedexNum(SPECIES_TROPIUS);
@@ -70,10 +112,7 @@ static u8 GiveSamHawthorneTropius(void)
 void GiveSamPreOwnedMon(void)
 {
     if (gSpecialVar_0x8006 == SAM_PREOWNED_OT_HAWTHORNE)
-    {
         gSpecialVar_Result = GiveSamHawthorneTropius();
-        return;
-    }
-
-    GiveSamPreOwnedMonBase();
+    else
+        gSpecialVar_Result = MON_CANT_GIVE;
 }
