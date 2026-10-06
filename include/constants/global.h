@@ -125,4 +125,29 @@
 #define CONNECTION_DIVE     5
 #define CONNECTION_EMERGE   6
 
+// Sam Edition Thomas rival persistent-state contract.
+#define VAR_THOMAS_ARC_STAGE                  0x40A1
+#define FLAG_THOMAS_QUIT_ROCKET               0x350
+#define FLAG_THOMAS_MARA_AVAILABLE            0x351
+#define FLAG_THOMAS_DOLL_DELIVERED            0x352
+#define FLAG_THOMAS_TAUROS_RECEIVED           0x353
+#define FLAG_HIDE_THOMAS_ROUTE24              0x354
+#define FLAG_HIDE_THOMAS_CELADON              0x355
+#define FLAG_HIDE_THOMAS_LAVENDER             0x356
+#define FLAG_HIDE_THOMAS_SILPH                0x357
+#define FLAG_HIDE_THOMAS_CINNABAR             0x358
+#define FLAG_HIDE_THOMAS_VIRIDIAN             0x359
+#define FLAG_HIDE_THOMAS_MARA                 0x35A
+#define FLAG_HIDE_THOMAS_MT_MOON              0x35B
+#define FLAG_HIDE_ROCKET_MT_MOON_ACCOMPLICE   0x35C
+
+#define THOMAS_ARC_UNSEEN             0
+#define THOMAS_ARC_RECRUITED          1
+#define THOMAS_ARC_CELADON_CLEARED    2
+#define THOMAS_ARC_LAVENDER_CLEARED   3
+#define THOMAS_ARC_SILPH_CLEARED      4
+#define THOMAS_ARC_CINNABAR_CLEARED   5
+#define THOMAS_ARC_QUIT_ROCKET        6
+#define THOMAS_ARC_EPILOGUE_COMPLETE  7
+
 #endif //GUARD_CONSTANTS_GLOBAL_H
