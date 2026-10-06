@@ -82,3 +82,65 @@ MtMoon_B2F_Text_ObtainedHelixFossil::
 MtMoon_B2F_Text_ObtainedDomeFossil::
     .string "Obtained the DOME FOSSIL!$"
 
+
+
+MtMoon_B2F_Text_ThomasArrival::
+    .string "THOMAS: Well.\p"
+    .string "That was convenient.\p"
+    .string "You did all the negotiating for us.$"
+
+MtMoon_B2F_Text_MiguelChallengesRocket::
+    .string "MIGUEL: Stay back!\p"
+    .string "These fossils aren't yours!\p"
+    .string "THOMAS: No.\p"
+    .string "But one of them is about to be.\p"
+    .string "MIGUEL: I won't let TEAM ROCKET\n"
+    .string "take it!\p"
+    .string "THOMAS: Admirable.\p"
+    .string "Completely impractical, but\n"
+    .string "admirable.$"
+
+MtMoon_B2F_Text_ThomasIntroduction::
+    .string "THOMAS: You.\p"
+    .string "The Trainer with the fossil.\p"
+    .string "I was hoping this would be simple.\p"
+    .string "Apparently you intend to make it\n"
+    .string "interesting.\p"
+    .string "Fine.\p"
+    .string "I do enjoy an introduction with a\n"
+    .string "little drama.\p"
+    .string "THOMAS.\p"
+    .string "TEAM ROCKET.\p"
+    .string "Do try to remember the name.$"
+
+MtMoon_B2F_Text_ThomasDefeat::
+    .string "THOMAS: ...Oh.\p"
+    .string "That's irritating.$"
+
+MtMoon_B2F_Text_RocketGotFossil::
+    .string "GRUNT: THOMAS!\p"
+    .string "I've got the fossil!\p"
+    .string "THOMAS: There we are.\p"
+    .string "MIGUEL: No!$"
+
+MtMoon_B2F_Text_ThomasAfterVictory::
+    .string "THOMAS: You see, RED...\p"
+    .string "winning a battle and stopping an\n"
+    .string "operation are not always the same\n"
+    .string "thing.\p"
+    .string "You can keep the fossil you chose.\p"
+    .string "We're taking the other one.\p"
+    .string "Consider it a lesson in efficiency.\p"
+    .string "Until next time.$"
+
+MtMoon_B2F_Text_MiguelAfterTheft::
+    .string "MIGUEL: They took it...\p"
+    .string "The other fossil...\p"
+    .string "At least you still have yours.\p"
+    .string "Don't let them take that one too.\p"
+    .string "There are researchers on CINNABAR\n"
+    .string "ISLAND who can revive ancient\n"
+    .string "POKéMON from fossils.\p"
+    .string "If you're going to carry that one\n"
+    .string "with you, someday you should take\n"
+    .string "it there.$"
