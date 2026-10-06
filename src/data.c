@@ -299,7 +299,20 @@ const union AnimCmd *const gAnims_MonPic[] =
 #include "data/pokemon_graphics/enemy_mon_elevation.h"
 
 #include "data/trainer_parties.h"
+#include "data/sam_route3_trainer_parties.h"
 #include "data/text/trainer_class_names.h"
+
+// Route 3 Batch 2 reconciliation: preserve the live trainer IDs and records while
+// selecting the already-settled Sam parties for the four mismatched mapped trainers.
+#define sParty_YoungsterBen sParty_SamRoute3YoungsterBen
+#define sParty_YoungsterCalvin sParty_SamRoute3YoungsterCalvin
+#define sParty_BugCatcherColton sParty_SamRoute3BugCatcherColton
+#define sParty_BugCatcherGreg sParty_SamRoute3BugCatcherGreg
 #include "data/trainers.h"
+#undef sParty_YoungsterBen
+#undef sParty_YoungsterCalvin
+#undef sParty_BugCatcherColton
+#undef sParty_BugCatcherGreg
+
 #include "data/text/species_names.h"
 #include "data/text/move_names.h"
