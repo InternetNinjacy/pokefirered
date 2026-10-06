@@ -86,6 +86,8 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Koga;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Sabrina;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Blaine;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Giovanni;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Hawthorne;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Tropius;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Mom;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Celio;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_TeachyTVHost;
@@ -329,4 +331,6 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_MAGNETON] = &gObjectEventGraphicsInfo_Magneton,
     [OBJ_EVENT_GFX_ONIX] = &gObjectEventGraphicsInfo_Onix,
     [OBJ_EVENT_GFX_LICKITUNG]                = &gObjectEventGraphicsInfo_Lickitung,
+    [OBJ_EVENT_GFX_HAWTHORNE]                = &gObjectEventGraphicsInfo_Hawthorne,
+    [OBJ_EVENT_GFX_TROPIUS]                  = &gObjectEventGraphicsInfo_Tropius,
 };
