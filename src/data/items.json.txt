@@ -3,27 +3,12 @@
 ## if item.pocket == "POCKET_TM_CASE"
 extern const u8 gMoveDescription_{{ item.moveId }}[];
 ## endif
-{% if loop.index0 == 347 %}const u8 gItemDescription_ITEM_THOMAS_DOLL[] = _("A worn POKé DOLL THOMAS asked you\\nto give to his sister.");{% elif item.itemId != "ITEM_NONE" %}const u8 gItemDescription_{{ item.itemId }}[] = _("{{ item.description_english }}");{% endif %}
+{% if item.itemId != "ITEM_NONE" %}const u8 gItemDescription_{{ item.itemId }}[] = _("{{ item.description_english }}");{% endif %}
 ## endfor
 const u8 gItemDescription_ITEM_NONE[] = _("?????");
 
 const struct Item gItems[] = {
-    {% for item in items %}{% if loop.index0 == 347 %}{
-        .name = _("THOMAS'S DOLL"),
-        .itemId = ITEM_15B,
-        .price = 0,
-        .holdEffect = HOLD_EFFECT_NONE,
-        .holdEffectParam = 0,
-        .description = gItemDescription_ITEM_THOMAS_DOLL,
-        .importance = 2,
-        .registrability = 0,
-        .pocket = POCKET_KEY_ITEMS,
-        .type = ITEM_TYPE_BAG_MENU,
-        .fieldUseFunc = FieldUseFunc_OakStopsYou,
-        .battleUsage = 0,
-        .battleUseFunc = NULL,
-        .secondaryId = 0
-    },{% else %}{
+    {% for item in items %}{
         .name = _("{{ item.english }}"),
         .itemId = {{ item.itemId }},
         .price = {{ item.price }},
@@ -42,5 +27,5 @@ const struct Item gItems[] = {
         .battleUsage = {{ item.battleUsage }},
         .battleUseFunc = {{ item.battleUseFunc }},
         .secondaryId = {{ item.secondaryId }}
-    },{% endif %} {% endfor %}
+    }, {% endfor %}
 };
