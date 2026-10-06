@@ -909,7 +909,8 @@
 #define FLAG_0x361               0x361
 #define FLAG_0x362               0x362
 #define FLAG_0x363               0x363
-#define FLAG_0x364               0x364
+#define FLAG_STATIC_SS_ANNE_LICKITUNG_COMPLETE         0x364
+#define FLAG_0x364               FLAG_STATIC_SS_ANNE_LICKITUNG_COMPLETE
 #define FLAG_0x365               0x365
 #define FLAG_0x366               0x366
 #define FLAG_0x367               0x367
