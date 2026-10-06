@@ -1,0 +1,48 @@
+name: Gym5 Canon Fix Build
+
+on:
+  push:
+    branches: [ sam/gym5-fuchsia-normal ]
+
+permissions:
+  contents: write
+
+jobs:
+  apply-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: sam/gym5-fuchsia-normal
+          fetch-depth: 0
+
+      - name: Apply locked Fuchsia package corrections
+        run: python3 tools/apply_gym5_canon_fix.py
+
+      - name: Verify diff hygiene
+        run: |
+          git diff --check
+          git diff --stat
+          git status --short
+
+      - name: Install modern build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
+
+      - name: Build modern ROM
+        run: make -j2 MODERN=1 COMPARE=0 all
+
+      - name: Commit corrected implementation when needed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/data/trainer_parties.h src/data/trainers.h data/maps/FuchsiaCity_Gym/text.inc data/maps/FuchsiaCity/text.inc
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo 'No implementation changes to commit.'
+          else
+            git commit -m 'Correct locked Fuchsia Normal Gym package'
+            git push origin HEAD:sam/gym5-fuchsia-normal
+          fi
