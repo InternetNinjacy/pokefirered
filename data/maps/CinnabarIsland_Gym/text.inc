@@ -3,7 +3,7 @@ CinnabarIsland_Gym_Text_BlaineIntro::
     .string "My teaching assistants can be rather enthusiastic about terminology. I prefer results.\\n"
     .string "Geology teaches us that the world is never truly still. Pressure builds. Stone fractures. Continents move.\\n"
     .string "A good Trainer learns much the same lesson.\\n"
-    .string "I'm Professor Blaine, Chair of the Department of Geology—and Cinnabar's Gym Leader.\\n"
+    .string "I'm Professor Blaine, Chair of the Department of Geology-and Cinnabar's Gym Leader.\\n"
     .string "Your final examination begins now.$"
 
 CinnabarIsland_Gym_Text_BlaineDefeat::
@@ -24,7 +24,7 @@ CinnabarIsland_Gym_Text_ReceivedTM38FromBlaine::
     .string "{PLAYER} received TM23 from BLAINE!$"
 
 CinnabarIsland_Gym_Text_BlainePostBattle::
-    .string "Geology rewards attention—to what changes, and what refuses to.\\n"
+    .string "Geology rewards attention-to what changes, and what refuses to.\\n"
     .string "Keep doing both.$"
 
 CinnabarIsland_Gym_Text_MakeSpaceForThis::
@@ -114,13 +114,13 @@ CinnabarIsland_Gym_Text_GymGuyPostVictory::
 CinnabarIsland_Gym_Text_GymStatue::
     .string "CINNABAR UNIVERSITY\\n"
     .string "DEPARTMENT OF GEOLOGY\\n"
-    .string "GYM PRACTICUM — FINAL EXAMINATION\\n"
+    .string "GYM PRACTICUM - FINAL EXAMINATION\\n"
     .string "PROF. BLAINE, PRESIDING$"
 
 CinnabarIsland_Gym_Text_GymStatuePlayerWon::
     .string "CINNABAR UNIVERSITY\\n"
     .string "DEPARTMENT OF GEOLOGY\\n"
-    .string "GYM PRACTICUM — FINAL EXAMINATION\\n"
+    .string "GYM PRACTICUM - FINAL EXAMINATION\\n"
     .string "PROF. BLAINE, PRESIDING\\n"
     .string "PASSED: {PLAYER}$"
 
@@ -245,13 +245,13 @@ CinnabarIsland_Gym_Text_SatoshiRepeat::
 CinnabarIsland_Gym_Text_SatoshiAfterPracticed::
     .string "Strata Badge.\\n"
     .string "Nice work.\\n"
-    .string "TM23 contains Boulder Bash—strong Rock damage with a chance to lower Defense.\\n"
+    .string "TM23 contains Boulder Bash-strong Rock damage with a chance to lower Defense.\\n"
     .string "Looks like you passed both the lecture and the lab.$"
 
 CinnabarIsland_Gym_Text_SatoshiAfterSkipped::
     .string "You passed without my practice round.\\n"
     .string "Can't argue with the grade.\\n"
-    .string "TM23 contains Boulder Bash—strong Rock damage with a chance to lower Defense.$"
+    .string "TM23 contains Boulder Bash-strong Rock damage with a chance to lower Defense.$"
 
 CinnabarIsland_Gym_Text_SatoshiRematchOffer::
     .string "Back on campus?\\n"
