@@ -30,3 +30,80 @@ Route20_EventScript_ResetSeafoamBouldersForB4F::
 Route20_EventScript_SeafoamIslandsSign::
 	msgbox Route20_Text_SeafoamIslands, MSGBOX_SIGN
 	end
+
+Route20_EventScript_MelissaBatch9::
+	trainerbattle_double TRAINER_SWIMMER_FEMALE_MELISSA, Route20_Text_MelissaIntro, Route20_Text_MelissaDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route20_EventScript_MelissaBatch9Rematch
+	msgbox Route20_Text_MelissaPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route20_EventScript_MelissaBatch9Rematch::
+	trainerbattle_rematch_double TRAINER_SWIMMER_FEMALE_MELISSA, Route20_Text_MelissaRematchIntro, Route20_Text_MelissaDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	msgbox Route20_Text_MelissaPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route20_EventScript_MissyBatch9::
+	trainerbattle_single TRAINER_PICNICKER_MISSY, Route20_Text_MissyIntro, Route20_Text_MissyDefeat
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route20_EventScript_MissyBatch9Rematch
+	msgbox Route20_Text_MissyPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route20_EventScript_MissyBatch9Rematch::
+	trainerbattle_rematch TRAINER_PICNICKER_MISSY, Route20_Text_MissyRematchIntro, Route20_Text_MissyDefeat
+	msgbox Route20_Text_MissyPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route20_EventScript_NoraBatch9::
+	trainerbattle_double TRAINER_SWIMMER_FEMALE_NORA, Route20_Text_NoraIntro, Route20_Text_NoraDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route20_EventScript_NoraBatch9Rematch
+	msgbox Route20_Text_NoraPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route20_EventScript_NoraBatch9Rematch::
+	trainerbattle_rematch_double TRAINER_SWIMMER_FEMALE_NORA, Route20_Text_NoraRematchIntro, Route20_Text_NoraDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	msgbox Route20_Text_NoraPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route20_EventScript_RogerBatch9::
+	trainerbattle_single TRAINER_ROCKER_ROGER, Route20_Text_RogerIntro, Route20_Text_RogerDefeat
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route20_EventScript_RogerBatch9Rematch
+	msgbox Route20_Text_RogerPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route20_EventScript_RogerBatch9Rematch::
+	trainerbattle_rematch TRAINER_ROCKER_ROGER, Route20_Text_RogerRematchIntro, Route20_Text_RogerDefeat
+	msgbox Route20_Text_RogerPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route20_EventScript_DeanBatch9::
+	trainerbattle_double TRAINER_SWIMMER_MALE_DEAN, Route20_Text_DeanIntro, Route20_Text_DeanDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route20_EventScript_DeanBatch9Rematch
+	msgbox Route20_Text_DeanPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route20_EventScript_DeanBatch9Rematch::
+	trainerbattle_rematch_double TRAINER_SWIMMER_MALE_DEAN, Route20_Text_DeanRematchIntro, Route20_Text_DeanDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	msgbox Route20_Text_DeanPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route20_EventScript_IreneBatch9::
+	trainerbattle_single TRAINER_PICNICKER_IRENE, Route20_Text_IreneIntro, Route20_Text_IreneDefeat
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route20_EventScript_IreneBatch9Rematch
+	msgbox Route20_Text_IrenePostBattle, MSGBOX_AUTOCLOSE
+	end
+Route20_EventScript_IreneBatch9Rematch::
+	trainerbattle_rematch TRAINER_PICNICKER_IRENE, Route20_Text_IreneRematchIntro, Route20_Text_IreneDefeat
+	msgbox Route20_Text_IrenePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route20_EventScript_BarryBatch9::
+	trainerbattle_single TRAINER_SWIMMER_MALE_BARRY, Route20_Text_BarryIntro, Route20_Text_BarryDefeat
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route20_EventScript_BarryBatch9Rematch
+	msgbox Route20_Text_BarryPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route20_EventScript_BarryBatch9Rematch::
+	trainerbattle_rematch TRAINER_SWIMMER_MALE_BARRY, Route20_Text_BarryRematchIntro, Route20_Text_BarryDefeat
+	msgbox Route20_Text_BarryPostBattle, MSGBOX_AUTOCLOSE
+	end
