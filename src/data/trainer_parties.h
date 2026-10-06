@@ -3189,12 +3189,12 @@ static const struct TrainerMonNoItemDefaultMoves sParty_JugglerNate[] = {
 
 static const struct TrainerMonNoItemDefaultMoves sParty_TamerPhil[] = {
     {
-        .iv = 0,
+        .iv = 40,
         .lvl = 34,
         .species = SPECIES_STANTLER,
     },
     {
-        .iv = 0,
+        .iv = 40,
         .lvl = 34,
         .species = SPECIES_DODRIO,
     },
@@ -3202,17 +3202,17 @@ static const struct TrainerMonNoItemDefaultMoves sParty_TamerPhil[] = {
 
 static const struct TrainerMonNoItemDefaultMoves sParty_TamerEdgar[] = {
     {
-        .iv = 0,
+        .iv = 40,
         .lvl = 33,
         .species = SPECIES_KANGASKHAN,
     },
     {
-        .iv = 0,
+        .iv = 40,
         .lvl = 33,
         .species = SPECIES_URSARING,
     },
     {
-        .iv = 0,
+        .iv = 40,
         .lvl = 33,
         .species = SPECIES_MILTANK,
     },
