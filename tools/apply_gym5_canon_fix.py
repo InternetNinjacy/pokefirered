@@ -163,7 +163,7 @@ FuchsiaCity_Gym_Text_GymGuyPostVictory::
     .string "even now!$"
 
 '''
-gym_text, guide_count = gym_guide_pattern.subn(gym_guide_replacement, gym_text, count=1)
+gym_text, guide_count = gym_guide_pattern.subn(lambda _: gym_guide_replacement, gym_text, count=1)
 if guide_count != 1:
     raise SystemExit(f"Gym Guide text replacement failed: {guide_count}")
 
