@@ -9,16 +9,51 @@
 
 #define LINK_TRADE_TIMEOUT 300
 
-// In-game Trade IDs
-#define INGAME_TRADE_MR_MIME   0
-#define INGAME_TRADE_JYNX      1
-#define INGAME_TRADE_NIDORAN   2  // M or F depending on version
-#define INGAME_TRADE_FARFETCHD 3
-#define INGAME_TRADE_NIDORINOA 4  // Nidorino or Nidorina depending on version
-#define INGAME_TRADE_LICKITUNG 5
-#define INGAME_TRADE_ELECTRODE 6
-#define INGAME_TRADE_TANGELA   7
-#define INGAME_TRADE_SEEL      8
+// Sam Edition in-game Trade IDs, ordered by progression.
+#define INGAME_TRADE_JOULE   0
+#define INGAME_TRADE_KITSUNE 1
+#define INGAME_TRADE_SCORIA  2
+#define INGAME_TRADE_IMUGI   3
+#define INGAME_TRADE_TALUS   4
+#define INGAME_TRADE_BRINE   5
+#define INGAME_TRADE_MATRON  6
+#define INGAME_TRADE_STRATA  7
+#define INGAME_TRADE_SELKIE  8
+
+// Pokémon Original Trainer IDs for the nine standard Sam Edition NPC trades.
+// These are monster OT IDs, not TRAINER_* battle-table IDs.
+#define OTID_NPC_TRADE_MARA   51001
+#define OTID_NPC_TRADE_REINA  51002
+#define OTID_NPC_TRADE_DEXTER 51003
+#define OTID_NPC_TRADE_MIN    51004
+#define OTID_NPC_TRADE_CLAY   51005
+#define OTID_NPC_TRADE_MARIS  51006
+#define OTID_NPC_TRADE_HELEN  51007
+#define OTID_NPC_TRADE_GEOFF  51008
+#define OTID_NPC_TRADE_INGRID 51009
+
+// Pokémon Original Trainer IDs for authored Sam Edition Gift Pokémon.
+// These are monster OT IDs, not TRAINER_* battle-table IDs.
+#define OTID_GIFT_FERN   52001
+#define OTID_GIFT_ASHER  52002
+#define OTID_GIFT_MARINA 52003
+#define OTID_GIFT_OAK    52004
+#define OTID_GIFT_LUNA   52005
+#define OTID_GIFT_MELODY 52006
+#define OTID_SILPH       52007
+#define OTID_PURCHASE_MAGIKARP_VENDOR 52008
+#define OTID_GAME_CORNER_CELADON      52009
+#define OTID_FOSSIL_CINNABAR_LAB      52010
+#define OTID_GIFT_COPYCAT              52012
+#define OTID_GIFT_CURATOR              52013
+#define OTID_GIFT_HAWTHORNE            52014
+
+// Authored-OT profiles used by stock special-acquisition scripts.
+#define SAM_PREOWNED_OT_VENDOR      0
+#define SAM_PREOWNED_OT_GAME_CORNER 1
+#define SAM_PREOWNED_OT_FOSSIL_LAB  2
+#define SAM_PREOWNED_OT_SILPH       3
+#define SAM_PREOWNED_OT_HAWTHORNE   4
 
 // Return values for CanTradeSelectedMon and CanSpinTradeMon
 #define CAN_TRADE_MON              0
@@ -44,15 +79,14 @@
 #define UR_TRADE_MSG_NOT_EGG                      2
 #define UR_TRADE_MSG_MON_CANT_BE_TRADED_1         3
 #define UR_TRADE_MSG_MON_CANT_BE_TRADED_2         4
-#define UR_TRADE_MSG_PARTNERS_MON_CANT_BE_TRADED  5
-#define UR_TRADE_MSG_EGG_CANT_BE_TRADED           6
-#define UR_TRADE_MSG_PARTNER_CANT_ACCEPT_MON      7
-#define UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_1    8
-#define UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_2    9
+#define UR_TRADE_MSG_PARTNERS_MON_CANT_ACCEPT_MON 5
+#define UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_1    6
+#define UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_2    7
+#define UR_TRADE_MSG_PARTNER_CANT_ACCEPT_MON       8
 
 // Return values for CanRegisterMonForTradingBoard
-#define CAN_REGISTER_MON   0
-#define CANT_REGISTER_MON  1
-#define CANT_REGISTER_EGG  2
+#define CAN_REGISTER_MON          0
+#define CANT_REGISTER_MON         1
+#define CANT_REGISTER_EGG         2
 
 #endif // GUARD_CONSTANTS_TRADE_H
