@@ -104,33 +104,6 @@ bool8 CanStartNewGamePlus(void)
     return gSaveBlock1Ptr->playerPartyCount <= freeStorageSlots;
 }
 
-bool8 CanStartNewGamePlus(void)
-{
-    u16 monCount = gSaveBlock1Ptr->playerPartyCount;
-    u8 box;
-    u8 slot;
-
-    for (box = 0; box < TOTAL_BOXES_COUNT; box++)
-    {
-        for (slot = 0; slot < IN_BOX_COUNT; slot++)
-        {
-            if (GetBoxMonData(&gPokemonStoragePtr->boxes[box][slot], MON_DATA_SPECIES) != SPECIES_NONE)
-                monCount++;
-        }
-    }
-
-    if (gPokemonStoragePtr->ngPlusStorageMagic == NG_PLUS_STORAGE_MAGIC)
-    {
-        for (slot = 0; slot < NG_PLUS_STORAGE_COUNT; slot++)
-        {
-            if (GetBoxMonData(&gPokemonStoragePtr->ngPlusStorage[slot], MON_DATA_SPECIES) != SPECIES_NONE)
-                monCount++;
-        }
-    }
-
-    return monCount <= (TOTAL_BOXES_COUNT * IN_BOX_COUNT + NG_PLUS_STORAGE_COUNT);
-}
-
 static void InitPlayerTrainerId(void)
 {
     u32 trainerId = (Random() << 0x10) | GetGeneratedTrainerIdLower();
