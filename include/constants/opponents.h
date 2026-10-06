@@ -783,6 +783,7 @@
 
 // Thomas Team Rocket rival allocations: 784-789.
 #define TRAINER_THOMAS_MT_MOON                     900 // Reopened Mt. Moon encounter; Rocket/story reserved block.
+#define TRAINER_SAM_ROCKET_VIRIDIAN_FENCE          901
 #define TRAINER_THOMAS_NUGGET_BRIDGE               784
 #define TRAINER_THOMAS_CELADON_HIDEOUT             785
 #define TRAINER_THOMAS_POKEMON_TOWER               786
@@ -794,7 +795,7 @@
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             901
+#define NUM_TRAINERS                             902
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
