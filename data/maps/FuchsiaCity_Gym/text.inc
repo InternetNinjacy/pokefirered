@@ -149,15 +149,18 @@ FuchsiaCity_Gym_Text_ShawnPostBattle::
     .string "certain about the wrong thing.$"
 
 FuchsiaCity_Gym_Text_GymGuyAdvice::
-    .string "Yo! Champ in the making!\p"
-    .string "FUCHSIA GYM is built to make you\n"
-    .string "trust what you see. Don't.\p"
-    .string "Its invisible walls hide the path\n"
-    .string "to KOGA. Look closely for the gaps.$"
+    .string "Yo!\n"
+    .string "Champ in the making!\p"
+    .string "FUCHSIA GYM is a tricked-up place.\n"
+    .string "It's riddled with invisible walls!\p"
+    .string "KOGA might appear close, but he's\n"
+    .string "blocked off.\p"
+    .string "You have to find gaps in the walls\n"
+    .string "to reach him.$"
 
 FuchsiaCity_Gym_Text_GymGuyPostVictory::
-    .string "You saw through KOGA's tricks.\n"
-    .string "That's what a champ needs!$"
+    .string "It's amazing how ninja can terrify,\n"
+    .string "even now!$"
 
 FuchsiaCity_Gym_Text_GymStatue::
     .string "FUCHSIA POKéMON GYM\n"
