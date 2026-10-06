@@ -1,6 +1,7 @@
 PokedexRating_EventScript_RateInPerson::
 	goto_if_questlog EventScript_ReleaseEnd
 	special QuestLog_CutRecording
+	goto_if_set FLAG_JOEY_RESUMMON_PENDING, PokedexRating_EventScript_OakJoeyResummon
 	goto_if_set FLAG_JOEY_DEFEATED_THIS_CYCLE, PokedexRating_EventScript_OakJoeyReturnedHome
 	setvar VAR_0x800C, 0
 	call PokedexRating_EventScript_TryOakMilestoneRewards
@@ -9,6 +10,19 @@ PokedexRating_EventScript_RateInPerson::
 	call_if_unset FLAG_OAK_SAW_DEX_COMPLETION, PokedexRating_EventScript_NormalIntro
 	call PokedexRating_EventScript_Rate
 	return
+
+PokedexRating_EventScript_OakJoeyResummon::
+	msgbox PokedexRating_Text_OakJoeyResummon
+	closemessage
+	clearflag FLAG_JOEY_RESUMMON_PENDING
+	removeobject LOCALID_OAKS_LAB_JOEY
+	setobjectxyperm LOCALID_OAKS_LAB_JOEY, 6, 11
+	setobjectmovementtype LOCALID_OAKS_LAB_JOEY, MOVEMENT_TYPE_FACE_UP
+	addobject LOCALID_OAKS_LAB_JOEY
+	applymovement LOCALID_OAKS_LAB_JOEY, PokedexRating_Movement_JoeyEnter
+	waitmovement LOCALID_OAKS_LAB_JOEY
+	goto EventScript_ReleaseEnd
+	end
 
 PokedexRating_EventScript_OakJoeyReturnedHome::
 	msgbox PokedexRating_Text_OakJoeyReturnedHome
