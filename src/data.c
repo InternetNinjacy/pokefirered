@@ -299,7 +299,10 @@ const union AnimCmd *const gAnims_MonPic[] =
 
 #include "data/pokemon_graphics/enemy_mon_elevation.h"
 
+#define sParty_LeaderSurgeVermilion sParty_LeaderSurgeVermilionLegacy
 #include "data/trainer_parties.h"
+#undef sParty_LeaderSurgeVermilion
+#include "data/sam_gym3_vermilion_current_parties.h"
 #include "data/sam_route3_trainer_parties.h"
 #include "data/sam_route24_trainer_parties.h"
 #include "data/sam_blue_parties.h"
