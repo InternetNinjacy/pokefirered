@@ -1,6 +1,7 @@
 PokedexRating_EventScript_RateInPerson::
 	goto_if_questlog EventScript_ReleaseEnd
 	special QuestLog_CutRecording
+	goto_if_set FLAG_JOEY_DEFEATED_THIS_CYCLE, PokedexRating_EventScript_OakJoeyReturnedHome
 	setvar VAR_0x800C, 0
 	call PokedexRating_EventScript_TryOakMilestoneRewards
 	goto_if_eq VAR_0x800C, 1, PokedexRating_EventScript_Return
@@ -8,6 +9,11 @@ PokedexRating_EventScript_RateInPerson::
 	call_if_unset FLAG_OAK_SAW_DEX_COMPLETION, PokedexRating_EventScript_NormalIntro
 	call PokedexRating_EventScript_Rate
 	return
+
+PokedexRating_EventScript_OakJoeyReturnedHome::
+	msgbox PokedexRating_Text_OakJoeyReturnedHome
+	goto EventScript_ReleaseEnd
+	end
 
 PokedexRating_EventScript_TryOakMilestoneRewards::
 	setvar VAR_0x8004, 1
@@ -92,8 +98,9 @@ PokedexRating_EventScript_TryUnlockJoey::
 
 PokedexRating_EventScript_JoeyAcceptBattle::
 	trainerbattle_no_intro TRAINER_YOUNGSTER_JOEY, PokedexRating_Text_JoeyPlayerWin
-	setvar VAR_0x800C, 1
-	return
+	call PokedexRating_EventScript_JoeyVictoryLifecycle
+	goto EventScript_ReleaseEnd
+	end
 
 PokedexRating_EventScript_JoeyDirectChallenge::
 	lock
@@ -106,8 +113,21 @@ PokedexRating_EventScript_JoeyDirectChallenge::
 
 PokedexRating_EventScript_JoeyDirectAcceptBattle::
 	trainerbattle_no_intro TRAINER_YOUNGSTER_JOEY, PokedexRating_Text_JoeyPlayerWin
-	release
+	call PokedexRating_EventScript_JoeyVictoryLifecycle
+	goto EventScript_ReleaseEnd
 	end
+
+PokedexRating_EventScript_JoeyVictoryLifecycle::
+	msgbox PokedexRating_Text_JoeyLemonadeStand
+	msgbox PokedexRating_Text_OakJoeyVictory
+	closemessage
+	lockall
+	applymovement LOCALID_OAKS_LAB_JOEY, PokedexRating_Movement_JoeyExit
+	waitmovement LOCALID_OAKS_LAB_JOEY
+	removeobject LOCALID_OAKS_LAB_JOEY
+	setflag FLAG_JOEY_DEFEATED_THIS_CYCLE
+	clearflag FLAG_JOEY_RESUMMON_PENDING
+	return
 
 PokedexRating_Movement_JoeyEnter::
 	walk_up
@@ -119,6 +139,17 @@ PokedexRating_Movement_JoeyEnter::
 	walk_right
 	walk_right
 	walk_in_place_faster_up
+	step_end
+
+PokedexRating_Movement_JoeyExit::
+	walk_left
+	walk_left
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_down
 	step_end
 
 PokedexRating_EventScript_OakGiftNoRoom::
