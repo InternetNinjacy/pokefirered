@@ -51,6 +51,7 @@ static void ResetMiniGamesResults(void);
 static struct NewGamePlusCarryover *CreateNewGamePlusCarryover(void);
 static void RestoreNewGamePlusCarryover(struct NewGamePlusCarryover *carryover);
 static bool8 MigrateNewGamePlusPartyToStorage(struct NewGamePlusCarryover *carryover);
+static bool8 HasNewGamePlusCarryoverCapacity(void);
 
 // EWRAM vars
 EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
@@ -70,15 +71,20 @@ void CopyTrainerId(u8 *dst, u8 *src)
         dst[i] = src[i];
 }
 
+// Title-menu eligibility is governed by Hall-of-Fame completion. Capacity is
+// enforced again at the destructive boundary so an overfull collection can
+// never turn NEW GAME+ into an ordinary save reset.
 bool8 CanStartNewGamePlus(void)
+{
+    return TRUE;
+}
+
+static bool8 HasNewGamePlusCarryoverCapacity(void)
 {
     u16 freeStorageSlots = 0;
     u8 box;
     u8 slot;
 
-    // Every active party member is migrated into boxed storage before the
-    // ordinary new-game reset. Refuse NG+ unless the complete collection can
-    // be represented without dropping a Pokemon.
     for (box = 0; box < TOTAL_BOXES_COUNT; box++)
     {
         for (slot = 0; slot < IN_BOX_COUNT; slot++)
@@ -98,7 +104,6 @@ bool8 CanStartNewGamePlus(void)
     }
     else
     {
-        // Legacy/non-NG+ saves have never used the reserve tail.
         freeStorageSlots += NG_PLUS_STORAGE_COUNT;
     }
 
@@ -189,7 +194,7 @@ static struct NewGamePlusCarryover *CreateNewGamePlusCarryover(void)
 {
     struct NewGamePlusCarryover *carryover;
 
-    if (!CanStartNewGamePlus())
+    if (!HasNewGamePlusCarryoverCapacity())
         return NULL;
 
     carryover = Alloc(sizeof(*carryover));
