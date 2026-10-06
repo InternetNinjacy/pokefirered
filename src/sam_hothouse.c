@@ -11,9 +11,9 @@
 #include "constants/sam_gift_ots.h"
 
 // Gen III stores only PLAYER_NAME_LENGTH (7) OT characters. Hawthorne's
-// canonical event-facing name remains HAWTHORNE; HAWTHOR is the deterministic
+// canonical event-facing name remains HAWTHORNE; HAWTHRN is the deterministic
 // engine-safe OT display paired with the unique Hawthorne OT ID.
-static const u8 sSamHawthorneOtName[] = _("HAWTHOR");
+static const u8 sSamHawthorneOtName[] = _("HAWTHRN");
 
 void GiveSamHothouseTropius(void)
 {
@@ -32,6 +32,12 @@ void GiveSamHothouseTropius(void)
           || GetGenderFromSpeciesAndPersonality(SPECIES_TROPIUS, personality) != MON_FEMALE);
 
     mon = AllocZeroed(sizeof(*mon));
+    if (mon == NULL)
+    {
+        gSpecialVar_Result = MON_CANT_GIVE;
+        return;
+    }
+
     CreateMon(mon, SPECIES_TROPIUS, 30, USE_RANDOM_IVS, TRUE, personality, OT_ID_PRESET, OTID_GIFT_HAWTHORNE);
     SetMonData(mon, MON_DATA_OT_NAME, sSamHawthorneOtName);
     SetMonData(mon, MON_DATA_OT_GENDER, &otGender);
