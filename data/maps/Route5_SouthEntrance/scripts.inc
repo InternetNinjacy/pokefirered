@@ -2,6 +2,12 @@ Route5_SouthEntrance_MapScripts::
 	.byte 0
 
 Route5_SouthEntrance_EventScript_Guard::
+	goto_if_unset FLAG_GOT_TEA, Route5_SouthEntrance_EventScript_GuardNormal
+	goto_if_set FLAG_SAM_HOTHOUSE_STARTED, Route5_SouthEntrance_EventScript_GuardNormal
+	msgbox Route5_SouthEntrance_Text_HothouseReferral, MSGBOX_NPC
+	end
+
+Route5_SouthEntrance_EventScript_GuardNormal::
 	msgbox Route5_SouthEntrance_Text_HiHowsItGoing, MSGBOX_NPC
 	end
 
