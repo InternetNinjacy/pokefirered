@@ -3690,13 +3690,9 @@ void CopyMon(void *dest, void *src, size_t size)
     memcpy(dest, src, size);
 }
 
-u8 GiveMonToPlayer(struct Pokemon *mon)
+static u8 TryGiveMonToPlayer(struct Pokemon *mon)
 {
     s32 i;
-
-    SetMonData(mon, MON_DATA_OT_NAME, gSaveBlock2Ptr->playerName);
-    SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
-    SetMonData(mon, MON_DATA_OT_ID, gSaveBlock2Ptr->playerTrainerId);
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -3710,6 +3706,20 @@ u8 GiveMonToPlayer(struct Pokemon *mon)
     CopyMon(&gPlayerParty[i], mon, sizeof(*mon));
     gPlayerPartyCount = i + 1;
     return MON_GIVEN_TO_PARTY;
+}
+
+u8 GiveMonToPlayer(struct Pokemon *mon)
+{
+    SetMonData(mon, MON_DATA_OT_NAME, gSaveBlock2Ptr->playerName);
+    SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
+    SetMonData(mon, MON_DATA_OT_ID, gSaveBlock2Ptr->playerTrainerId);
+
+    return TryGiveMonToPlayer(mon);
+}
+
+u8 GivePreOwnedMonToPlayer(struct Pokemon *mon)
+{
+    return TryGiveMonToPlayer(mon);
 }
 
 static u8 SendMonToPC(struct Pokemon* mon)
