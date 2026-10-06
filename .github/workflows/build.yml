@@ -13,7 +13,7 @@ jobs:
       GAME_LANGUAGE: ENGLISH
       GAME_REVISION: 0
       MODERN: 0
-      COMPARE: 1
+      COMPARE: ${{ github.event_name == 'pull_request' && github.base_ref == 'sam-edition-dev' && '0' || '1' }}
     steps:
       - name: Checkout
         uses: actions/checkout@master
