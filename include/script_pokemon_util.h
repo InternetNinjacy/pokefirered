@@ -5,12 +5,8 @@ bool8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 otName, u32 otId, u8 ot
 bool8 ScriptGiveSamStarter(u16 species);
 void GiveSamStarterFamilyGift(void);
 
-// The stock pre-owned Gift special remains the public script entry point.
-// script_pokemon_util.c compiles its existing implementation under the Base
-// symbol so Sam-specific fixed Gift profiles can dispatch through a narrow
-// compatibility wrapper without duplicating or replacing existing callers.
-void GiveSamPreOwnedMonBase(void);
-#define GiveSamPreOwnedMon GiveSamPreOwnedMonBase
+// Sam Edition fixed pre-owned Gift dispatcher.
+void GiveSamPreOwnedMon(void);
 
 void GetSamBlueStarterSpecies(void);
 void GetSamGreenStarterSpecies(void);
