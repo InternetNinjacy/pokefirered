@@ -1,9 +1,9 @@
 #ifndef GUARD_DATA_SAM_THOMAS_TRAINER_PARTIES_H
 #define GUARD_DATA_SAM_THOMAS_TRAINER_PARTIES_H
 
-// Pokémon: Sam Edition — THOMAS six-battle Team Rocket rival package.
+// Pokémon: Sam Edition — THOMAS Team Rocket rival package, including the reopened Mt. Moon encounter.
 //
-// Current Thomas authority retains the closed six-battle progression:
+// Current production retains the six later battles and the October 6 authority reopens Mt. Moon before them:
 // Nugget Bridge -> Celadon Hideout -> Pokemon Tower -> Silph Co. ->
 // Cinnabar Mansion -> Viridian Gym before Giovanni.
 //
@@ -19,6 +19,25 @@
 #define THOMAS_IV_TIER_22 181
 #define THOMAS_IV_TIER_24 198
 #define THOMAS_IV_TIER_31 255
+
+static const struct TrainerMonItemCustomMoves sParty_ThomasMtMoon[] = {
+    {
+        .iv = 0,
+        .lvl = 16,
+        .species = SPECIES_GASTLY,
+        .heldItem = ITEM_NONE,
+        .moves = {MOVE_HYPNOSIS, MOVE_CURSE, MOVE_THIEF, MOVE_LICK},
+    },
+    {
+        // Eevee branch base. The battle-construction hook swaps this slot
+        // to Cubone or Dratini for the other locked starter branches.
+        .iv = 0,
+        .lvl = 15,
+        .species = SPECIES_CHANSEY,
+        .heldItem = ITEM_SITRUS_BERRY,
+        .moves = {MOVE_SEISMIC_TOSS, MOVE_SOFT_BOILED, MOVE_THUNDER_WAVE, MOVE_LIGHT_SCREEN},
+    },
+};
 
 static const struct TrainerMonNoItemCustomMoves sParty_ThomasNugget[] = {
     {
