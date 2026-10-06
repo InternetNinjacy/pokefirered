@@ -100,6 +100,19 @@ PokedexRating_Text_JoeyPlayerWin::
 	.string "I haven't had a battle like that in a\n"
 	.string "long time.$"
 
+PokedexRating_Text_JoeyLemonadeStand::
+	.string "JOEY: Aw, man! There goes all the money I\n"
+	.string "made at my lemonade stand this year!$"
+
+PokedexRating_Text_OakJoeyVictory::
+	.string "OAK: Excellent.\p"
+	.string "There is nothing more I can ask you to prove.$"
+
+PokedexRating_Text_OakJoeyReturnedHome::
+	.string "OAK: Joey has already returned home.\p"
+	.string "If you make another run through the\n"
+	.string "POKéMON LEAGUE, I suspect he'll hear about it.$"
+
 PokedexRating_Text_SeenXOwnedY::
 	.string "The amount of progress you've made\n"
 	.string "on your POKéDEX is:\p"
