@@ -44,7 +44,8 @@ EventScript_AccessPlayersPC::
 	end
 
 EventScript_AccessPokemonStorage::
-	goto_if_unset FLAG_0x33B, EventScript_AccessPokemonStorage_Open
+	specialvar VAR_RESULT, IsNewGamePlusStorageActive
+	goto_if_eq VAR_RESULT, FALSE, EventScript_AccessPokemonStorage_Open
 	goto_if_lt VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, EventScript_AccessPokemonStorage_NewGamePlusLocked
 	goto_if_unset FLAG_SYS_POKEDEX_GET, EventScript_AccessPokemonStorage_NewGamePlusLocked
 
