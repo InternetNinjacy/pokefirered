@@ -68,6 +68,38 @@ PokedexRating_Text_OakGiftNoRoom::
 	.string "Make room in your party or PC and\n"
 	.string "come see me again.$"
 
+PokedexRating_Text_OakJoeyUnlockIntro::
+	.string "OAK: {PLAYER}... 151 different species.\p"
+	.string "Remarkable.\p"
+	.string "Your research has reached a point very\n"
+	.string "few Trainers ever achieve.\p"
+	.string "But there is one final test I can offer you.\p"
+	.string "Not of your POKéDEX.\p"
+	.string "Of you.$"
+
+PokedexRating_Text_OakCallJoey::
+	.string "OAK: Joey! You can come in now.$"
+
+PokedexRating_Text_OakIntroduceJoey::
+	.string "OAK: This is Joey.\p"
+	.string "He is the strongest Trainer in the world.$"
+
+PokedexRating_Text_JoeyFirstChallenge::
+	.string "JOEY: Hi! Professor Oak told me you were\n"
+	.string "really strong.\p"
+	.string "Wanna battle?$"
+
+PokedexRating_Text_JoeyShortChallenge::
+	.string "JOEY: Wanna battle?$"
+
+PokedexRating_Text_JoeyDecline::
+	.string "JOEY: Okay! I'll be here when you're ready.$"
+
+PokedexRating_Text_JoeyPlayerWin::
+	.string "JOEY: Whoa! You're really good!\p"
+	.string "I haven't had a battle like that in a\n"
+	.string "long time.$"
+
 PokedexRating_Text_SeenXOwnedY::
 	.string "The amount of progress you've made\n"
 	.string "on your POKéDEX is:\p"
