@@ -22,7 +22,7 @@ PokemonMansion_1F_EventScript_Statue::
 	end
 
 PokemonMansion_1F_EventScript_Ted::
-	trainerbattle_single TRAINER_SCIENTIST_TED, PokemonMansion_1F_Text_TedIntro, PokemonMansion_1F_Text_TedDefeat
+	trainerbattle_double TRAINER_SCIENTIST_TED, PokemonMansion_1F_Text_TedIntro, PokemonMansion_1F_Text_TedDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox PokemonMansion_1F_Text_TedPostBattle, MSGBOX_AUTOCLOSE
 	end
 

@@ -25,3 +25,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SamRoute24CamperShane[] 
 // Batch 5 follows the same overlay path: keep live trainer IDs and records,
 // but bind them to the settled Lavender / Rock Tunnel ordinary-trainer parties.
 #include "data/sam_batch5_lavender_trainer_remaps.h"
+
+// Batch 9 Cinnabar / Seafoam reconciliation uses the same non-invasive overlay path.
+#include "data/sam_batch9_cinnabar_seafoam_trainer_remaps.h"
