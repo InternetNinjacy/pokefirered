@@ -14,13 +14,13 @@ PokedexRating_EventScript_RateInPerson::
 PokedexRating_EventScript_OakJoeyResummon::
 	msgbox PokedexRating_Text_OakJoeyResummon
 	closemessage
-	clearflag FLAG_JOEY_RESUMMON_PENDING
 	removeobject LOCALID_OAKS_LAB_JOEY
 	setobjectxyperm LOCALID_OAKS_LAB_JOEY, 6, 11
 	setobjectmovementtype LOCALID_OAKS_LAB_JOEY, MOVEMENT_TYPE_FACE_UP
 	addobject LOCALID_OAKS_LAB_JOEY
 	applymovement LOCALID_OAKS_LAB_JOEY, PokedexRating_Movement_JoeyEnter
 	waitmovement LOCALID_OAKS_LAB_JOEY
+	clearflag FLAG_JOEY_RESUMMON_PENDING
 	goto EventScript_ReleaseEnd
 	end
 
@@ -90,7 +90,6 @@ PokedexRating_EventScript_TryOakReward125::
 
 PokedexRating_EventScript_TryUnlockJoey::
 	goto_if_lt VAR_0x800B, 151, PokedexRating_EventScript_Return
-	setflag FLAG_JOEY_UNLOCKED
 	clearflag FLAG_JOEY_DEFEATED_THIS_CYCLE
 	clearflag FLAG_JOEY_RESUMMON_PENDING
 	msgbox PokedexRating_Text_OakJoeyUnlockIntro
@@ -102,6 +101,7 @@ PokedexRating_EventScript_TryUnlockJoey::
 	addobject LOCALID_OAKS_LAB_JOEY
 	applymovement LOCALID_OAKS_LAB_JOEY, PokedexRating_Movement_JoeyEnter
 	waitmovement LOCALID_OAKS_LAB_JOEY
+	setflag FLAG_JOEY_UNLOCKED
 	setflag FLAG_JOEY_INTRO_SEEN
 	msgbox PokedexRating_Text_OakIntroduceJoey
 	msgbox PokedexRating_Text_JoeyFirstChallenge, MSGBOX_YESNO
