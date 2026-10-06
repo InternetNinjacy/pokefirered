@@ -21,7 +21,6 @@ void GiveSamHothouseTropius(void)
     u32 personality;
     u16 nationalDexNum;
     u16 heldItem = ITEM_MIRACLE_SEED;
-    u8 abilityNum = 0;
     u8 otGender = MALE;
     u8 result;
 
@@ -42,7 +41,6 @@ void GiveSamHothouseTropius(void)
     SetMonData(mon, MON_DATA_OT_NAME, sSamHawthorneOtName);
     SetMonData(mon, MON_DATA_OT_GENDER, &otGender);
     SetMonData(mon, MON_DATA_HELD_ITEM, &heldItem);
-    SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNum);
     SetMonMoveSlot(mon, MOVE_RAZOR_LEAF, 0);
     SetMonMoveSlot(mon, MOVE_WING_ATTACK, 1);
     SetMonMoveSlot(mon, MOVE_STOMP, 2);
