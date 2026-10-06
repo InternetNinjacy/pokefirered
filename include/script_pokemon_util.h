@@ -1,7 +1,21 @@
 #ifndef GUARD_SCRIPT_POKEMON_UTIL_H
 #define GUARD_SCRIPT_POKEMON_UTIL_H
 
-bool8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 unk1, u32 unk2, u8 unk3);
+bool8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 otName, u32 otId, u8 otGender);
+bool8 ScriptGiveSamStarter(u16 species);
+void GiveSamStarterFamilyGift(void);
+
+// The stock pre-owned Gift special remains the public script entry point.
+// script_pokemon_util.c compiles its existing implementation under the Base
+// symbol so Sam-specific fixed Gift profiles can dispatch through a narrow
+// compatibility wrapper without duplicating or replacing existing callers.
+void GiveSamPreOwnedMonBase(void);
+#define GiveSamPreOwnedMon GiveSamPreOwnedMonBase
+
+void GetSamBlueStarterSpecies(void);
+void GetSamGreenStarterSpecies(void);
+void GetSamBlueStarterEndpointSpecies(void);
+void GetSamGreenStarterEndpointSpecies(void);
 bool8 ScriptGiveEgg(u16 species);
 void ScriptSetMonMoveSlot(u8 partyIdx, u16 move, u8 slot);
 void HealPlayerParty(void);
