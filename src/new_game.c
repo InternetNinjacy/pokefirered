@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gflib.h"
+#include "main.h"
 #include "new_game.h"
 #include "random.h"
 #include "overworld.h"
@@ -102,33 +103,6 @@ bool8 CanStartNewGamePlus(void)
     }
 
     return gSaveBlock1Ptr->playerPartyCount <= freeStorageSlots;
-}
-
-bool8 CanStartNewGamePlus(void)
-{
-    u16 monCount = gSaveBlock1Ptr->playerPartyCount;
-    u8 box;
-    u8 slot;
-
-    for (box = 0; box < TOTAL_BOXES_COUNT; box++)
-    {
-        for (slot = 0; slot < IN_BOX_COUNT; slot++)
-        {
-            if (GetBoxMonData(&gPokemonStoragePtr->boxes[box][slot], MON_DATA_SPECIES) != SPECIES_NONE)
-                monCount++;
-        }
-    }
-
-    if (gPokemonStoragePtr->ngPlusStorageMagic == NG_PLUS_STORAGE_MAGIC)
-    {
-        for (slot = 0; slot < NG_PLUS_STORAGE_COUNT; slot++)
-        {
-            if (GetBoxMonData(&gPokemonStoragePtr->ngPlusStorage[slot], MON_DATA_SPECIES) != SPECIES_NONE)
-                monCount++;
-        }
-    }
-
-    return monCount <= (TOTAL_BOXES_COUNT * IN_BOX_COUNT + NG_PLUS_STORAGE_COUNT);
 }
 
 static void InitPlayerTrainerId(void)
@@ -294,7 +268,10 @@ void NewGameInitData(void)
         newGamePlusCarryover = CreateNewGamePlusCarryover();
         if (newGamePlusCarryover == NULL)
         {
+            // Capacity/allocation failure must never degrade into an ordinary
+            // new-game reset, because that would destroy the completed save.
             gNewGamePlusRequested = FALSE;
+            DoSoftReset();
             return;
         }
     }
@@ -349,6 +326,7 @@ void NewGameInitData(void)
     if (newGamePlusCarryover != NULL)
     {
         RestoreNewGamePlusCarryover(newGamePlusCarryover);
+        FlagSet(FLAG_0x33B);
         Free(newGamePlusCarryover);
     }
     gNewGamePlusRequested = FALSE;
