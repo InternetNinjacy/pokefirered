@@ -113,6 +113,10 @@ PokedexRating_Text_OakJoeyReturnedHome::
 	.string "If you make another run through the\n"
 	.string "POKéMON LEAGUE, I suspect he'll hear about it.$"
 
+PokedexRating_Text_OakJoeyResummon::
+	.string "OAK: Ah, {PLAYER}. Joey called.\p"
+	.string "He would like another battle.$"
+
 PokedexRating_Text_SeenXOwnedY::
 	.string "The amount of progress you've made\n"
 	.string "on your POKéDEX is:\p"
