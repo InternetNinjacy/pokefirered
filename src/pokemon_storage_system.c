@@ -12,6 +12,11 @@ void RestorePokemonStorage(struct PokemonStorage * src)
     *gPokemonStoragePtr = *src;
 }
 
+u16 IsNewGamePlusStorageActive(void)
+{
+    return gPokemonStoragePtr->ngPlusStorageMagic == NG_PLUS_STORAGE_MAGIC;
+}
+
 void InitNewGamePlusStorageReserve(struct PokemonStorage *storage)
 {
     if (storage->ngPlusStorageMagic != NG_PLUS_STORAGE_MAGIC)
