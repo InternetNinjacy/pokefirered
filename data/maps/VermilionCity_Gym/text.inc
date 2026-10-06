@@ -97,6 +97,137 @@ VermilionCity_Gym_Text_DwaynePostBattle::
     .string "attack is meant to force the battle\l"
     .string "where he wants it.$"
 
+VermilionCity_Gym_Text_SatoshiFirstApproach::
+    .string "Vermilion's a WATER Gym.\n"
+    .string "SURGE likes pressure.\p"
+    .string "He doesn't throw attacks around\n"
+    .string "just because they're strong.\l"
+    .string "He uses them to keep you reacting.\p"
+    .string "ELECTRIC and GRASS attacks\n"
+    .string "hit WATER Pokémon hard.\p"
+    .string "But don't assume one good matchup\n"
+    .string "solves the whole fight.\p"
+    .string "These water controls are optional.\n"
+    .string "Work them and you can open cleaner\l"
+    .string "routes around some Trainers.\p"
+    .string "Ignore them and the direct route\n"
+    .string "takes you straight through the\l"
+    .string "battles.\p"
+    .string "I've got a POLIWAG with me.\n"
+    .string "It can use HYPNOSIS and RAIN DANCE\l"
+    .string "to change the pace of a battle.\p"
+    .string "Want a quick practice fight?$"
+
+VermilionCity_Gym_Text_SatoshiAccept::
+    .string "Good.\p"
+    .string "Watch what happens when I change\n"
+    .string "the pace. Let's go.$"
+
+VermilionCity_Gym_Text_SatoshiDecline::
+    .string "Fair enough.\p"
+    .string "Remember: ELECTRIC and GRASS hit\n"
+    .string "WATER hard.\p"
+    .string "And don't let SURGE keep you\n"
+    .string "reacting to him.$"
+
+VermilionCity_Gym_Text_SatoshiWin::
+    .string "Good.\n"
+    .string "You kept control.\p"
+    .string "RAIN makes WATER attacks stronger,\n"
+    .string "and HYPNOSIS can steal whole turns\l"
+    .string "from you.\p"
+    .string "SURGE's Pokémon will hit much\n"
+    .string "harder than my POLIWAG.\p"
+    .string "Don't give him free turns.$"
+
+VermilionCity_Gym_Text_SatoshiLoss::
+    .string "That's what pressure feels like.\p"
+    .string "Sleep costs you turns, and RAIN\n"
+    .string "makes WATER attacks hit harder.\p"
+    .string "Try me again whenever you're\n"
+    .string "ready.$"
+
+VermilionCity_Gym_Text_SatoshiRetryOffer::
+    .string "Want another shot?$"
+
+VermilionCity_Gym_Text_SatoshiRetryYes::
+    .string "Good.\n"
+    .string "This time, don't give me the pace.$"
+
+VermilionCity_Gym_Text_SatoshiRetryNo::
+    .string "Fair enough.\p"
+    .string "I'll be right here.$"
+
+VermilionCity_Gym_Text_SatoshiBeforeSurge::
+    .string "That'll do.\p"
+    .string "ELECTRIC and GRASS are your best\n"
+    .string "answers to WATER.\p"
+    .string "Use the controls if you want the\n"
+    .string "cleaner route through the Gym.\p"
+    .string "Or take the direct route and fight\n"
+    .string "through. Both work.\p"
+    .string "Against SURGE, make every turn\n"
+    .string "count before he takes control.$"
+
+VermilionCity_Gym_Text_SatoshiRepeatHint::
+    .string "Need the short version?\p"
+    .string "ELECTRIC. GRASS.\p"
+    .string "The water controls open bypasses,\n"
+    .string "but they're optional.\p"
+    .string "RAIN strengthens WATER attacks.\n"
+    .string "Status can steal your turns.\p"
+    .string "Don't let SURGE dictate the fight.$"
+
+VermilionCity_Gym_Text_SatoshiPostBadgePracticed::
+    .string "Nice work.\p"
+    .string "SURGE tried to keep you under\n"
+    .string "pressure, and you kept making good\l"
+    .string "decisions anyway.\p"
+    .string "That HARBOR BADGE proves it.\p"
+    .string "TM40 is WATER PULSE.\n"
+    .string "It hits with controlled WATER\l"
+    .string "power and can confuse the target.\p"
+    .string "Keep making your turns count.$"
+
+VermilionCity_Gym_Text_SatoshiPostBadgeSkipped::
+    .string "You skipped my practice battle\n"
+    .string "and still beat SURGE?\p"
+    .string "Not bad.\p"
+    .string "You figured out his pressure\n"
+    .string "without the warm-up.\p"
+    .string "That HARBOR BADGE is yours.\p"
+    .string "TM40 is WATER PULSE.\n"
+    .string "It can confuse the target as well\l"
+    .string "as deal damage.\p"
+    .string "Use that pressure wisely.$"
+
+VermilionCity_Gym_Text_SatoshiRematchOffer::
+    .string "Back again?\p"
+    .string "No tutorial this time.\n"
+    .string "I've brought a full team.\p"
+    .string "Want a real rematch?$"
+
+VermilionCity_Gym_Text_SatoshiRematchDecline::
+    .string "Fair enough.\p"
+    .string "Come back when you want to see\n"
+    .string "how far we've both come.$"
+
+VermilionCity_Gym_Text_SatoshiRematchStart::
+    .string "Good.\p"
+    .string "No warm-up. No lesson.\n"
+    .string "Show me what you can do.$"
+
+VermilionCity_Gym_Text_SatoshiRematchDefeat::
+    .string "Ha!\n"
+    .string "That's a long way from that first\l"
+    .string "practice battle.$"
+
+VermilionCity_Gym_Text_SatoshiRematchAfter::
+    .string "You've learned how to handle\n"
+    .string "pressure without letting it decide\l"
+    .string "the battle for you.\p"
+    .string "That's what I wanted to see.$"
+
 VermilionCity_Gym_Text_GymGuyAdvice::
     .string "Yo!\n"
     .string "Champ in the making!$"
