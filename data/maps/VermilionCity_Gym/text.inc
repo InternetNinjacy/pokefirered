@@ -30,12 +30,12 @@ VermilionCity_Gym_Text_ExplainThunderBadgeTakeThis::
     .string "POKéMON knows the move.$"
 
 VermilionCity_Gym_Text_ReceivedTM34FromLtSurge::
-    .string "{PLAYER} received TM03\n"
+    .string "{PLAYER} received TM40\n"
     .string "from LT. SURGE.$"
 
 VermilionCity_Gym_Text_ExplainTM34::
     .string "And take this with you.\n"
-    .string "TM03 contains WATER PULSE.\p"
+    .string "TM40 contains WATER PULSE.\p"
     .string "It fires a concentrated blast of\n"
     .string "water, and it may confuse the\l"
     .string "target.\p"
