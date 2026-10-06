@@ -51,7 +51,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "4",
-      "script": "Route9_EventScript_Jeremy",
+      "script": "Route9_EventScript_JeremyBatch5",
       "flag": "0"
     },
     {
@@ -65,7 +65,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "1",
-      "script": "Route9_EventScript_Alan",
+      "script": "Route9_EventScript_AlanBatch5",
       "flag": "0"
     },
     {
@@ -149,7 +149,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "5",
-      "script": "Route9_EventScript_Drew",
+      "script": "Route9_EventScript_DrewBatch5",
       "flag": "0"
     },
     {
