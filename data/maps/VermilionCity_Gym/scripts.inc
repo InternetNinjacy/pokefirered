@@ -180,7 +180,7 @@ VermilionCity_Gym_EventScript_Dwayne::
 	end
 
 VermilionCity_Gym_EventScript_Baily::
-	trainerbattle_single TRAINER_ENGINEER_BAILY, VermilionCity_Gym_Text_BailyIntro, VermilionCity_Gym_Text_BailyDefeat
+	trainerbattle_single TRAINER_SURFER_CODY_VERMILION, VermilionCity_Gym_Text_BailyIntro, VermilionCity_Gym_Text_BailyDefeat
 	msgbox VermilionCity_Gym_Text_BailyPostBattle, MSGBOX_AUTOCLOSE
 	end
 
