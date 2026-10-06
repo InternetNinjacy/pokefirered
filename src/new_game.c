@@ -349,7 +349,6 @@ void NewGameInitData(void)
     if (newGamePlusCarryover != NULL)
     {
         RestoreNewGamePlusCarryover(newGamePlusCarryover);
-        FlagSet(FLAG_0x33B);
         Free(newGamePlusCarryover);
     }
     gNewGamePlusRequested = FALSE;
