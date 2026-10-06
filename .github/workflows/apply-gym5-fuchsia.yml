@@ -1,8 +1,32 @@
-name: Gym5 Apply Test
+name: Gym5 Apply Build
 on: [push]
+permissions:
+  contents: write
 jobs:
-  test:
+  apply:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo workflow-ok
+        with:
+          ref: sam/gym5-fuchsia-normal
+          fetch-depth: 0
+      - name: Apply locked package
+        run: python3 tools/apply_gym5.py
+      - name: Verify diff
+        run: |
+          git diff --check
+          git diff --stat
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
+      - name: Build modern ROM
+        run: make -j2 MODERN=1 COMPARE=0 all
+      - name: Commit implementation
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/data/trainer_parties.h src/data/trainers.h data/maps/FuchsiaCity_Gym/scripts.inc data/maps/FuchsiaCity_Gym/text.inc
+          git diff --cached --check
+          git commit -m 'Implement locked Fuchsia Normal Gym package'
+          git push origin HEAD:sam/gym5-fuchsia-normal
