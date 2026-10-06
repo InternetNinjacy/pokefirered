@@ -44,6 +44,11 @@ EventScript_AccessPlayersPC::
 	end
 
 EventScript_AccessPokemonStorage::
+	goto_if_unset FLAG_0x33B, EventScript_AccessPokemonStorage_Open
+	goto_if_lt VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, EventScript_AccessPokemonStorage_NewGamePlusLocked
+	goto_if_unset FLAG_SYS_POKEDEX_GET, EventScript_AccessPokemonStorage_NewGamePlusLocked
+
+EventScript_AccessPokemonStorage_Open::
 	playse SE_PC_LOGIN
 	call_if_unset FLAG_SYS_NOT_SOMEONES_PC, EventScript_AccessSomeonesPC
 	call_if_set FLAG_SYS_NOT_SOMEONES_PC, EventScript_AccessBillsPC
@@ -52,6 +57,11 @@ EventScript_AccessPokemonStorage::
 	waitstate
 	setvar VAR_0x8004, HELPCONTEXT_PC
 	special Script_SetHelpContext
+	goto EventScript_PCMainMenu
+	end
+
+EventScript_AccessPokemonStorage_NewGamePlusLocked::
+	msgbox Text_NewGamePlusStorageLocked
 	goto EventScript_PCMainMenu
 	end
 
@@ -99,3 +109,6 @@ EventScript_ExitOaksPC::
 	msgbox Text_ClosedLinkToProfOaksPC
 	goto EventScript_PCMainMenu
 	end
+
+Text_NewGamePlusStorageLocked::
+	.string "The carried POKéMON are locked.\pReceive your new partner and POKéDEX\nfirst.$"

@@ -10,6 +10,12 @@
 #define IN_BOX_COUNT            (IN_BOX_ROWS * IN_BOX_COLUMNS)
 #define BOX_NAME_LENGTH         8
 
+// The nine Pokémon-storage save sections have enough unused tail space for
+// 24 additional boxed Pokémon plus a marker without changing the stock
+// 14-box UI geometry or save-section allocation.
+#define NG_PLUS_STORAGE_COUNT   24
+#define NG_PLUS_STORAGE_MAGIC   0x4E47502B
+
 /*
             COLUMNS
 ROWS        0   1   2   3   4   5
@@ -47,6 +53,8 @@ struct PokemonStorage
     /*0x0001*/ struct BoxPokemon boxes[TOTAL_BOXES_COUNT][IN_BOX_COUNT];
     /*0x8344*/ u8 boxNames[TOTAL_BOXES_COUNT][BOX_NAME_LENGTH + 1];
     /*0x83C2*/ u8 boxWallpapers[TOTAL_BOXES_COUNT];
+    u32 ngPlusStorageMagic;
+    struct BoxPokemon ngPlusStorage[NG_PLUS_STORAGE_COUNT];
 };
 
 u8 *GetBoxNamePtr(u8 boxNumber);
@@ -59,5 +67,7 @@ void CB2_ReturnToPokeStorage(void);
 void ResetPokemonStorageSystem(void);
 u8 StorageGetCurrentBox(void);
 void DrawTextWindowAndBufferTiles(const u8 *string, void *dst, u8 zero1, u8 zero2, u8 *buffer, s32 bytesToBuffer);
+void InitNewGamePlusStorageReserve(struct PokemonStorage *storage);
+bool8 CompactNewGamePlusStorageReserve(void);
 
 #endif // GUARD_POKEMON_STORAGE_SYSTEM_H
