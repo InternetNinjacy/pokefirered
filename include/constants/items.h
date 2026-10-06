@@ -256,6 +256,7 @@
 #define ITEM_0F5 245
 #define ITEM_0F6 246
 #define ITEM_0F7 247
+#define ITEM_ROCKET_DOSSIER ITEM_0F7
 #define ITEM_0F8 248
 #define ITEM_0F9 249
 #define ITEM_0FA 250
