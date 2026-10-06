@@ -100,6 +100,7 @@ bool8 TryRunFromBattle(u8 battler);
 // Every call remains stock unless it is creating a fixed-personality mon directly
 // into gEnemyParty for one of Thomas's trainer records.
 void CreateMonWithThomasTrainerTraits(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId);
+void ApplyThomasMtMoonStarterBranch(struct Pokemon *party, u16 trainerNum);
 
 #if !defined(IS_POKEMON_C) && !defined(SAM_THOMAS_TRAINER_TRAITS_C)
 #define CreateMon(mon, species, level, fixedIV, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId) \
