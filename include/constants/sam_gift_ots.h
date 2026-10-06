@@ -1,0 +1,7 @@
+#ifndef GUARD_CONSTANTS_SAM_GIFT_OTS_H
+#define GUARD_CONSTANTS_SAM_GIFT_OTS_H
+
+// Reserved Gift / Special Acquisition OT ID range: 52011-52999.
+#define OTID_GIFT_HAWTHORNE 52011
+
+#endif // GUARD_CONSTANTS_SAM_GIFT_OTS_H
