@@ -4,6 +4,7 @@
 #include "random.h"
 #include "overworld.h"
 #include "constants/maps.h"
+#include "constants/flags.h"
 #include "load_save.h"
 #include "item_menu.h"
 #include "tm_case.h"
@@ -197,6 +198,11 @@ static void RestoreNewGamePlusCarryover(struct NewGamePlusCarryover *carryover)
     gSaveBlock2Ptr->encryptionKey = 0;
 }
 
+void PrepareNewGamePlusPokemonStorage(void)
+{
+    CompactNewGamePlusStorageReserve();
+}
+
 void Sav2_ClearSetDefault(void)
 {
     ClearSav2();
@@ -274,6 +280,7 @@ void NewGameInitData(void)
     if (newGamePlusCarryover != NULL)
     {
         RestoreNewGamePlusCarryover(newGamePlusCarryover);
+        FlagSet(FLAG_0x33B);
         Free(newGamePlusCarryover);
     }
     gNewGamePlusRequested = FALSE;
@@ -282,6 +289,9 @@ void NewGameInitData(void)
 static void ResetMiniGamesResults(void)
 {
     CpuFill16(0, &gSaveBlock2Ptr->berryCrush, sizeof(struct BerryCrush));
+    SetBerryPowder(&gSaveBlock2Ptr->berryCrush.berryPowderAmount, 0);
+    ResetPokemonJumpRecords();
+    CpuFill16(0, &gSaveBlock2Ptr->berryPick, sizeof(struct BerryPickingResults));
     SetBerryPowder(&gSaveBlock2Ptr->berryCrush.berryPowderAmount, 0);
     ResetPokemonJumpRecords();
     CpuFill16(0, &gSaveBlock2Ptr->berryPick, sizeof(struct BerryPickingResults));
