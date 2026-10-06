@@ -1,14 +1,27 @@
 MtMoon_B2F_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, MtMoon_B2F_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, MtMoon_B2F_OnFrame
 	.byte 0
 
 MtMoon_B2F_OnTransition::
+	setflag FLAG_HIDE_THOMAS_MT_MOON
+	setflag FLAG_HIDE_ROCKET_MT_MOON_ACCOMPLICE
 	call_if_unset FLAG_GOT_FOSSIL_FROM_MT_MOON, MtMoon_B2F_EventScript_ShowFossils
+	call_if_eq VAR_MAP_SCENE_MT_MOON_B2F, 2, MtMoon_B2F_EventScript_ShowThomasOperation
 	end
+
+MtMoon_B2F_OnFrame::
+	map_script_2 VAR_MAP_SCENE_MT_MOON_B2F, 2, MtMoon_B2F_EventScript_ThomasOperationRetry
+	.2byte 0
 
 MtMoon_B2F_EventScript_ShowFossils::
 	clearflag FLAG_HIDE_DOME_FOSSIL
 	clearflag FLAG_HIDE_HELIX_FOSSIL
+	return
+
+MtMoon_B2F_EventScript_ShowThomasOperation::
+	clearflag FLAG_HIDE_THOMAS_MT_MOON
+	clearflag FLAG_HIDE_ROCKET_MT_MOON_ACCOMPLICE
 	return
 
 MtMoon_B2F_EventScript_MiguelTrigger::
@@ -22,6 +35,7 @@ MtMoon_B2F_EventScript_MiguelTrigger::
 MtMoon_B2F_EventScript_Miguel::
 	lock
 	faceplayer
+	goto_if_ge VAR_MAP_SCENE_MT_MOON_B2F, 3, MtMoon_B2F_EventScript_MiguelAfterTheft
 	goto_if_set FLAG_GOT_FOSSIL_FROM_MT_MOON, MtMoon_B2F_EventScript_MiguelFossilPicked
 	goto_if_defeated TRAINER_SUPER_NERD_MIGUEL, MtMoon_B2F_EventScript_MiguelGoPickFossil
 	call MtMoon_B2F_EventScript_BattleMiguel
@@ -45,6 +59,11 @@ MtMoon_B2F_EventScript_MiguelFossilPicked::
 	release
 	end
 
+MtMoon_B2F_EventScript_MiguelAfterTheft::
+	msgbox MtMoon_B2F_Text_MiguelAfterTheft
+	release
+	end
+
 MtMoon_B2F_EventScript_MiguelGoPickFossil::
 	msgbox MtMoon_B2F_Text_WellEachTakeAFossil
 	release
@@ -59,27 +78,12 @@ MtMoon_B2F_EventScript_DomeFossil::
 	giveitem_msg MtMoon_B2F_Text_ObtainedDomeFossil, ITEM_DOME_FOSSIL, 1, MUS_OBTAIN_KEY_ITEM
 	closemessage
 	special QuestLog_CutRecording
-	delay 10
-	applymovement LOCALID_MIGUEL, MtMoon_B2F_Movement_MiguelToHelixFossil
-	waitmovement 0
-	copyobjectxytoperm LOCALID_MIGUEL
-	textcolor NPC_TEXT_COLOR_MALE
-	playfanfare MUS_OBTAIN_KEY_ITEM
-	message MtMoon_B2F_Text_ThenThisFossilIsMine
-	waitmessage
-	waitfanfare
-	removeobject LOCALID_HELIX_FOSSIL
+	setflag FLAG_HIDE_DOME_FOSSIL
 	setflag FLAG_GOT_DOME_FOSSIL
 	setflag FLAG_GOT_FOSSIL_FROM_MT_MOON
-	release
+	setvar VAR_MAP_SCENE_MT_MOON_B2F, 2
+	goto MtMoon_B2F_EventScript_ThomasOperationStart
 	end
-
-MtMoon_B2F_Movement_MiguelToHelixFossil::
-	walk_right
-	walk_up
-	walk_up
-	walk_up
-	step_end
 
 MtMoon_B2F_EventScript_HelixFossil::
 	lock
@@ -90,30 +94,64 @@ MtMoon_B2F_EventScript_HelixFossil::
 	giveitem_msg MtMoon_B2F_Text_ObtainedHelixFossil, ITEM_HELIX_FOSSIL, 1, MUS_OBTAIN_KEY_ITEM
 	closemessage
 	special QuestLog_CutRecording
-	delay 10
-	applymovement LOCALID_MIGUEL, MtMoon_B2F_Movement_MiguelToDomeFossil
-	waitmovement 0
-	copyobjectxytoperm LOCALID_MIGUEL
-	textcolor NPC_TEXT_COLOR_MALE
-	playfanfare MUS_OBTAIN_KEY_ITEM
-	message MtMoon_B2F_Text_ThenThisFossilIsMine
-	waitmessage
-	waitfanfare
-	removeobject LOCALID_DOME_FOSSIL
+	setflag FLAG_HIDE_HELIX_FOSSIL
 	setflag FLAG_GOT_HELIX_FOSSIL
 	setflag FLAG_GOT_FOSSIL_FROM_MT_MOON
-	release
+	setvar VAR_MAP_SCENE_MT_MOON_B2F, 2
+	goto MtMoon_B2F_EventScript_ThomasOperationStart
 	end
 
 MtMoon_B2F_EventScript_DontTakeFossil::
 	release
 	end
 
-MtMoon_B2F_Movement_MiguelToDomeFossil::
-	walk_up
-	walk_up
-	walk_up
-	step_end
+MtMoon_B2F_EventScript_ThomasOperationStart::
+	clearflag FLAG_HIDE_THOMAS_MT_MOON
+	clearflag FLAG_HIDE_ROCKET_MT_MOON_ACCOMPLICE
+	addobject LOCALID_THOMAS_MT_MOON
+	addobject LOCALID_ROCKET_MT_MOON_ACCOMPLICE
+	goto MtMoon_B2F_EventScript_ThomasOperation
+	end
+
+MtMoon_B2F_EventScript_ThomasOperationRetry::
+	lockall
+	goto MtMoon_B2F_EventScript_ThomasOperation
+	end
+
+MtMoon_B2F_EventScript_ThomasOperation::
+	msgbox MtMoon_B2F_Text_ThomasArrival
+	msgbox MtMoon_B2F_Text_MiguelChallengesRocket
+	msgbox MtMoon_B2F_Text_ThomasIntroduction
+	setvar VAR_LAST_TALKED, LOCALID_THOMAS_MT_MOON
+	trainerbattle_no_intro TRAINER_THOMAS_MT_MOON, MtMoon_B2F_Text_ThomasDefeat
+	msgbox MtMoon_B2F_Text_RocketGotFossil
+	msgbox MtMoon_B2F_Text_ThomasAfterVictory
+	goto_if_set FLAG_GOT_HELIX_FOSSIL, MtMoon_B2F_EventScript_ThomasStealsDome
+	goto MtMoon_B2F_EventScript_ThomasStealsHelix
+	end
+
+MtMoon_B2F_EventScript_ThomasStealsDome::
+	removeobject LOCALID_DOME_FOSSIL
+	setflag FLAG_HIDE_DOME_FOSSIL
+	setvar VAR_MAP_SCENE_MT_MOON_B2F, 3
+	goto MtMoon_B2F_EventScript_ThomasEscape
+	end
+
+MtMoon_B2F_EventScript_ThomasStealsHelix::
+	removeobject LOCALID_HELIX_FOSSIL
+	setflag FLAG_HIDE_HELIX_FOSSIL
+	setvar VAR_MAP_SCENE_MT_MOON_B2F, 4
+	goto MtMoon_B2F_EventScript_ThomasEscape
+	end
+
+MtMoon_B2F_EventScript_ThomasEscape::
+	setflag FLAG_HIDE_THOMAS_MT_MOON
+	setflag FLAG_HIDE_ROCKET_MT_MOON_ACCOMPLICE
+	removeobject LOCALID_THOMAS_MT_MOON
+	removeobject LOCALID_ROCKET_MT_MOON_ACCOMPLICE
+	msgbox MtMoon_B2F_Text_MiguelAfterTheft
+	releaseall
+	end
 
 MtMoon_B2F_EventScript_Grunt1::
 	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT, MtMoon_B2F_Text_Grunt1Intro, MtMoon_B2F_Text_Grunt1Defeat
