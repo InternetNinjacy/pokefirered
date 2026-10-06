@@ -299,7 +299,10 @@ const union AnimCmd *const gAnims_MonPic[] =
 
 #include "data/pokemon_graphics/enemy_mon_elevation.h"
 
+#define sParty_LeaderSurgeVermilion sParty_LeaderSurgeVermilionLegacy
 #include "data/trainer_parties.h"
+#undef sParty_LeaderSurgeVermilion
+#include "data/sam_gym3_vermilion_current_parties.h"
 #include "data/sam_route3_trainer_parties.h"
 #include "data/sam_route24_trainer_parties.h"
 #include "data/sam_blue_parties.h"
@@ -320,7 +323,31 @@ const union AnimCmd *const gAnims_MonPic[] =
 // Route 24 Batch 3 reconciliation: preserve Shane's live trainer ID, record,
 // scripts, dialogue, and battle format while selecting the settled ecology party.
 #define sParty_CamperShane sParty_SamRoute24CamperShane
+
+// Gym 3 has a reserved central trainer ID and party for the Section B surfer,
+// but the central trainer table predates that record. Inject the dedicated Brook
+// initializer immediately before the existing Beach Family record without moving
+// any established trainer IDs.
+#define SAM_GYM3_BEACH_FAMILY_TRAINER_ID 781
+#undef TRAINER_BEACH_FAMILY_LISA_BEN_VERMILION
+#define TRAINER_BEACH_FAMILY_LISA_BEN_VERMILION \
+    TRAINER_SURFER_CODY_VERMILION] = { \
+        .trainerClass = TRAINER_CLASS_SURFER, \
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SWIMMER, \
+        .trainerPic = TRAINER_PIC_SWIMMER_M, \
+        .trainerName = _("BROOK"), \
+        .items = {}, \
+        .doubleBattle = FALSE, \
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE, \
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_SurferCodyVermilion), \
+    }, \
+    [SAM_GYM3_BEACH_FAMILY_TRAINER_ID
+
 #include "data/trainers.h"
+
+#undef TRAINER_BEACH_FAMILY_LISA_BEN_VERMILION
+#define TRAINER_BEACH_FAMILY_LISA_BEN_VERMILION SAM_GYM3_BEACH_FAMILY_TRAINER_ID
+#undef SAM_GYM3_BEACH_FAMILY_TRAINER_ID
 #undef sParty_CamperShane
 #undef sParty_YoungsterBen
 #undef sParty_YoungsterCalvin
