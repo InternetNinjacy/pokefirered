@@ -781,11 +781,19 @@
 #define TRAINER_LEADER_BAZ                        767
 #define TRAINER_LEADER_BAZ_REMATCH                768
 
+// Thomas Team Rocket rival allocations: 784-789.
+#define TRAINER_THOMAS_NUGGET_BRIDGE               784
+#define TRAINER_THOMAS_CELADON_HIDEOUT             785
+#define TRAINER_THOMAS_POKEMON_TOWER               786
+#define TRAINER_THOMAS_SILPH_CO                     787
+#define TRAINER_THOMAS_CINNABAR_MANSION            788
+#define TRAINER_THOMAS_VIRIDIAN_GYM                 789
+
 // Sam Edition expands trainer defeat-flag capacity to 1024 records.
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             743
+#define NUM_TRAINERS                             790
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
