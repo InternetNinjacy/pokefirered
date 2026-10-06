@@ -171,6 +171,12 @@
 #define OBJ_EVENT_GFX_BAZ                156
 #define OBJ_EVENT_GFX_BUSHRANGER_M       157
 #define OBJ_EVENT_GFX_BUSHRANGER_F       158
+#define OBJ_EVENT_GFX_SCYTHER            160
+#define OBJ_EVENT_GFX_RHYHORN            161
+#define OBJ_EVENT_GFX_ABRA               162
+#define OBJ_EVENT_GFX_MILTANK            163
+#define OBJ_EVENT_GFX_MAGNETON           164
+#define OBJ_EVENT_GFX_ONIX               165
 #define OBJ_EVENT_GFX_LICKITUNG          166
 
 #define NUM_OBJ_EVENT_GFX                167
