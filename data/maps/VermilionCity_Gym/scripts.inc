@@ -196,16 +196,82 @@ VermilionCity_Gym_EventScript_DefeatedTucker::
 	release
 	end
 
+@ Keep the inherited Gym Guide script label because the map already points here,
+@ but the live object is Satoshi and this is now his full Vermilion teaching loop.
 VermilionCity_Gym_EventScript_GymGuy::
 	lock
 	faceplayer
-	goto_if_set FLAG_DEFEATED_LT_SURGE, VermilionCity_Gym_EventScript_GymGuyPostVictory
-	msgbox VermilionCity_Gym_Text_GymGuyAdvice
+	satoshi_route_by_state VermilionCity_Gym_EventScript_SatoshiPostgameOffer, FLAG_BADGE03_GET, VermilionCity_Gym_EventScript_SatoshiPostBadge, FLAG_SATOSHI_VERMILION_PRACTICE_WON, VermilionCity_Gym_EventScript_SatoshiRepeatHint
+	checktrainerflag TRAINER_SATOSHI_VERMILION_PRACTICE
+	goto_if_eq VAR_RESULT, TRUE, VermilionCity_Gym_EventScript_SatoshiRetryOffer
+	msgbox VermilionCity_Gym_Text_SatoshiFirstApproach, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, VermilionCity_Gym_EventScript_SatoshiAccept
+	goto VermilionCity_Gym_EventScript_SatoshiDecline
+	end
+
+VermilionCity_Gym_EventScript_SatoshiAccept::
+	msgbox VermilionCity_Gym_Text_SatoshiAccept
+	cleartrainerflag TRAINER_SATOSHI_VERMILION_PRACTICE
+	trainerbattle_earlyrival TRAINER_SATOSHI_VERMILION_PRACTICE, RIVAL_BATTLE_HEAL_AFTER, VermilionCity_Gym_Text_SatoshiWin, VermilionCity_Gym_Text_SatoshiLoss
+	goto_if_eq VAR_RESULT, TRUE, VermilionCity_Gym_EventScript_SatoshiRetryOffer
+	setflag FLAG_SATOSHI_VERMILION_PRACTICE_WON
+	msgbox VermilionCity_Gym_Text_SatoshiBeforeSurge
 	release
 	end
 
-VermilionCity_Gym_EventScript_GymGuyPostVictory::
-	msgbox VermilionCity_Gym_Text_GymGuyPostVictory
+VermilionCity_Gym_EventScript_SatoshiRetryOffer::
+	msgbox VermilionCity_Gym_Text_SatoshiRetryOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, VermilionCity_Gym_EventScript_SatoshiRetryYes
+	goto VermilionCity_Gym_EventScript_SatoshiRetryNo
+	end
+
+VermilionCity_Gym_EventScript_SatoshiRetryYes::
+	msgbox VermilionCity_Gym_Text_SatoshiRetryYes
+	cleartrainerflag TRAINER_SATOSHI_VERMILION_PRACTICE
+	trainerbattle_earlyrival TRAINER_SATOSHI_VERMILION_PRACTICE, RIVAL_BATTLE_HEAL_AFTER, VermilionCity_Gym_Text_SatoshiWin, VermilionCity_Gym_Text_SatoshiLoss
+	goto_if_eq VAR_RESULT, TRUE, VermilionCity_Gym_EventScript_SatoshiRetryOffer
+	setflag FLAG_SATOSHI_VERMILION_PRACTICE_WON
+	msgbox VermilionCity_Gym_Text_SatoshiBeforeSurge
+	release
+	end
+
+VermilionCity_Gym_EventScript_SatoshiRetryNo::
+	msgbox VermilionCity_Gym_Text_SatoshiRetryNo
+	release
+	end
+
+VermilionCity_Gym_EventScript_SatoshiDecline::
+	msgbox VermilionCity_Gym_Text_SatoshiDecline
+	release
+	end
+
+VermilionCity_Gym_EventScript_SatoshiRepeatHint::
+	msgbox VermilionCity_Gym_Text_SatoshiRepeatHint
+	release
+	end
+
+VermilionCity_Gym_EventScript_SatoshiPostBadge::
+	goto_if_set FLAG_SATOSHI_VERMILION_PRACTICE_WON, VermilionCity_Gym_EventScript_SatoshiPostBadgePracticed
+	msgbox VermilionCity_Gym_Text_SatoshiPostBadgeSkipped
+	release
+	end
+
+VermilionCity_Gym_EventScript_SatoshiPostBadgePracticed::
+	msgbox VermilionCity_Gym_Text_SatoshiPostBadgePracticed
+	release
+	end
+
+VermilionCity_Gym_EventScript_SatoshiPostgameOffer::
+	msgbox VermilionCity_Gym_Text_SatoshiRematchOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, VermilionCity_Gym_EventScript_SatoshiPostgameRematch
+	msgbox VermilionCity_Gym_Text_SatoshiRematchDecline
+	release
+	end
+
+VermilionCity_Gym_EventScript_SatoshiPostgameRematch::
+	cleartrainerflag TRAINER_SATOSHI_VERMILION_REMATCH
+	trainerbattle_single TRAINER_SATOSHI_VERMILION_REMATCH, VermilionCity_Gym_Text_SatoshiRematchStart, VermilionCity_Gym_Text_SatoshiRematchDefeat
+	msgbox VermilionCity_Gym_Text_SatoshiRematchAfter
 	release
 	end
 
