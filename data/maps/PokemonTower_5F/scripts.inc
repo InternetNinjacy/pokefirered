@@ -22,7 +22,7 @@ PokemonTower_5F_EventScript_ExitPurifiedZone::
 	end
 
 PokemonTower_5F_EventScript_Tammy::
-	trainerbattle_single TRAINER_CHANNELER_TAMMY, PokemonTower_5F_Text_TammyIntro, PokemonTower_5F_Text_TammyDefeat
+	trainerbattle_double TRAINER_CHANNELER_TAMMY, PokemonTower_5F_Text_TammyIntro, PokemonTower_5F_Text_TammyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox PokemonTower_5F_Text_TammyPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -37,6 +37,6 @@ PokemonTower_5F_EventScript_Karina::
 	end
 
 PokemonTower_5F_EventScript_Janae::
-	trainerbattle_single TRAINER_CHANNELER_JANAE, PokemonTower_5F_Text_JanaeIntro, PokemonTower_5F_Text_JanaeDefeat
+	trainerbattle_double TRAINER_CHANNELER_JANAE, PokemonTower_5F_Text_JanaeIntro, PokemonTower_5F_Text_JanaeDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox PokemonTower_5F_Text_JanaePostBattle, MSGBOX_AUTOCLOSE
 	end
