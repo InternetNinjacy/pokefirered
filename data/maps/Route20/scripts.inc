@@ -65,13 +65,13 @@ Route20_EventScript_NoraBatch9Rematch::
 	end
 
 Route20_EventScript_RogerBatch9::
-	trainerbattle_single TRAINER_ROCKER_ROGER, Route20_Text_RogerIntro, Route20_Text_RogerDefeat
+	trainerbattle_single TRAINER_BIRD_KEEPER_ROGER, Route20_Text_RogerIntro, Route20_Text_RogerDefeat
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route20_EventScript_RogerBatch9Rematch
 	msgbox Route20_Text_RogerPostBattle, MSGBOX_AUTOCLOSE
 	end
 Route20_EventScript_RogerBatch9Rematch::
-	trainerbattle_rematch TRAINER_ROCKER_ROGER, Route20_Text_RogerRematchIntro, Route20_Text_RogerDefeat
+	trainerbattle_rematch TRAINER_BIRD_KEEPER_ROGER, Route20_Text_RogerRematchIntro, Route20_Text_RogerDefeat
 	msgbox Route20_Text_RogerPostBattle, MSGBOX_AUTOCLOSE
 	end
 
