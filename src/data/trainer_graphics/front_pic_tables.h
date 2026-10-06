@@ -1,5 +1,7 @@
 static const u32 gTrainerFrontPic_Satoshi[] = INCBIN_U32("graphics/trainers/front_pics/satoshi.4bpp.lz");
 static const u32 gTrainerPalette_Satoshi[] = INCBIN_U32("graphics/trainers/palettes/satoshi.gbapal.lz");
+static const u32 gTrainerFrontPic_Hawthorne[] = INCBIN_U32("graphics/trainers/front_pics/hawthorne.4bpp.lz");
+static const u32 gTrainerPalette_Hawthorne[] = INCBIN_U32("graphics/trainers/palettes/hawthorne.gbapal.lz");
 
 const struct MonCoords gTrainerFrontPicCoords[] =
 {
@@ -158,6 +160,10 @@ const struct MonCoords gTrainerFrontPicCoords[] =
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    // Registry-owned Boreal slot 155 remains a safe placeholder here.
+    {.size = 8, .y_offset = 1},
+    // Hawthorne trainer portrait, slot 156.
     {.size = 8, .y_offset = 1},
 };
 
@@ -320,6 +326,8 @@ const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
     TRAINER_SPRITE(BAZ, gTrainerFrontPic_ProfessorOak, 0x800),
     TRAINER_SPRITE(BUSHRANGER_M, gTrainerFrontPic_ProfessorOak, 0x800),
     TRAINER_SPRITE(BUSHRANGER_F, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(BOREAL, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(HAWTHORNE, gTrainerFrontPic_Hawthorne, 0x800),
 };
 
 const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
@@ -480,4 +488,6 @@ const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
     TRAINER_PAL(BAZ, gTrainerPalette_ProfessorOak),
     TRAINER_PAL(BUSHRANGER_M, gTrainerPalette_ProfessorOak),
     TRAINER_PAL(BUSHRANGER_F, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(BOREAL, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(HAWTHORNE, gTrainerPalette_Hawthorne),
 };

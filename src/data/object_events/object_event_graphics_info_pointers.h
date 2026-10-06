@@ -77,6 +77,8 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Agatha;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Daisy;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lorelei;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MrFuji;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Hawthorne;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Tropius;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Bruno;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Brock;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Misty;
@@ -316,5 +318,7 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_BAZ]                      = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_M]             = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_F]             = &gObjectEventGraphicsInfo_ProfOak,
+    [OBJ_EVENT_GFX_HAWTHORNE]                = &gObjectEventGraphicsInfo_Hawthorne,
+    [OBJ_EVENT_GFX_TROPIUS]                  = &gObjectEventGraphicsInfo_Tropius,
     [OBJ_EVENT_GFX_LICKITUNG]                = &gObjectEventGraphicsInfo_Lickitung,
 };

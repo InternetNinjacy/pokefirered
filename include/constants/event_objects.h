@@ -171,6 +171,8 @@
 #define OBJ_EVENT_GFX_BAZ                156
 #define OBJ_EVENT_GFX_BUSHRANGER_M       157
 #define OBJ_EVENT_GFX_BUSHRANGER_F       158
+#define OBJ_EVENT_GFX_HAWTHORNE          162
+#define OBJ_EVENT_GFX_TROPIUS            163
 #define OBJ_EVENT_GFX_LICKITUNG          166
 
 #define NUM_OBJ_EVENT_GFX                167
