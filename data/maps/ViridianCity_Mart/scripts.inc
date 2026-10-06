@@ -14,6 +14,7 @@ ViridianCity_Mart_EventScript_HideQuestionnaire::
 
 ViridianCity_Mart_OnFrame::
 	map_script_2 VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 0, ViridianCity_Mart_EventScript_ParcelScene
+	map_script_2 VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 2, ViridianCity_Mart_EventScript_RocketGoodsReturn
 	.2byte 0
 
 ViridianCity_Mart_EventScript_ParcelScene::
@@ -30,6 +31,35 @@ ViridianCity_Mart_EventScript_ParcelScene::
 	setvar VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 1
 	giveitem_msg ViridianCity_Mart_Text_ReceivedOaksParcelFromClerk, ITEM_OAKS_PARCEL, 1, MUS_OBTAIN_KEY_ITEM
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 5
+	releaseall
+	end
+
+ViridianCity_Mart_EventScript_RocketGoodsReturn::
+	lockall
+	applymovement LOCALID_VIRIDIAN_MART_CLERK, Common_Movement_WalkInPlaceFasterDown
+	waitmovement 0
+	msgbox ViridianCity_Mart_Text_RocketGoodsReturned
+
+	checkitem ITEM_ROCKET_DOSSIER
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Mart_EventScript_RocketRewardCheck
+	checkitemspace ITEM_ROCKET_DOSSIER
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Mart_EventScript_RocketReturnNoRoom
+	giveitem ITEM_ROCKET_DOSSIER
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Mart_EventScript_RocketReturnNoRoom
+
+ViridianCity_Mart_EventScript_RocketRewardCheck::
+	checkitemspace ITEM_POKE_BALL, 5
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Mart_EventScript_RocketReturnNoRoom
+	giveitem ITEM_POKE_BALL, 5
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Mart_EventScript_RocketReturnNoRoom
+	setflag FLAG_SAM_ROCKET_VIRIDIAN_COMPLETE
+	setflag FLAG_HIDE_SAM_ROCKET_VIRIDIAN_EVENT
+	setvar VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 3
+	releaseall
+	end
+
+ViridianCity_Mart_EventScript_RocketReturnNoRoom::
+	msgbox Route24_Text_YouDontHaveAnyRoom
 	releaseall
 	end
 
@@ -52,6 +82,7 @@ ViridianCity_Mart_Movement_FacePlayer::
 ViridianCity_Mart_EventScript_Clerk::
 	lock
 	faceplayer
+	goto_if_set FLAG_SAM_ROCKET_VIRIDIAN_COMPLETE, ViridianCity_Mart_EventScript_RocketThanks
 	goto_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 1, ViridianCity_Mart_EventScript_SayHiToOak
 	goto_if_questlog EventScript_ReleaseEnd
 	message Text_MayIHelpYou
@@ -68,6 +99,16 @@ ViridianCity_Mart_Items::
 	.2byte ITEM_ANTIDOTE
 	.2byte ITEM_PARALYZE_HEAL
 	.2byte ITEM_NONE
+	release
+	end
+
+ViridianCity_Mart_EventScript_RocketThanks::
+	msgbox ViridianCity_Mart_Text_RocketThanks
+	goto_if_questlog EventScript_ReleaseEnd
+	message Text_MayIHelpYou
+	waitmessage
+	pokemart ViridianCity_Mart_Items
+	msgbox Text_PleaseComeAgain
 	release
 	end
 

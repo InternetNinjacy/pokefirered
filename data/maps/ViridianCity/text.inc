@@ -123,3 +123,33 @@ ViridianCity_Text_GymSign::
 ViridianCity_Text_GymDoorsAreLocked::
     .string "VIRIDIAN GYM's doors are locked…$"
 
+
+
+ViridianCity_Text_RocketThiefHandoff::
+    .string "THIEF: Here. Everything they had.\p"
+    .string "Balls, medicine... all of it.\p"
+    .string "ROCKET GRUNT: Good. Keep your voice\n"
+    .string "down.\p"
+    .string "You'll get paid when I know it's\n"
+    .string "all here.$"
+
+ViridianCity_Text_RocketThiefSpotsPlayer::
+    .string "THIEF: Hey--someone's coming.\p"
+    .string "ROCKET GRUNT: Then get lost.\p"
+    .string "I'll deal with the kid.$"
+
+ViridianCity_Text_RocketFenceConfrontation::
+    .string "ROCKET GRUNT: Wrong place, kid.\p"
+    .string "Walk away.$"
+
+ViridianCity_Text_RocketFenceDefeat::
+    .string "Tch... not worth getting caught\n"
+    .string "over.$"
+
+ViridianCity_Text_RocketFenceLeavesGoods::
+    .string "ROCKET GRUNT: Keep the bag.\p"
+    .string "I'm gone!$"
+
+ViridianCity_Text_RecoveredGoods::
+    .string "{PLAYER} recovered the RECOVERED\n"
+    .string "GOODS!$"

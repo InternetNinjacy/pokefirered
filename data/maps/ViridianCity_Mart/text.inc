@@ -24,3 +24,17 @@ ViridianCity_Mart_Text_GotToBuySomePotions::
     .string "You never know when your POKéMON\n"
     .string "will need quick healing.$"
 
+
+
+ViridianCity_Mart_Text_RocketGoodsReturned::
+    .string "Those are ours!\p"
+    .string "They disappeared from a delivery\n"
+    .string "this morning.\p"
+    .string "You actually got them back?\p"
+    .string "Thank you. Really.\p"
+    .string "Take these.\p"
+    .string "You'll make better use of them\n"
+    .string "than I will.$"
+
+ViridianCity_Mart_Text_RocketThanks::
+    .string "Thank you. Really.$"

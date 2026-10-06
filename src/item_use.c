@@ -345,6 +345,21 @@ void FieldUseFunc_CoinCase(u8 taskId)
         DisplayItemMessageOnField(taskId, FONT_NORMAL, gStringVar4, Task_ItemUse_CloseMessageBoxAndReturnToField);
 }
 
+static const u8 gText_RocketDossierDelivery01[] = _(
+    "DELIVERY 01\\n"
+    "VIRIDIAN COLLECTION - RECEIVED\\p"
+    "NORTHBOUND MATERIAL - PENDING\\n"
+    "PEWTER / MT. MOON");
+
+void FieldUseFunc_RocketDossier(u8 taskId)
+{
+    ItemUse_SetQuestLogEvent(QL_EVENT_USED_ITEM, NULL, gSpecialVar_ItemId, 0xFFFF);
+    if (gTasks[taskId].data[3] == 0)
+        DisplayItemMessageInBag(taskId, FONT_NORMAL, gText_RocketDossierDelivery01, Task_ReturnToBagFromContextMenu);
+    else
+        DisplayItemMessageOnField(taskId, FONT_NORMAL, gText_RocketDossierDelivery01, Task_ItemUse_CloseMessageBoxAndReturnToField);
+}
+
 void FieldUseFunc_PowderJar(u8 taskId)
 {
     ConvertIntToDecimalStringN(gStringVar1, GetBerryPowder(), STR_CONV_MODE_LEFT_ALIGN, 5);

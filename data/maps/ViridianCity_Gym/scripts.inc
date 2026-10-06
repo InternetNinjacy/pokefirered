@@ -1,5 +1,52 @@
 ViridianCity_Gym_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, ViridianCity_Gym_OnLoad
 	.byte 0
+
+ViridianCity_Gym_OnLoad::
+	call EventScript_ThomasSyncVisibility
+	end
+
+ViridianCity_Gym_EventScript_Thomas::
+	lock
+	faceplayer
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_CINNABAR_CLEARED, ViridianCity_Gym_EventScript_ThomasCheckBattle
+	release
+	end
+
+ViridianCity_Gym_EventScript_ThomasCheckBattle::
+	checktrainerflag TRAINER_THOMAS_VIRIDIAN_GYM
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Gym_EventScript_ThomasDollHandoff
+	goto ViridianCity_Gym_EventScript_ThomasBattle
+	end
+
+ViridianCity_Gym_EventScript_ThomasBattle::
+	call Thomas_EventScript_ViridianPreBattle
+	trainerbattle_no_intro TRAINER_THOMAS_VIRIDIAN_GYM, Thomas_Text_ViridianDefeat
+	goto ViridianCity_Gym_EventScript_ThomasDollHandoff
+	end
+
+ViridianCity_Gym_EventScript_ThomasDollHandoff::
+	checkitem ITEM_15B
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Gym_EventScript_ThomasFinishDeparture
+	checkitemspace ITEM_15B
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_ThomasDollNoRoom
+	additem ITEM_15B
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_ThomasDollNoRoom
+	msgbox Thomas_Text_ViridianDollReceived
+	msgbox Thomas_Text_ViridianDollHandoff
+	goto ViridianCity_Gym_EventScript_ThomasFinishDeparture
+	end
+
+ViridianCity_Gym_EventScript_ThomasFinishDeparture::
+	call EventScript_ThomasSetQuitRocket
+	removeobject VAR_LAST_TALKED
+	release
+	end
+
+ViridianCity_Gym_EventScript_ThomasDollNoRoom::
+	msgbox Thomas_Text_ViridianDollNoRoom
+	release
+	end
 
 ViridianCity_Gym_EventScript_Giovanni::
 	famechecker FAMECHECKER_GIOVANNI, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
@@ -103,3 +150,5 @@ ViridianCity_Gym_EventScript_GymStatuePostVictory::
 	msgbox ViridianCity_Gym_Text_GymStatuePlayerWon
 	releaseall
 	end
+
+	.include "data/maps/ViridianCity_Gym/thomas_epilogue.inc"
