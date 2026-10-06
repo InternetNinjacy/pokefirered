@@ -255,7 +255,7 @@ void ResetMenuAndMonGlobals(void)
     ResetSpecialVars();
 }
 
-void NewGameInitData(void)
+bool8 NewGameInitData(void)
 {
     u8 rivalName[PLAYER_NAME_LENGTH + 1];
     u8 greenName[PLAYER_NAME_LENGTH + 1];
@@ -268,7 +268,7 @@ void NewGameInitData(void)
         if (newGamePlusCarryover == NULL)
         {
             gNewGamePlusRequested = FALSE;
-            return;
+            return FALSE;
         }
     }
 
@@ -325,6 +325,7 @@ void NewGameInitData(void)
         Free(newGamePlusCarryover);
     }
     gNewGamePlusRequested = FALSE;
+    return TRUE;
 }
 
 static void ResetMiniGamesResults(void)
