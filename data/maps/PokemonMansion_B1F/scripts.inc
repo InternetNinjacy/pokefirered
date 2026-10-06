@@ -21,7 +21,7 @@ PokemonMansion_B1F_EventScript_DiarySep1st::
 	end
 
 PokemonMansion_B1F_EventScript_Lewis::
-	trainerbattle_single TRAINER_BURGLAR_LEWIS, PokemonMansion_B1F_Text_LewisIntro, PokemonMansion_B1F_Text_LewisDefeat
+	trainerbattle_double TRAINER_BURGLAR_LEWIS, PokemonMansion_B1F_Text_LewisIntro, PokemonMansion_B1F_Text_LewisDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox PokemonMansion_B1F_Text_LewisPostBattle, MSGBOX_AUTOCLOSE
 	end
 
