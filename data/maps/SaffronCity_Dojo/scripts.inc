@@ -11,6 +11,10 @@ SaffronCity_Dojo_MapScripts::
 @ VAR_0x409D = VAR_SAM_HOTHOUSE_TEMPERATURE
 @ VAR_0x409E = VAR_SAM_HOTHOUSE_SOIL
 @ VAR_0x409F = VAR_SAM_HOTHOUSE_STATE
+@
+@ Dormant Ruby/Sapphire dummy trainer IDs are used for the five Hothouse
+@ battles. Their trainer flags are otherwise unused in FireRed, so the four
+@ gardener flags also provide persistent control unlock state.
 
 EventScript_Sam_Hothouse_EntryPlaque::
 	msgbox SaffronCity_Dojo_Text_HothousePlaque, MSGBOX_SIGN
@@ -23,7 +27,7 @@ EventScript_Sam_Hothouse_Hawthorne::
 	goto_if_set FLAG_0x32E, EventScript_Sam_Hothouse_HawthorneRewardPending
 	goto_if_unset FLAG_0x32C, EventScript_Sam_Hothouse_HawthorneNotStarted
 	goto_if_unset FLAG_0x32D, EventScript_Sam_Hothouse_HawthornePuzzleActive
-	trainerbattle_single TRAINER_BLACK_BELT_KOICHI, SaffronCity_Dojo_Text_HawthorneBattleStart, SaffronCity_Dojo_Text_HawthorneDefeat, EventScript_Sam_Hothouse_HawthorneWon
+	trainerbattle_single TRAINER_RS_COOLTRAINER_M, SaffronCity_Dojo_Text_HawthorneBattleStart, SaffronCity_Dojo_Text_HawthorneDefeat, EventScript_Sam_Hothouse_HawthorneWon
 	msgbox SaffronCity_Dojo_Text_HawthorneRetry, MSGBOX_AUTOCLOSE
 	release
 	end
@@ -58,8 +62,8 @@ EventScript_Sam_Hothouse_HawthorneWon::
 
 EventScript_Sam_Hothouse_HawthorneRewardPending::
 	msgbox SaffronCity_Dojo_Text_HawthorneRewardPending, MSGBOX_DEFAULT
-	@ Gift delivery is intentionally delegated to the shared authored/pre-owned
-	@ Special Acquisition helper; FLAG_0x32F must only be set after success.
+	@ Gift delivery is delegated to the shared authored/pre-owned Special
+	@ Acquisition helper. FLAG_0x32F is set only after successful delivery.
 	release
 	end
 
@@ -70,25 +74,25 @@ EventScript_Sam_Hothouse_HawthorneCompleted::
 
 EventScript_Sam_Hothouse_IrrigationGardener::
 	goto_if_unset FLAG_0x32C, EventScript_Sam_Hothouse_WorkAreaLocked
-	trainerbattle_single TRAINER_BLACK_BELT_HITOSHI, SaffronCity_Dojo_Text_IrrigationIntro, SaffronCity_Dojo_Text_IrrigationDefeat
+	trainerbattle_single TRAINER_RS_AROMA_LADY, SaffronCity_Dojo_Text_IrrigationIntro, SaffronCity_Dojo_Text_IrrigationDefeat
 	msgbox SaffronCity_Dojo_Text_IrrigationClue, MSGBOX_AUTOCLOSE
 	end
 
 EventScript_Sam_Hothouse_SunGardener::
 	goto_if_unset FLAG_0x32C, EventScript_Sam_Hothouse_WorkAreaLocked
-	trainerbattle_single TRAINER_BLACK_BELT_HIDEKI, SaffronCity_Dojo_Text_SunIntro, SaffronCity_Dojo_Text_SunDefeat
+	trainerbattle_single TRAINER_RS_LADY, SaffronCity_Dojo_Text_SunIntro, SaffronCity_Dojo_Text_SunDefeat
 	msgbox SaffronCity_Dojo_Text_SunClue, MSGBOX_AUTOCLOSE
 	end
 
 EventScript_Sam_Hothouse_ClimateGardener::
 	goto_if_unset FLAG_0x32C, EventScript_Sam_Hothouse_WorkAreaLocked
-	trainerbattle_single TRAINER_BLACK_BELT_AARON, SaffronCity_Dojo_Text_ClimateIntro, SaffronCity_Dojo_Text_ClimateDefeat
+	trainerbattle_single TRAINER_RS_BEAUTY, SaffronCity_Dojo_Text_ClimateIntro, SaffronCity_Dojo_Text_ClimateDefeat
 	msgbox SaffronCity_Dojo_Text_ClimateClue, MSGBOX_AUTOCLOSE
 	end
 
 EventScript_Sam_Hothouse_SoilGardener::
 	goto_if_unset FLAG_0x32C, EventScript_Sam_Hothouse_WorkAreaLocked
-	trainerbattle_single TRAINER_BLACK_BELT_MIKE, SaffronCity_Dojo_Text_SoilIntro, SaffronCity_Dojo_Text_SoilDefeat
+	trainerbattle_single TRAINER_RS_PKMN_BREEDER_M, SaffronCity_Dojo_Text_SoilIntro, SaffronCity_Dojo_Text_SoilDefeat
 	msgbox SaffronCity_Dojo_Text_SoilClue, MSGBOX_AUTOCLOSE
 	end
 
@@ -98,7 +102,7 @@ EventScript_Sam_Hothouse_WorkAreaLocked::
 
 EventScript_Sam_Hothouse_IrrigationControl::
 	lock
-	checktrainerflag TRAINER_BLACK_BELT_HITOSHI
+	checktrainerflag TRAINER_RS_AROMA_LADY
 	goto_if_eq VAR_RESULT, 0, EventScript_Sam_Hothouse_ControlLocked
 	goto_if_eq VAR_0x409B, 0, EventScript_Sam_Hothouse_IrrigationSetMedium
 	goto_if_eq VAR_0x409B, 1, EventScript_Sam_Hothouse_IrrigationSetHigh
@@ -116,7 +120,7 @@ EventScript_Sam_Hothouse_IrrigationSetHigh::
 
 EventScript_Sam_Hothouse_SunlightControl::
 	lock
-	checktrainerflag TRAINER_BLACK_BELT_HIDEKI
+	checktrainerflag TRAINER_RS_LADY
 	goto_if_eq VAR_RESULT, 0, EventScript_Sam_Hothouse_ControlLocked
 	goto_if_eq VAR_0x409C, 0, EventScript_Sam_Hothouse_SunSetPartial
 	goto_if_eq VAR_0x409C, 1, EventScript_Sam_Hothouse_SunSetFull
@@ -134,7 +138,7 @@ EventScript_Sam_Hothouse_SunSetFull::
 
 EventScript_Sam_Hothouse_TemperatureControl::
 	lock
-	checktrainerflag TRAINER_BLACK_BELT_AARON
+	checktrainerflag TRAINER_RS_BEAUTY
 	goto_if_eq VAR_RESULT, 0, EventScript_Sam_Hothouse_ControlLocked
 	goto_if_eq VAR_0x409D, 0, EventScript_Sam_Hothouse_TempSetWarm
 	goto_if_eq VAR_0x409D, 1, EventScript_Sam_Hothouse_TempSetHot
@@ -152,7 +156,7 @@ EventScript_Sam_Hothouse_TempSetHot::
 
 EventScript_Sam_Hothouse_SoilControl::
 	lock
-	checktrainerflag TRAINER_BLACK_BELT_MIKE
+	checktrainerflag TRAINER_RS_PKMN_BREEDER_M
 	goto_if_eq VAR_RESULT, 0, EventScript_Sam_Hothouse_ControlLocked
 	goto_if_eq VAR_0x409E, 0, EventScript_Sam_Hothouse_SoilSetBalanced
 	goto_if_eq VAR_0x409E, 1, EventScript_Sam_Hothouse_SoilSetRich
