@@ -5220,7 +5220,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TuberAmira),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TuberAmira),
     },
     [TRAINER_PKMN_BREEDER_ALIZE] = {
         .trainerClass = TRAINER_CLASS_PKMN_BREEDER,
@@ -5318,9 +5318,9 @@ const struct Trainer gTrainers[] = {
         .trainerPic = TRAINER_PIC_BIKER,
         .trainerName = _("GOON"),
         .items = {},
-        .doubleBattle = FALSE,
+        .doubleBattle = TRUE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_BikerGoon3),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_BikerGoon3),
     },
     [TRAINER_BIKER_2] = {
         .trainerClass = TRAINER_CLASS_BIKER,
@@ -5618,7 +5618,7 @@ const struct Trainer gTrainers[] = {
         .trainerPic = TRAINER_PIC_TUBER_F,
         .trainerName = _("ALEXIS"),
         .items = {},
-        .doubleBattle = FALSE,
+        .doubleBattle = TRUE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_TuberAlexis),
     },
@@ -5630,7 +5630,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = TRUE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TwinsJoyMeg),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TwinsJoyMeg),
     },
     [TRAINER_SWIMMER_FEMALE_TISHA] = {
         .trainerClass = TRAINER_CLASS_SWIMMER_F,
@@ -7450,6 +7450,6 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_CueBallPaxton),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_CueBallPaxton),
     },
 };
