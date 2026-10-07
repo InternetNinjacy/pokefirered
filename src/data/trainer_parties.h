@@ -11373,3 +11373,99 @@ static const struct TrainerMonNoItemDefaultMoves sParty_RocketViridianFence[] = 
     { .iv = 0, .lvl = 4, .species = SPECIES_RATTATA },
     { .iv = 0, .lvl = 5, .species = SPECIES_ZUBAT },
 };
+
+static const struct TrainerMonNoItemCustomMoves sParty_HikerCliffPewter[] = {
+    {
+        .iv = 30,
+        .lvl = 10,
+        .species = SPECIES_SHELLDER,
+        .moves = {MOVE_TACKLE, MOVE_WITHDRAW, MOVE_SUPERSONIC, MOVE_ICICLE_SPEAR},
+    },
+    {
+        .iv = 30,
+        .lvl = 11,
+        .species = SPECIES_SEEL,
+        .moves = {MOVE_HEADBUTT, MOVE_GROWL, MOVE_ICY_WIND, MOVE_NONE},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_HikerMilesPewter[] = {
+    {
+        .iv = 30,
+        .lvl = 11,
+        .species = SPECIES_SMOOCHUM,
+        .moves = {MOVE_POUND, MOVE_LICK, MOVE_SWEET_KISS, MOVE_POWDER_SNOW},
+    },
+    {
+        .iv = 30,
+        .lvl = 12,
+        .species = SPECIES_SHELLDER,
+        .moves = {MOVE_ICICLE_SPEAR, MOVE_SUPERSONIC, MOVE_WITHDRAW, MOVE_WATER_GUN},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_LeaderBorealPewter[] = {
+    {
+        .iv = 100,
+        .lvl = 12,
+        .species = SPECIES_SMOOCHUM,
+        .moves = {MOVE_ICY_WIND, MOVE_POUND, MOVE_LICK, MOVE_SWEET_KISS},
+    },
+    {
+        .iv = 100,
+        .lvl = 13,
+        .species = SPECIES_SEEL,
+        .moves = {MOVE_ICY_WIND, MOVE_HEADBUTT, MOVE_GROWL, MOVE_NONE},
+    },
+    {
+        .iv = 100,
+        .lvl = 14,
+        .species = SPECIES_SPHEAL,
+        .moves = {MOVE_ICE_BALL, MOVE_WATER_GUN, MOVE_ENCORE, MOVE_DEFENSE_CURL},
+    },
+};
+
+static const struct TrainerMonItemCustomMoves sParty_LeaderBorealRematchPewter[] = {
+    {
+        .iv = 255,
+        .lvl = 58,
+        .species = SPECIES_DEWGONG,
+        .heldItem = ITEM_NEVER_MELT_ICE,
+        .moves = {MOVE_ICY_WIND, MOVE_SURF, MOVE_ICE_BEAM, MOVE_REST},
+    },
+    {
+        .iv = 255,
+        .lvl = 59,
+        .species = SPECIES_JYNX,
+        .heldItem = ITEM_TWISTED_SPOON,
+        .moves = {MOVE_ICE_BEAM, MOVE_PSYCHIC, MOVE_LOVELY_KISS, MOVE_CALM_MIND},
+    },
+    {
+        .iv = 255,
+        .lvl = 60,
+        .species = SPECIES_CLOYSTER,
+        .heldItem = ITEM_MYSTIC_WATER,
+        .moves = {MOVE_ICE_BEAM, MOVE_SURF, MOVE_SPIKES, MOVE_PROTECT},
+    },
+    {
+        .iv = 255,
+        .lvl = 61,
+        .species = SPECIES_SNORLAX,
+        .heldItem = ITEM_CHESTO_BERRY,
+        .moves = {MOVE_BODY_SLAM, MOVE_EARTHQUAKE, MOVE_SHADOW_BALL, MOVE_REST},
+    },
+    {
+        .iv = 255,
+        .lvl = 62,
+        .species = SPECIES_LAPRAS,
+        .heldItem = ITEM_MAGNET,
+        .moves = {MOVE_SURF, MOVE_ICE_BEAM, MOVE_THUNDERBOLT, MOVE_CONFUSE_RAY},
+    },
+    {
+        .iv = 255,
+        .lvl = 64,
+        .species = SPECIES_WALREIN,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_SURF, MOVE_ICE_BEAM, MOVE_ENCORE, MOVE_REST},
+    },
+};

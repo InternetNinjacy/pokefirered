@@ -833,6 +833,10 @@
 #define TRAINER_GREEN_POSTGAME_RAICHU            846
 
 // Thomas Team Rocket rival allocations: 784-789.
+#define TRAINER_HIKER_CLIFF_PEWTER               775
+#define TRAINER_HIKER_MILES_PEWTER               776
+#define TRAINER_LEADER_BOREAL_PEWTER             777
+#define TRAINER_LEADER_BOREAL_REMATCH_PEWTER     778
 #define TRAINER_THOMAS_NUGGET_BRIDGE               784
 #define TRAINER_THOMAS_CELADON_HIDEOUT             785
 #define TRAINER_THOMAS_POKEMON_TOWER               786

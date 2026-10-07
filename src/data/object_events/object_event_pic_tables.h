@@ -979,6 +979,18 @@ static const struct SpriteFrameImage sPicTable_Brock[] = {
     overworld_frame(gObjectEventPic_Brock, 2, 4, 2),
 };
 
+static const struct SpriteFrameImage sPicTable_Boreal[] = {
+    overworld_frame(gObjectEventPic_Boreal, 2, 4, 0),
+    overworld_frame(gObjectEventPic_Boreal, 2, 4, 1),
+    overworld_frame(gObjectEventPic_Boreal, 2, 4, 2),
+    overworld_frame(gObjectEventPic_Boreal, 2, 4, 0),
+    overworld_frame(gObjectEventPic_Boreal, 2, 4, 0),
+    overworld_frame(gObjectEventPic_Boreal, 2, 4, 1),
+    overworld_frame(gObjectEventPic_Boreal, 2, 4, 1),
+    overworld_frame(gObjectEventPic_Boreal, 2, 4, 2),
+    overworld_frame(gObjectEventPic_Boreal, 2, 4, 2),
+};
+
 static const struct SpriteFrameImage sPicTable_Misty[] = {
     overworld_frame(gObjectEventPic_Misty, 2, 4, 0),
     overworld_frame(gObjectEventPic_Misty, 2, 4, 1),
