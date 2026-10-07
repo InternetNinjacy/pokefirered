@@ -192,3 +192,87 @@ CinnabarIsland_Gym_Text_DustyWrong::
 CinnabarIsland_Gym_Text_ZacWrong::
     .string "You've underestimated the cumulative influence of extremely modest forces operating across geological time. It is a common mistake. Human intuition is poorly calibrated for several million years.$"
 
+
+CinnabarIsland_Gym_Text_SatoshiFirst::
+    .string "Back again?\\n"
+    .string "Blaine teaches ROCK through geology.\\n"
+    .string "His assistants can make it sound complicated, but the matchup is simple.\\n"
+    .string "Rock is weak to WATER, GRASS, FIGHTING, GROUND, and STEEL.\\n"
+    .string "Rock Pokémon are usually sturdy on the physical side, so don't waste turns trying to out-muscle them.\\n"
+    .string "And check the second type. Omastar, Kabutops, and Aerodactyl don't all have the same weaknesses.\\n"
+    .string "My Rhyhorn is a pure Rock-type.\\n"
+    .string "Want a quick practice battle?$"
+
+CinnabarIsland_Gym_Text_SatoshiYes::
+    .string "Good.\\n"
+    .string "Find the weakness.\\n"
+    .string "Don't just hammer away.\\n"
+    .string "Let's go.$"
+
+CinnabarIsland_Gym_Text_SatoshiDecline::
+    .string "Fair enough.\\n"
+    .string "Remember the five:\\n"
+    .string "WATER, GRASS, FIGHTING, GROUND, and STEEL.\\n"
+    .string "Then check the second type.$"
+
+CinnabarIsland_Gym_Text_SatoshiWin::
+    .string "That's it.\\n"
+    .string "You read the matchup instead of the shape.\\n"
+    .string "Blaine's assistants will make the lesson sound complicated.\\n"
+    .string "The battle doesn't have to be.$"
+
+CinnabarIsland_Gym_Text_SatoshiLoss::
+    .string "See what I mean?\\n"
+    .string "Rock can take a physical hit.\\n"
+    .string "If you attack the wrong way, it feels like punching a wall.\\n"
+    .string "Want another try?$"
+
+CinnabarIsland_Gym_Text_SatoshiRetry::
+    .string "Want another try?$"
+
+CinnabarIsland_Gym_Text_SatoshiRetryYes::
+    .string "Good.\\n"
+    .string "This time, make the type chart do some of the work.$"
+
+CinnabarIsland_Gym_Text_SatoshiRetryNo::
+    .string "No problem.\\n"
+    .string "Blaine's exam will still be there.$"
+
+CinnabarIsland_Gym_Text_SatoshiRepeat::
+    .string "Short version?\\n"
+    .string "WATER, GRASS, FIGHTING, GROUND, and STEEL all pressure Rock.\\n"
+    .string "Check the second type before you commit.$"
+
+CinnabarIsland_Gym_Text_SatoshiAfterPracticed::
+    .string "Strata Badge.\\n"
+    .string "Nice work.\\n"
+    .string "TM23 contains Boulder Bash-strong Rock damage with a chance to lower Defense.\\n"
+    .string "Looks like you passed both the lecture and the lab.$"
+
+CinnabarIsland_Gym_Text_SatoshiAfterSkipped::
+    .string "You passed without my practice round.\\n"
+    .string "Can't argue with the grade.\\n"
+    .string "TM23 contains Boulder Bash-strong Rock damage with a chance to lower Defense.$"
+
+CinnabarIsland_Gym_Text_SatoshiRematchOffer::
+    .string "Back on campus?\\n"
+    .string "I've expanded the lesson since last time.\\n"
+    .string "Want the advanced course?$"
+
+CinnabarIsland_Gym_Text_SatoshiRematchDecline::
+    .string "Fair enough.\\n"
+    .string "Office hours aren't mandatory.$"
+
+CinnabarIsland_Gym_Text_SatoshiRematchStart::
+    .string "Let's see what the advanced course taught you.$"
+
+CinnabarIsland_Gym_Text_SatoshiRematchDefeat::
+    .string "Excellent.\\n"
+    .string "You've moved well beyond the introductory material.$"
+
+CinnabarIsland_Gym_Text_SatoshiRematchAfter::
+    .string "Excellent.\\n"
+    .string "You've moved well beyond the introductory material.$"
+
+CinnabarIsland_Gym_Text_SatoshiBattleDefeatEmpty::
+    .string "$"
