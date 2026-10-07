@@ -2964,66 +2964,26 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SwimmerFemaleShirley[] =
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_PsychicJohan[] = {
-    {
-        .iv = 50,
-        .lvl = 31,
-        .species = SPECIES_KADABRA,
-    },
-    {
-        .iv = 50,
-        .lvl = 31,
-        .species = SPECIES_SLOWPOKE,
-    },
-    {
-        .iv = 50,
-        .lvl = 31,
-        .species = SPECIES_MR_MIME,
-    },
-    {
-        .iv = 50,
-        .lvl = 31,
-        .species = SPECIES_KADABRA,
-    },
+static const struct TrainerMonNoItemCustomMoves sParty_PsychicJohan[] = {
+    { .iv = 50, .lvl = 35, .species = SPECIES_GASTLY, .moves = {MOVE_HYPNOSIS, MOVE_DREAM_EATER, MOVE_MEAN_LOOK, MOVE_CONFUSE_RAY} },
+    { .iv = 50, .lvl = 36, .species = SPECIES_DUSCLOPS, .moves = {MOVE_WILL_O_WISP, MOVE_SHADOW_PUNCH, MOVE_PROTECT, MOVE_PAIN_SPLIT} },
+    { .iv = 50, .lvl = 36, .species = SPECIES_LICKITUNG, .moves = {MOVE_BODY_SLAM, MOVE_LICK, MOVE_WRAP, MOVE_KNOCK_OFF} },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_PsychicTyron[] = {
-    {
-        .iv = 50,
-        .lvl = 34,
-        .species = SPECIES_MR_MIME,
-    },
-    {
-        .iv = 50,
-        .lvl = 34,
-        .species = SPECIES_KADABRA,
-    },
+static const struct TrainerMonNoItemCustomMoves sParty_PsychicTyron[] = {
+    { .iv = 50, .lvl = 35, .species = SPECIES_HAUNTER, .moves = {MOVE_HYPNOSIS, MOVE_DREAM_EATER, MOVE_MEAN_LOOK, MOVE_NIGHT_SHADE} },
+    { .iv = 50, .lvl = 35, .species = SPECIES_SHUPPET, .moves = {MOVE_SHADOW_BALL, MOVE_SHADOW_PUNCH, MOVE_SCREECH, MOVE_KNOCK_OFF} },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_PsychicCameron[] = {
-    {
-        .iv = 50,
-        .lvl = 33,
-        .species = SPECIES_SLOWPOKE,
-    },
-    {
-        .iv = 50,
-        .lvl = 33,
-        .species = SPECIES_SLOWPOKE,
-    },
-    {
-        .iv = 50,
-        .lvl = 33,
-        .species = SPECIES_SLOWBRO,
-    },
+static const struct TrainerMonNoItemCustomMoves sParty_PsychicCameron[] = {
+    { .iv = 50, .lvl = 36, .species = SPECIES_LICKITUNG, .moves = {MOVE_BODY_SLAM, MOVE_LICK, MOVE_KNOCK_OFF, MOVE_DISABLE} },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_PsychicPreston[] = {
-    {
-        .iv = 50,
-        .lvl = 38,
-        .species = SPECIES_SLOWBRO,
-    },
+static const struct TrainerMonNoItemCustomMoves sParty_PsychicPreston[] = {
+    { .iv = 50, .lvl = 36, .species = SPECIES_HAUNTER, .moves = {MOVE_HYPNOSIS, MOVE_DREAM_EATER, MOVE_SHADOW_BALL, MOVE_GIGA_DRAIN} },
+    { .iv = 50, .lvl = 37, .species = SPECIES_BANETTE, .moves = {MOVE_SHADOW_BALL, MOVE_SHADOW_PUNCH, MOVE_SCREECH, MOVE_KNOCK_OFF} },
+    { .iv = 50, .lvl = 37, .species = SPECIES_DUSCLOPS, .moves = {MOVE_WILL_O_WISP, MOVE_SHADOW_PUNCH, MOVE_PAIN_SPLIT, MOVE_PROTECT} },
+    { .iv = 50, .lvl = 37, .species = SPECIES_LICKITUNG, .moves = {MOVE_BODY_SLAM, MOVE_LICK, MOVE_KNOCK_OFF, MOVE_DISABLE} },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_RockerRandall[] = {
@@ -6503,43 +6463,19 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Channeler8[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_ChannelerAmanda[] = {
-    {
-        .iv = 0,
-        .lvl = 34,
-        .species = SPECIES_GASTLY,
-    },
-    {
-        .iv = 0,
-        .lvl = 34,
-        .species = SPECIES_HAUNTER,
-    },
+static const struct TrainerMonNoItemCustomMoves sParty_ChannelerAmanda[] = {
+    { .iv = 50, .lvl = 36, .species = SPECIES_DUSKULL, .moves = {MOVE_WILL_O_WISP, MOVE_PROTECT, MOVE_PAIN_SPLIT, MOVE_NIGHT_SHADE} },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_ChannelerStacy[] = {
-    {
-        .iv = 0,
-        .lvl = 38,
-        .species = SPECIES_HAUNTER,
-    },
+static const struct TrainerMonNoItemCustomMoves sParty_ChannelerStacy[] = {
+    { .iv = 50, .lvl = 34, .species = SPECIES_GASTLY, .moves = {MOVE_HYPNOSIS, MOVE_DREAM_EATER, MOVE_NIGHT_SHADE, MOVE_CONFUSE_RAY} },
+    { .iv = 50, .lvl = 34, .species = SPECIES_DUSKULL, .moves = {MOVE_WILL_O_WISP, MOVE_NIGHT_SHADE, MOVE_DISABLE, MOVE_PROTECT} },
+    { .iv = 50, .lvl = 34, .species = SPECIES_SHUPPET, .moves = {MOVE_SHADOW_PUNCH, MOVE_KNOCK_OFF, MOVE_SCREECH, MOVE_CURSE} },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_ChannelerTasha[] = {
-    {
-        .iv = 0,
-        .lvl = 33,
-        .species = SPECIES_GASTLY,
-    },
-    {
-        .iv = 0,
-        .lvl = 33,
-        .species = SPECIES_GASTLY,
-    },
-    {
-        .iv = 0,
-        .lvl = 33,
-        .species = SPECIES_HAUNTER,
-    },
+static const struct TrainerMonNoItemCustomMoves sParty_ChannelerTasha[] = {
+    { .iv = 50, .lvl = 35, .species = SPECIES_SHUPPET, .moves = {MOVE_SHADOW_BALL, MOVE_SHADOW_PUNCH, MOVE_SCREECH, MOVE_CURSE} },
+    { .iv = 50, .lvl = 36, .species = SPECIES_HAUNTER, .moves = {MOVE_HYPNOSIS, MOVE_DREAM_EATER, MOVE_CONFUSE_RAY, MOVE_GIGA_DRAIN} },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_HikerJeremy[] = {
