@@ -189,6 +189,8 @@
 #define TRAINER_PIC_GREEN_LEAGUE_OPENING     159
 #define TRAINER_PIC_GREEN_LEAGUE_DEFEAT      160
 #define TRAINER_PIC_THOMAS                    161
+#define TRAINER_PIC_BLUE_LEAGUE_OPENING        162
+#define TRAINER_PIC_BLUE_LEAGUE_DEFEAT         163
 
 #if TRAINER_PIC_PAINTER != 147
 #error "ARCH-006: vanilla trainer-picture boundary drifted"

@@ -19,6 +19,9 @@ static const u32 gTrainerPalette_BlueGreen[] = INCBIN_U32("graphics/trainers/pal
 static const u32 gTrainerFrontPic_GreenLeagueOpening[] = INCBIN_U32("graphics/trainers/front_pics/green_league_opening.4bpp.lz");
 static const u32 gTrainerFrontPic_GreenLeagueDefeat[] = INCBIN_U32("graphics/trainers/front_pics/green_league_defeat.4bpp.lz");
 static const u32 gTrainerPalette_GreenLeague[] = INCBIN_U32("graphics/trainers/palettes/green_league.gbapal.lz");
+static const u32 gTrainerFrontPic_BlueLeagueOpening[] = INCBIN_U32("graphics/trainers/front_pics/blue_league_opening.4bpp.lz");
+static const u32 gTrainerFrontPic_BlueLeagueDefeat[] = INCBIN_U32("graphics/trainers/front_pics/blue_league_defeat.4bpp.lz");
+static const u32 gTrainerPalette_BlueLeague[] = INCBIN_U32("graphics/trainers/palettes/blue_league.gbapal.lz");
 
 const struct MonCoords gTrainerFrontPicCoords[] =
 {
@@ -354,6 +357,8 @@ const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
     TRAINER_SPRITE(GREEN_LEAGUE_OPENING, gTrainerFrontPic_GreenLeagueOpening, 0x800),
     TRAINER_SPRITE(GREEN_LEAGUE_DEFEAT, gTrainerFrontPic_GreenLeagueDefeat, 0x800),
     TRAINER_SPRITE(THOMAS, gTrainerFrontPic_Thomas, 0x800),
+    TRAINER_SPRITE(BLUE_LEAGUE_OPENING, gTrainerFrontPic_BlueLeagueOpening, 0x800),
+    TRAINER_SPRITE(BLUE_LEAGUE_DEFEAT, gTrainerFrontPic_BlueLeagueDefeat, 0x800),
 };
 
 const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
@@ -521,4 +526,6 @@ const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
     TRAINER_PAL(GREEN_LEAGUE_OPENING, gTrainerPalette_GreenLeague),
     TRAINER_PAL(GREEN_LEAGUE_DEFEAT, gTrainerPalette_GreenLeague),
     TRAINER_PAL(THOMAS, gTrainerPalette_Thomas),
+    TRAINER_PAL(BLUE_LEAGUE_OPENING, gTrainerPalette_BlueLeague),
+    TRAINER_PAL(BLUE_LEAGUE_DEFEAT, gTrainerPalette_BlueLeague),
 };
