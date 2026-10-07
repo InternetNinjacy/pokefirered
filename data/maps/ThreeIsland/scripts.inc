@@ -226,9 +226,8 @@ ThreeIsland_EventScript_BattleBikersScene::
 	applymovement LOCALID_THREE_ISLAND_BIKER3, ThreeIsland_Movement_BikerApproach
 	waitmovement 0
 	playbgm MUS_ENCOUNTER_BOY, 0
-	msgbox ThreeIsland_Text_Biker3Intro
 	setvar VAR_LAST_TALKED, LOCALID_THREE_ISLAND_BIKER3
-	trainerbattle_no_intro TRAINER_BIKER_GOON_3, ThreeIsland_Text_Biker3Defeat
+	trainerbattle_double TRAINER_BIKER_GOON_3, ThreeIsland_Text_Biker3Intro, ThreeIsland_Text_Biker3Defeat, MtMoon_1F_Text_KentNotEnoughMons
 	applymovement LOCALID_THREE_ISLAND_BIKER3, Common_Movement_WalkInPlaceFasterLeft
 	waitmovement 0
 	applymovement LOCALID_THREE_ISLAND_BIKER4, Common_Movement_WalkInPlaceFasterDown

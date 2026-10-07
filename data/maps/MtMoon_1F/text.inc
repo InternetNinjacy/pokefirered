@@ -90,3 +90,7 @@ MtMoon_1F_Text_BrockHelpsExcavateFossils::
     .string "under MT. MOON.\p"
     .string "Sometimes, BROCK of PEWTER GYM\n"
     .string "lends me a hand.$"
+
+MtMoon_1F_Text_KentNotEnoughMons::
+    .string "You need at least two POKéMON\n"
+    .string "to battle!$"

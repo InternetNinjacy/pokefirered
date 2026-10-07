@@ -21,7 +21,7 @@ RockTunnel_1F_EventScript_Oliver::
 	end
 
 RockTunnel_1F_EventScript_Lucas::
-	trainerbattle_single TRAINER_HIKER_LUCAS, RockTunnel_1F_Text_LucasIntro, RockTunnel_1F_Text_LucasDefeat
+	trainerbattle_double TRAINER_HIKER_LUCAS, RockTunnel_1F_Text_LucasIntro, RockTunnel_1F_Text_LucasDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox RockTunnel_1F_Text_LucasPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -36,7 +36,7 @@ RockTunnel_1F_EventScript_Leah::
 	end
 
 RockTunnel_1F_EventScript_Ariana::
-	trainerbattle_single TRAINER_PICNICKER_ARIANA, RockTunnel_1F_Text_ArianaIntro, RockTunnel_1F_Text_ArianaDefeat
+	trainerbattle_double TRAINER_PICNICKER_ARIANA, RockTunnel_1F_Text_ArianaIntro, RockTunnel_1F_Text_ArianaDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox RockTunnel_1F_Text_ArianaPostBattle, MSGBOX_AUTOCLOSE
 	end
 

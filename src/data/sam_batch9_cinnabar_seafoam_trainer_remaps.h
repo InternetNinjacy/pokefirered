@@ -1,0 +1,43 @@
+// Pokémon: Sam Edition — Batch 9 party remaps.
+#include "sam_batch9_cinnabar_seafoam_trainer_parties.h"
+
+// Route 19
+#define sParty_SwimmerMaleReece sParty_SamBatch9_Reece
+#define sParty_SwimmerMaleRichard sParty_SamBatch9_Richard
+#define sParty_SwimmerMaleTony sParty_SamBatch9_Tony
+#define sParty_SwimmerMaleMatthew sParty_SamBatch9_Matthew
+#define sParty_SwimmerMaleDouglas sParty_SamBatch9_Douglas
+#define sParty_SwimmerMaleDavid sParty_SamBatch9_David
+#define sParty_SwimmerMaleAxle sParty_SamBatch9_Axle
+#define sParty_SwimmerFemaleAlice sParty_SamBatch9_Alice
+#define sParty_SwimmerFemaleConnie sParty_SamBatch9_Connie
+#define sParty_SwimmerFemaleAnya sParty_SamBatch9_Anya
+
+// Route 20. Roger retains the authority's Bird Keeper package so his existing
+// bird-specific identity/dialogue remains coherent; Barry takes the remaining Single.
+#define sParty_SwimmerFemaleMelissa sParty_SamBatch9_Melissa
+#define sParty_PicnickerMissy sParty_SamBatch9_Missy
+#define sParty_SwimmerFemaleNora sParty_SamBatch9_Nora
+#define sParty_BirdKeeperRoger sParty_SamBatch9_Barry
+#define sParty_SwimmerMaleDean sParty_SamBatch9_Dean
+#define sParty_PicnickerIrene sParty_SamBatch9_Irene
+#define sParty_SwimmerMaleBarry sParty_SamBatch9_Roger
+
+// Route 21
+#define sParty_FishermanRonald sParty_SamBatch9_Ronald
+#define sParty_FishermanWade sParty_SamBatch9_Wade
+#define sParty_SwimmerMaleSpencer sParty_SamBatch9_Spencer
+#define sParty_SisAndBroLilIan sParty_SamBatch9_LilIan
+#define sParty_FishermanClaude sParty_SamBatch9_Claude
+#define sParty_FishermanNolan sParty_SamBatch9_Nolan
+#define sParty_SwimmerMaleJack sParty_SamBatch9_Jack
+#define sParty_SwimmerMaleJerome sParty_SamBatch9_Jerome
+#define sParty_SwimmerMaleRoland sParty_SamBatch9_Roland
+
+// Cinnabar Pokémon Mansion
+#define sParty_BurglarArnie sParty_SamBatch9_Arnie
+#define sParty_ScientistTed sParty_SamBatch9_Ted
+#define sParty_BurglarSimon sParty_SamBatch9_Simon
+#define sParty_ScientistBraydon sParty_SamBatch9_Braydon
+#define sParty_BurglarLewis sParty_SamBatch9_Lewis
+#define sParty_ScientistIvan sParty_SamBatch9_Ivan
