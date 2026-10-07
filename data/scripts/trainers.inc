@@ -107,7 +107,7 @@ Route4_EventScript_CrissyRematch::
 	end
 
 Route24_EventScript_Timmy::
-	trainerbattle_single TRAINER_YOUNGSTER_TIMMY, Route24_Text_TimmyIntro, Route24_Text_TimmyDefeat
+	trainerbattle_double TRAINER_YOUNGSTER_TIMMY, Route24_Text_TimmyIntro, Route24_Text_TimmyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route24_EventScript_TimmyRematch
 	msgbox Route24_Text_TimmyPostBattle, MSGBOX_AUTOCLOSE
@@ -167,7 +167,7 @@ Route24_EventScript_ShaneRematch::
 	end
 
 Route24_EventScript_Ethan::
-	trainerbattle_single TRAINER_CAMPER_ETHAN, Route24_Text_EthanIntro, Route24_Text_EthanDefeat
+	trainerbattle_double TRAINER_CAMPER_ETHAN, Route24_Text_EthanIntro, Route24_Text_EthanDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route24_EventScript_EthanRematch
 	msgbox Route24_Text_EthanPostBattle, MSGBOX_AUTOCLOSE
@@ -179,7 +179,7 @@ Route24_EventScript_EthanRematch::
 	end
 
 Route25_EventScript_Joey::
-	trainerbattle_single TRAINER_YOUNGSTER_JOEY, Route25_Text_JoeyIntro, Route25_Text_JoeyDefeat
+	trainerbattle_double TRAINER_YOUNGSTER_JOEY, Route25_Text_JoeyIntro, Route25_Text_JoeyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_JoeyRematch
 	msgbox Route25_Text_JoeyPostBattle, MSGBOX_AUTOCLOSE
@@ -191,7 +191,7 @@ Route25_EventScript_JoeyRematch::
 	end
 
 Route25_EventScript_Dan::
-	trainerbattle_single TRAINER_YOUNGSTER_DAN, Route25_Text_DanIntro, Route25_Text_DanDefeat
+	trainerbattle_double TRAINER_YOUNGSTER_DAN, Route25_Text_DanIntro, Route25_Text_DanDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_DanRematch
 	msgbox Route25_Text_DanPostBattle, MSGBOX_AUTOCLOSE
@@ -203,7 +203,7 @@ Route25_EventScript_DanRematch::
 	end
 
 Route25_EventScript_Chad::
-	trainerbattle_single TRAINER_YOUNGSTER_CHAD, Route25_Text_ChadIntro, Route25_Text_ChadDefeat
+	trainerbattle_double TRAINER_YOUNGSTER_CHAD, Route25_Text_ChadIntro, Route25_Text_ChadDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_ChadRematch
 	msgbox Route25_Text_ChadPostBattle, MSGBOX_AUTOCLOSE
@@ -215,7 +215,7 @@ Route25_EventScript_ChadRematch::
 	end
 
 Route25_EventScript_Kelsey::
-	trainerbattle_single TRAINER_PICNICKER_KELSEY, Route25_Text_KelseyIntro, Route25_Text_KelseyDefeat
+	trainerbattle_double TRAINER_PICNICKER_KELSEY, Route25_Text_KelseyIntro, Route25_Text_KelseyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_KelseyRematch
 	msgbox Route25_Text_KelseyPostBattle, MSGBOX_AUTOCLOSE
@@ -227,7 +227,7 @@ Route25_EventScript_KelseyRematch::
 	end
 
 Route25_EventScript_Haley::
-	trainerbattle_single TRAINER_LASS_HALEY, Route25_Text_HaleyIntro, Route25_Text_HaleyDefeat
+	trainerbattle_double TRAINER_LASS_HALEY, Route25_Text_HaleyIntro, Route25_Text_HaleyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_HaleyRematch
 	msgbox Route25_Text_HaleyPostBattle, MSGBOX_AUTOCLOSE
@@ -239,7 +239,7 @@ Route25_EventScript_HaleyRematch::
 	end
 
 Route25_EventScript_Franklin::
-	trainerbattle_single TRAINER_HIKER_FRANKLIN, Route25_Text_FranklinIntro, Route25_Text_FranklinDefeat
+	trainerbattle_double TRAINER_HIKER_FRANKLIN, Route25_Text_FranklinIntro, Route25_Text_FranklinDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_FranklinRematch
 	msgbox Route25_Text_FranklinPostBattle, MSGBOX_AUTOCLOSE
@@ -251,7 +251,7 @@ Route25_EventScript_FranklinRematch::
 	end
 
 Route25_EventScript_Nob::
-	trainerbattle_single TRAINER_HIKER_NOB, Route25_Text_NobIntro, Route25_Text_NobDefeat
+	trainerbattle_double TRAINER_HIKER_NOB, Route25_Text_NobIntro, Route25_Text_NobDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_NobRematch
 	msgbox Route25_Text_NobPostBattle, MSGBOX_AUTOCLOSE
@@ -263,7 +263,7 @@ Route25_EventScript_NobRematch::
 	end
 
 Route25_EventScript_Wayne::
-	trainerbattle_single TRAINER_HIKER_WAYNE, Route25_Text_WayneIntro, Route25_Text_WayneDefeat
+	trainerbattle_double TRAINER_HIKER_WAYNE, Route25_Text_WayneIntro, Route25_Text_WayneDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_WayneRematch
 	msgbox Route25_Text_WaynePostBattle, MSGBOX_AUTOCLOSE
@@ -275,7 +275,7 @@ Route25_EventScript_WayneRematch::
 	end
 
 Route25_EventScript_Flint::
-	trainerbattle_single TRAINER_CAMPER_FLINT, Route25_Text_FlintIntro, Route25_Text_FlintDefeat
+	trainerbattle_double TRAINER_CAMPER_FLINT, Route25_Text_FlintIntro, Route25_Text_FlintDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_FlintRematch
 	msgbox Route25_Text_FlintPostBattle, MSGBOX_AUTOCLOSE
@@ -323,7 +323,7 @@ Route6_EventScript_RickyRematch::
 	end
 
 Route6_EventScript_Jeff::
-	trainerbattle_single TRAINER_CAMPER_JEFF, Route6_Text_JeffIntro, Route6_Text_JeffDefeat
+	trainerbattle_double TRAINER_CAMPER_JEFF, Route6_Text_JeffIntro, Route6_Text_JeffDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route6_EventScript_JeffRematch
 	msgbox Route6_Text_JeffPostBattle, MSGBOX_AUTOCLOSE
@@ -335,7 +335,7 @@ Route6_EventScript_JeffRematch::
 	end
 
 Route6_EventScript_Nancy::
-	trainerbattle_single TRAINER_PICNICKER_NANCY, Route6_Text_NancyIntro, Route6_Text_NancyDefeat
+	trainerbattle_double TRAINER_PICNICKER_NANCY, Route6_Text_NancyIntro, Route6_Text_NancyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route6_EventScript_NancyRematch
 	msgbox Route6_Text_NancyPostBattle, MSGBOX_AUTOCLOSE
@@ -371,7 +371,7 @@ Route11_EventScript_EddieRematch::
 	end
 
 Route11_EventScript_Dillon::
-	trainerbattle_single TRAINER_YOUNGSTER_DILLON, Route11_Text_DillonIntro, Route11_Text_DillonDefeat
+	trainerbattle_double TRAINER_YOUNGSTER_DILLON, Route11_Text_DillonIntro, Route11_Text_DillonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_DillonRematch
 	msgbox Route11_Text_DillonPostBattle, MSGBOX_AUTOCLOSE
@@ -419,7 +419,7 @@ Route11_EventScript_BraxtonRematch::
 	end
 
 Route11_EventScript_Bernie::
-	trainerbattle_single TRAINER_ENGINEER_BERNIE, Route11_Text_BernieIntro, Route11_Text_BernieDefeat
+	trainerbattle_double TRAINER_ENGINEER_BERNIE, Route11_Text_BernieIntro, Route11_Text_BernieDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_BernieRematch
 	msgbox Route11_Text_BerniePostBattle, MSGBOX_AUTOCLOSE
@@ -431,7 +431,7 @@ Route11_EventScript_BernieRematch::
 	end
 
 Route11_EventScript_Hugo::
-	trainerbattle_single TRAINER_GAMER_HUGO, Route11_Text_HugoIntro, Route11_Text_HugoDefeat
+	trainerbattle_double TRAINER_GAMER_HUGO, Route11_Text_HugoIntro, Route11_Text_HugoDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_HugoRematch
 	msgbox Route11_Text_HugoPostBattle, MSGBOX_AUTOCLOSE
@@ -455,7 +455,7 @@ Route11_EventScript_JasperRematch::
 	end
 
 Route11_EventScript_Dirk::
-	trainerbattle_single TRAINER_GAMER_DIRK, Route11_Text_DirkIntro, Route11_Text_DirkDefeat
+	trainerbattle_double TRAINER_GAMER_DIRK, Route11_Text_DirkIntro, Route11_Text_DirkDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_DirkRematch
 	msgbox Route11_Text_DirkPostBattle, MSGBOX_AUTOCLOSE
