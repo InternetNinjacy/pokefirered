@@ -25,6 +25,12 @@ EventScript_Sam_Hothouse_EntryPlaque::
 EventScript_Sam_Hothouse_Tropius::
 	end
 
+@ Three foliage objects across the central approach are the physical vine
+@ barrier. Their object flag is FLAG_SAM_HOTHOUSE_SOLVED, so they remain absent
+@ automatically after exit/save-load once the puzzle has been solved.
+EventScript_Sam_Hothouse_VineBarrier::
+	end
+
 EventScript_Sam_Hothouse_Hawthorne::
 	lock
 	faceplayer
@@ -229,7 +235,15 @@ EventScript_Sam_Hothouse_ControlLocked::
 EventScript_Sam_Hothouse_CheckSolution::
 	callnative SamHothouseCheckSolution
 	goto_if_eq VAR_RESULT, 0, EventScript_Sam_Hothouse_ControlEnd
+	@ The barrier objects are entries 11-13 in this map's object table. The
+	@ solved flag handles future map loads; removeobject supplies the immediate
+	@ first-solve retraction/flourish transition in the current room.
+	removeobject 11
+	removeobject 12
+	removeobject 13
+	playfanfare MUS_LEVEL_UP
 	msgbox SaffronCity_Dojo_Text_HothouseSolved, MSGBOX_DEFAULT
+	waitfanfare
 EventScript_Sam_Hothouse_ControlEnd::
 	release
 	end
