@@ -1267,6 +1267,7 @@ void AI_CalcDmg(u8 attacker, u8 defender)
         gBattleMoveDamage *= 2;
     if (gProtectStructs[attacker].helpingHand)
         gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
+    gBattleMoveDamage = ApplyAdaptiveGeneDamageModifier(gBattleMoveDamage, attacker);
 }
 
 static void ModulateDmgByType(u8 multiplier)
