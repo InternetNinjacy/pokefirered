@@ -70,7 +70,7 @@ thomas_fossil_continuation_checkpoint:
   preserved: first five Viridian members; Doll handoff; quit-Rocket transition; Giovanni routing; IDs784-789; seven-battle cadence
   resources: no new trainer ID, flag, var, item, map object, or story event
   blocker: CLOSED — implementation merged
-  validation: host/static branch checks plus CI 37675450935 PASS all seven configured builds; assembled-ROM playtest deferred
+  validation: host/static coverage source extended through Viridian; CI 37675450935 PASS all seven configured builds; assembled-ROM playtest deferred
   authority_record: docs/sam_edition/THOMAS_FOSSIL_CONTINUATION_AUTHORITY.md
   pr: 303
   feature_head: 3af4f344a10b6c0aceadcb5e0bcd0f58d14aa55f
