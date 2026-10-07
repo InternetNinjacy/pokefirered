@@ -23,7 +23,24 @@ VermilionCity_Movement_ExitSSAnne::
 VermilionCity_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_VERMILION_CITY
 	call_if_set FLAG_TALKED_TO_OAKS_AIDE_IN_VERMILION, VermilionCity_EventScript_HideOaksAide
+	call VermilionCity_EventScript_UpdateHarborSailors
 	end
+
+VermilionCity_EventScript_UpdateHarborSailors::
+	goto_if_eq VAR_MAP_SCENE_VERMILION_CITY, 3, VermilionCity_EventScript_SSAnneDepartedHarbor
+	clearflag FLAG_HIDE_SS_ANNE_HARBOR_GUARD
+	setflag FLAG_HIDE_VERMILION_FERRY_SAILOR
+	return
+
+VermilionCity_EventScript_SSAnneDepartedHarbor::
+	setflag FLAG_HIDE_SS_ANNE_HARBOR_GUARD
+	goto_if_ge VAR_MAP_SCENE_ONE_ISLAND_POKEMON_CENTER_1F, 1, VermilionCity_EventScript_ShowSeagallopSailor
+	setflag FLAG_HIDE_VERMILION_FERRY_SAILOR
+	return
+
+VermilionCity_EventScript_ShowSeagallopSailor::
+	clearflag FLAG_HIDE_VERMILION_FERRY_SAILOR
+	return
 
 VermilionCity_EventScript_HideOaksAide::
 	setflag FLAG_HIDE_VERMILION_CITY_OAKS_AIDE
@@ -43,6 +60,7 @@ VermilionCity_EventScript_OldMan1::
 
 VermilionCity_EventScript_OldMan1SSAnneLeft::
 	msgbox VermilionCity_Text_SSAnneHasDepartedForYear
+	msgbox VermilionCity_Text_TruckRumor1
 	release
 	end
 
@@ -189,7 +207,7 @@ VermilionCity_EventScript_ExitedTicketCheck::
 
 VermilionCity_EventScript_CheckTicket::
 	textcolor NPC_TEXT_COLOR_MALE
-	applymovement LOCALID_VERMILION_FERRY_SAILOR, Common_Movement_WalkInPlaceFasterLeft
+	applymovement LOCALID_SS_ANNE_HARBOR_GUARD, Common_Movement_WalkInPlaceFasterLeft
 	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterRight
 	waitmovement 0
 	goto_if_eq VAR_MAP_SCENE_VERMILION_CITY, 3, VermilionCity_EventScript_CheckSeagallopPresentTrigger
@@ -207,6 +225,7 @@ VermilionCity_EventScript_DontHaveSSTicket::
 	end
 
 VermilionCity_EventScript_CheckSeagallopPresentTrigger::
+	goto_if_lt VAR_MAP_SCENE_ONE_ISLAND_POKEMON_CENTER_1F, 1, VermilionCity_EventScript_HarborOpen
 	setvar VAR_0x8004, SEAGALLOP_VERMILION_CITY
 	goto_if_ge VAR_MAP_SCENE_ONE_ISLAND_POKEMON_CENTER_1F, 5, VermilionCity_EventScript_ChooseSeagallopDestRainbowPass
 	goto_if_ge VAR_MAP_SCENE_ONE_ISLAND_POKEMON_CENTER_1F, 1, VermilionCity_EventScript_ChooseSeagallopDestTriPass
@@ -215,8 +234,17 @@ VermilionCity_EventScript_CheckSeagallopPresentTrigger::
 	goto VermilionCity_EventScript_WalkUpPier
 	end
 
+VermilionCity_EventScript_HarborOpen::
+	releaseall
+	end
+
 VermilionCity_EventScript_Sailor::
+	goto_if_eq VAR_MAP_SCENE_VERMILION_CITY, 3, VermilionCity_EventScript_SailorTruckRumor
 	msgbox VermilionCity_Text_SSAnneVisitsOnceAYear, MSGBOX_NPC
+	end
+
+VermilionCity_EventScript_SailorTruckRumor::
+	msgbox VermilionCity_Text_TruckRumor2, MSGBOX_NPC
 	end
 
 VermilionCity_EventScript_OaksAide::
