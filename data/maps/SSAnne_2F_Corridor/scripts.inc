@@ -32,8 +32,16 @@ SSAnne_2F_Corridor_EventScript_RivalTrigger::
 	call_if_eq VAR_TEMP_1, 0, SSAnne_2F_Corridor_EventScript_RivalApproachLeft
 	call_if_eq VAR_TEMP_1, 1, SSAnne_2F_Corridor_EventScript_RivalApproachMid
 	call_if_eq VAR_TEMP_1, 2, SSAnne_2F_Corridor_EventScript_RivalApproachRight
+	goto_if_eq VAR_MAP_SCENE_S_S_ANNE_2F_CORRIDOR, 2, SSAnne_2F_Corridor_EventScript_GreenRetryText
 	msgbox SSAnne_2F_Corridor_Text_GreenIntro
+	goto SSAnne_2F_Corridor_EventScript_GreenBattleStart
+
+SSAnne_2F_Corridor_EventScript_GreenRetryText::
+	msgbox SSAnne_2F_Corridor_Text_GreenRetry
+
+SSAnne_2F_Corridor_EventScript_GreenBattleStart::
 	setvar VAR_LAST_TALKED, LOCALID_SS_ANNE_RIVAL
+	setvar VAR_MAP_SCENE_S_S_ANNE_2F_CORRIDOR, 2
 	call_if_eq VAR_STARTER_MON, 2, SSAnne_2F_Corridor_EventScript_RivalSquirtle
 	call_if_eq VAR_STARTER_MON, 1, SSAnne_2F_Corridor_EventScript_RivalBulbasaur
 	call_if_eq VAR_STARTER_MON, 0, SSAnne_2F_Corridor_EventScript_RivalCharmander
@@ -194,3 +202,8 @@ SSAnne_2F_Corridor_Text_GreenPostBattle::
 	.string "before next time.\p"
 	.string "The CAPTAIN's up ahead. Apparently\n"
 	.string "he's having a rough trip.$"
+
+SSAnne_2F_Corridor_Text_GreenRetry::
+	.string "Ready to try that again? I haven't\n"
+	.string "changed anything yet. You get\l"
+	.string "another shot at the same team.$"
