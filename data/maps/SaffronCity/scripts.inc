@@ -127,7 +127,10 @@ SaffronCity_EventScript_TrainerFanClubSign::
 @ Pokémon: Sam Edition — Green rival checkpoint.
 SaffronCity_EventScript_UpdateGreen::
 	setflag FLAG_TEMP_11
-	goto_if_set FLAG_DEFEATED_SABRINA, SaffronCity_EventScript_ShowGreen
+	goto_if_unset FLAG_DEFEATED_SABRINA, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_DITTO, SaffronCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_ESPEON, SaffronCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_RAICHU, SaffronCity_EventScript_ShowGreen
 	return
 
 SaffronCity_EventScript_ShowGreen::
