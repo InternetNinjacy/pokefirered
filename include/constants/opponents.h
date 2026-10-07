@@ -813,18 +813,12 @@
 #define TRAINER_GREEN_VIRIDIAN_DITTO           838
 #define TRAINER_GREEN_VIRIDIAN_ESPEON          839
 #define TRAINER_GREEN_VIRIDIAN_RAICHU          840
-#define TRAINER_GREEN_CHAMPION_DITTO           841
-#define TRAINER_GREEN_CHAMPION_ESPEON          842
-#define TRAINER_GREEN_CHAMPION_RAICHU          843
-#define TRAINER_GREEN_POSTGAME_DITTO           844
-#define TRAINER_GREEN_POSTGAME_ESPEON          845
-#define TRAINER_GREEN_POSTGAME_RAICHU          846
 
 // Sam Edition expands trainer defeat-flag capacity to 1024 records.
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             847
+#define NUM_TRAINERS                             841
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
