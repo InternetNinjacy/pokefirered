@@ -162,7 +162,7 @@ CeruleanCity_Movement_RivalExit::
 	step_end
 
 CeruleanCity_EventScript_Grunt::
-	lock
+	lockall
 	faceplayer
 	goto_if_defeated TRAINER_TEAM_ROCKET_GRUNT_5, CeruleanCity_EventScript_GruntDefeated
 	message CeruleanCity_Text_GruntIntro
@@ -175,23 +175,16 @@ CeruleanCity_EventScript_Grunt::
 	end
 
 CeruleanCity_EventScript_GruntDefeated::
-	msgbox CeruleanCity_Text_OkayIllReturnStolenTM
-	checkitemspace ITEM_TM28
-	goto_if_eq VAR_RESULT, FALSE, CeruleanCity_EventScript_NoRoomForTM28
-	giveitem_msg CeruleanCity_Text_RecoveredTM28FromGrunt, ITEM_TM28
-	msgbox CeruleanCity_Text_BetterGetMovingBye
-	closemessage
-	fadescreen FADE_TO_BLACK
+	goto_if_ge VAR_MAP_SCENE_CERULEAN_CITY_ROCKET, 1, CeruleanCity_EventScript_RocketGoodsRecovered
+	setvar VAR_MAP_SCENE_CERULEAN_CITY_ROCKET, 1
+CeruleanCity_EventScript_RocketGoodsRecovered::
+	msgbox CeruleanCity_Text_GruntDropsStolenGoods
+	msgbox CeruleanCity_Text_ObtainedStolenGoods
+	setflag FLAG_HIDE_CERULEAN_ROCKET
 	removeobject LOCALID_CERULEAN_GRUNT
-	fadescreen FADE_FROM_BLACK
-	setflag FLAG_GOT_TM28_FROM_ROCKET
-	release
-	end
-
-CeruleanCity_EventScript_NoRoomForTM28::
-	textcolor NPC_TEXT_COLOR_MALE
-	msgbox CeruleanCity_Text_MakeRoomForThisCantRun
-	release
+	warp MAP_CERULEAN_CITY_HOUSE2, 1, 3
+	waitstate
+	releaseall
 	end
 
 CeruleanCity_EventScript_GruntTriggerTop::
