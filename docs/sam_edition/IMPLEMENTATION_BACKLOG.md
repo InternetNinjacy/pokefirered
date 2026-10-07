@@ -72,7 +72,7 @@ Snapshot: 2026-10-07. Native Programming Readiness Registry Backlog is authorita
 | GYM6-001 | SYS-GYM6 | Saffron Ghost Gym | COMPLETE |  |
 | GYM6-002 | SYS-GYM6 | Phantom Badge | COMPLETE |  |
 | GYM7-001 | SYS-GYM7 | Cinnabar Rock Gym | COMPLETE |  |
-| GYM8-001 | SYS-GYM8 | Viridian Dragon Gym | READY | Restore approved Dragon/Dominion/TM54 package from PR #169/#175; preserve current Satoshi and Thomas. |
+| GYM8-001 | SYS-GYM8 | Viridian Dragon Gym | COMPLETE | PR #315 restored the approved Dragon/Dominion/TM54 package on current production while preserving Satoshi and Thomas. |
 | QUEST-001 | SYS-QUEST | Quest Framework | COMPLETE | ARCH-003 |
 | QUEST-002 | SYS-QUEST | Pallet — A Helping Hand | COMPLETE | QUEST-001 |
 | QUEST-003 | SYS-QUEST | Viridian Runaway Nidoran | COMPLETE |  |
