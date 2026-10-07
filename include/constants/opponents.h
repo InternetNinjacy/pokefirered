@@ -782,6 +782,9 @@
 #define TRAINER_LEADER_BAZ_REMATCH                768
 #define TRAINER_LEADER_SABRINA_REMATCH            769
 
+// Cinnabar Rock Gym postgame rematch allocation.
+#define TRAINER_LEADER_BLAINE_REMATCH              804
+
 
 // Green rival central allocations: 820-846. 800-819 remains rival/Blue headroom.
 #define TRAINER_GREEN_OAK_DITTO                820

@@ -45,22 +45,39 @@ PokemonLeague_BrunosRoom_EventScript_EnterRoom::
 PokemonLeague_BrunosRoom_EventScript_Bruno::
 	lock
 	faceplayer
-	famechecker FAMECHECKER_BRUNO, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	goto_if_set FLAG_DEFEATED_BRUNO, PokemonLeague_BrunosRoom_EventScript_PostBattle
-	famechecker FAMECHECKER_BRUNO, 0
-	famechecker FAMECHECKER_BRUNO, 1
 	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_BrunosRoom_EventScript_Intro
 	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_BrunosRoom_EventScript_RematchIntro
 	setflag FLAG_TEMP_3
 	setflag FLAG_TEMP_5
-	call_if_unset FLAG_SYS_CAN_LINK_WITH_RS, PokemonLeague_BrunosRoom_EventScript_Battle
-	call_if_set FLAG_SYS_CAN_LINK_WITH_RS, PokemonLeague_BrunosRoom_EventScript_Rematch
+	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_BrunosRoom_EventScript_Battle
+	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_BrunosRoom_EventScript_Rematch
 	clearflag FLAG_TEMP_5
 	goto PokemonLeague_BrunosRoom_EventScript_DefeatedBruno
 	end
 
 PokemonLeague_BrunosRoom_EventScript_Intro::
 	msgbox PokemonLeague_BrunosRoom_Text_Intro
+	call_if_eq VAR_STARTER_MON, 0, PokemonLeague_BrunosRoom_EventScript_IntroWater
+	call_if_eq VAR_STARTER_MON, 1, PokemonLeague_BrunosRoom_EventScript_IntroFire
+	call_if_eq VAR_STARTER_MON, 2, PokemonLeague_BrunosRoom_EventScript_IntroElectric
+	msgbox PokemonLeague_BrunosRoom_Text_IntroChallenge
+	return
+
+// Sam starter-slot integration contract:
+// 0 = Eevee -> Blue receives Ditto -> Water branch
+// 1 = Pichu -> Blue receives Eevee -> Fire branch
+// 2 = Ditto -> Blue receives Pichu -> Electric branch
+PokemonLeague_BrunosRoom_EventScript_IntroWater::
+	msgbox PokemonLeague_BrunosRoom_Text_IntroWater
+	return
+
+PokemonLeague_BrunosRoom_EventScript_IntroFire::
+	msgbox PokemonLeague_BrunosRoom_Text_IntroFire
+	return
+
+PokemonLeague_BrunosRoom_EventScript_IntroElectric::
+	msgbox PokemonLeague_BrunosRoom_Text_IntroElectric
 	return
 
 PokemonLeague_BrunosRoom_EventScript_RematchIntro::
@@ -68,15 +85,44 @@ PokemonLeague_BrunosRoom_EventScript_RematchIntro::
 	return
 
 PokemonLeague_BrunosRoom_EventScript_Battle::
-	trainerbattle_no_intro TRAINER_ELITE_FOUR_BRUNO, PokemonLeague_BrunosRoom_Text_Defeat
+	call_if_eq VAR_STARTER_MON, 0, PokemonLeague_BrunosRoom_EventScript_BattleWater
+	call_if_eq VAR_STARTER_MON, 1, PokemonLeague_BrunosRoom_EventScript_BattleFire
+	call_if_eq VAR_STARTER_MON, 2, PokemonLeague_BrunosRoom_EventScript_BattleElectric
+	return
+
+PokemonLeague_BrunosRoom_EventScript_BattleWater::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BLUE_WATER, PokemonLeague_BrunosRoom_Text_Defeat
+	return
+
+PokemonLeague_BrunosRoom_EventScript_BattleFire::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BLUE_FIRE, PokemonLeague_BrunosRoom_Text_Defeat
+	return
+
+PokemonLeague_BrunosRoom_EventScript_BattleElectric::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BLUE_ELECTRIC, PokemonLeague_BrunosRoom_Text_Defeat
 	return
 
 PokemonLeague_BrunosRoom_EventScript_Rematch::
-	trainerbattle_no_intro TRAINER_ELITE_FOUR_BRUNO_2, PokemonLeague_BrunosRoom_Text_Defeat
+	call_if_eq VAR_STARTER_MON, 0, PokemonLeague_BrunosRoom_EventScript_RematchWater
+	call_if_eq VAR_STARTER_MON, 1, PokemonLeague_BrunosRoom_EventScript_RematchFire
+	call_if_eq VAR_STARTER_MON, 2, PokemonLeague_BrunosRoom_EventScript_RematchElectric
+	return
+
+PokemonLeague_BrunosRoom_EventScript_RematchWater::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BLUE_WATER_2, PokemonLeague_BrunosRoom_Text_RematchDefeat
+	return
+
+PokemonLeague_BrunosRoom_EventScript_RematchFire::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BLUE_FIRE_2, PokemonLeague_BrunosRoom_Text_RematchDefeat
+	return
+
+PokemonLeague_BrunosRoom_EventScript_RematchElectric::
+	trainerbattle_no_intro TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2, PokemonLeague_BrunosRoom_Text_RematchDefeat
 	return
 
 PokemonLeague_BrunosRoom_EventScript_PostBattle::
-	msgbox PokemonLeague_BrunosRoom_Text_PostBattle
+	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_BrunosRoom_EventScript_PostBattleFirst
+	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_BrunosRoom_EventScript_PostBattleRematch
 	closemessage
 	call_if_eq VAR_FACING, DIR_NORTH, PokemonLeague_BrunosRoom_EventScript_BrunoLookAwayRight
 	call_if_eq VAR_FACING, DIR_SOUTH, PokemonLeague_BrunosRoom_EventScript_BrunoLookAwayLeft
@@ -85,10 +131,19 @@ PokemonLeague_BrunosRoom_EventScript_PostBattle::
 	release
 	end
 
+PokemonLeague_BrunosRoom_EventScript_PostBattleFirst::
+	msgbox PokemonLeague_BrunosRoom_Text_PostBattle
+	return
+
+PokemonLeague_BrunosRoom_EventScript_PostBattleRematch::
+	msgbox PokemonLeague_BrunosRoom_Text_RematchPostBattle
+	return
+
 PokemonLeague_BrunosRoom_EventScript_DefeatedBruno::
 	setflag FLAG_DEFEATED_BRUNO
 	call PokemonLeague_EventScript_OpenDoor
-	msgbox PokemonLeague_BrunosRoom_Text_PostBattle
+	call_if_unset FLAG_SYS_GAME_CLEAR, PokemonLeague_BrunosRoom_EventScript_PostBattleFirst
+	call_if_set FLAG_SYS_GAME_CLEAR, PokemonLeague_BrunosRoom_EventScript_PostBattleRematch
 	closemessage
 	call_if_eq VAR_FACING, DIR_NORTH, PokemonLeague_BrunosRoom_EventScript_BrunoLookAwayRight
 	call_if_eq VAR_FACING, DIR_SOUTH, PokemonLeague_BrunosRoom_EventScript_BrunoLookAwayLeft

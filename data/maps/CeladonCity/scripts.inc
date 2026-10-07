@@ -122,15 +122,16 @@ CeladonCity_EventScript_ShowGreen::
 CeladonCity_EventScript_Green::
 	lock
 	faceplayer
+	goto_if_set FLAG_GREEN_CELADON_ATTEMPTED, CeladonCity_EventScript_GreenRetryText
+	goto CeladonCity_EventScript_GreenBattleEntry
+
+CeladonCity_EventScript_GreenRetryText::
+	msgbox CeladonCity_Text_GreenRetry
+
+CeladonCity_EventScript_GreenBattleEntry::
+	setflag FLAG_GREEN_CELADON_ATTEMPTED
 	setvar VAR_LAST_TALKED, LOCALID_CELADON_GREEN
 	playbgm MUS_ENCOUNTER_RIVAL, 0
-	goto_if_set FLAG_GREEN_CELADON_ATTEMPTED, CeladonCity_EventScript_GreenRetry
-	setflag FLAG_GREEN_CELADON_ATTEMPTED
-	goto CeladonCity_EventScript_GreenChooseBranch
-
-CeladonCity_EventScript_GreenRetry::
-	msgbox CeladonCity_Text_GreenRetry
-CeladonCity_EventScript_GreenChooseBranch::
 	goto_if_eq VAR_STARTER_MON, 0, CeladonCity_EventScript_GreenRaichu
 	goto_if_eq VAR_STARTER_MON, 1, CeladonCity_EventScript_GreenDitto
 	goto CeladonCity_EventScript_GreenEspeon
