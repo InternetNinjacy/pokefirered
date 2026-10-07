@@ -129,3 +129,14 @@ VermilionCity_Text_Route2AideHasPackageForYou::
     .string "If you're in the ROUTE 2 area,\n"
     .string "please look for him.$"
 
+
+VermilionCity_Text_TruckRumor1::
+    .string "Funny thing… Since the ship left,\\n"
+    .string "people hear noises by that old truck.\\p"
+    .string "Probably just a stray cat.$"
+
+VermilionCity_Text_TruckRumor2::
+    .string "There's an old truck way out by the\\n"
+    .string "harbor water.\\p"
+    .string "Swear I heard something meowing\\n"
+    .string "around it once.$"
