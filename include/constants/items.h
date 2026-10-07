@@ -234,27 +234,33 @@
 #define ITEM_METAL_POWDER 223
 #define ITEM_THICK_CLUB 224
 #define ITEM_STICK 225
-#define ITEM_0E2 226
-#define ITEM_0E3 227
-#define ITEM_0E4 228
-#define ITEM_0E5 229
-#define ITEM_0E6 230
-#define ITEM_0E7 231
-#define ITEM_0E8 232
-#define ITEM_0E9 233
-#define ITEM_0EA 234
-#define ITEM_0EB 235
-#define ITEM_0EC 236
-#define ITEM_0ED 237
-#define ITEM_0EE 238
-#define ITEM_0EF 239
-#define ITEM_0F0 240
-#define ITEM_0F1 241
-#define ITEM_0F2 242
-#define ITEM_0F3 243
-#define ITEM_0F4 244
-#define ITEM_0F5 245
-#define ITEM_0F6 246
+// Pokémon: Sam Edition resource allocation.
+// TM51-TM68 deliberately occupy the verified placeholder block rather than
+// extending the vanilla contiguous TM/HM item range. TM Case translation is
+// table-driven under TM-001; these constants reserve the engine item IDs.
+#define ITEM_TM51 226
+#define ITEM_TM52 227
+#define ITEM_TM53 228
+#define ITEM_TM54 229
+#define ITEM_TM55 230
+#define ITEM_TM56 231
+#define ITEM_TM57 232
+#define ITEM_TM58 233
+#define ITEM_TM59 234
+#define ITEM_TM60 235
+#define ITEM_TM61 236
+#define ITEM_TM62 237
+#define ITEM_TM63 238
+#define ITEM_TM64 239
+#define ITEM_TM65 240
+#define ITEM_TM66 241
+#define ITEM_TM67 242
+#define ITEM_TM68 243
+#define ITEM_BRICK 244
+#define ITEM_ADAPTIVE_GENE 245
+#define ITEM_PROTECTOR 246
+
+// Remaining Sam Edition custom-item expansion reserve.
 #define ITEM_0F7 247
 #define ITEM_0F8 248
 #define ITEM_0F9 249
@@ -262,6 +268,30 @@
 #define ITEM_0FB 251
 #define ITEM_0FC 252
 #define ITEM_0FD 253
+
+// Legacy placeholder aliases retained for source compatibility while the
+// placeholder block is migrated to its Sam Edition symbolic names.
+#define ITEM_0E2 ITEM_TM51
+#define ITEM_0E3 ITEM_TM52
+#define ITEM_0E4 ITEM_TM53
+#define ITEM_0E5 ITEM_TM54
+#define ITEM_0E6 ITEM_TM55
+#define ITEM_0E7 ITEM_TM56
+#define ITEM_0E8 ITEM_TM57
+#define ITEM_0E9 ITEM_TM58
+#define ITEM_0EA ITEM_TM59
+#define ITEM_0EB ITEM_TM60
+#define ITEM_0EC ITEM_TM61
+#define ITEM_0ED ITEM_TM62
+#define ITEM_0EE ITEM_TM63
+#define ITEM_0EF ITEM_TM64
+#define ITEM_0F0 ITEM_TM65
+#define ITEM_0F1 ITEM_TM66
+#define ITEM_0F2 ITEM_TM67
+#define ITEM_0F3 ITEM_TM68
+#define ITEM_0F4 ITEM_BRICK
+#define ITEM_0F5 ITEM_ADAPTIVE_GENE
+#define ITEM_0F6 ITEM_PROTECTOR
 #define ITEM_RED_SCARF 254
 #define ITEM_BLUE_SCARF 255
 #define ITEM_PINK_SCARF 256
@@ -408,6 +438,27 @@
 #define ITEM_TM48_SKILL_SWAP ITEM_TM48
 #define ITEM_TM49_SNATCH ITEM_TM49
 #define ITEM_TM50_OVERHEAT ITEM_TM50
+
+// Final Sam Edition logical TM51-TM68 item aliases.
+#define ITEM_TM51_CALM_MIND ITEM_TM51
+#define ITEM_TM52_LIGHT_SCREEN ITEM_TM52
+#define ITEM_TM53_REFLECT ITEM_TM53
+#define ITEM_TM54_PSYCHIC ITEM_TM54
+#define ITEM_TM55_ICY_WIND ITEM_TM55
+#define ITEM_TM56_ICE_PUNCH ITEM_TM56
+#define ITEM_TM57_ICE_BEAM ITEM_TM57
+#define ITEM_TM58_BLIZZARD ITEM_TM58
+#define ITEM_TM59_HAIL ITEM_TM59
+#define ITEM_TM60_DRAGON_BREATH ITEM_TM60
+#define ITEM_TM61_DRAGON_CLAW ITEM_TM61
+#define ITEM_TM62_OUTRAGE ITEM_TM62
+#define ITEM_TM63_DRAGON_DANCE ITEM_TM63
+#define ITEM_TM64_THIEF ITEM_TM64
+#define ITEM_TM65_CRUNCH ITEM_TM65
+#define ITEM_TM66_NIGHT_TERROR ITEM_TM66
+#define ITEM_TM67_TAUNT ITEM_TM67
+#define ITEM_TM68_HIDDEN_POWER ITEM_TM68
+
 #define ITEM_HM01_CUT ITEM_HM01
 #define ITEM_HM02_FLY ITEM_HM02
 #define ITEM_HM03_SURF ITEM_HM03
