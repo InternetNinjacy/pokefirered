@@ -123,6 +123,7 @@ CeladonCity_EventScript_Green::
 	lock
 	faceplayer
 	goto_if_set FLAG_GREEN_CELADON_ATTEMPTED, CeladonCity_EventScript_GreenRetryText
+	msgbox CeladonCity_Text_GreenOpening
 	goto CeladonCity_EventScript_GreenBattleEntry
 
 CeladonCity_EventScript_GreenRetryText::
@@ -152,6 +153,17 @@ CeladonCity_EventScript_GreenWon::
 	fadedefaultbgm
 	release
 	end
+
+CeladonCity_Text_GreenOpening::
+	.string "{PLAYER}! You should see the\n"
+	.string "DEPT. STORE. TMs, evolution\l"
+	.string "stones, held items...\p"
+	.string "I kept thinking stronger POKéMON\n"
+	.string "were the answer. They're not.\p"
+	.string "What you teach them matters. What\n"
+	.string "you give them matters.\p"
+	.string "I changed a lot. Come on—tell me\n"
+	.string "if I changed the right things.$"
 
 CeladonCity_Text_GreenDefeat::
 	.string "Okay. Better... but not finished.$"
