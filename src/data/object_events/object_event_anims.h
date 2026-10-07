@@ -1302,3 +1302,47 @@ static const struct StepAnimTable sStepAnimTables[] = {
     },
     {}
 };
+
+static const union AnimCmd sAnim_Stationary4FacingSouth[] = {
+    ANIMCMD_FRAME(0, 16),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd sAnim_Stationary4FacingNorth[] = {
+    ANIMCMD_FRAME(1, 16),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd sAnim_Stationary4FacingWest[] = {
+    ANIMCMD_FRAME(2, 16),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd sAnim_Stationary4FacingEast[] = {
+    ANIMCMD_FRAME(3, 16),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd *const sAnimTable_Stationary4Facing[] = {
+    [ANIM_STD_FACE_SOUTH] = sAnim_Stationary4FacingSouth,
+    [ANIM_STD_FACE_NORTH] = sAnim_Stationary4FacingNorth,
+    [ANIM_STD_FACE_WEST] = sAnim_Stationary4FacingWest,
+    [ANIM_STD_FACE_EAST] = sAnim_Stationary4FacingEast,
+    [ANIM_STD_GO_SOUTH] = sAnim_Stationary4FacingSouth,
+    [ANIM_STD_GO_NORTH] = sAnim_Stationary4FacingNorth,
+    [ANIM_STD_GO_WEST] = sAnim_Stationary4FacingWest,
+    [ANIM_STD_GO_EAST] = sAnim_Stationary4FacingEast,
+    [ANIM_STD_GO_FAST_SOUTH] = sAnim_Stationary4FacingSouth,
+    [ANIM_STD_GO_FAST_NORTH] = sAnim_Stationary4FacingNorth,
+    [ANIM_STD_GO_FAST_WEST] = sAnim_Stationary4FacingWest,
+    [ANIM_STD_GO_FAST_EAST] = sAnim_Stationary4FacingEast,
+    [ANIM_STD_GO_FASTER_SOUTH] = sAnim_Stationary4FacingSouth,
+    [ANIM_STD_GO_FASTER_NORTH] = sAnim_Stationary4FacingNorth,
+    [ANIM_STD_GO_FASTER_WEST] = sAnim_Stationary4FacingWest,
+    [ANIM_STD_GO_FASTER_EAST] = sAnim_Stationary4FacingEast,
+    [ANIM_STD_GO_FASTEST_SOUTH] = sAnim_Stationary4FacingSouth,
+    [ANIM_STD_GO_FASTEST_NORTH] = sAnim_Stationary4FacingNorth,
+    [ANIM_STD_GO_FASTEST_WEST] = sAnim_Stationary4FacingWest,
+    [ANIM_STD_GO_FASTEST_EAST] = sAnim_Stationary4FacingEast,
+    [ANIM_RAISE_HAND] = sAnim_Stationary4FacingSouth,
+};

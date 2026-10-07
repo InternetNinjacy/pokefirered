@@ -442,6 +442,15 @@ const u32 gTrainerPalette_Lady[] = INCBIN_U32("graphics/trainers/palettes/lady.g
 const u32 gTrainerFrontPic_Painter[] = INCBIN_U32("graphics/trainers/front_pics/painter_front_pic.4bpp.lz");
 const u32 gTrainerPalette_Painter[] = INCBIN_U32("graphics/trainers/palettes/painter.gbapal.lz");
 
+const u32 gTrainerFrontPic_Leilani[] = INCBIN_U32("graphics/trainers/front_pics/leilani_front_pic.4bpp.lz");
+const u32 gTrainerPalette_Leilani[] = INCBIN_U32("graphics/trainers/palettes/leilani.gbapal.lz");
+
+const u32 gTrainerFrontPic_Lehua[] = INCBIN_U32("graphics/trainers/front_pics/lehua_front_pic.4bpp.lz");
+const u32 gTrainerPalette_Lehua[] = INCBIN_U32("graphics/trainers/palettes/lehua.gbapal.lz");
+
+const u32 gTrainerFrontPic_Keahi[] = INCBIN_U32("graphics/trainers/front_pics/keahi_front_pic.4bpp.lz");
+const u32 gTrainerPalette_Keahi[] = INCBIN_U32("graphics/trainers/palettes/keahi.gbapal.lz");
+
 const u8 gTrainerBackPic_Red[] = INCBIN_U8("graphics/trainers/back_pics/red_back_pic.4bpp");
 const u8 gTrainerBackPic_Leaf[] = INCBIN_U8("graphics/trainers/back_pics/leaf_back_pic.4bpp");
 const u8 gTrainerBackPic_Pokedude[] = INCBIN_U8("graphics/trainers/back_pics/pokedude_back_pic.4bpp");

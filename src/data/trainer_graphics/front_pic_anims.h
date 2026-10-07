@@ -738,6 +738,26 @@ static const union AnimCmd *const sAnims_Painter[] =
     sAnim_GeneralFrame0,
 };
 
+static const union AnimCmd *const sAnims_Leilani[] =
+{
+    sAnim_GeneralFrame0,
+};
+
+static const union AnimCmd *const sAnims_Lehua[] =
+{
+    sAnim_GeneralFrame0,
+};
+
+static const union AnimCmd *const sAnims_Keahi[] =
+{
+    sAnim_GeneralFrame0,
+};
+
+static const union AnimCmd *const sAnims_Satoshi[] =
+{
+    sAnim_GeneralFrame0,
+};
+
 const union AnimCmd *const *const gTrainerFrontAnimsPtrTable[] =
 {
     [TRAINER_PIC_AQUA_LEADER_ARCHIE]    = sAnims_AquaLeaderArchie,
@@ -888,4 +908,8 @@ const union AnimCmd *const *const gTrainerFrontAnimsPtrTable[] =
     [TRAINER_PIC_RUIN_MANIAC]           = sAnims_RuinManiac,
     [TRAINER_PIC_LADY]                  = sAnims_Lady,
     [TRAINER_PIC_PAINTER]               = sAnims_Painter,
+    [TRAINER_PIC_LEILANI]               = sAnims_Leilani,
+    [TRAINER_PIC_LEHUA]                 = sAnims_Lehua,
+    [TRAINER_PIC_KEAHI]                 = sAnims_Keahi,
+    [TRAINER_PIC_SATOSHI]               = sAnims_Satoshi,
 };

@@ -150,6 +150,9 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysD;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysA;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_DeoxysN;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_SSAnne;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lehua;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Keahi;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Leilani;
 
 
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
@@ -305,4 +308,10 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_DEOXYS_A]                 = &gObjectEventGraphicsInfo_DeoxysA,
     [OBJ_EVENT_GFX_DEOXYS_N]                 = &gObjectEventGraphicsInfo_DeoxysN,
     [OBJ_EVENT_GFX_SS_ANNE]                  = &gObjectEventGraphicsInfo_SSAnne,
+    [OBJ_EVENT_GFX_LEHUA]                    = &gObjectEventGraphicsInfo_Lehua,
+    [OBJ_EVENT_GFX_KEAHI]                    = &gObjectEventGraphicsInfo_Keahi,
+    [OBJ_EVENT_GFX_LEILANI]                  = &gObjectEventGraphicsInfo_Leilani,
+    // Satoshi overworld art is still open by authority. Keep the reserved ID
+    // runtime-safe with the original Gym Guide presentation until it exists.
+    [OBJ_EVENT_GFX_SATOSHI]                  = &gObjectEventGraphicsInfo_GymGuy,
 };
