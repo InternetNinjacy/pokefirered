@@ -17,7 +17,7 @@ project: &id002
 current_state:
   verified_at: '2026-10-07'
   production_branch: sam-edition-dev
-  production_head: eeea5bbc23d4ca70614180552220f317a286bc89
+  production_head: c279459143b6e68522e2c6a876377e2786bb9c2d
   status_authority: Programming Readiness Registry / Backlog
   current_audit: docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-10-07.md
   runtime_policy: Full assembled-ROM playtesting deferred; do not reopen completed
@@ -28,12 +28,23 @@ current_state:
   - newest non-conflicting Design Bible
   - earlier authority
   open_owner_work:
-  - 'GYM1-001: approved package integration'
   - 'GYM8-001: approved Dragon/Dominion/TM54 package restoration'
   - 'ROCKET-002: remaining operation conversions/evidence consumers; ROCKET-001 shared framework complete in PR #297'
   - shared asset pipeline and League final assembly
   - final Thomas/Rocket closure (Five Island Thread 1E complete in PR #295)
   - recurring integration and deferred full-game QA
+gym1_pewter_restoration_checkpoint:
+  task: GYM1-001
+  status: COMPLETE
+  donor_pr: 93
+  production_pr: 311
+  production_merge: c279459143b6e68522e2c6a876377e2786bb9c2d
+  implementation: current-ancestry restoration of the locked 19x23 Pewter Endurance Gym, brittle ice, Cliff/Miles, Boreal, Hail, Fortitude Badge/TM55 flow and approved Boreal assets
+  preserved: current reusable Satoshi trainer IDs/data/flag and all unrelated production allocations
+  validation: CI run 37690852677 passed FireRed, FireRed rev1, FireRed rev10, LeafGreen, LeafGreen rev1, LeafGreen rev10 and Modern
+  provenance: historical PR #93 remains donor evidence only and must not be merged wholesale
+  runtime: full assembled-ROM human playtest deferred
+
 thomas_mt_moon_checkpoint:
   task: RIV-016
   pr: 294
