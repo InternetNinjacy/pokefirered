@@ -169,7 +169,7 @@ record = re.search(r'\[TRAINER_THOMAS_CINNABAR_MANSION\] = \{.*?\n    \},', trai
 assert '.doubleBattle = FALSE' in record
 assert '.party = ITEM_CUSTOM_MOVES(sParty_ThomasCinnabar)' in record
 
-viridian_record = re.search(r'\\[TRAINER_THOMAS_VIRIDIAN_GYM\\] = \\{.*?\\n    \\},', trainers, re.S).group()
+viridian_record = re.search(r'\[TRAINER_THOMAS_VIRIDIAN_GYM\] = \{.*?\n    \},', trainers, re.S).group()
 assert '.doubleBattle = FALSE' in viridian_record
 assert '.party = ITEM_CUSTOM_MOVES(sParty_ThomasViridian)' in viridian_record
 
@@ -180,7 +180,7 @@ assert cinnabar.count('.species =') == 6
 assert '.species = SPECIES_SEADRA' in cinnabar
 for species in ('SPECIES_CLAYDOL', 'SPECIES_HOUNDOOM', 'SPECIES_MAGNETON', 'SPECIES_MACHAMP', 'SPECIES_SALAMENCE'):
     assert species in cinnabar
-viridian = re.search(r'sParty_ThomasViridian\\[\\] = \\{(.*?)\\n\\};', parties, re.S).group(1)
+viridian = re.search(r'sParty_ThomasViridian\[\] = \{(.*?)\n\};', parties, re.S).group(1)
 assert viridian.count('.species =') == 6
 assert '.species = SPECIES_KINGDRA' in viridian
 
