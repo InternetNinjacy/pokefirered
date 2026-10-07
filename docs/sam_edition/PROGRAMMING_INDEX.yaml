@@ -17,7 +17,7 @@ project: &id002
 current_state:
   verified_at: '2026-10-07'
   production_branch: sam-edition-dev
-  production_head: aa3d3859d44aeb2b27334a5eda08b9b683733e82
+  production_head: 7933d29450eec22655e2a98821e28153733d2569
   status_authority: Programming Readiness Registry / Backlog
   current_audit: docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-10-07.md
   runtime_policy: Full assembled-ROM playtesting deferred; do not reopen completed
@@ -30,7 +30,7 @@ current_state:
   open_owner_work:
   - 'GYM1-001: approved package integration'
   - 'GYM8-001: approved Dragon/Dominion/TM54 package restoration'
-  - 'RIV-016: Mt. Moon merged #294; Lab slice merged #298; Mansion fossil roster mapping requires specialist reconciliation'
+  - 'RIV-016: Mt. Moon merged #294; Lab slice merged #298; Thread 02 re-audit confirms Mansion battle remains authority-blocked (slot/Gengar/format/dialogue)'
   - 'ROCKET-002: remaining operation conversions/evidence consumers; ROCKET-001 shared framework complete in PR #297'
   - shared asset pipeline and League final assembly
   - final Thomas/Rocket closure (Five Island Thread 1E complete in PR #295)
@@ -59,6 +59,21 @@ thomas_cinnabar_fossil_checkpoint:
   validation: final seven-variant CI 37663794925 PASS; initial CI 37663134291 PASS; host Lab960/MtMoon/Rocket/map/text/diff checks PASS
   synchronization: SYNC-2026-10-07-CINNABAR-FOSSIL-PARTIAL finalized after merge; seven native authority overlays and Registry final checkpoint synchronized
   runtime: assembled-ROM playtest deferred
+thomas_mansion_authority_audit_checkpoint:
+  task: RIV-016
+  thread: 02
+  status: BLOCKED (no gameplay-safe delta; BLK-THOMAS-FOSSIL remains PARTIAL for Mansion only)
+  verified_production: 7933d29450eec22655e2a98821e28153733d2569
+  working_branch: sam/thomas-fossil-battle-authority-audit
+  audit: docs/sam_edition/THOMAS_MANSION_FOSSIL_BATTLE_AUTHORITY_AUDIT.md
+  classification: B - partially specified
+  required_current_behavior: evolved Mt Moon stolen fossil must debut in Thomas Mansion battle
+  protected_live_behavior: trainer 788 remains a six-member Single battle until explicit current authority changes it
+  blocker: approve fossil roster slot or complete separate package; current Gengar package/opening; Single-vs-Double and starter architecture; Mansion dialogue and Lab-ordering rule
+  known_fossil_packages: Dome stolen -> Kabutops Lv45 @ Mystic Water; Helix stolen -> Omastar Lv45 @ Mystic Water
+  resources: no new trainer IDs, flags, vars, items, maps, or state
+  parallel_reconciliation: merged PRs 294/295/297/298/299 preserved; open historical PR244 is not production ancestry
+  runtime: no new gameplay code; prior PR298 seven-variant CI and fossil-state validation remain applicable
 five_island_thread_1e_checkpoint:
   task: ROCKET-002
   status: COMPLETE (bounded Five Island slice only)
