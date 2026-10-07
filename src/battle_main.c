@@ -1815,6 +1815,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
         }
 
         ApplyThomasMtMoonStarterBranch(party, trainerNum);
+        ApplyThomasCinnabarFossilBranch(party, trainerNum);
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
     }
 

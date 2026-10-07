@@ -1,3 +1,24 @@
+# RIV-016 final closure — Thread 03 / PR #302
+
+The prior PARTIAL sections below are retained as implementation provenance and are superseded for current status by this closure.
+
+Thread 02 explicitly approved the remaining Mansion contract: trainer 788 remains a **Single Battle**; **no Gengar** is added; the existing Cinnabar six-member package is preserved except that **Seadra is replaced only for the Cinnabar battle** by Thomas's evolved stolen fossil; the PR #298 Lab scene is optional; current Mansion dialogue is preserved.
+
+Runtime selection consumes only the durable Mt. Moon theft state already established by PR #294:
+- `VAR_MAP_SCENE_MT_MOON_B2F == 3` (Dome stolen) -> Kabutops Lv45 @ Mystic Water, Rock Slide / Brick Break / Water Pulse / Protect.
+- `VAR_MAP_SCENE_MT_MOON_B2F == 4` (Helix stolen) -> Omastar Lv45 @ Mystic Water, Surf / Ice Beam / AncientPower / Protect.
+
+The branch is applied only while constructing trainer 788's enemy party. IDs 784–789 remain the six existing Thomas encounters; no second Mansion trainer record is allocated. The other five Cinnabar members and all five other baseline Thomas encounters remain untouched. The fossil branch does not read the player's current fossil inventory, revival state, researcher handoff flags, or Lab completion, so later player-side fossil actions cannot change Thomas's species and no fossil can be duplicated or removed.
+
+Existing Mansion progression already provides the required retry/victory behavior and is deliberately preserved: a loss does not execute the post-battle stage setter, so Thomas remains stage 4 and returns on load; victory advances to `THOMAS_ARC_CINNABAR_CLEARED`, hides the Mansion actor, and exposes the Viridian encounter. Secret Key/traversal and unrelated Mansion content are unchanged.
+
+Host/static validation is owned by `tests/test_thomas_cinnabar_fossil_battle.py`; seven-variant compile/link validation is required on PR #302. Assembled-ROM gameplay remains deferred by project policy.
+
+**RIV-016: COMPLETE after PR #302 merge.**  
+**BLK-THOMAS-FOSSIL: CLOSED.**
+
+---
+
 # RIV-016 — Cinnabar fossil continuity reconciliation
 
 Starting production: `8c3bbdaaae97ff1e4c446aca7dbbcf8209d7fdf2`.

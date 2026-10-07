@@ -1,3 +1,13 @@
+# RIV-016D final Cinnabar Thomas fossil battle — PR #302
+
+Current status superseding the Thread 02 blocked audit below: explicit authority is now complete and the remaining Mansion delta is implemented on production base `8e39d49b2a8ef505fc37e904e96e5b366be8461a`. Trainer 788 remains the existing Single Battle with no Gengar; only Cinnabar party slot 4 changes at runtime from Seadra to the evolved Mt. Moon stolen fossil. Scene3 selects Kabutops45 @ Mystic Water (Rock Slide / Brick Break / Water Pulse / Protect); scene4 selects Omastar45 @ Mystic Water (Surf / Ice Beam / AncientPower / Protect). The Lab preview remains optional, current Mansion dialogue and map content remain unchanged, and no new trainer/flag/var/item is allocated.
+
+Existing battle script semantics supply retry and completion: loss leaves arc stage4 unchanged and Thomas visible; victory alone executes the stage4->5 setter, hides the Mansion actor and unlocks Viridian routing. Host/static final-battle validation plus existing MtMoon/Lab coverage are required; PR #302 owns seven-variant compile/link CI. Full assembled-ROM playtesting remains deferred.
+
+**RIV-016: COMPLETE after PR #302 merges. BLK-THOMAS-FOSSIL: CLOSED.** Unrelated SYS-THOMAS / Rocket work is not closed by this slice.
+
+---
+
 # RIV-016 / Thread 02 — Mansion fossil battle authority audit
 
 Reconciled from live `sam-edition-dev` at `7933d29450eec22655e2a98821e28153733d2569` after PR #299. Result: **B, PARTIALLY SPECIFIED**. No gameplay-safe delta remains. The October 6 reopening requires the evolved stolen fossil to debut in the Mansion battle, but current production protects trainer 788 as a full six-member Single roster (Claydol43/Houndoom44/Magneton44/Seadra45/Machamp46/Salamence47). No newer specialist authority resolves fossil slot/separate package, Gengar package/opening, Single-vs-Double/starter architecture, or resulting Mansion dialogue/Lab ordering. No source gameplay or resource allocation is changed. `BLK-THOMAS-FOSSIL` remains PARTIAL for Mansion only; SYS-THOMAS remains PARTIAL. Exact current handoff: [THOMAS_MANSION_FOSSIL_BATTLE_AUTHORITY_AUDIT.md](THOMAS_MANSION_FOSSIL_BATTLE_AUTHORITY_AUDIT.md).

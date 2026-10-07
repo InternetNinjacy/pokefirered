@@ -72,3 +72,49 @@ void ApplyThomasMtMoonStarterBranch(struct Pokemon *party, u16 trainerNum)
     for (i = 0; i < MAX_MON_MOVES; i++)
         SetMonMoveSlot(mon, moves[i], i);
 }
+
+
+void ApplyThomasCinnabarFossilBranch(struct Pokemon *party, u16 trainerNum)
+{
+    struct Pokemon *mon;
+    u16 species, heldItem = ITEM_MYSTIC_WATER;
+    u16 moves[MAX_MON_MOVES];
+    u32 personality, otId;
+    u8 i;
+
+    if (trainerNum != TRAINER_THOMAS_CINNABAR_MANSION)
+        return;
+
+    switch (VarGet(VAR_MAP_SCENE_MT_MOON_B2F))
+    {
+    case 3: // Thomas stole the Dome Fossil.
+        species = SPECIES_KABUTOPS;
+        moves[0] = MOVE_ROCK_SLIDE;
+        moves[1] = MOVE_BRICK_BREAK;
+        moves[2] = MOVE_WATER_PULSE;
+        moves[3] = MOVE_PROTECT;
+        break;
+    case 4: // Thomas stole the Helix Fossil.
+        species = SPECIES_OMASTAR;
+        moves[0] = MOVE_SURF;
+        moves[1] = MOVE_ICE_BEAM;
+        moves[2] = MOVE_ANCIENT_POWER;
+        moves[3] = MOVE_PROTECT;
+        break;
+    default:
+        // The normal story path always arrives here with theft state 3 or 4.
+        // Keep the protected baseline slot intact for invalid/debug states.
+        return;
+    }
+
+    mon = &party[3]; // Cinnabar-only replacement for Thomas's Seadra slot.
+    personality = GetMonData(mon, MON_DATA_PERSONALITY);
+    otId = GetMonData(mon, MON_DATA_OT_ID);
+
+    // Retain the replaced slot's IV tier (24) while applying the locked fossil
+    // level, held item, and moves. No fossil-specific nature/ability is authored.
+    CreateMon(mon, species, 45, 24, TRUE, personality, OT_ID_PRESET, otId);
+    SetMonData(mon, MON_DATA_HELD_ITEM, &heldItem);
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        SetMonMoveSlot(mon, moves[i], i);
+}

@@ -17,7 +17,7 @@ project: &id002
 current_state:
   verified_at: '2026-10-07'
   production_branch: sam-edition-dev
-  production_head: 7933d29450eec22655e2a98821e28153733d2569
+  production_head: 8e39d49b2a8ef505fc37e904e96e5b366be8461a
   status_authority: Programming Readiness Registry / Backlog
   current_audit: docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-10-07.md
   runtime_policy: Full assembled-ROM playtesting deferred; do not reopen completed
@@ -41,35 +41,35 @@ thomas_mt_moon_checkpoint:
   working_branch: sam/thomas-mt-moon-current-production
   implementation: approved Mt. Moon encounter, starter branches, exact dialogue, victory-only theft and mandatory 1-vs-2 fallback
   preserved: original six Thomas records/data; fossil revival; opposite-fossil researcher
-  closure_blocker: Cinnabar Lab independent scene restored by the RIV-016 continuation; Mansion fossil slot/Gengar/format mapping still requires explicit reconciliation with the protected six records
+  closure_blocker: CLOSED by final Cinnabar battle PR #302; retained here as historical Mt. Moon checkpoint context
   validation: host helper and static preservation checks passed; ROM CI tracked on PR
   runtime: assembled-ROM playtest deferred
 thomas_cinnabar_fossil_checkpoint:
   task: RIV-016
-  status: PARTIAL (independent non-battle Lab scene production-complete via PR #298; Mansion blocked)
-  pr: 298
-  working_branch: sam/thomas-cinnabar-fossil-continuity
-  feature_head: c8dbc5abc890810e0a5b7db768c995ec928201c5
-  production_merge: aa3d3859d44aeb2b27334a5eda08b9b683733e82
+  status: COMPLETE (Lab PR #298 plus final Mansion battle PR #302)
+  lab_pr: 298
+  final_battle_pr: 302
+  working_branch: sam/riv-016d-cinnabar-fossil-battle
+  reconciled_production: 8e39d49b2a8ef505fc37e904e96e5b366be8461a
   source_audit: docs/sam_edition/THOMAS_CINNABAR_FOSSIL_CONTINUITY.md
-  authority: reopened Lab beat and exact September 29 Lab dialogue; current preserve-six-data instruction
-  implementation: one-time Lab exit at current arc4; reads completed MtMoon theft; no player inventory or main arc mutation
-  resources: flags 0x35E/0x35F; local Lab object2; no new trainer or persistent variable
-  blocker: exact fossil sets found; approve slot mapping, Gengar package and format against protected Mansion roster before changing battle
-  validation: final seven-variant CI 37663794925 PASS; initial CI 37663134291 PASS; host Lab960/MtMoon/Rocket/map/text/diff checks PASS
-  synchronization: SYNC-2026-10-07-CINNABAR-FOSSIL-PARTIAL finalized after merge; seven native authority overlays and Registry final checkpoint synchronized
+  authority: Thread 02 explicit closure - trainer 788 Single; no Gengar; Cinnabar Seadra-only fossil replacement; Lab optional; preserve Mansion dialogue
+  implementation: MtMoon scene3 -> Kabutops45 Mystic Water; scene4 -> Omastar45 Mystic Water; existing victory-only stage4->5 flow and loss retry preserved
+  resources: existing trainer 788 and MtMoon var 0x408B; existing Lab flags 0x35E/0x35F; no new persistent allocation
+  blocker: CLOSED (BLK-THOMAS-FOSSIL)
+  validation: host/static final-battle test plus existing Lab/MtMoon tests; PR #302 seven-variant CI required before merge
+  synchronization: RIV-016 final native checkpoint carried in PR #302
   runtime: assembled-ROM playtest deferred
 thomas_mansion_authority_audit_checkpoint:
   task: RIV-016
   thread: 02
-  status: BLOCKED (no gameplay-safe delta; BLK-THOMAS-FOSSIL remains PARTIAL for Mansion only)
+  status: SUPERSEDED by Thread 03 explicit-authority implementation / PR #302
   verified_production: 7933d29450eec22655e2a98821e28153733d2569
   working_branch: sam/thomas-fossil-battle-authority-audit
   audit: docs/sam_edition/THOMAS_MANSION_FOSSIL_BATTLE_AUTHORITY_AUDIT.md
   classification: B - partially specified
   required_current_behavior: evolved Mt Moon stolen fossil must debut in Thomas Mansion battle
   protected_live_behavior: trainer 788 remains a six-member Single battle until explicit current authority changes it
-  blocker: approve fossil roster slot or complete separate package; current Gengar package/opening; Single-vs-Double and starter architecture; Mansion dialogue and Lab-ordering rule
+  blocker: CLOSED by explicit Thread 02 decisions consumed in RIV-016D
   known_fossil_packages: Dome stolen -> Kabutops Lv45 @ Mystic Water; Helix stolen -> Omastar Lv45 @ Mystic Water
   resources: no new trainer IDs, flags, vars, items, maps, or state
   parallel_reconciliation: merged PRs 294/295/297/298/299 preserved; open historical PR244 is not production ancestry
@@ -86,7 +86,7 @@ five_island_thread_1e_checkpoint:
   resources: Scientists 900/901 preserved; current NUM_TRAINERS 903 after Thread 1C fence 902; reserved remainder 903-939
   validation: all seven CI builds passed run 37657349808; static and actual-helper host checks passed
   synchronization: SYNC-2026-10-07-1E-COMPLETE; specialist Addenda, Registry and current project-wide records verified
-  remaining: wider Rocket organization/story and Thomas fossil continuity remain separate
+  remaining: wider Rocket organization/story remains separate; RIV-016 fossil continuity closes in PR #302
   runtime: assembled-ROM playtest deferred
 rocket_thread_1c_checkpoint:
   task: ROCKET-001
