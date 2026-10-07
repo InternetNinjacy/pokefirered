@@ -1,41 +1,34 @@
 CinnabarIsland_Gym_Text_BlaineIntro::
-    .string "Hah!\p"
-    .string "I am BLAINE, the red-hot LEADER\n"
-    .string "of CINNABAR GYM!\p"
-    .string "My fiery POKéMON are all rough\n"
-    .string "and ready with intense heat!\p"
-    .string "They incinerate all challengers!\p"
-    .string "Hah!\n"
-    .string "You better have BURN HEAL!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
+    .string "So, you've completed the practicum. Excellent.\\n"
+    .string "My teaching assistants can be rather enthusiastic about terminology. I prefer results.\\n"
+    .string "Geology teaches us that the world is never truly still. Pressure builds. Stone fractures. Continents move.\\n"
+    .string "A good Trainer learns much the same lesson.\\n"
+    .string "I'm Professor Blaine, Chair of the Department of Geology-and Cinnabar's Gym Leader.\\n"
+    .string "Your final examination begins now.$"
 
 CinnabarIsland_Gym_Text_BlaineDefeat::
-    .string "I have burned down to nothing!\n"
-    .string "Not even ashes remain!\p"
-    .string "You have earned the VOLCANOBADGE.$"
+    .string "Excellent work.$"
 
 CinnabarIsland_Gym_Text_FireBlastIsUltimateFireMove::
-    .string "FIRE BLAST is the ultimate fire\n"
-    .string "technique.\p"
-    .string "Don't waste it on WATER POKéMON.$"
+    .string "And take this.\\n"
+    .string "TM23 contains Boulder Bash.\\n"
+    .string "It hits with enough force to fracture stone, and the impact may lower the target's Defense.\\n"
+    .string "Consider it your final piece of field equipment.$"
 
 CinnabarIsland_Gym_Text_ExplainVolcanoBadge::
-    .string "Hah!\p"
-    .string "The VOLCANOBADGE heightens the\n"
-    .string "SPECIAL stats of your POKéMON.\p"
-    .string "Here, you can have this, too!$"
+    .string "You didn't merely endure pressure. You adapted to it.\\n"
+    .string "That's the distinction between something that breaks…and something that changes.\\n"
+    .string "You've earned the Strata Badge.$"
 
 CinnabarIsland_Gym_Text_ReceivedTM38FromBlaine::
-    .string "{PLAYER} received TM38\n"
-    .string "from BLAINE.$"
+    .string "{PLAYER} received TM23 from BLAINE!$"
 
 CinnabarIsland_Gym_Text_BlainePostBattle::
-    .string "TM38 contains FIRE BLAST.\n"
-    .string "Teach it to FIRE-type POKéMON.\p"
-    .string "VULPIX or CHARMELEON would be\n"
-    .string "ideal for that move.$"
+    .string "Geology rewards attention-to what changes, and what refuses to.\\n"
+    .string "Keep doing both.$"
 
 CinnabarIsland_Gym_Text_MakeSpaceForThis::
-    .string "Make space for this, child!$"
+    .string "Make room in your Bag and come back for TM23.$"
 
 CinnabarIsland_Gym_Text_ErikIntro::
     .string "Do you know how hot POKéMON fire\n"
