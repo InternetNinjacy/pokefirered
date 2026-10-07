@@ -9,6 +9,7 @@ ViridianCity_OnTransition::
 	call_if_ge VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 2, ViridianCity_EventScript_SetOldManNormal
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_GYM_DOOR, 0, ViridianCity_EventScript_TryUnlockGym
 	call ViridianCity_EventScript_UpdateGreen
+	call ViridianCity_EventScript_UpdateRocketOperation
 	end
 
 ViridianCity_EventScript_SetOldManNormal::
@@ -308,3 +309,57 @@ ViridianCity_Text_GreenPost::
 ViridianCity_Text_GreenRetry::
 	.string "I know what I'm changing. Not the\n"
 	.string "POKéMON. Just the details.$"
+
+@ Separate parallel operation: the parcel, old man, Green and Gym states retain
+@ their own authority. Victory persists before the automatic goods return.
+ViridianCity_EventScript_UpdateRocketOperation::
+	setflag FLAG_HIDE_ROCKET_VIRIDIAN_OPERATION
+	goto_if_unset FLAG_SYS_POKEDEX_GET, EventScript_Return
+	goto_if_ne VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_PENDING, EventScript_Return
+	clearflag FLAG_HIDE_ROCKET_VIRIDIAN_OPERATION
+	return
+
+ViridianCity_EventScript_RocketOperation::
+	goto_if_questlog EventScript_ReleaseEnd
+	goto_if_unset FLAG_SYS_POKEDEX_GET, EventScript_ReleaseEnd
+	goto_if_ne VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_PENDING, EventScript_ReleaseEnd
+	lockall
+	textcolor NPC_TEXT_COLOR_MALE
+	msgbox ViridianCity_Text_ThiefDelivery
+	msgbox ViridianCity_Text_FenceDelivery
+	msgbox ViridianCity_Text_ThiefSpottedPlayer
+	msgbox ViridianCity_Text_FenceDismissThief
+	closemessage
+	applymovement LOCALID_VIRIDIAN_THIEF, ViridianCity_Movement_ThiefFlee
+	waitmovement 0
+	removeobject LOCALID_VIRIDIAN_THIEF
+	setvar VAR_LAST_TALKED, LOCALID_VIRIDIAN_ROCKET_FENCE
+	faceplayer
+	msgbox ViridianCity_Text_FenceChallenge
+	setvar VAR_LAST_TALKED, LOCALID_VIRIDIAN_ROCKET_FENCE
+	trainerbattle_no_intro TRAINER_ROCKET_VIRIDIAN_FENCE, ViridianCity_Text_FenceDefeat
+@ Loss does not return: no persistent state, reward or evidence changes above.
+	setvar VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_GOODS_RECOVERED
+	setflag FLAG_HIDE_ROCKET_VIRIDIAN_OPERATION
+	msgbox ViridianCity_Text_FenceFlee
+	closemessage
+	applymovement LOCALID_VIRIDIAN_ROCKET_FENCE, ViridianCity_Movement_FenceFlee
+	waitmovement 0
+	removeobject LOCALID_VIRIDIAN_ROCKET_FENCE
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	msgbox ViridianCity_Text_RecoveredGoods
+	closemessage
+	warp MAP_VIRIDIAN_CITY_MART, 3, 3
+	waitstate
+	releaseall
+	end
+
+ViridianCity_Movement_ThiefFlee::
+	walk_fast_up
+	walk_fast_up
+	step_end
+
+ViridianCity_Movement_FenceFlee::
+	walk_fast_right
+	walk_fast_right
+	step_end

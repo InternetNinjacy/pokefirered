@@ -230,9 +230,12 @@
 #define VAR_GYM4_LAB_SELECTOR_2     VAR_TEMP_8
 #define VAR_GYM4_LAB_SELECTOR_3     VAR_TEMP_9
 #define VAR_0x40A1                 0x40A1
-#define VAR_0x40A2                 0x40A2
-#define VAR_0x40A3                 0x40A3
-#define VAR_0x40A4                 0x40A4
+#define VAR_SAM_ROCKET_OPERATIONS  0x40A2
+#define VAR_SAM_ROCKET_EVIDENCE    0x40A3
+#define VAR_SAM_ROCKET_VIRIDIAN    0x40A4
+#define VAR_0x40A2                 VAR_SAM_ROCKET_OPERATIONS
+#define VAR_0x40A3                 VAR_SAM_ROCKET_EVIDENCE
+#define VAR_0x40A4                 VAR_SAM_ROCKET_VIRIDIAN
 #define VAR_0x40A5                 0x40A5
 #define VAR_0x40A6                 0x40A6
 #define VAR_0x40A7                 0x40A7

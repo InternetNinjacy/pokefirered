@@ -11366,3 +11366,8 @@ static const struct TrainerMonNoItemCustomMoves sParty_FiveIslandScientist2[] = 
         .moves = {MOVE_TELEPORT, MOVE_NONE, MOVE_NONE, MOVE_NONE},
     },
 };
+
+static const struct TrainerMonNoItemDefaultMoves sParty_RocketViridianFence[] = {
+    { .iv = 0, .lvl = 4, .species = SPECIES_RATTATA },
+    { .iv = 0, .lvl = 5, .species = SPECIES_ZUBAT },
+};

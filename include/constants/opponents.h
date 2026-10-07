@@ -850,7 +850,9 @@
 #define TRAINER_FIVE_ISLAND_SCIENTIST_1            900
 #define TRAINER_FIVE_ISLAND_SCIENTIST_2            901
 
-#define NUM_TRAINERS                             902
+#define TRAINER_ROCKET_VIRIDIAN_FENCE             902
+
+#define NUM_TRAINERS                             903
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H

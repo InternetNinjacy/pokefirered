@@ -1,3 +1,11 @@
+## ROCKET-001 / Thread 1C — shared state and Viridian — PR #297
+
+Reconciled onto production `8c3bbdaaae97ff1e4c446aca7dbbcf8209d7fdf2` after both Five Island gameplay #295 and documentation #296 merged. Shared operation/evidence bitsets, actual Rocket Dossier Key Item, approved text-page reader and exact Viridian thief/fence operation are implemented. Trainer 902; item 247; vars 0x40A2–0x40A4; derived visibility flag 0x35D. Victory-only automatic goods return awards exactly five Poké Balls and the Dossier. Capacity checkpoints avoid duplicate rewards/frame loops; NG+ carries the item but clears run evidence and reuses the carried copy.
+
+Real-helper and actual-script-path host checks, baseline Thomas checks, map/item generation, charmap and text-width checks, YAML validation and `git diff --check` pass. PR #297 tracks seven-variant compile/link and merge evidence. The new state is independent of vanilla story flags. Existing maps/trainers, Green, parcel/shop, Mt. Moon and Five Island source are preserved. [Consumer contract and bounded handoff](rocket-thread-1c-state-handoff.md).
+
+ROCKET-001 shared framework is implementation-complete; SYS-ROCKET and ROCKET-002 remain PARTIAL / IN PROGRESS. Delivery 01 is unlocked here; approved Delivery 03/04 reader pages await Thread 1D event hooks. Delivery 02 is deliberately unbound because its older fossil-stock outcome conflicts with the current Thomas theft; reconciled authority is required. No missing rescue package or obsolete Thomas content was invented. Full assembled-ROM playtesting remains deferred. This status supersedes older shared-framework-pending wording below; prior source snapshots remain provenance.
+
 ## RIV-016 / Thread 1B source delta — PR #294
 
 The approved Mt. Moon fossil encounter and one-usable-mon Double fallback are implemented in PR #294 on the reconciled PR #293 documentation ancestry. Original map objects, ordinary Rockets, fossil revival/opposite-fossil researcher and six baseline Thomas records/data remain unchanged. Host helper/static checks pass; ROM CI and merge evidence are tracked on the PR.
