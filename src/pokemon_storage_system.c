@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gflib.h"
 #include "pokemon_storage_system_internal.h"
+#include "malloc.h"
 
 void BackupPokemonStorage(struct PokemonStorage * dest)
 {
@@ -10,6 +11,66 @@ void BackupPokemonStorage(struct PokemonStorage * dest)
 void RestorePokemonStorage(struct PokemonStorage * src)
 {
     *gPokemonStoragePtr = *src;
+}
+
+STATIC_ASSERT(sizeof(struct NewGamePlusStorageReserve) <= HEAP_RESERVED_TAIL_SIZE, NewGamePlusReserveFitsHeapTail);
+
+struct NewGamePlusStorageReserve *GetNewGamePlusStorageReserve(void)
+{
+    return (struct NewGamePlusStorageReserve *)(gHeap + HEAP_SIZE);
+}
+
+u16 IsNewGamePlusStorageActive(void)
+{
+    return GetNewGamePlusStorageReserve()->magic == NG_PLUS_STORAGE_MAGIC;
+}
+
+void ClearNewGamePlusStorageReserve(void)
+{
+    memset(GetNewGamePlusStorageReserve(), 0, sizeof(struct NewGamePlusStorageReserve));
+}
+
+void InitNewGamePlusStorageReserve(struct NewGamePlusStorageReserve *reserve)
+{
+    if (reserve->magic != NG_PLUS_STORAGE_MAGIC)
+    {
+        memset(reserve->mons, 0, sizeof(reserve->mons));
+        reserve->magic = NG_PLUS_STORAGE_MAGIC;
+    }
+}
+
+bool8 CompactNewGamePlusStorageReserve(void)
+{
+    struct NewGamePlusStorageReserve *reserve = GetNewGamePlusStorageReserve();
+    u8 reserveSlot;
+    u8 box;
+    u8 slot;
+    bool8 moved = FALSE;
+
+    InitNewGamePlusStorageReserve(reserve);
+
+    for (reserveSlot = 0; reserveSlot < NG_PLUS_STORAGE_COUNT; reserveSlot++)
+    {
+        if (GetBoxMonData(&reserve->mons[reserveSlot], MON_DATA_SPECIES) == SPECIES_NONE)
+            continue;
+
+        for (box = 0; box < TOTAL_BOXES_COUNT; box++)
+        {
+            for (slot = 0; slot < IN_BOX_COUNT; slot++)
+            {
+                if (GetBoxMonData(&gPokemonStoragePtr->boxes[box][slot], MON_DATA_SPECIES) == SPECIES_NONE)
+                {
+                    gPokemonStoragePtr->boxes[box][slot] = reserve->mons[reserveSlot];
+                    ZeroBoxMonData(&reserve->mons[reserveSlot]);
+                    moved = TRUE;
+                    box = TOTAL_BOXES_COUNT;
+                    break;
+                }
+            }
+        }
+    }
+
+    return moved;
 }
 
 // Functions here are general utility functions.
