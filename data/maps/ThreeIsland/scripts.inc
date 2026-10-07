@@ -388,7 +388,10 @@ ThreeIsland_EventScript_Biker6::
 @ Pokémon: Sam Edition — Green rival checkpoint.
 ThreeIsland_EventScript_UpdateGreen::
 	setflag FLAG_TEMP_11
-	goto_if_set FLAG_RESCUED_LOSTELLE, ThreeIsland_EventScript_ShowGreen
+	goto_if_unset FLAG_RESCUED_LOSTELLE, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_SAFFRON_DITTO, ThreeIsland_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_SAFFRON_ESPEON, ThreeIsland_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_SAFFRON_RAICHU, ThreeIsland_EventScript_ShowGreen
 	return
 
 ThreeIsland_EventScript_ShowGreen::
@@ -400,8 +403,8 @@ ThreeIsland_EventScript_ShowGreen::
 
 ThreeIsland_EventScript_Green::
 	lock
-	faceplayer
 	setvar VAR_LAST_TALKED, LOCALID_THREE_ISLAND_GREEN
+	faceplayer
 	playbgm MUS_ENCOUNTER_RIVAL, 0
 	goto_if_eq VAR_STARTER_MON, 0, ThreeIsland_EventScript_GreenRaichu
 	goto_if_eq VAR_STARTER_MON, 1, ThreeIsland_EventScript_GreenDitto
@@ -430,3 +433,13 @@ ThreeIsland_Text_GreenPost::
 	.string "I don't think I need a different\n"
 	.string "team anymore. Now I need to make\l"
 	.string "this team better.$"
+
+ThreeIsland_EventScript_GreenGateLeft::
+	goto_if_unset FLAG_RESCUED_LOSTELLE, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_DITTO, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_ESPEON, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_RAICHU, EventScript_Return
+	goto ThreeIsland_EventScript_Green
+
+ThreeIsland_EventScript_GreenGateRight::
+	goto ThreeIsland_EventScript_GreenGateLeft
