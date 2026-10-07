@@ -3,6 +3,20 @@
 
 #include "constants/trainers.h"
 
+// Sam Edition Thomas state/visibility; centrally allocated 0x350-0x35A.
+#define FLAG_THOMAS_QUIT_ROCKET       0x350
+#define FLAG_THOMAS_MARA_AVAILABLE    0x351
+#define FLAG_THOMAS_DOLL_DELIVERED    0x352
+#define FLAG_THOMAS_TAUROS_RECEIVED   0x353
+#define FLAG_HIDE_THOMAS_ROUTE24      0x354
+#define FLAG_HIDE_THOMAS_CELADON      0x355
+#define FLAG_HIDE_THOMAS_LAVENDER     0x356
+#define FLAG_HIDE_THOMAS_SILPH        0x357
+#define FLAG_HIDE_THOMAS_CINNABAR     0x358
+#define FLAG_HIDE_THOMAS_VIRIDIAN     0x359
+#define FLAG_HIDE_THOMAS_MARA         0x35A
+
+
 // Temporary Flags
 // These temporary flags are are cleared every time a map is loaded. They are used
 // for things like shortening an NPCs introduction text if the player already spoke
