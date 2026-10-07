@@ -30,3 +30,11 @@ Coverage: 567 unique discovered project files retrieved for text inventory/recon
 ## Validation boundaries
 
 Documentation-only correction; no gameplay or assets changed. All 567 discovered document texts retrieved, current authority/control surfaces reconciled, selected production source inspected. Historical archives retain their dated conclusions. No full ROM compile, emulator playtest, or complete binary asset audit performed in this pass. Recorded previous build evidence is attributed as previous evidence.
+
+## Five Island Thread 1E production closure
+
+This scoped checkpoint supersedes earlier Five Island-pending wording above. PR #295 merged into `sam-edition-dev` at `3d4063a825b914cbc9d8b50f9c8a00dd4b43e341`; validated feature head `8b4d0a3993bae2661f14fca1fcd0cee035ae4ec9`. All seven ROM builds passed CI run `37657349808`, with map/script/ID audits, preservation checks, once-only/re-entry review, actual-helper host tests and `git diff --check` passing. Production tree matches the validated feature. Full assembled-ROM playtesting remains deferred.
+
+Exact accepted content is in [the Thread 1E package](../five-island-thread-1e-content-proposal.md). Implemented seven warehouse trainers/dialogue, scoped support-before-ace order, two stock-class Scientist objects, one-time NPC forced-growth demonstrations and shutdown cleanup. No player Pokemon mutation or new flags/vars/items; existing Gideon/Sapphire, puzzle, map events and Sevii progression preserved. Scientists use trainer IDs 900/901 within capacity 1024, with NUM_TRAINERS 902. Existing Thread 1B/Thomas 847 changes are preserved.
+
+Specialist Rocket/Thomas Addenda, Programming Readiness Registry records and current Design Bible/Canon Authority Index/Document Sync Index are verified at `SYNC-2026-10-07-1E-COMPLETE`. Only Five Island is complete; broader SYS-ROCKET/SYS-THOMAS remain PARTIAL, including separate Thomas fossil continuity. Earlier snapshots remain historical provenance.
