@@ -1355,26 +1355,26 @@ Route16_EventScript_HideoRematch::
 	end
 
 Route16_EventScript_Ruben::
-	trainerbattle_single TRAINER_BIKER_RUBEN, Route16_Text_RubenIntro, Route16_Text_RubenDefeat
+	trainerbattle_double TRAINER_BIKER_RUBEN, Route16_Text_RubenIntro, Route16_Text_RubenDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route16_EventScript_RubenRematch
 	msgbox Route16_Text_RubenPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route16_EventScript_RubenRematch::
-	trainerbattle_rematch TRAINER_BIKER_RUBEN, Route16_Text_RubenRematchIntro, Route16_Text_RubenDefeat
+	trainerbattle_rematch_double TRAINER_BIKER_RUBEN, Route16_Text_RubenRematchIntro, Route16_Text_RubenDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route16_Text_RubenPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route16_EventScript_Koji::
-	trainerbattle_single TRAINER_CUE_BALL_KOJI, Route16_Text_KojiIntro, Route16_Text_KojiDefeat
+	trainerbattle_double TRAINER_CUE_BALL_KOJI, Route16_Text_KojiIntro, Route16_Text_KojiDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route16_EventScript_KojiRematch
 	msgbox Route16_Text_KojiPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route16_EventScript_KojiRematch::
-	trainerbattle_rematch TRAINER_CUE_BALL_KOJI, Route16_Text_KojiRematchIntro, Route16_Text_KojiDefeat
+	trainerbattle_rematch_double TRAINER_CUE_BALL_KOJI, Route16_Text_KojiRematchIntro, Route16_Text_KojiDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route16_Text_KojiPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1427,14 +1427,14 @@ Route16_EventScript_LeaRematch::
 	end
 
 Route17_EventScript_Billy::
-	trainerbattle_single TRAINER_BIKER_BILLY, Route17_Text_BillyIntro, Route17_Text_BillyDefeat
+	trainerbattle_double TRAINER_BIKER_BILLY, Route17_Text_BillyIntro, Route17_Text_BillyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route17_EventScript_BillyRematch
 	msgbox Route17_Text_BillyPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route17_EventScript_BillyRematch::
-	trainerbattle_rematch TRAINER_BIKER_BILLY, Route17_Text_BillyRematchIntro, Route17_Text_BillyDefeat
+	trainerbattle_rematch_double TRAINER_BIKER_BILLY, Route17_Text_BillyRematchIntro, Route17_Text_BillyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route17_Text_BillyPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1451,14 +1451,14 @@ Route17_EventScript_NikolasRematch::
 	end
 
 Route17_EventScript_Jaxon::
-	trainerbattle_single TRAINER_BIKER_JAXON, Route17_Text_JaxonIntro, Route17_Text_JaxonDefeat
+	trainerbattle_double TRAINER_BIKER_JAXON, Route17_Text_JaxonIntro, Route17_Text_JaxonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route17_EventScript_JaxonRematch
 	msgbox Route17_Text_JaxonPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route17_EventScript_JaxonRematch::
-	trainerbattle_rematch TRAINER_BIKER_JAXON, Route17_Text_JaxonRematchIntro, Route17_Text_JaxonDefeat
+	trainerbattle_rematch_double TRAINER_BIKER_JAXON, Route17_Text_JaxonRematchIntro, Route17_Text_JaxonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route17_Text_JaxonPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1475,14 +1475,14 @@ Route17_EventScript_WilliamRematch::
 	end
 
 Route17_EventScript_Raul::
-	trainerbattle_single TRAINER_CUE_BALL_RAUL, Route17_Text_RaulIntro, Route17_Text_RaulDefeat
+	trainerbattle_double TRAINER_CUE_BALL_RAUL, Route17_Text_RaulIntro, Route17_Text_RaulDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route17_EventScript_RaulRematch
 	msgbox Route17_Text_RaulPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route17_EventScript_RaulRematch::
-	trainerbattle_rematch TRAINER_CUE_BALL_RAUL, Route17_Text_RaulRematchIntro, Route17_Text_RaulDefeat
+	trainerbattle_rematch_double TRAINER_CUE_BALL_RAUL, Route17_Text_RaulRematchIntro, Route17_Text_RaulDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route17_Text_RaulPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1499,14 +1499,14 @@ Route17_EventScript_IsaiahRematch::
 	end
 
 Route17_EventScript_Zeek::
-	trainerbattle_single TRAINER_CUE_BALL_ZEEK, Route17_Text_ZeekIntro, Route17_Text_ZeekDefeat
+	trainerbattle_double TRAINER_CUE_BALL_ZEEK, Route17_Text_ZeekIntro, Route17_Text_ZeekDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route17_EventScript_ZeekRematch
 	msgbox Route17_Text_ZeekPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route17_EventScript_ZeekRematch::
-	trainerbattle_rematch TRAINER_CUE_BALL_ZEEK, Route17_Text_ZeekRematchIntro, Route17_Text_ZeekDefeat
+	trainerbattle_rematch_double TRAINER_CUE_BALL_ZEEK, Route17_Text_ZeekRematchIntro, Route17_Text_ZeekDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route17_Text_ZeekPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1535,14 +1535,14 @@ Route17_EventScript_CoreyRematch::
 	end
 
 Route17_EventScript_Virgil::
-	trainerbattle_single TRAINER_BIKER_VIRGIL, Route17_Text_VirgilIntro, Route17_Text_VirgilDefeat
+	trainerbattle_double TRAINER_BIKER_VIRGIL, Route17_Text_VirgilIntro, Route17_Text_VirgilDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route17_EventScript_VirgilRematch
 	msgbox Route17_Text_VirgilPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route17_EventScript_VirgilRematch::
-	trainerbattle_rematch TRAINER_BIKER_VIRGIL, Route17_Text_VirgilRematchIntro, Route17_Text_VirgilDefeat
+	trainerbattle_rematch_double TRAINER_BIKER_VIRGIL, Route17_Text_VirgilRematchIntro, Route17_Text_VirgilDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route17_Text_VirgilPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1559,26 +1559,26 @@ Route18_EventScript_WiltonRematch::
 	end
 
 Route18_EventScript_Ramiro::
-	trainerbattle_single TRAINER_BIRD_KEEPER_RAMIRO, Route18_Text_RamiroIntro, Route18_Text_RamiroDefeat
+	trainerbattle_double TRAINER_BIRD_KEEPER_RAMIRO, Route18_Text_RamiroIntro, Route18_Text_RamiroDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route18_EventScript_RamiroRematch
 	msgbox Route18_Text_RamiroPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route18_EventScript_RamiroRematch::
-	trainerbattle_rematch TRAINER_BIRD_KEEPER_RAMIRO, Route18_Text_RamiroRematchIntro, Route18_Text_RamiroDefeat
+	trainerbattle_rematch_double TRAINER_BIRD_KEEPER_RAMIRO, Route18_Text_RamiroRematchIntro, Route18_Text_RamiroDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route18_Text_RamiroPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route18_EventScript_Jacob::
-	trainerbattle_single TRAINER_BIRD_KEEPER_JACOB, Route18_Text_JacobIntro, Route18_Text_JacobDefeat
+	trainerbattle_double TRAINER_BIRD_KEEPER_JACOB, Route18_Text_JacobIntro, Route18_Text_JacobDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route18_EventScript_JacobRematch
 	msgbox Route18_Text_JacobPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route18_EventScript_JacobRematch::
-	trainerbattle_rematch TRAINER_BIRD_KEEPER_JACOB, Route18_Text_JacobRematchIntro, Route18_Text_JacobDefeat
+	trainerbattle_rematch_double TRAINER_BIRD_KEEPER_JACOB, Route18_Text_JacobRematchIntro, Route18_Text_JacobDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route18_Text_JacobPostBattle, MSGBOX_AUTOCLOSE
 	end
 
