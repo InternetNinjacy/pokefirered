@@ -1,8 +1,10 @@
 CeladonCity_Gym_Text_SatoshiFirst::
     .string "ERIKA trains Bug-type POKéMON.\p"
-    .string "This GYM is pretty straightforward.\n"
-    .string "The plants are here because this place\l"
-    .string "is a habitat.\p"
+    .string "The plants are part of the BUG habitat,\n"
+    .string "and there are two research routes.\p"
+    .string "You can battle the researchers directly,\n"
+    .string "or solve an observation exercise to\l"
+    .string "open a bypass on either side.\p"
     .string "FIRE, FLYING, and ROCK attacks work\n"
     .string "well against Bug.\p"
     .string "But don't assume every Bug POKéMON\n"
@@ -50,6 +52,8 @@ CeladonCity_Gym_Text_SatoshiRetryNo::
 CeladonCity_Gym_Text_SatoshiDecline::
     .string "Fair enough.\p"
     .string "Remember: FIRE. FLYING. ROCK.\p"
+    .string "The observation stations can open\n"
+    .string "optional bypasses around the researchers.\p"
     .string "And if ERIKA changes the battle on\n"
     .string "you... change your plan too.$"
 
@@ -57,6 +61,8 @@ CeladonCity_Gym_Text_SatoshiRepeat::
     .string "Short version?\p"
     .string "FIRE. FLYING. ROCK.\n"
     .string "Watch for status.\p"
+    .string "Battle through, or use the observation\n"
+    .string "stations to open a bypass.\p"
     .string "And don't get attached to one plan.$"
 
 CeladonCity_Gym_Text_SatoshiAfterPracticed::
