@@ -46,11 +46,17 @@ CinnabarIsland_Gym_OnLoadOpenDoor6::
 	return
 
 CinnabarIsland_Gym_EventScript_Blaine::
-	famechecker FAMECHECKER_BLAINE, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
-	trainerbattle_single TRAINER_LEADER_BLAINE, CinnabarIsland_Gym_Text_BlaineIntro, CinnabarIsland_Gym_Text_BlaineDefeat, CinnabarIsland_Gym_EventScript_DefeatedBlaine, NO_MUSIC
-	goto_if_unset FLAG_GOT_TM38_FROM_BLAINE, CinnabarIsland_Gym_EventScript_GiveTM38
+	lock
+	faceplayer
+	goto_if_unset FLAG_BADGE07_GET, CinnabarIsland_Gym_EventScript_BlaineFirst
+	goto_if_unset FLAG_GOT_TM38_FROM_BLAINE, CinnabarIsland_Gym_EventScript_GiveTM23
 	msgbox CinnabarIsland_Gym_Text_BlainePostBattle
 	release
+	end
+
+CinnabarIsland_Gym_EventScript_BlaineFirst::
+	famechecker FAMECHECKER_BLAINE, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	trainerbattle_single TRAINER_LEADER_BLAINE, CinnabarIsland_Gym_Text_BlaineIntro, CinnabarIsland_Gym_Text_BlaineDefeat, CinnabarIsland_Gym_EventScript_DefeatedBlaine, NO_MUSIC
 	end
 
 CinnabarIsland_Gym_EventScript_DefeatedBlaine::
@@ -61,20 +67,20 @@ CinnabarIsland_Gym_EventScript_DefeatedBlaine::
 	setvar VAR_MAP_SCENE_CINNABAR_ISLAND, 1
 	clearflag FLAG_HIDE_CINNABAR_BILL
 	set_gym_trainers 7
-	goto CinnabarIsland_Gym_EventScript_GiveTM38
+	msgbox CinnabarIsland_Gym_Text_ExplainVolcanoBadge
+	goto CinnabarIsland_Gym_EventScript_GiveTM23
 	end
 
-CinnabarIsland_Gym_EventScript_GiveTM38::
-	msgbox CinnabarIsland_Gym_Text_ExplainVolcanoBadge
-	checkitemspace ITEM_TM38
-	goto_if_eq VAR_RESULT, FALSE, CinnabarIsland_Gym_EventScript_NoRoomForTM38
-	giveitem_msg CinnabarIsland_Gym_Text_ReceivedTM38FromBlaine, ITEM_TM38
+CinnabarIsland_Gym_EventScript_GiveTM23::
+	checkitemspace ITEM_TM23_BOULDER_BASH
+	goto_if_eq VAR_RESULT, FALSE, CinnabarIsland_Gym_EventScript_NoRoomForTM23
+	giveitem_msg CinnabarIsland_Gym_Text_ReceivedTM38FromBlaine, ITEM_TM23_BOULDER_BASH
 	setflag FLAG_GOT_TM38_FROM_BLAINE
 	msgbox CinnabarIsland_Gym_Text_FireBlastIsUltimateFireMove
 	release
 	end
 
-CinnabarIsland_Gym_EventScript_NoRoomForTM38::
+CinnabarIsland_Gym_EventScript_NoRoomForTM23::
 	msgbox CinnabarIsland_Gym_Text_MakeSpaceForThis
 	release
 	end
