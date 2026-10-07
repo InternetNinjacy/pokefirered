@@ -133,6 +133,13 @@ SSAnne_Exterior_EventScript_TruckMew::
 	dowildbattle
 	clearflag FLAG_SYS_SPECIAL_WILD_BATTLE
 	special QuestLog_CutRecording
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, SSAnne_Exterior_EventScript_ResolveTruckMew
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, SSAnne_Exterior_EventScript_ResolveTruckMew
+	release
+	end
+
+SSAnne_Exterior_EventScript_ResolveTruckMew::
 	setflag FLAG_MEW_TRUCK_RESOLVED
 	setflag FLAG_HIDE_SS_ANNE_TRUCK_MEW
 	removeobject LOCALID_SS_ANNE_TRUCK_MEW
