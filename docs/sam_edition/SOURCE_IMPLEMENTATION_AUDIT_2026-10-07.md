@@ -1,3 +1,13 @@
+# RIV-016E production closure — PR #303
+
+PR #303 merged at `eeea5bbc23d4ca70614180552220f317a286bc89` from feature head `3af4f344a10b6c0aceadcb5e0bcd0f58d14aa55f`. CI run `37675450935` completed SUCCESS across FireRed, FireRed rev1/rev10, LeafGreen, LeafGreen rev1/rev10, and Modern.
+
+Verified production delta: the PR #302 Cinnabar fossil replacement is preserved, and the same durable Mt. Moon branch now also replaces trainer 789's normal-story Kingdra sixth slot at Lv52/IV24. Kabutops uses Mystic Water + Rock Slide / Brick Break / Water Pulse / Protect; Omastar uses Mystic Water + Hydro Pump / Ice Beam / AncientPower / Protect. Trainer 789 remains Single; first five members, dialogue, Doll handoff, quit-Rocket transition and Giovanni routing are unchanged.
+
+No new trainer ID, flag, variable, item, map object, story event, or battle was added. Static Kingdra remains only as an invalid/debug fallback. RIV-016 is COMPLETE; BLK-THOMAS-FOSSIL is CLOSED. Assembled-ROM gameplay testing remains deferred.
+
+---
+
 # RIV-016E — Viridian Thomas fossil continuation
 
 New explicit authority reopens RIV-016 only for one narrow production delta after PR #302: the Seadra -> fossil substitution persists for the remainder of Thomas's battles, so trainer 789's normal-story Kingdra sixth slot must also resolve to the same stolen-fossil branch.
