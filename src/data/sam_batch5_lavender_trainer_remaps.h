@@ -1,5 +1,5 @@
 // Pokemon Sam Edition - TRAINERS Batch 5 party remaps.
-#include "data/sam_batch5_lavender_trainer_parties.h"
+#include "sam_batch5_lavender_trainer_parties.h"
 
 #define sParty_PicnickerAlicia sParty_SamB5PicnickerAlicia
 #define sParty_HikerJeremy sParty_SamB5HikerJeremy
