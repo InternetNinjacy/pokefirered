@@ -3958,9 +3958,9 @@ const struct Trainer gTrainers[] = {
         .trainerPic = TRAINER_PIC_COOLTRAINER_M,
         .trainerName = _("TREIVOR"),
         .items = {ITEM_HYPER_POTION},
-        .doubleBattle = FALSE,
+        .doubleBattle = TRUE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_CooltrainerRolando),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_CooltrainerRolando),
     },
     [TRAINER_COOLTRAINER_GILBERT] = {
         .trainerClass = TRAINER_CLASS_COOLTRAINER,
@@ -4030,7 +4030,7 @@ const struct Trainer gTrainers[] = {
         .items = {ITEM_HYPER_POTION},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_CooltrainerCaroline),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_CooltrainerCaroline),
     },
     [TRAINER_COOLTRAINER_ALEXA] = {
         .trainerClass = TRAINER_CLASS_COOLTRAINER,
@@ -4060,7 +4060,7 @@ const struct Trainer gTrainers[] = {
         .items = {ITEM_HYPER_POTION},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_CooltrainerNaomi),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_CooltrainerNaomi),
     },
     [TRAINER_COOLTRAINER_BROOKE] = {
         .trainerClass = TRAINER_CLASS_COOLTRAINER,
