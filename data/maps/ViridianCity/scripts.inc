@@ -258,6 +258,13 @@ ViridianCity_EventScript_Green::
 	faceplayer
 	setvar VAR_LAST_TALKED, LOCALID_VIRIDIAN_GREEN
 	playbgm MUS_ENCOUNTER_RIVAL, 0
+	goto_if_set FLAG_GREEN_VIRIDIAN_ATTEMPTED, ViridianCity_EventScript_GreenRetry
+	setflag FLAG_GREEN_VIRIDIAN_ATTEMPTED
+	goto ViridianCity_EventScript_GreenChooseBranch
+
+ViridianCity_EventScript_GreenRetry::
+	msgbox ViridianCity_Text_GreenRetry
+ViridianCity_EventScript_GreenChooseBranch::
 	goto_if_eq VAR_STARTER_MON, 0, ViridianCity_EventScript_GreenRaichu
 	goto_if_eq VAR_STARTER_MON, 1, ViridianCity_EventScript_GreenDitto
 	goto ViridianCity_EventScript_GreenEspeon
@@ -286,3 +293,7 @@ ViridianCity_Text_GreenPost::
 	.string "Now it's little decisions...\p"
 	.string "You're really good at finding\n"
 	.string "those. Thanks, {PLAYER}.$"
+
+ViridianCity_Text_GreenRetry::
+	.string "I know what I'm changing. Not the\n"
+	.string "POKéMON. Just the details.$"
