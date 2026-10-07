@@ -124,11 +124,17 @@ SaffronCity_Gym_EventScript_SatoshiPostVictoryPracticed::
 	release
 	end
 
-@ The exact postgame Satoshi rematch dialogue is not supplied by the current
-@ Saffron/Satoshi authorities. Keep postgame precedence correct without
-@ inventing release dialogue; the rematch trainer data remains bound and ready.
 SaffronCity_Gym_EventScript_SatoshiPostgame::
-	msgbox SaffronCity_Gym_Text_SatoshiPostgamePending
+	msgbox SaffronCity_Gym_Text_SatoshiRematchOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SaffronCity_Gym_EventScript_SatoshiRematchAccept
+	msgbox SaffronCity_Gym_Text_SatoshiRematchDecline
+	release
+	end
+
+SaffronCity_Gym_EventScript_SatoshiRematchAccept::
+	msgbox SaffronCity_Gym_Text_SatoshiRematchAccept
+	cleartrainerflag TRAINER_SATOSHI_SAFFRON_REMATCH
+	trainerbattle_single TRAINER_SATOSHI_SAFFRON_REMATCH, SaffronCity_Gym_Text_SatoshiRematchBattle, SaffronCity_Gym_Text_SatoshiRematchDefeat
 	release
 	end
 
