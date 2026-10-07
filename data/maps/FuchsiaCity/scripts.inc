@@ -172,8 +172,8 @@ FuchsiaCity_EventScript_GreenRaichu::
 	trainerbattle_no_intro TRAINER_GREEN_FUCHSIA_RAICHU, FuchsiaCity_Text_GreenDefeat
 	goto FuchsiaCity_EventScript_GreenWon
 FuchsiaCity_EventScript_GreenWon::
-	msgbox FuchsiaCity_Text_GreenPost
-	closemessage
+	@ The authority gives the post-battle beat only as prose, not exact dialogue.
+	@ Do not invent a canonical line here; the battle's exact defeat text above is preserved.
 	setflag FLAG_TEMP_11
 	removeobject LOCALID_FUCHSIA_GREEN
 	fadedefaultbgm
@@ -182,7 +182,7 @@ FuchsiaCity_EventScript_GreenWon::
 
 FuchsiaCity_Text_GreenDefeat::
 	.string "Yep. You caught me.$"
-FuchsiaCity_Text_GreenPost::
+FuchsiaCity_Text_GreenRepeat::
 	.string "Next time I want six. Then there\n"
 	.string "really won't be anywhere for a bad\l"
 	.string "matchup to hide.$"
