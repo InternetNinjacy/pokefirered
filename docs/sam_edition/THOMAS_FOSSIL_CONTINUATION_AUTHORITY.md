@@ -1,10 +1,12 @@
 # RIV-016E — production closure
 
-Status: **IMPLEMENTED / MERGED / SYNCHRONIZATION COMPLETE PENDING FINAL DOC PR**
+Status: **IMPLEMENTED / MERGED / SYNCHRONIZED / RETIRED**
 
 Gameplay PR #303 merged into `sam-edition-dev` at `eeea5bbc23d4ca70614180552220f317a286bc89` from validated feature head `3af4f344a10b6c0aceadcb5e0bcd0f58d14aa55f`.
 
 CI run `37675450935` passed all configured variants: FireRed, FireRed rev1, FireRed rev10, LeafGreen, LeafGreen rev1, LeafGreen rev10, and Modern.
+
+Repository documentation PR #304 merged at `ac48e26086c3397decaf02e1907dc9dd96859ad3`; documentation-sync CI `37676495783` passed. Drive authority records, the Programming Readiness Registry, and the dedicated archival record are synchronized. Later unrelated Rocket production does not reopen this slice.
 
 Production now implements the locked lineage rule:
 - Cinnabar trainer 788 remains Single and replaces Seadra with the branch fossil at Lv45.
@@ -14,7 +16,7 @@ Production now implements the locked lineage rule:
 - No new trainer, flag, variable, item, map object, story event, or Thomas battle.
 - Lab preview, Doll handoff, quit-Rocket transition, Giovanni routing and the seven-battle cadence remain unchanged.
 
-RIV-016 returns to **COMPLETE**. BLK-THOMAS-FOSSIL remains **CLOSED**. Full assembled-ROM gameplay testing remains deferred.
+RIV-016 is **COMPLETE**. BLK-THOMAS-FOSSIL is **CLOSED**. This bounded thread is retired. Full assembled-ROM gameplay testing remains deferred.
 
 ---
 
