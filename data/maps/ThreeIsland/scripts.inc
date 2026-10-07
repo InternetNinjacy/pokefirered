@@ -430,8 +430,8 @@ ThreeIsland_EventScript_GreenWon::
 
 ThreeIsland_Text_GreenOpening::
 	.string "I found the sixth one. Funny thing\n"
-	.string "is, I stopped looking for \"a sixth\l"
-	.string "POKéMON.\"\p"
+	.string "is, I stopped looking for a sixth\l"
+	.string "POKéMON.\p"
 	.string "I started looking for one that\n"
 	.string "made the other five better. That\l"
 	.string "changed everything.\p"
