@@ -1359,8 +1359,7 @@ PalletTown_ProfessorOaksLab_EventScript_EndGreenOakBattle::
 	special HealPlayerParty
 	msgbox PalletTown_ProfessorOaksLab_Text_GreenOakPost
 	closemessage
-	setflag FLAG_TEMP_15
-	removeobject LOCALID_OAKS_LAB_GREEN
+	@ Leave Green present for the locked repeat interaction; transition logic hides her on reload.
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 4
 	fadedefaultbgm
 	releaseall
