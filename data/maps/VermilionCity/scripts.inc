@@ -23,6 +23,14 @@ VermilionCity_Movement_ExitSSAnne::
 VermilionCity_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_VERMILION_CITY
 	call_if_set FLAG_TALKED_TO_OAKS_AIDE_IN_VERMILION, VermilionCity_EventScript_HideOaksAide
+	goto_if_eq VAR_MAP_SCENE_VERMILION_CITY, 3, VermilionCity_EventScript_SetPostSSAnneHarborState
+	setflag FLAG_HIDE_VERMILION_SEAGALLOP_SAILOR
+	clearflag FLAG_HIDE_VERMILION_SS_ANNE_GUARD
+	end
+
+VermilionCity_EventScript_SetPostSSAnneHarborState::
+	setflag FLAG_HIDE_VERMILION_SS_ANNE_GUARD
+	clearflag FLAG_HIDE_VERMILION_SEAGALLOP_SAILOR
 	end
 
 VermilionCity_EventScript_HideOaksAide::
@@ -192,7 +200,7 @@ VermilionCity_EventScript_CheckTicket::
 	applymovement LOCALID_VERMILION_FERRY_SAILOR, Common_Movement_WalkInPlaceFasterLeft
 	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterRight
 	waitmovement 0
-	goto_if_eq VAR_MAP_SCENE_VERMILION_CITY, 3, VermilionCity_EventScript_CheckSeagallopPresentTrigger
+	goto_if_eq VAR_MAP_SCENE_VERMILION_CITY, 3, VermilionCity_EventScript_AllowHarborReentry
 	msgbox VermilionCity_Text_DoYouHaveATicket
 	goto_if_unset FLAG_GOT_SS_TICKET, VermilionCity_EventScript_DontHaveSSTicket
 	msgbox VermilionCity_Text_FlashedSSTicket
@@ -206,6 +214,11 @@ VermilionCity_EventScript_DontHaveSSTicket::
 	goto VermilionCity_EventScript_WalkUpPier
 	end
 
+VermilionCity_EventScript_AllowHarborReentry::
+	setvar VAR_VERMILION_CITY_TICKET_CHECK_TRIGGER, 1
+	releaseall
+	end
+
 VermilionCity_EventScript_CheckSeagallopPresentTrigger::
 	setvar VAR_0x8004, SEAGALLOP_VERMILION_CITY
 	goto_if_ge VAR_MAP_SCENE_ONE_ISLAND_POKEMON_CENTER_1F, 5, VermilionCity_EventScript_ChooseSeagallopDestRainbowPass
@@ -216,7 +229,16 @@ VermilionCity_EventScript_CheckSeagallopPresentTrigger::
 	end
 
 VermilionCity_EventScript_Sailor::
-	msgbox VermilionCity_Text_SSAnneVisitsOnceAYear, MSGBOX_NPC
+	lock
+	faceplayer
+	goto_if_eq VAR_MAP_SCENE_VERMILION_CITY, 3, VermilionCity_EventScript_SailorTruckRumor
+	msgbox VermilionCity_Text_SSAnneVisitsOnceAYear
+	release
+	end
+
+VermilionCity_EventScript_SailorTruckRumor::
+	msgbox VermilionCity_Text_TruckMeowingRumor
+	release
 	end
 
 VermilionCity_EventScript_OaksAide::
