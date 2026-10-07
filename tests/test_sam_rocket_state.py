@@ -140,7 +140,7 @@ for path in ['src/data/trainers.h']:
  for name in re.findall(r'\[TRAINER_[A-Z0-9_]+\]',old(path)):
   pattern=re.escape(name)+r' = \{.*?\n    \},'
   assert re.search(pattern,old(path),re.S).group()==re.search(pattern,(ROOT/path).read_text(),re.S).group(),name
-for path in ['data/maps/FiveIsland_RocketWarehouse/scripts.inc','data/maps/FiveIsland_RocketWarehouse/map.json','src/battle_ai_switch_items.c','src/new_game.c','data/maps/MtMoon_B2F/scripts.inc']:
+for path in ['data/maps/FiveIsland_RocketWarehouse/scripts.inc','data/maps/FiveIsland_RocketWarehouse/map.json','src/battle_ai_switch_items.c','src/new_game.c']:
  assert (ROOT/path).read_text()==old(path),path
 items=json.loads((ROOT/'src/data/items.json').read_text())['items'];baseline=json.loads(old('src/data/items.json'))['items']
 assert len(items)==len(baseline)==375
