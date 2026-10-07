@@ -5800,27 +5800,33 @@ static const struct TrainerMonItemCustomMoves sParty_LeaderKoga[] = {
 static const struct TrainerMonNoItemCustomMoves sParty_LeaderBlaine[] = {
     {
         .iv = 0,
-        .lvl = 42,
-        .species = SPECIES_GROWLITHE,
-        .moves = {MOVE_BITE, MOVE_ROAR, MOVE_TAKE_DOWN, MOVE_FIRE_BLAST},
+        .lvl = 43,
+        .species = SPECIES_OMASTAR,
+        .moves = {MOVE_SURF, MOVE_ROCK_SLIDE, MOVE_ICE_BEAM, MOVE_PROTECT},
     },
     {
         .iv = 0,
-        .lvl = 40,
-        .species = SPECIES_PONYTA,
-        .moves = {MOVE_STOMP, MOVE_BOUNCE, MOVE_FIRE_SPIN, MOVE_FIRE_BLAST},
+        .lvl = 43,
+        .species = SPECIES_KABUTOPS,
+        .moves = {MOVE_ROCK_SLIDE, MOVE_BRICK_BREAK, MOVE_AERIAL_ACE, MOVE_SLASH},
     },
     {
         .iv = 0,
-        .lvl = 42,
-        .species = SPECIES_RAPIDASH,
-        .moves = {MOVE_STOMP, MOVE_BOUNCE, MOVE_FIRE_SPIN, MOVE_FIRE_BLAST},
+        .lvl = 44,
+        .species = SPECIES_GOLEM,
+        .moves = {MOVE_ROCK_SLIDE, MOVE_EARTHQUAKE, MOVE_BRICK_BREAK, MOVE_EXPLOSION},
+    },
+    {
+        .iv = 0,
+        .lvl = 45,
+        .species = SPECIES_RHYDON,
+        .moves = {MOVE_ROCK_SLIDE, MOVE_EARTHQUAKE, MOVE_MEGAHORN, MOVE_DOUBLE_EDGE},
     },
     {
         .iv = 0,
         .lvl = 47,
-        .species = SPECIES_ARCANINE,
-        .moves = {MOVE_BITE, MOVE_ROAR, MOVE_TAKE_DOWN, MOVE_FIRE_BLAST},
+        .species = SPECIES_AERODACTYL,
+        .moves = {MOVE_BOULDER_BASH, MOVE_AERIAL_ACE, MOVE_STEEL_WING, MOVE_DOUBLE_EDGE},
     },
 };
 
