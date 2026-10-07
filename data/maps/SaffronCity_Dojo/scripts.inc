@@ -1,150 +1,249 @@
+.include "data/maps/SaffronCity_Dojo/hothouse_reward_text.inc"
+
 SaffronCity_Dojo_MapScripts::
 	.byte 0
 
-SaffronCity_Dojo_EventScript_TriggerMasterBattleLeft::
-	lockall
-	setvar VAR_MAP_SCENE_SAFFRON_CITY_DOJO, 1
-	applymovement LOCALID_KARATE_MASTER, Common_Movement_WalkInPlaceFasterLeft
-	waitmovement 0
-	releaseall
+@ Reserved SYS-HOT bindings from the Symbol Registry:
+@ FLAG_SAM_HOTHOUSE_STARTED = FLAG_SAM_HOTHOUSE_STARTED
+@ FLAG_SAM_HOTHOUSE_SOLVED = FLAG_SAM_HOTHOUSE_SOLVED
+@ FLAG_SAM_HOTHOUSE_HAWTHORNE_DEFEATED = FLAG_SAM_HOTHOUSE_HAWTHORNE_DEFEATED
+@ FLAG_SAM_HOTHOUSE_TROPIUS_CLAIMED = FLAG_SAM_HOTHOUSE_TROPIUS_CLAIMED
+@ VAR_SAM_HOTHOUSE_IRRIGATION = VAR_SAM_HOTHOUSE_IRRIGATION
+@ VAR_SAM_HOTHOUSE_SUNLIGHT = VAR_SAM_HOTHOUSE_SUNLIGHT
+@ VAR_SAM_HOTHOUSE_TEMPERATURE = VAR_SAM_HOTHOUSE_TEMPERATURE
+@ VAR_SAM_HOTHOUSE_SOIL = VAR_SAM_HOTHOUSE_SOIL
+@ VAR_SAM_HOTHOUSE_STATE = VAR_SAM_HOTHOUSE_STATE
+@
+@ Dormant Ruby/Sapphire dummy trainer IDs are used for the five Hothouse
+@ battles. Their trainer flags are otherwise unused in FireRed, so the four
+@ gardener flags also provide persistent control unlock state.
+
+EventScript_Sam_Hothouse_EntryPlaque::
+	msgbox SaffronCity_Dojo_Text_HothousePlaque, MSGBOX_SIGN
 	end
 
-SaffronCity_Dojo_EventScript_TriggerMasterBattleRight::
-	lockall
-	setvar VAR_MAP_SCENE_SAFFRON_CITY_DOJO, 1
-	applymovement LOCALID_KARATE_MASTER, Common_Movement_WalkInPlaceFasterRight
-	waitmovement 0
-	releaseall
+EventScript_Sam_Hothouse_Tropius::
 	end
 
-SaffronCity_Dojo_EventScript_HitmonleeBall::
+@ Three foliage objects across the central approach are the physical vine
+@ barrier. Their object flag is FLAG_SAM_HOTHOUSE_SOLVED, so they remain absent
+@ automatically after exit/save-load once the puzzle has been solved.
+EventScript_Sam_Hothouse_VineBarrier::
+	end
+
+EventScript_Sam_Hothouse_Hawthorne::
 	lock
 	faceplayer
-	goto_if_set FLAG_GOT_HITMON_FROM_DOJO, SaffronCity_Dojo_EventScript_AlreadyGotHitmon
-	showmonpic SPECIES_HITMONLEE, 10, 3
-	setvar VAR_TEMP_1, SPECIES_HITMONLEE
-	applymovement LOCALID_KARATE_MASTER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	textcolor NPC_TEXT_COLOR_MALE
-	msgbox SaffronCity_Dojo_Text_YouWantHitmonlee, MSGBOX_YESNO
-	call EventScript_RestorePrevTextColor
-	goto_if_eq VAR_RESULT, YES, SaffronCity_Dojo_EventScript_GiveHitmon
-	hidemonpic
+	goto_if_set FLAG_SAM_HOTHOUSE_TROPIUS_CLAIMED, EventScript_Sam_Hothouse_HawthorneCompleted
+	goto_if_set FLAG_SAM_HOTHOUSE_HAWTHORNE_DEFEATED, EventScript_Sam_Hothouse_HawthorneRewardPending
+	goto_if_unset FLAG_SAM_HOTHOUSE_STARTED, EventScript_Sam_Hothouse_HawthorneNotStarted
+	goto_if_unset FLAG_SAM_HOTHOUSE_SOLVED, EventScript_Sam_Hothouse_HawthornePuzzleActive
+	trainerbattle_single TRAINER_RS_COOLTRAINER_M, SaffronCity_Dojo_Text_HawthorneBattleStart, SaffronCity_Dojo_Text_HawthorneDefeat, EventScript_Sam_Hothouse_HawthorneWon
+	msgbox SaffronCity_Dojo_Text_HawthorneRetry, MSGBOX_AUTOCLOSE
 	release
 	end
 
-SaffronCity_Dojo_EventScript_AlreadyGotHitmon::
-	msgbox SaffronCity_Dojo_Text_BetterNotGetGreedy
+EventScript_Sam_Hothouse_HawthorneNotStarted::
+	goto_if_unset FLAG_GOT_TEA, EventScript_Sam_Hothouse_HawthornePreReferral
+	msgbox SaffronCity_Dojo_Text_HawthorneIntroduction, MSGBOX_DEFAULT
+	setflag FLAG_SAM_HOTHOUSE_STARTED
+	setvar VAR_SAM_HOTHOUSE_IRRIGATION, 0
+	setvar VAR_SAM_HOTHOUSE_SUNLIGHT, 0
+	setvar VAR_SAM_HOTHOUSE_TEMPERATURE, 0
+	setvar VAR_SAM_HOTHOUSE_SOIL, 0
+	setvar VAR_SAM_HOTHOUSE_STATE, 0
 	release
 	end
 
-SaffronCity_Dojo_EventScript_HitmonchanBall::
+EventScript_Sam_Hothouse_HawthornePreReferral::
+	msgbox SaffronCity_Dojo_Text_HawthornePreReferral, MSGBOX_DEFAULT
+	release
+	end
+
+EventScript_Sam_Hothouse_HawthornePuzzleActive::
+	msgbox SaffronCity_Dojo_Text_HawthornePuzzleRepeat, MSGBOX_DEFAULT
+	release
+	end
+
+EventScript_Sam_Hothouse_HawthorneWon::
+	setflag FLAG_SAM_HOTHOUSE_HAWTHORNE_DEFEATED
+	msgbox SaffronCity_Dojo_Text_HawthorneAfterBattle, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_HawthorneRewardFirstAttempt
+
+EventScript_Sam_Hothouse_HawthorneRewardFirstAttempt::
+	msgbox SaffronCity_Dojo_Text_TropiusChoice, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_TryDeliverTropius
+
+EventScript_Sam_Hothouse_HawthorneRewardPending::
+	goto EventScript_Sam_Hothouse_TryDeliverTropius
+
+EventScript_Sam_Hothouse_TryDeliverTropius::
+	setvar VAR_0x8006, SAM_PREOWNED_OT_HAWTHORNE
+	callnative GiveSamPreOwnedMon
+	goto_if_eq VAR_RESULT, MON_CANT_GIVE, EventScript_Sam_Hothouse_TropiusNoRoom
+	msgbox SaffronCity_Dojo_Text_TropiusReceived, MSGBOX_DEFAULT
+	release
+	end
+
+EventScript_Sam_Hothouse_TropiusNoRoom::
+	msgbox SaffronCity_Dojo_Text_TropiusNoRoom, MSGBOX_DEFAULT
+	release
+	end
+
+EventScript_Sam_Hothouse_HawthorneCompleted::
+	msgbox SaffronCity_Dojo_Text_HawthorneCompleted, MSGBOX_DEFAULT
+	release
+	end
+
+EventScript_Sam_Hothouse_IrrigationGardener::
+	goto_if_unset FLAG_SAM_HOTHOUSE_STARTED, EventScript_Sam_Hothouse_WorkAreaLocked
+	checktrainerflag TRAINER_RS_AROMA_LADY
+	goto_if_eq VAR_RESULT, 1, EventScript_Sam_Hothouse_IrrigationRepeat
+	trainerbattle_single TRAINER_RS_AROMA_LADY, SaffronCity_Dojo_Text_IrrigationIntro, SaffronCity_Dojo_Text_IrrigationDefeat
+	setvar VAR_0x8004, 1
+	callnative SamHothouseUnlockControl
+	msgbox SaffronCity_Dojo_Text_IrrigationClue, MSGBOX_AUTOCLOSE
+	end
+EventScript_Sam_Hothouse_IrrigationRepeat::
+	msgbox SaffronCity_Dojo_Text_IrrigationRepeat, MSGBOX_AUTOCLOSE
+	end
+
+EventScript_Sam_Hothouse_SunGardener::
+	goto_if_unset FLAG_SAM_HOTHOUSE_STARTED, EventScript_Sam_Hothouse_WorkAreaLocked
+	checktrainerflag TRAINER_RS_LADY
+	goto_if_eq VAR_RESULT, 1, EventScript_Sam_Hothouse_SunRepeat
+	trainerbattle_single TRAINER_RS_LADY, SaffronCity_Dojo_Text_SunIntro, SaffronCity_Dojo_Text_SunDefeat
+	setvar VAR_0x8004, 2
+	callnative SamHothouseUnlockControl
+	msgbox SaffronCity_Dojo_Text_SunClue, MSGBOX_AUTOCLOSE
+	end
+EventScript_Sam_Hothouse_SunRepeat::
+	msgbox SaffronCity_Dojo_Text_SunRepeat, MSGBOX_AUTOCLOSE
+	end
+
+EventScript_Sam_Hothouse_ClimateGardener::
+	goto_if_unset FLAG_SAM_HOTHOUSE_STARTED, EventScript_Sam_Hothouse_WorkAreaLocked
+	checktrainerflag TRAINER_RS_BEAUTY
+	goto_if_eq VAR_RESULT, 1, EventScript_Sam_Hothouse_ClimateRepeat
+	trainerbattle_single TRAINER_RS_BEAUTY, SaffronCity_Dojo_Text_ClimateIntro, SaffronCity_Dojo_Text_ClimateDefeat
+	setvar VAR_0x8004, 4
+	callnative SamHothouseUnlockControl
+	msgbox SaffronCity_Dojo_Text_ClimateClue, MSGBOX_AUTOCLOSE
+	end
+EventScript_Sam_Hothouse_ClimateRepeat::
+	msgbox SaffronCity_Dojo_Text_ClimateRepeat, MSGBOX_AUTOCLOSE
+	end
+
+EventScript_Sam_Hothouse_SoilGardener::
+	goto_if_unset FLAG_SAM_HOTHOUSE_STARTED, EventScript_Sam_Hothouse_WorkAreaLocked
+	checktrainerflag TRAINER_RS_PKMN_BREEDER_M
+	goto_if_eq VAR_RESULT, 1, EventScript_Sam_Hothouse_SoilRepeat
+	trainerbattle_single TRAINER_RS_PKMN_BREEDER_M, SaffronCity_Dojo_Text_SoilIntro, SaffronCity_Dojo_Text_SoilDefeat
+	setvar VAR_0x8004, 8
+	callnative SamHothouseUnlockControl
+	msgbox SaffronCity_Dojo_Text_SoilClue, MSGBOX_AUTOCLOSE
+	end
+EventScript_Sam_Hothouse_SoilRepeat::
+	msgbox SaffronCity_Dojo_Text_SoilRepeat, MSGBOX_AUTOCLOSE
+	end
+
+EventScript_Sam_Hothouse_WorkAreaLocked::
+	msgbox SaffronCity_Dojo_Text_WorkAreaLocked, MSGBOX_DEFAULT
+	end
+
+EventScript_Sam_Hothouse_IrrigationControl::
 	lock
-	faceplayer
-	goto_if_set FLAG_GOT_HITMON_FROM_DOJO, SaffronCity_Dojo_EventScript_AlreadyGotHitmon
-	showmonpic SPECIES_HITMONCHAN, 10, 3
-	setvar VAR_TEMP_1, SPECIES_HITMONCHAN
-	applymovement LOCALID_KARATE_MASTER, Common_Movement_WalkInPlaceFasterUp
-	waitmovement 0
-	textcolor NPC_TEXT_COLOR_MALE
-	msgbox SaffronCity_Dojo_Text_YouWantHitmonchan, MSGBOX_YESNO
-	call EventScript_RestorePrevTextColor
-	goto_if_eq VAR_RESULT, YES, SaffronCity_Dojo_EventScript_GiveHitmon
-	hidemonpic
+	setvar VAR_0x8004, 1
+	callnative SamHothouseIsControlUnlocked
+	goto_if_eq VAR_RESULT, 0, EventScript_Sam_Hothouse_ControlLocked
+	goto_if_eq VAR_SAM_HOTHOUSE_IRRIGATION, 0, EventScript_Sam_Hothouse_IrrigationSetMedium
+	goto_if_eq VAR_SAM_HOTHOUSE_IRRIGATION, 1, EventScript_Sam_Hothouse_IrrigationSetHigh
+	setvar VAR_SAM_HOTHOUSE_IRRIGATION, 0
+	msgbox SaffronCity_Dojo_Text_IrrigationLow, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+EventScript_Sam_Hothouse_IrrigationSetMedium::
+	setvar VAR_SAM_HOTHOUSE_IRRIGATION, 1
+	msgbox SaffronCity_Dojo_Text_IrrigationMedium, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+EventScript_Sam_Hothouse_IrrigationSetHigh::
+	setvar VAR_SAM_HOTHOUSE_IRRIGATION, 2
+	msgbox SaffronCity_Dojo_Text_IrrigationHigh, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+
+EventScript_Sam_Hothouse_SunlightControl::
+	lock
+	setvar VAR_0x8004, 2
+	callnative SamHothouseIsControlUnlocked
+	goto_if_eq VAR_RESULT, 0, EventScript_Sam_Hothouse_ControlLocked
+	goto_if_eq VAR_SAM_HOTHOUSE_SUNLIGHT, 0, EventScript_Sam_Hothouse_SunSetPartial
+	goto_if_eq VAR_SAM_HOTHOUSE_SUNLIGHT, 1, EventScript_Sam_Hothouse_SunSetFull
+	setvar VAR_SAM_HOTHOUSE_SUNLIGHT, 0
+	msgbox SaffronCity_Dojo_Text_SunShade, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+EventScript_Sam_Hothouse_SunSetPartial::
+	setvar VAR_SAM_HOTHOUSE_SUNLIGHT, 1
+	msgbox SaffronCity_Dojo_Text_SunPartial, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+EventScript_Sam_Hothouse_SunSetFull::
+	setvar VAR_SAM_HOTHOUSE_SUNLIGHT, 2
+	msgbox SaffronCity_Dojo_Text_SunFull, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+
+EventScript_Sam_Hothouse_TemperatureControl::
+	lock
+	setvar VAR_0x8004, 4
+	callnative SamHothouseIsControlUnlocked
+	goto_if_eq VAR_RESULT, 0, EventScript_Sam_Hothouse_ControlLocked
+	goto_if_eq VAR_SAM_HOTHOUSE_TEMPERATURE, 0, EventScript_Sam_Hothouse_TempSetWarm
+	goto_if_eq VAR_SAM_HOTHOUSE_TEMPERATURE, 1, EventScript_Sam_Hothouse_TempSetHot
+	setvar VAR_SAM_HOTHOUSE_TEMPERATURE, 0
+	msgbox SaffronCity_Dojo_Text_TempCool, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+EventScript_Sam_Hothouse_TempSetWarm::
+	setvar VAR_SAM_HOTHOUSE_TEMPERATURE, 1
+	msgbox SaffronCity_Dojo_Text_TempWarm, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+EventScript_Sam_Hothouse_TempSetHot::
+	setvar VAR_SAM_HOTHOUSE_TEMPERATURE, 2
+	msgbox SaffronCity_Dojo_Text_TempHot, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+
+EventScript_Sam_Hothouse_SoilControl::
+	lock
+	setvar VAR_0x8004, 8
+	callnative SamHothouseIsControlUnlocked
+	goto_if_eq VAR_RESULT, 0, EventScript_Sam_Hothouse_ControlLocked
+	goto_if_eq VAR_SAM_HOTHOUSE_SOIL, 0, EventScript_Sam_Hothouse_SoilSetBalanced
+	goto_if_eq VAR_SAM_HOTHOUSE_SOIL, 1, EventScript_Sam_Hothouse_SoilSetRich
+	setvar VAR_SAM_HOTHOUSE_SOIL, 0
+	msgbox SaffronCity_Dojo_Text_SoilDry, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+EventScript_Sam_Hothouse_SoilSetBalanced::
+	setvar VAR_SAM_HOTHOUSE_SOIL, 1
+	msgbox SaffronCity_Dojo_Text_SoilBalanced, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+EventScript_Sam_Hothouse_SoilSetRich::
+	setvar VAR_SAM_HOTHOUSE_SOIL, 2
+	msgbox SaffronCity_Dojo_Text_SoilRich, MSGBOX_DEFAULT
+	goto EventScript_Sam_Hothouse_CheckSolution
+
+EventScript_Sam_Hothouse_ControlLocked::
+	msgbox SaffronCity_Dojo_Text_ControlLocked, MSGBOX_DEFAULT
 	release
 	end
 
-SaffronCity_Dojo_EventScript_GiveHitmon::
-	hidemonpic
-	givemon VAR_TEMP_1, 25
-	goto_if_eq VAR_RESULT, 0, SaffronCity_Dojo_EventScript_ReceivedHitmonParty
-	goto_if_eq VAR_RESULT, 1, SaffronCity_Dojo_EventScript_ReceivedHitmonPC
-	goto_if_eq VAR_RESULT, 2, EventScript_NoMoreRoomForPokemon
-	release
-	end
-
-SaffronCity_Dojo_EventScript_ReceivedHitmonParty::
-	removeobject VAR_LAST_TALKED
-	bufferspeciesname STR_VAR_1, VAR_TEMP_1
+EventScript_Sam_Hothouse_CheckSolution::
+	callnative SamHothouseCheckSolution
+	goto_if_eq VAR_RESULT, 0, EventScript_Sam_Hothouse_ControlEnd
+	@ The barrier objects are entries 11-13 in this map's object table. The
+	@ solved flag handles future map loads; removeobject supplies the immediate
+	@ first-solve retraction/flourish transition in the current room.
+	removeobject 11
+	removeobject 12
+	removeobject 13
 	playfanfare MUS_LEVEL_UP
-	message SaffronCity_Dojo_Text_ReceivedMonFromKarateMaster
-	waitmessage
+	msgbox SaffronCity_Dojo_Text_HothouseSolved, MSGBOX_DEFAULT
 	waitfanfare
-	setflag FLAG_GOT_HITMON_FROM_DOJO
-	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, SaffronCity_Dojo_EventScript_EndGiveMon
-	call EventScript_GetGiftMonPartySlot
-	call EventScript_ChangePokemonNickname
-	goto SaffronCity_Dojo_EventScript_EndGiveMon
-	end
-
-SaffronCity_Dojo_EventScript_ReceivedHitmonPC::
-	removeobject VAR_LAST_TALKED
-	bufferspeciesname STR_VAR_1, VAR_TEMP_1
-	playfanfare MUS_LEVEL_UP
-	message SaffronCity_Dojo_Text_ReceivedMonFromKarateMaster
-	waitmessage
-	waitfanfare
-	setflag FLAG_GOT_HITMON_FROM_DOJO
-	msgbox Text_GiveNicknameToThisMon, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, SaffronCity_Dojo_EventScript_TransferredHitmonToPC
-	call EventScript_NameReceivedBoxMon
-	goto SaffronCity_Dojo_EventScript_TransferredHitmonToPC
-	end
-
-SaffronCity_Dojo_EventScript_TransferredHitmonToPC::
-	call EventScript_TransferredToPC
-	goto SaffronCity_Dojo_EventScript_EndGiveMon
-	end
-
-SaffronCity_Dojo_EventScript_EndGiveMon::
-	release
-	end
-
-SaffronCity_Dojo_EventScript_Statue::
-	msgbox SaffronCity_Dojo_Text_FightingDojo, MSGBOX_SIGN
-	end
-
-SaffronCity_Dojo_EventScript_LeftScroll::
-	msgbox SaffronCity_Dojo_Text_EnemiesOnEverySide, MSGBOX_SIGN
-	end
-
-SaffronCity_Dojo_EventScript_RightScroll::
-	msgbox SaffronCity_Dojo_Text_GoesAroundComesAround, MSGBOX_SIGN
-	end
-
-SaffronCity_Dojo_EventScript_Hitoshi::
-	trainerbattle_single TRAINER_BLACK_BELT_HITOSHI, SaffronCity_Dojo_Text_HitoshiIntro, SaffronCity_Dojo_Text_HitoshiDefeat
-	msgbox SaffronCity_Dojo_Text_HitoshiPostBattle, MSGBOX_AUTOCLOSE
-	end
-
-SaffronCity_Dojo_EventScript_Hideki::
-	trainerbattle_single TRAINER_BLACK_BELT_HIDEKI, SaffronCity_Dojo_Text_HidekiIntro, SaffronCity_Dojo_Text_HidekiDefeat
-	msgbox SaffronCity_Dojo_Text_HidekiPostBattle, MSGBOX_AUTOCLOSE
-	end
-
-SaffronCity_Dojo_EventScript_Aaron::
-	trainerbattle_single TRAINER_BLACK_BELT_AARON, SaffronCity_Dojo_Text_AaronIntro, SaffronCity_Dojo_Text_AaronDefeat
-	msgbox SaffronCity_Dojo_Text_AaronPostBattle, MSGBOX_AUTOCLOSE
-	end
-
-SaffronCity_Dojo_EventScript_Mike::
-	trainerbattle_single TRAINER_BLACK_BELT_MIKE, SaffronCity_Dojo_Text_MikeIntro, SaffronCity_Dojo_Text_MikeDefeat
-	msgbox SaffronCity_Dojo_Text_MikePostBattle, MSGBOX_AUTOCLOSE
-	end
-
-SaffronCity_Dojo_EventScript_MasterKoichi::
-	trainerbattle_single TRAINER_BLACK_BELT_KOICHI, SaffronCity_Dojo_Text_MasterKoichiIntro, SaffronCity_Dojo_Text_MasterKoichiDefeat, SaffronCity_Dojo_EventScript_DefeatedMasterKoichi
-	goto_if_set FLAG_GOT_HITMON_FROM_DOJO, SaffronCity_Dojo_EventScript_MasterKoichiAlreadyGotHitmon
-	msgbox SaffronCity_Dojo_Text_ChoosePrizedFightingMon, MSGBOX_AUTOCLOSE
-	end
-
-SaffronCity_Dojo_EventScript_MasterKoichiAlreadyGotHitmon::
-	msgbox SaffronCity_Dojo_Text_StayAndTrainWithUs
-	release
-	end
-
-SaffronCity_Dojo_EventScript_DefeatedMasterKoichi::
-	setvar VAR_MAP_SCENE_SAFFRON_CITY_DOJO, 1
+EventScript_Sam_Hothouse_ControlEnd::
 	release
 	end
