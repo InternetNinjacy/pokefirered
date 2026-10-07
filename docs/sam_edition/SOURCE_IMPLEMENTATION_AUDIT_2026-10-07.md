@@ -1,3 +1,7 @@
+# RIV-016 Cinnabar fossil continuity continuation
+
+Starting production 8c3bbdaaae97ff1e4c446aca7dbbcf8209d7fdf2. Authority is partially specified: exact Lab dialogue and Lv45 fossil sets are found in the specialist record, but older Gengar/fossil Mansion architecture conflicts with the protected current six-member Single roster. Independent one-time Lab exit is implemented in the Entrance map using completed MtMoon scene3/4, current arc4 and centrally allocated flags35E/35F. No player fossil transaction, main arc change, trainer change or PowerPlant dependency. BLK-THOMAS-FOSSIL remains PARTIAL for Mansion roster/format mapping; SYS-THOMAS remains PARTIAL. Detailed reconciliation and verification: THOMAS_CINNABAR_FOSSIL_CONTINUITY.md. Earlier missing-Lab/exact-set assertions below are historical starting-state evidence.
+
 ## ROCKET-001 / Thread 1C — shared state and Viridian — PR #297
 
 Reconciled onto production `8c3bbdaaae97ff1e4c446aca7dbbcf8209d7fdf2` after both Five Island gameplay #295 and documentation #296 merged. Shared operation/evidence bitsets, actual Rocket Dossier Key Item, approved text-page reader and exact Viridian thief/fence operation are implemented. Trainer 902; item 247; vars 0x40A2–0x40A4; derived visibility flag 0x35D. Victory-only automatic goods return awards exactly five Poké Balls and the Dossier. Capacity checkpoints avoid duplicate rewards/frame loops; NG+ carries the item but clears run evidence and reuses the carried copy.

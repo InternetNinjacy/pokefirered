@@ -6,6 +6,8 @@ Status: **central pre-implementation allocation authority for the code repositor
 
 ## Guiding rules
 
+RIV-016 Cinnabar Lab continuity allocation: `FLAG_THOMAS_CINNABAR_LAB_COMPLETE = 0x35E` and `FLAG_HIDE_THOMAS_CINNABAR_LAB = 0x35F`, registered centrally before implementation. The Rocket/Thomas 0x350–0x35F sub-block is now fully assigned. Lab local object2; entry-reset VAR_TEMP_0; no trainer or persistent variable allocation. Active Rocket PR #297 allocations 902/0x35D/0x40A2–0x40A4 are preserved.
+
 - Preserve all stock IDs unless there is a strong implementation reason not to.
 - Prefer appending tables or consuming verified placeholder ranges over renumbering stock content.
 - Keep numeric ownership centralized in this document / the project Programming Readiness Registry.

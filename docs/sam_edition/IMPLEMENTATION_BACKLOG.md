@@ -56,7 +56,7 @@ Snapshot: 2026-10-07. Native Programming Readiness Registry Backlog is authorita
 | RIV-002 | SYS-RIVALS | Green | COMPLETE |  |
 | RIV-003 | SYS-RIVALS | Route 4 Double Battle | COMPLETE | None |
 | RIV-011 | SYS-THOMAS | Thomas Trainer Data | COMPLETE | None |
-| RIV-016 | SYS-THOMAS | Thomas Story Events | PARTIAL | Mt. Moon encounter/fallback slice in PR #294. Later claimed Cinnabar fossil hooks are absent; specialist reconciliation required before full closure. |
+| RIV-016 | SYS-THOMAS | Thomas Story Events | PARTIAL | Mt. Moon merged #294. Independent Cinnabar Lab exit implemented by continuation; exact Lab dialogue/fossil sets found. Mansion fossil slot/Gengar/format mapping against protected six records remains BLK-THOMAS-FOSSIL. See THOMAS_CINNABAR_FOSSIL_CONTINUITY.md. |
 | ROCKET-001 | SYS-ROCKET | Rocket Framework | COMPLETE | PR #297: shared operation/evidence state, Dossier and approved Viridian hook; merge/CI tracked on PR. |
 | ROCKET-002 | SYS-ROCKET | Rocket Operations | IN PROGRESS | Five Island PR #295 and Viridian PR #297 complete as bounded slices. Thread 1D owns remaining conversions/evidence hooks; Delivery 02 needs fossil-theft wording reconciliation. |
 | SAT-001 | SYS-SATOSHI | Satoshi Practice System | COMPLETE |  |
