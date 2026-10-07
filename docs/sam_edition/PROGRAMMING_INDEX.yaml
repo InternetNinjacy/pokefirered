@@ -41,7 +41,7 @@ thomas_mt_moon_checkpoint:
   working_branch: sam/thomas-mt-moon-current-production
   implementation: approved Mt. Moon encounter, starter branches, exact dialogue, victory-only theft and mandatory 1-vs-2 fallback
   preserved: original six Thomas records/data; fossil revival; opposite-fossil researcher
-  closure_blocker: Cinnabar Lab independent scene restored by the RIV-016 continuation; Mansion fossil slot/Gengar/format mapping still requires explicit reconciliation with the protected six records
+  closure_blocker: CLOSED by final Cinnabar battle PR #302; retained here as historical Mt. Moon checkpoint context
   validation: host helper and static preservation checks passed; ROM CI tracked on PR
   runtime: assembled-ROM playtest deferred
 thomas_cinnabar_fossil_checkpoint:
@@ -86,7 +86,7 @@ five_island_thread_1e_checkpoint:
   resources: Scientists 900/901 preserved; current NUM_TRAINERS 903 after Thread 1C fence 902; reserved remainder 903-939
   validation: all seven CI builds passed run 37657349808; static and actual-helper host checks passed
   synchronization: SYNC-2026-10-07-1E-COMPLETE; specialist Addenda, Registry and current project-wide records verified
-  remaining: wider Rocket organization/story and Thomas fossil continuity remain separate
+  remaining: wider Rocket organization/story remains separate; RIV-016 fossil continuity closes in PR #302
   runtime: assembled-ROM playtest deferred
 rocket_thread_1c_checkpoint:
   task: ROCKET-001
