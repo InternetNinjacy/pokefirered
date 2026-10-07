@@ -20,11 +20,11 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SamRoute24CamperShane[] 
 
 // Batch 4 is included here so its party remaps are active before trainers.h is
 // consumed by src/data.c, while leaving the shared vanilla party table untouched.
-#include "data/sam_vermilion_trainer_parties.h"
+#include "sam_vermilion_trainer_parties.h"
 
 // Batch 5 follows the same overlay path: keep live trainer IDs and records,
 // but bind them to the settled Lavender / Rock Tunnel ordinary-trainer parties.
-#include "data/sam_batch5_lavender_trainer_remaps.h"
+#include "sam_batch5_lavender_trainer_remaps.h"
 
 // Batch 9 Cinnabar / Seafoam reconciliation uses the same non-invasive overlay path.
-#include "data/sam_batch9_cinnabar_seafoam_trainer_remaps.h"
+#include "sam_batch9_cinnabar_seafoam_trainer_remaps.h"
