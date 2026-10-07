@@ -122,6 +122,14 @@ CeladonCity_EventScript_ShowGreen::
 CeladonCity_EventScript_Green::
 	lock
 	faceplayer
+	goto_if_set FLAG_GREEN_CELADON_ATTEMPTED, CeladonCity_EventScript_GreenRetryText
+	goto CeladonCity_EventScript_GreenBattleEntry
+
+CeladonCity_EventScript_GreenRetryText::
+	msgbox CeladonCity_Text_GreenRetry
+
+CeladonCity_EventScript_GreenBattleEntry::
+	setflag FLAG_GREEN_CELADON_ATTEMPTED
 	setvar VAR_LAST_TALKED, LOCALID_CELADON_GREEN
 	playbgm MUS_ENCOUNTER_RIVAL, 0
 	goto_if_eq VAR_STARTER_MON, 0, CeladonCity_EventScript_GreenRaichu
@@ -154,3 +162,7 @@ CeladonCity_Text_GreenPost::
 	.string "That means the team isn't balanced\n"
 	.string "yet. Good. Now I know what I need\l"
 	.string "to fix.$"
+
+CeladonCity_Text_GreenRetry::
+	.string "Same team, same setup. I want to\n"
+	.string "know whether the plan works twice.$"
