@@ -113,6 +113,20 @@ for balls_full in (False,True):
    assert v.vars['VAR_SAM_ROCKET_OPERATIONS']==1 and v.vars['VAR_SAM_ROCKET_EVIDENCE']==1
    v.run('ViridianCity_Mart_EventScript_Clerk');assert v.ended=='pokemart' and v.items['ITEM_POKE_BALL']==5 and v.items['ITEM_ROCKET_DOSSIER']==1
 
+# Delivery 02 is bound only after the successful physical Mt. Moon theft.
+mtmoon=(ROOT/'data/maps/MtMoon_B2F/scripts.inc').read_text()
+theft=mtmoon[mtmoon.index('MtMoon_B2F_EventScript_TheftComplete::'):].split('\n\n',1)[0]
+assert 'ROCKET_OPERATION_MT_MOON' in theft
+assert 'Script_SamRocketCompleteOperation' in theft
+assert 'ROCKET_EVIDENCE_DELIVERY_02' in theft
+assert 'Script_SamRocketRecordEvidence' in theft
+assert theft.index('ROCKET_OPERATION_MT_MOON') < theft.index('ROCKET_EVIDENCE_DELIVERY_02')
+dossier=(ROOT/'data/scripts/sam_rocket.inc').read_text()
+assert 'SamRocket_EventScript_ReadDelivery02::' in dossier
+assert 'MT. MOON ACQUISITION -\\n' in dossier
+assert 'UNCHOSEN FOSSIL - SECURED' in dossier
+assert 'THOMAS RETAINS ASSET' in dossier
+
 # Existing maps, trainer records and warehouse work must survive reconciliation.
 path='data/maps/ViridianCity/map.json';a=json.loads(old(path));b=json.loads((ROOT/path).read_text())
 assert b['object_events'][:len(a['object_events'])]==a['object_events']
