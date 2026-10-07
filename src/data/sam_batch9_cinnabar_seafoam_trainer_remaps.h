@@ -1,5 +1,5 @@
 // Pokémon: Sam Edition — Batch 9 party remaps.
-#include "data/sam_batch9_cinnabar_seafoam_trainer_parties.h"
+#include "sam_batch9_cinnabar_seafoam_trainer_parties.h"
 
 // Route 19
 #define sParty_SwimmerMaleReece sParty_SamBatch9_Reece
