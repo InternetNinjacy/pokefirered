@@ -188,6 +188,7 @@
 #define TRAINER_PIC_BLUE_GREEN               158
 #define TRAINER_PIC_GREEN_LEAGUE_OPENING     159
 #define TRAINER_PIC_GREEN_LEAGUE_DEFEAT      160
+#define TRAINER_PIC_THOMAS                    161
 
 #if TRAINER_PIC_PAINTER != 147
 #error "ARCH-006: vanilla trainer-picture boundary drifted"
@@ -198,7 +199,7 @@
 #if TRAINER_PIC_SAM_HEADROOM_START != 224 || TRAINER_PIC_SAM_HEADROOM_END != 255
 #error "ARCH-006: Sam trainer-picture headroom drifted"
 #endif
-#if TRAINER_PIC_GREEN_LEAGUE_DEFEAT > TRAINER_PIC_SAM_RESERVED_END
+#if TRAINER_PIC_THOMAS > TRAINER_PIC_SAM_RESERVED_END
 #error "ARCH-006: allocated Sam trainer picture left the primary reserved block"
 #endif
 

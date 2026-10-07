@@ -1,3 +1,5 @@
+static const u32 gTrainerFrontPic_Thomas[] = INCBIN_U32("graphics/trainers/front_pics/thomas.4bpp.lz");
+static const u32 gTrainerPalette_Thomas[] = INCBIN_U32("graphics/trainers/palettes/thomas.gbapal.lz");
 static const u32 gTrainerFrontPic_Satoshi[] = INCBIN_U32("graphics/trainers/front_pics/satoshi.4bpp.lz");
 static const u32 gTrainerPalette_Satoshi[] = INCBIN_U32("graphics/trainers/palettes/satoshi.gbapal.lz");
 static const u32 gTrainerFrontPic_Hawthorne[] = INCBIN_U32("graphics/trainers/front_pics/hawthorne.4bpp.lz");
@@ -168,7 +170,8 @@ const struct MonCoords gTrainerFrontPicCoords[] =
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
-    // 155 remains the centrally reserved Boreal slot; 156 is Hawthorne.
+    // 155-160 remain Boreal/Hawthorne/Green/Blue+Green/Green League; 161 is Thomas.
+    {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
@@ -342,6 +345,7 @@ const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
     TRAINER_SPRITE(BLUE_GREEN, gTrainerFrontPic_BlueGreen, 0x800),
     TRAINER_SPRITE(GREEN_LEAGUE_OPENING, gTrainerFrontPic_GreenLeagueOpening, 0x800),
     TRAINER_SPRITE(GREEN_LEAGUE_DEFEAT, gTrainerFrontPic_GreenLeagueDefeat, 0x800),
+    TRAINER_SPRITE(THOMAS, gTrainerFrontPic_Thomas, 0x800),
 };
 
 const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
@@ -508,4 +512,5 @@ const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
     TRAINER_PAL(BLUE_GREEN, gTrainerPalette_BlueGreen),
     TRAINER_PAL(GREEN_LEAGUE_OPENING, gTrainerPalette_GreenLeague),
     TRAINER_PAL(GREEN_LEAGUE_DEFEAT, gTrainerPalette_GreenLeague),
+    TRAINER_PAL(THOMAS, gTrainerPalette_Thomas),
 };
