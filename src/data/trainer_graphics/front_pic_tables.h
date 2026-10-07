@@ -1,5 +1,13 @@
 static const u32 gTrainerFrontPic_Thomas[] = INCBIN_U32("graphics/trainers/front_pics/thomas.4bpp.lz");
 static const u32 gTrainerPalette_Thomas[] = INCBIN_U32("graphics/trainers/palettes/thomas.gbapal.lz");
+static const u32 gTrainerFrontPic_Leilani[] = INCBIN_U32("graphics/trainers/front_pics/leilani.4bpp.lz");
+static const u32 gTrainerPalette_Leilani[] = INCBIN_U32("graphics/trainers/palettes/leilani.gbapal.lz");
+static const u32 gTrainerFrontPic_Lehua[] = INCBIN_U32("graphics/trainers/front_pics/lehua.4bpp.lz");
+static const u32 gTrainerPalette_Lehua[] = INCBIN_U32("graphics/trainers/palettes/lehua.gbapal.lz");
+// Keahi compressed output is 2302 bytes; keep the approved bytes unchanged and
+// use a 16-bit incbin so scaninc does not impose artificial u32 padding.
+static const u16 gTrainerFrontPic_Keahi[] = INCBIN_U16("graphics/trainers/front_pics/keahi.4bpp.lz");
+static const u32 gTrainerPalette_Keahi[] = INCBIN_U32("graphics/trainers/palettes/keahi.gbapal.lz");
 static const u32 gTrainerFrontPic_Satoshi[] = INCBIN_U32("graphics/trainers/front_pics/satoshi.4bpp.lz");
 static const u32 gTrainerPalette_Satoshi[] = INCBIN_U32("graphics/trainers/palettes/satoshi.gbapal.lz");
 static const u32 gTrainerFrontPic_Hawthorne[] = INCBIN_U32("graphics/trainers/front_pics/hawthorne.4bpp.lz");
@@ -332,9 +340,9 @@ const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
     TRAINER_SPRITE(PAINTER, gTrainerFrontPic_Painter, 0x800),
     // ARCH-006 allocation-only placeholders. Final approved art is integrated
     // by the owning SPRITE tasks; Satoshi remains one shared identity.
-    TRAINER_SPRITE(LEILANI, gTrainerFrontPic_ProfessorOak, 0x800),
-    TRAINER_SPRITE(LEHUA, gTrainerFrontPic_ProfessorOak, 0x800),
-    TRAINER_SPRITE(KEAHI, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(LEILANI, gTrainerFrontPic_Leilani, 0x800),
+    TRAINER_SPRITE(LEHUA, gTrainerFrontPic_Lehua, 0x800),
+    TRAINER_SPRITE(KEAHI, (const u32 *)gTrainerFrontPic_Keahi, 0x800),
     TRAINER_SPRITE(SATOSHI, gTrainerFrontPic_Satoshi, 0x800),
     TRAINER_SPRITE(BAZ, gTrainerFrontPic_ProfessorOak, 0x800),
     TRAINER_SPRITE(BUSHRANGER_M, gTrainerFrontPic_ProfessorOak, 0x800),
@@ -499,9 +507,9 @@ const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
     TRAINER_PAL(LADY, gTrainerPalette_Lady),
     TRAINER_PAL(PAINTER, gTrainerPalette_Painter),
     // Match the allocation-only graphics routes above with a safe existing palette.
-    TRAINER_PAL(LEILANI, gTrainerPalette_ProfessorOak),
-    TRAINER_PAL(LEHUA, gTrainerPalette_ProfessorOak),
-    TRAINER_PAL(KEAHI, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(LEILANI, gTrainerPalette_Leilani),
+    TRAINER_PAL(LEHUA, gTrainerPalette_Lehua),
+    TRAINER_PAL(KEAHI, gTrainerPalette_Keahi),
     TRAINER_PAL(SATOSHI, gTrainerPalette_Satoshi),
     TRAINER_PAL(BAZ, gTrainerPalette_ProfessorOak),
     TRAINER_PAL(BUSHRANGER_M, gTrainerPalette_ProfessorOak),
