@@ -9,8 +9,8 @@ VermilionCity_Text_DidYouSeeSSAnneInHarbor::
 
 VermilionCity_Text_SSAnneHasDepartedForYear::
     .string "So, the S.S. ANNE has departed?\p"
-    .string "She'll be back in VERMILION about\n"
-    .string "this time next year.$"
+    .string "That old truck is still out there.\n"
+    .string "Funny... I heard scratching near it.$"
 
 VermilionCity_Text_BuildingOnThisLand::
     .string "I'm putting up a building on this\n"
@@ -28,6 +28,11 @@ VermilionCity_Text_SSAnneVisitsOnceAYear::
     .string "The S.S. ANNE is a famous luxury\n"
     .string "cruise ship.\p"
     .string "It visits VERMILION once a year.$"
+
+VermilionCity_Text_TruckMeowingRumor::
+    .string "Ever since the ship left, I sometimes\n"
+    .string "hear meowing by that old truck.\p"
+    .string "Probably just a stray cat.$"
 
 VermilionCity_Text_CitySign::
     .string "VERMILION CITY\n"
