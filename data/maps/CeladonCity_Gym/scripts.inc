@@ -231,8 +231,23 @@ CeladonCity_Gym_EventScript_FieldObserve::
 	goto_if_eq VAR_GYM4_FIELD_SELECTOR_2, 0, CeladonCity_Gym_EventScript_FieldFail2
 	goto_if_eq VAR_GYM4_FIELD_SELECTOR_3, 0, CeladonCity_Gym_EventScript_FieldFail3
 	playmoncry SPECIES_PINSIR, CRY_MODE_NORMAL
-	applymovement 7, CeladonCity_Gym_Movement_SubjectSuccess
-	waitmovement 7
+	waitmoncry
+	setobjectxy 7, 7, 15
+	delay 4
+	setobjectxy 7, 7, 14
+	delay 4
+	setobjectxy 7, 7, 13
+	delay 4
+	setobjectxy 7, 7, 12
+	delay 4
+	setobjectxy 7, 7, 11
+	delay 4
+	setobjectxy 7, 7, 10
+	delay 4
+	setobjectxy 7, 7, 9
+	delay 4
+	setobjectxy 7, 7, 8
+	delay 4
 	setflag FLAG_GYM4_FIELD_PUZZLE_COMPLETE
 	setmetatile 2, 7, 0x132, 0
 	special DrawWholeMapView
@@ -245,20 +260,62 @@ CeladonCity_Gym_EventScript_FieldAlreadyComplete::
 	releaseall
 	end
 CeladonCity_Gym_EventScript_FieldFail1::
-	applymovement 7, CeladonCity_Gym_Movement_Fail1
-	waitmovement 7
+	setobjectxy 7, 7, 15
+	delay 4
+	setobjectxy 7, 7, 16
+	delay 4
 	msgbox CeladonCity_Gym_Text_FieldFailure
 	releaseall
 	end
 CeladonCity_Gym_EventScript_FieldFail2::
-	applymovement 7, CeladonCity_Gym_Movement_Fail2
-	waitmovement 7
+	setobjectxy 7, 7, 15
+	delay 4
+	setobjectxy 7, 7, 14
+	delay 4
+	setobjectxy 7, 7, 13
+	delay 4
+	setobjectxy 7, 7, 12
+	delay 4
+	setobjectxy 7, 7, 13
+	delay 4
+	setobjectxy 7, 7, 14
+	delay 4
+	setobjectxy 7, 7, 15
+	delay 4
+	setobjectxy 7, 7, 16
+	delay 4
 	msgbox CeladonCity_Gym_Text_FieldFailure
 	releaseall
 	end
 CeladonCity_Gym_EventScript_FieldFail3::
-	applymovement 7, CeladonCity_Gym_Movement_Fail3
-	waitmovement 7
+	setobjectxy 7, 7, 15
+	delay 4
+	setobjectxy 7, 7, 14
+	delay 4
+	setobjectxy 7, 7, 13
+	delay 4
+	setobjectxy 7, 7, 12
+	delay 4
+	setobjectxy 7, 7, 11
+	delay 4
+	setobjectxy 7, 7, 10
+	delay 4
+	setobjectxy 7, 7, 9
+	delay 4
+	setobjectxy 7, 7, 10
+	delay 4
+	setobjectxy 7, 7, 11
+	delay 4
+	setobjectxy 7, 7, 12
+	delay 4
+	setobjectxy 7, 7, 13
+	delay 4
+	setobjectxy 7, 7, 14
+	delay 4
+	setobjectxy 7, 7, 15
+	delay 4
+	setobjectxy 7, 7, 16
+	delay 4
 	msgbox CeladonCity_Gym_Text_FieldFailure
 	releaseall
 	end
@@ -270,8 +327,23 @@ CeladonCity_Gym_EventScript_LabObserve::
 	goto_if_eq VAR_GYM4_LAB_SELECTOR_2, 0, CeladonCity_Gym_EventScript_LabFail2
 	goto_if_eq VAR_GYM4_LAB_SELECTOR_3, 0, CeladonCity_Gym_EventScript_LabFail3
 	playmoncry SPECIES_VENOMOTH, CRY_MODE_NORMAL
-	applymovement 8, CeladonCity_Gym_Movement_SubjectSuccess
-	waitmovement 8
+	waitmoncry
+	setobjectxy 8, 25, 15
+	delay 4
+	setobjectxy 8, 25, 14
+	delay 4
+	setobjectxy 8, 25, 13
+	delay 4
+	setobjectxy 8, 25, 12
+	delay 4
+	setobjectxy 8, 25, 11
+	delay 4
+	setobjectxy 8, 25, 10
+	delay 4
+	setobjectxy 8, 25, 9
+	delay 4
+	setobjectxy 8, 25, 8
+	delay 4
 	setflag FLAG_GYM4_LAB_PUZZLE_COMPLETE
 	setmetatile 30, 7, 0x132, 0
 	special DrawWholeMapView
@@ -284,68 +356,65 @@ CeladonCity_Gym_EventScript_LabAlreadyComplete::
 	releaseall
 	end
 CeladonCity_Gym_EventScript_LabFail1::
-	applymovement 8, CeladonCity_Gym_Movement_Fail1
-	waitmovement 8
+	setobjectxy 8, 25, 15
+	delay 4
+	setobjectxy 8, 25, 16
+	delay 4
 	msgbox CeladonCity_Gym_Text_LabFailure
 	releaseall
 	end
 CeladonCity_Gym_EventScript_LabFail2::
-	applymovement 8, CeladonCity_Gym_Movement_Fail2
-	waitmovement 8
+	setobjectxy 8, 25, 15
+	delay 4
+	setobjectxy 8, 25, 14
+	delay 4
+	setobjectxy 8, 25, 13
+	delay 4
+	setobjectxy 8, 25, 12
+	delay 4
+	setobjectxy 8, 25, 13
+	delay 4
+	setobjectxy 8, 25, 14
+	delay 4
+	setobjectxy 8, 25, 15
+	delay 4
+	setobjectxy 8, 25, 16
+	delay 4
 	msgbox CeladonCity_Gym_Text_LabFailure
 	releaseall
 	end
 CeladonCity_Gym_EventScript_LabFail3::
-	applymovement 8, CeladonCity_Gym_Movement_Fail3
-	waitmovement 8
+	setobjectxy 8, 25, 15
+	delay 4
+	setobjectxy 8, 25, 14
+	delay 4
+	setobjectxy 8, 25, 13
+	delay 4
+	setobjectxy 8, 25, 12
+	delay 4
+	setobjectxy 8, 25, 11
+	delay 4
+	setobjectxy 8, 25, 10
+	delay 4
+	setobjectxy 8, 25, 9
+	delay 4
+	setobjectxy 8, 25, 10
+	delay 4
+	setobjectxy 8, 25, 11
+	delay 4
+	setobjectxy 8, 25, 12
+	delay 4
+	setobjectxy 8, 25, 13
+	delay 4
+	setobjectxy 8, 25, 14
+	delay 4
+	setobjectxy 8, 25, 15
+	delay 4
+	setobjectxy 8, 25, 16
+	delay 4
 	msgbox CeladonCity_Gym_Text_LabFailure
 	releaseall
 	end
-
-CeladonCity_Gym_Movement_SubjectSuccess::
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	step_end
-
-CeladonCity_Gym_Movement_Fail1::
-	walk_up
-	walk_down
-	step_end
-
-CeladonCity_Gym_Movement_Fail2::
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	step_end
-
-CeladonCity_Gym_Movement_Fail3::
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	walk_down
-	step_end
-
 
 CeladonCity_Gym_EventScript_Satoshi::
 	lock
