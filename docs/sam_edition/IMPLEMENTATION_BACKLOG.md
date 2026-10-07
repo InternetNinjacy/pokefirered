@@ -56,7 +56,7 @@ Snapshot: 2026-10-07. Native Programming Readiness Registry Backlog is authorita
 | RIV-002 | SYS-RIVALS | Green | COMPLETE |  |
 | RIV-003 | SYS-RIVALS | Route 4 Double Battle | COMPLETE | None |
 | RIV-011 | SYS-THOMAS | Thomas Trainer Data | COMPLETE | None |
-| RIV-016 | SYS-THOMAS | Thomas Story Events | READY | No authority blocker. Implement/verify the exact approved mandatory-Double one-usable fallback in Thread 1B. |
+| RIV-016 | SYS-THOMAS | Thomas Story Events | PARTIAL | Mt. Moon encounter/fallback slice in PR #294. Later claimed Cinnabar fossil hooks are absent; specialist reconciliation required before full closure. |
 | ROCKET-001 | SYS-ROCKET | Rocket Framework | READY | ARCH-003 |
 | ROCKET-002 | SYS-ROCKET | Rocket Operations | READY |  |
 | SAT-001 | SYS-SATOSHI | Satoshi Practice System | COMPLETE |  |

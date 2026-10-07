@@ -1,3 +1,9 @@
+## RIV-016 / Thread 1B source delta — PR #294
+
+The approved Mt. Moon fossil encounter and one-usable-mon Double fallback are implemented in PR #294 on the reconciled PR #293 documentation ancestry. Original map objects, ordinary Rockets, fossil revival/opposite-fossil researcher and six baseline Thomas records/data remain unchanged. Host helper/static checks pass; ROM CI and merge evidence are tracked on the PR.
+
+Source discrepancy: current Cinnabar Lab has no Thomas scene and the Mansion Thomas party is fixed, despite the reopening addendum describing fossil hooks as existing. The new stolen-fossil state is persistent/derivable; later fossil integration is not falsely marked complete and requires specialist reconciliation of the preserve-six-data rule. This supersedes older pending-Mt-Moon status below only when PR #294 is merged.
+
 # Current documentation and source reconciliation — 2026-10-07
 
 CURRENT DOCUMENT / FRAMEWORK RECONCILIATION — 7 OCTOBER 2026

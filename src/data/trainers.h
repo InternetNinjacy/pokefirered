@@ -5353,7 +5353,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGrunt42),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGrunt42),
     },
     [TRAINER_PSYCHIC_JACLYN] = {
         .trainerClass = TRAINER_CLASS_AROMA_LADY,
@@ -5603,7 +5603,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGrunt47),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGrunt47),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_48] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
@@ -5613,7 +5613,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGrunt48),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGrunt48),
     },
     [TRAINER_TEAM_ROCKET_ADMIN] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
@@ -8029,4 +8029,34 @@ const struct Trainer gTrainers[] = {
         .party = ITEM_CUSTOM_MOVES(sParty_ThomasViridian),
     },
 
+    [TRAINER_FIVE_ISLAND_SCIENTIST_1] = {
+        .trainerClass = TRAINER_CLASS_SCIENTIST,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+        .trainerPic = TRAINER_PIC_SCIENTIST,
+        .trainerName = _("SCIENTIST"),
+        .items = {},
+        .doubleBattle = FALSE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_FiveIslandScientist1),
+    },
+    [TRAINER_FIVE_ISLAND_SCIENTIST_2] = {
+        .trainerClass = TRAINER_CLASS_SCIENTIST,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+        .trainerPic = TRAINER_PIC_SCIENTIST,
+        .trainerName = _("SCIENTIST"),
+        .items = {},
+        .doubleBattle = FALSE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_FiveIslandScientist2),
+    },
+    [TRAINER_THOMAS_MT_MOON] = {
+        .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
+        .trainerName = _("THOMAS"),
+        .items = {},
+        .doubleBattle = TRUE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT,
+        .party = ITEM_CUSTOM_MOVES(sParty_ThomasMtMoon),
+    },
 };
