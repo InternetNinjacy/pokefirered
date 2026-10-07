@@ -5799,24 +5799,79 @@ static const struct TrainerMonNoItemCustomMoves sParty_ScientistNoraCeladon[] = 
     },
 };
 
-static const struct TrainerMonNoItemCustomMoves sParty_LeaderErika[] = {
+static const struct TrainerMonItemCustomMoves sParty_LeaderErika[] = {
     {
         .iv = 0,
         .lvl = 29,
-        .species = SPECIES_VICTREEBEL,
-        .moves = {MOVE_STUN_SPORE, MOVE_ACID, MOVE_POISON_POWDER, MOVE_GIGA_DRAIN},
+        .species = SPECIES_PARASECT,
+        .heldItem = ITEM_QUICK_CLAW,
+        .moves = {MOVE_FURY_CUTTER, MOVE_SPORE, MOVE_GIGA_DRAIN, MOVE_SLASH},
     },
     {
         .iv = 0,
-        .lvl = 24,
-        .species = SPECIES_TANGELA,
-        .moves = {MOVE_POISON_POWDER, MOVE_CONSTRICT, MOVE_INGRAIN, MOVE_GIGA_DRAIN},
+        .lvl = 30,
+        .species = SPECIES_VENOMOTH,
+        .heldItem = ITEM_TWISTED_SPOON,
+        .moves = {MOVE_SIGNAL_BEAM, MOVE_PSYCHIC, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER},
     },
     {
         .iv = 0,
-        .lvl = 29,
-        .species = SPECIES_VILEPLUME,
-        .moves = {MOVE_SLEEP_POWDER, MOVE_ACID, MOVE_STUN_SPORE, MOVE_GIGA_DRAIN},
+        .lvl = 31,
+        .species = SPECIES_SCYTHER,
+        .heldItem = ITEM_SCOPE_LENS,
+        .moves = {MOVE_FURY_CUTTER, MOVE_WING_ATTACK, MOVE_SLASH, MOVE_AGILITY},
+    },
+    {
+        .iv = 0,
+        .lvl = 33,
+        .species = SPECIES_PINSIR,
+        .heldItem = ITEM_SILVER_POWDER,
+        .moves = {MOVE_MEGAHORN, MOVE_BRICK_BREAK, MOVE_ROCK_TOMB, MOVE_SWORDS_DANCE},
+    },
+};
+
+static const struct TrainerMonItemCustomMoves sParty_LeaderErikaRematch[] = {
+    {
+        .iv = 250,
+        .lvl = 58,
+        .species = SPECIES_BUTTERFREE,
+        .heldItem = ITEM_LUM_BERRY,
+        .moves = {MOVE_SIGNAL_BEAM, MOVE_SLEEP_POWDER, MOVE_PSYCHIC, MOVE_GIGA_DRAIN},
+    },
+    {
+        .iv = 250,
+        .lvl = 59,
+        .species = SPECIES_BEEDRILL,
+        .heldItem = ITEM_CHOICE_BAND,
+        .moves = {MOVE_MEGAHORN, MOVE_SLUDGE_BOMB, MOVE_BRICK_BREAK, MOVE_AERIAL_ACE},
+    },
+    {
+        .iv = 250,
+        .lvl = 60,
+        .species = SPECIES_PARASECT,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_FURY_CUTTER, MOVE_SPORE, MOVE_GIGA_DRAIN, MOVE_PROTECT},
+    },
+    {
+        .iv = 250,
+        .lvl = 61,
+        .species = SPECIES_VENOMOTH,
+        .heldItem = ITEM_TWISTED_SPOON,
+        .moves = {MOVE_SIGNAL_BEAM, MOVE_PSYCHIC, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER},
+    },
+    {
+        .iv = 250,
+        .lvl = 62,
+        .species = SPECIES_SCYTHER,
+        .heldItem = ITEM_SCOPE_LENS,
+        .moves = {MOVE_FURY_CUTTER, MOVE_WING_ATTACK, MOVE_SLASH, MOVE_SWORDS_DANCE},
+    },
+    {
+        .iv = 250,
+        .lvl = 63,
+        .species = SPECIES_PINSIR,
+        .heldItem = ITEM_SILVER_POWDER,
+        .moves = {MOVE_MEGAHORN, MOVE_BRICK_BREAK, MOVE_ROCK_TOMB, MOVE_SWORDS_DANCE},
     },
 };
 
