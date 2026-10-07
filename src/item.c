@@ -494,37 +494,43 @@ void BagPocketCompaction(struct ItemSlot * slots, u8 capacity)
 
 void SortPocketAndPlaceHMsFirst(struct BagPocket * pocket)
 {
-    u16 i;
-    u16 j = 0;
-    u16 k;
-    struct ItemSlot * buff;
+    u16 i, j;
 
-    SortAndCompactBagPocket(pocket);
-
+    // The physical item IDs are intentionally noncontiguous in Sam Edition.
+    // Sort by logical machine order: HMs first, then TM01 through TM68.
     for (i = 0; i < pocket->capacity; i++)
     {
-        if (pocket->itemSlots[i].itemId == ITEM_NONE && GetBagItemQuantity(&pocket->itemSlots[i].quantity) == 0)
-            return;
-        if (pocket->itemSlots[i].itemId >= ITEM_HM01 && GetBagItemQuantity(&pocket->itemSlots[i].quantity) != 0)
+        for (j = i + 1; j < pocket->capacity; j++)
         {
-            for (j = i + 1; j < pocket->capacity; j++)
-            {
-                if (pocket->itemSlots[j].itemId == ITEM_NONE && GetBagItemQuantity(&pocket->itemSlots[j].quantity) == 0)
-                    break;
-            }
-            break;
+            u16 leftQty = GetBagItemQuantity(&pocket->itemSlots[i].quantity);
+            u16 rightQty = GetBagItemQuantity(&pocket->itemSlots[j].quantity);
+            u16 left = pocket->itemSlots[i].itemId;
+            u16 right = pocket->itemSlots[j].itemId;
+            u16 leftOrder;
+            u16 rightOrder;
+
+            if (left >= ITEM_HM01 && left <= ITEM_HM08)
+                leftOrder = left - ITEM_HM01;
+            else if (left >= ITEM_TM01 && left <= ITEM_TM50)
+                leftOrder = NUM_HIDDEN_MACHINES + (left - ITEM_TM01);
+            else if (left >= ITEM_TM51 && left <= ITEM_TM68)
+                leftOrder = NUM_HIDDEN_MACHINES + 50 + (left - ITEM_TM51);
+            else
+                leftOrder = 0xFFFF;
+
+            if (right >= ITEM_HM01 && right <= ITEM_HM08)
+                rightOrder = right - ITEM_HM01;
+            else if (right >= ITEM_TM01 && right <= ITEM_TM50)
+                rightOrder = NUM_HIDDEN_MACHINES + (right - ITEM_TM01);
+            else if (right >= ITEM_TM51 && right <= ITEM_TM68)
+                rightOrder = NUM_HIDDEN_MACHINES + 50 + (right - ITEM_TM51);
+            else
+                rightOrder = 0xFFFF;
+
+            if (leftQty == 0 || (rightQty != 0 && leftOrder > rightOrder))
+                SwapItemSlots(&pocket->itemSlots[i], &pocket->itemSlots[j]);
         }
     }
-
-    for (k = 0; k < pocket->capacity; k++)
-        pocket->itemSlots[k].quantity = GetBagItemQuantity(&pocket->itemSlots[k].quantity);
-    buff = AllocZeroed(pocket->capacity * sizeof(struct ItemSlot));
-    CpuCopy16(pocket->itemSlots + i, buff, (j - i) * sizeof(struct ItemSlot));
-    CpuCopy16(pocket->itemSlots, buff + (j - i), i * sizeof(struct ItemSlot));
-    CpuCopy16(buff, pocket->itemSlots, pocket->capacity * sizeof(struct ItemSlot));
-    for (k = 0; k < pocket->capacity; k++)
-        SetBagItemQuantity(&pocket->itemSlots[k].quantity, pocket->itemSlots[k].quantity);
-    Free(buff);
 }
 
 void SortAndCompactBagPocket(struct BagPocket * pocket)
