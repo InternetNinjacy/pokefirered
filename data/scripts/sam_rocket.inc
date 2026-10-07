@@ -7,6 +7,9 @@ EventScript_Sam_RocketDossier::
 	setvar VAR_0x8004, ROCKET_EVIDENCE_DELIVERY_01
 	callnative Script_SamRocketCheckEvidence
 	call_if_eq VAR_RESULT, TRUE, SamRocket_EventScript_ReadDelivery01
+	setvar VAR_0x8004, ROCKET_EVIDENCE_DELIVERY_02
+	callnative Script_SamRocketCheckEvidence
+	call_if_eq VAR_RESULT, TRUE, SamRocket_EventScript_ReadDelivery02
 	setvar VAR_0x8004, ROCKET_EVIDENCE_DELIVERY_03
 	callnative Script_SamRocketCheckEvidence
 	call_if_eq VAR_RESULT, TRUE, SamRocket_EventScript_ReadDelivery03
@@ -18,6 +21,10 @@ EventScript_Sam_RocketDossier::
 
 SamRocket_EventScript_ReadDelivery01::
 	msgbox SamRocket_Text_Delivery01
+	return
+
+SamRocket_EventScript_ReadDelivery02::
+	msgbox SamRocket_Text_Delivery02
 	return
 
 SamRocket_EventScript_ReadDelivery03::
@@ -33,6 +40,12 @@ SamRocket_Text_Delivery01:
 	.string "VIRIDIAN COLLECTION - RECEIVED\p"
 	.string "NORTHBOUND MATERIAL - PENDING\n"
 	.string "PEWTER / MT. MOON$"
+
+SamRocket_Text_Delivery02:
+	.string "DELIVERY 02\n"
+	.string "MT. MOON ACQUISITION - COMPLETE\p"
+	.string "UNCHOSEN FOSSIL - SECURED\n"
+	.string "THOMAS RETAINS ASSET$"
 
 SamRocket_Text_Delivery03:
 	.string "DELIVERY 03\n"
