@@ -689,6 +689,7 @@
 #define FLAG_GOT_TM26_FROM_GIOVANNI                      0x298
 #define FLAG_0x299                                       0x299
 #define FLAG_GOT_TM04_FROM_SABRINA                       0x29A
+#define FLAG_GOT_TM30_FROM_SABRINA                       FLAG_GOT_TM04_FROM_SABRINA
 #define FLAG_GOT_FAME_CHECKER                            0x29B
 #define FLAG_GOT_RECORD_SETTING_MAGIKARP                 0x29C
 #define FLAG_TWO_ISLAND_SHOP_INTRODUCED                  0x29D
