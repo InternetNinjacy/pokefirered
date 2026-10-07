@@ -77,3 +77,12 @@ NG+ review: NewGameInitData clears SaveBlock1 and InitEventData resets ordinary 
 Existing Mt. Moon actual-helper tests pass; six trainer records, traits, unrelated maps, fossil scientist/researcher/Protector scripts and Mansion progression preserved. Map/local-ID generation, text preprocessing, text pixel-width checks, flag collision audit and `git diff --check` passed. Full compile/link/symbol checks passed in final seven-variant CI run `37663794925` before PR #298 merged at `aa3d3859d44aeb2b27334a5eda08b9b683733e82`. Assembled-ROM gameplay and real movement/save-load testing remain deferred.
 
 Current native records should now carry the Thread 02 design-closure checkpoint. Older missing-Lab/missing-exact-fossil-set and open-Mansion-mapping assertions are superseded by the October 7, 2026 closure; prior dated production checkpoints remain provenance.
+
+
+## Thread 02 authority closure — October 7, 2026
+
+Current explicit instruction closes the remaining party-identity question: **Seadra is replaced by the stolen-fossil branch for the remainder of Thomas's battles from Cinnabar Mansion forward.** This is a persistent active-battle-team substitution, not a one-battle cameo. The current seven-battle route therefore ends with fossil participation at both Cinnabar Mansion and Viridian Gym; Kingdra no longer appears in Thomas's Viridian battle.
+
+The exact implementation-ready package is defined in `docs/sam_edition/THOMAS_CINNABAR_FOSSIL_BATTLE_AUTHORITY.md`. Cinnabar and Viridian stay Single Battles, Gengar is not restored, the fossil branch comes directly from the Mt. Moon theft state, and the Lab preview remains optional/non-gating. Current dialogue/progression remains authoritative unless the implementation thread requires a minimal technical hook.
+
+BLK-THOMAS-FOSSIL is **DESIGN-CLOSED / IMPLEMENTATION-PENDING**. SYS-THOMAS remains PARTIAL until the battle delta is implemented and merged. Assembled-ROM gameplay remains deferred to the final integrated playtest phase.
