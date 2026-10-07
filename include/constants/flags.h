@@ -884,10 +884,10 @@
 // Preserve vanilla placeholder aliases for source compatibility.
 #define FLAG_0x340               FLAG_GREEN_CHAMPION_REVEALED
 #define FLAG_0x341               FLAG_GREEN_TITLE_CHALLENGE_SEEN
-#define FLAG_0x342               0x342
-#define FLAG_0x343               0x343
-#define FLAG_0x344               0x344
-#define FLAG_0x345               0x345
+#define FLAG_0x342               FLAG_GREEN_CELADON_ATTEMPTED
+#define FLAG_0x343               FLAG_GREEN_FUCHSIA_ATTEMPTED
+#define FLAG_0x344               FLAG_GREEN_SAFFRON_ATTEMPTED
+#define FLAG_0x345               FLAG_GREEN_VIRIDIAN_ATTEMPTED
 #define FLAG_0x346               0x346
 #define FLAG_0x347               0x347
 #define FLAG_0x348               0x348
