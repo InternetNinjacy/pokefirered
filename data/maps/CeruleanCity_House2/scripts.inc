@@ -17,9 +17,9 @@ CeruleanCity_House2_EventScript_ReturnStolenGoods::
 	end
 
 CeruleanCity_House2_EventScript_TryReward::
-	checkitemspace ITEM_TM08, 1
+	checkitemspace ITEM_TM08
 	goto_if_eq VAR_RESULT, FALSE, CeruleanCity_House2_EventScript_BagFull
-	giveitem ITEM_TM08, 1
+	giveitem_msg CeruleanCity_House2_Text_ReceivedTM08, ITEM_TM08
 	goto_if_eq VAR_RESULT, FALSE, CeruleanCity_House2_EventScript_BagFull
 	setflag FLAG_GOT_TM28_FROM_ROCKET
 	setvar VAR_0x8004, ROCKET_OPERATION_CERULEAN
