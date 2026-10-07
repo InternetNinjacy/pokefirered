@@ -877,6 +877,7 @@
 // Sam Edition centrally allocated rival-state flags.
 #define FLAG_GREEN_CHAMPION_REVEALED      0x340
 #define FLAG_GREEN_TITLE_CHALLENGE_SEEN   0x341
+#define FLAG_GREEN_CELADON_ATTEMPTED       0x342
 // Preserve vanilla placeholder aliases for source compatibility.
 #define FLAG_0x340               FLAG_GREEN_CHAMPION_REVEALED
 #define FLAG_0x341               FLAG_GREEN_TITLE_CHALLENGE_SEEN
