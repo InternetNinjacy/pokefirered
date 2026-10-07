@@ -78,17 +78,80 @@ ViridianCity_Gym_EventScript_Warren::
 	msgbox ViridianCity_Gym_Text_WarrenPostBattle, MSGBOX_AUTOCLOSE
 	end
 
-ViridianCity_Gym_EventScript_GymGuy::
+ViridianCity_Gym_EventScript_Satoshi::
 	lock
 	faceplayer
-	goto_if_set FLAG_DEFEATED_LEADER_GIOVANNI, ViridianCity_Gym_EventScript_GymGuyPostVictory
-	msgbox ViridianCity_Gym_Text_GymGuyAdvice
+	satoshi_route_by_state ViridianCity_Gym_EventScript_SatoshiPostgameOffer, FLAG_BADGE08_GET, ViridianCity_Gym_EventScript_SatoshiPostBadge, FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON, ViridianCity_Gym_EventScript_SatoshiRepeatHint
+	checktrainerflag TRAINER_SATOSHI_VIRIDIAN_PRACTICE
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Gym_EventScript_SatoshiRetryOffer
+	msgbox ViridianCity_Gym_Text_SatoshiFirstApproach, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, ViridianCity_Gym_EventScript_SatoshiAccept
+	goto ViridianCity_Gym_EventScript_SatoshiDecline
+	end
+
+ViridianCity_Gym_EventScript_SatoshiAccept::
+	msgbox ViridianCity_Gym_Text_SatoshiAccept
+	cleartrainerflag TRAINER_SATOSHI_VIRIDIAN_PRACTICE
+	trainerbattle_earlyrival TRAINER_SATOSHI_VIRIDIAN_PRACTICE, RIVAL_BATTLE_HEAL_AFTER, ViridianCity_Gym_Text_SatoshiBattleDefeatEmpty, ViridianCity_Gym_Text_SatoshiLoss
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Gym_EventScript_SatoshiRetryOffer
+	setflag FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON
+	msgbox ViridianCity_Gym_Text_SatoshiWin
 	release
 	end
 
-ViridianCity_Gym_EventScript_GymGuyPostVictory::
-	famechecker FAMECHECKER_GIOVANNI, 4
-	msgbox ViridianCity_Gym_Text_GymGuyPostVictory
+ViridianCity_Gym_EventScript_SatoshiRetryOffer::
+	msgbox ViridianCity_Gym_Text_SatoshiRetryOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, ViridianCity_Gym_EventScript_SatoshiRetryYes
+	goto ViridianCity_Gym_EventScript_SatoshiRetryNo
+	end
+
+ViridianCity_Gym_EventScript_SatoshiRetryYes::
+	msgbox ViridianCity_Gym_Text_SatoshiRetryYes
+	cleartrainerflag TRAINER_SATOSHI_VIRIDIAN_PRACTICE
+	trainerbattle_earlyrival TRAINER_SATOSHI_VIRIDIAN_PRACTICE, RIVAL_BATTLE_HEAL_AFTER, ViridianCity_Gym_Text_SatoshiBattleDefeatEmpty, ViridianCity_Gym_Text_SatoshiLoss
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Gym_EventScript_SatoshiRetryOffer
+	setflag FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON
+	msgbox ViridianCity_Gym_Text_SatoshiWin
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiRetryNo::
+	msgbox ViridianCity_Gym_Text_SatoshiRetryNo
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiDecline::
+	msgbox ViridianCity_Gym_Text_SatoshiDecline
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiRepeatHint::
+	msgbox ViridianCity_Gym_Text_SatoshiRepeatHint
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiPostBadge::
+	goto_if_set FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON, ViridianCity_Gym_EventScript_SatoshiPostBadgePracticed
+	msgbox ViridianCity_Gym_Text_SatoshiPostBadgeSkipped
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiPostBadgePracticed::
+	msgbox ViridianCity_Gym_Text_SatoshiPostBadgePracticed
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiPostgameOffer::
+	msgbox ViridianCity_Gym_Text_SatoshiRematchOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, ViridianCity_Gym_EventScript_SatoshiPostgameRematch
+	msgbox ViridianCity_Gym_Text_SatoshiRematchDecline
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiPostgameRematch::
+	cleartrainerflag TRAINER_SATOSHI_VIRIDIAN_REMATCH
+	trainerbattle_single TRAINER_SATOSHI_VIRIDIAN_REMATCH, ViridianCity_Gym_Text_SatoshiRematchStart, ViridianCity_Gym_Text_SatoshiRematchDefeat
+	msgbox ViridianCity_Gym_Text_SatoshiRematchAfter
 	release
 	end
 
