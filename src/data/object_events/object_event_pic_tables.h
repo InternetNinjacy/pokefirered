@@ -1777,6 +1777,30 @@ static const struct SpriteFrameImage sPicTable_TropiusHothouse[] = {
     overworld_frame(gObjectEventPic_TropiusHothouse, 4, 4, 8),
 };
 
+static const struct SpriteFrameImage sPicTable_Pinsir[] = {
+    overworld_frame(gObjectEventPic_Pinsir, 2, 2, 0),
+    overworld_frame(gObjectEventPic_Pinsir, 2, 2, 1),
+    overworld_frame(gObjectEventPic_Pinsir, 2, 2, 2),
+    overworld_frame(gObjectEventPic_Pinsir, 2, 2, 3),
+    overworld_frame(gObjectEventPic_Pinsir, 2, 2, 4),
+    overworld_frame(gObjectEventPic_Pinsir, 2, 2, 5),
+    overworld_frame(gObjectEventPic_Pinsir, 2, 2, 6),
+    overworld_frame(gObjectEventPic_Pinsir, 2, 2, 7),
+    overworld_frame(gObjectEventPic_Pinsir, 2, 2, 8),
+};
+
+static const struct SpriteFrameImage sPicTable_Venomoth[] = {
+    overworld_frame(gObjectEventPic_Venomoth, 2, 2, 0),
+    overworld_frame(gObjectEventPic_Venomoth, 2, 2, 1),
+    overworld_frame(gObjectEventPic_Venomoth, 2, 2, 2),
+    overworld_frame(gObjectEventPic_Venomoth, 2, 2, 3),
+    overworld_frame(gObjectEventPic_Venomoth, 2, 2, 4),
+    overworld_frame(gObjectEventPic_Venomoth, 2, 2, 5),
+    overworld_frame(gObjectEventPic_Venomoth, 2, 2, 6),
+    overworld_frame(gObjectEventPic_Venomoth, 2, 2, 7),
+    overworld_frame(gObjectEventPic_Venomoth, 2, 2, 8),
+};
+
 static const struct SpriteFrameImage sPicTable_Scyther[] = {
     overworld_frame(gObjectEventPic_Scyther, 2, 2, 0),
     overworld_frame(gObjectEventPic_Scyther, 2, 2, 1),

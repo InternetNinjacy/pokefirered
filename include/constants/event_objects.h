@@ -180,8 +180,10 @@
 #define OBJ_EVENT_GFX_LICKITUNG          166
 #define OBJ_EVENT_GFX_HAWTHORNE          167
 #define OBJ_EVENT_GFX_TROPIUS_HOTHOUSE   168
+#define OBJ_EVENT_GFX_PINSIR             169
+#define OBJ_EVENT_GFX_VENOMOTH           170
 
-#define NUM_OBJ_EVENT_GFX                169
+#define NUM_OBJ_EVENT_GFX                171
 
 // These are dynamic object gfx ids.
 // They correspond with the values of the VAR_OBJ_GFX_ID_X vars.

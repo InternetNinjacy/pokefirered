@@ -1,7 +1,11 @@
 CeladonCity_Gym_Text_SatoshiFirst::
     .string "ERIKA trains Bug-type POKéMON.\p"
-    .string "This GYM is pretty straightforward.\n"
-    .string "The plants are here because this place\l"
+    .string "The left side is FIELD RESEARCH.\n"
+    .string "The right side is LAB RESEARCH.\p"
+    .string "Either route reaches ERIKA. You can\n"
+    .string "battle the researchers or use each\l"
+    .string "side's observation exercise.\p"
+    .string "The plants are here because this place\n"
     .string "is a habitat.\p"
     .string "FIRE, FLYING, and ROCK attacks work\n"
     .string "well against Bug.\p"
