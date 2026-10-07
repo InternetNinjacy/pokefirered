@@ -2,6 +2,6 @@ FiveIsland_LostCave_Room1_MapScripts::
 	.byte 0
 
 FiveIsland_LostCave_Room1_EventScript_Lawson::
-	trainerbattle_single TRAINER_RUIN_MANIAC_LAWSON, FiveIsland_LostCave_Room1_Text_LawsonIntro, FiveIsland_LostCave_Room1_Text_LawsonDefeat
+	trainerbattle_double TRAINER_RUIN_MANIAC_LAWSON, FiveIsland_LostCave_Room1_Text_LawsonIntro, FiveIsland_LostCave_Room1_Text_LawsonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox FiveIsland_LostCave_Room1_Text_LawsonPostBattle, MSGBOX_AUTOCLOSE
 	end
