@@ -6,6 +6,7 @@ ThreeIsland_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_THREE_ISLAND
 	call_if_set FLAG_RESCUED_LOSTELLE, ThreeIsland_EventScript_HideAntiBikers
 	call_if_eq VAR_MAP_SCENE_THREE_ISLAND, 4, ThreeIsland_EventScript_SetAntiBikersMovementAfterBikers
+	call ThreeIsland_EventScript_UpdateGreen
 	end
 
 ThreeIsland_EventScript_HideAntiBikers::
@@ -383,3 +384,49 @@ ThreeIsland_EventScript_IslandSign::
 ThreeIsland_EventScript_Biker6::
 	msgbox ThreeIsland_Text_IslandBelongsToUs, MSGBOX_NPC
 	end
+
+@ Pokémon: Sam Edition — Green rival checkpoint.
+ThreeIsland_EventScript_UpdateGreen::
+	setflag FLAG_TEMP_11
+	goto_if_set FLAG_RESCUED_LOSTELLE, ThreeIsland_EventScript_ShowGreen
+	return
+
+ThreeIsland_EventScript_ShowGreen::
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_DITTO, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_ESPEON, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_RAICHU, EventScript_Return
+	clearflag FLAG_TEMP_11
+	return
+
+ThreeIsland_EventScript_Green::
+	lock
+	faceplayer
+	setvar VAR_LAST_TALKED, LOCALID_THREE_ISLAND_GREEN
+	playbgm MUS_ENCOUNTER_RIVAL, 0
+	goto_if_eq VAR_STARTER_MON, 0, ThreeIsland_EventScript_GreenRaichu
+	goto_if_eq VAR_STARTER_MON, 1, ThreeIsland_EventScript_GreenDitto
+	goto ThreeIsland_EventScript_GreenEspeon
+ThreeIsland_EventScript_GreenDitto::
+	trainerbattle_no_intro TRAINER_GREEN_THREE_ISLAND_DITTO, ThreeIsland_Text_GreenDefeat
+	goto ThreeIsland_EventScript_GreenWon
+ThreeIsland_EventScript_GreenEspeon::
+	trainerbattle_no_intro TRAINER_GREEN_THREE_ISLAND_ESPEON, ThreeIsland_Text_GreenDefeat
+	goto ThreeIsland_EventScript_GreenWon
+ThreeIsland_EventScript_GreenRaichu::
+	trainerbattle_no_intro TRAINER_GREEN_THREE_ISLAND_RAICHU, ThreeIsland_Text_GreenDefeat
+	goto ThreeIsland_EventScript_GreenWon
+ThreeIsland_EventScript_GreenWon::
+	msgbox ThreeIsland_Text_GreenPost
+	closemessage
+	setflag FLAG_TEMP_11
+	removeobject LOCALID_THREE_ISLAND_GREEN
+	fadedefaultbgm
+	release
+	end
+
+ThreeIsland_Text_GreenDefeat::
+	.string "You still found one.$"
+ThreeIsland_Text_GreenPost::
+	.string "I don't think I need a different\n"
+	.string "team anymore. Now I need to make\l"
+	.string "this team better.$"
