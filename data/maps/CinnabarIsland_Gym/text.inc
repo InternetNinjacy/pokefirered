@@ -30,6 +30,24 @@ CinnabarIsland_Gym_Text_BlainePostBattle::
 CinnabarIsland_Gym_Text_MakeSpaceForThis::
     .string "Make room in your Bag and come back for TM23.$"
 
+CinnabarIsland_Gym_Text_BlaineRematchPre::
+    .string "Back for another examination?\\n"
+    .string "Excellent.\\n"
+    .string "Geology is not a subject one finishes. New evidence changes old conclusions, and every layer exposes another beneath it.\\n"
+    .string "You've had time to change since our first battle.\\n"
+    .string "So have I.\\n"
+    .string "Let's see what the new data says.$"
+
+CinnabarIsland_Gym_Text_BlaineRematchDefeat::
+    .string "Excellent.\\n"
+    .string "Your results remain reproducible.$"
+
+CinnabarIsland_Gym_Text_BlaineRematchAfter::
+    .string "The first time you came here, I asked whether you could withstand pressure.\\n"
+    .string "This time, you used it.\\n"
+    .string "That is the difference between knowing a principle and understanding it.\\n"
+    .string "No new Badge today. Just a very satisfactory result.$"
+
 CinnabarIsland_Gym_Text_ErikIntro::
     .string "Do you know how hot POKéMON fire\n"
     .string "breath can get?$"
