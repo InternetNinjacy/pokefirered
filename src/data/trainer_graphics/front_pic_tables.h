@@ -4,6 +4,18 @@ static const u32 gTrainerFrontPic_MayaCeladon[] = INCBIN_U32("graphics/trainers/
 static const u32 gTrainerPalette_MayaCeladon[] = INCBIN_U32("graphics/trainers/palettes/maya_celadon.gbapal.lz");
 static const u32 gTrainerFrontPic_NoraCeladon[] = INCBIN_U32("graphics/trainers/front_pics/nora_celadon.4bpp.lz");
 static const u32 gTrainerPalette_NoraCeladon[] = INCBIN_U32("graphics/trainers/palettes/nora_celadon.gbapal.lz");
+static const u32 gTrainerFrontPic_BlueLeagueOpening[] = INCBIN_U32("graphics/trainers/front_pics/blue_league_opening.4bpp.lz");
+static const u32 gTrainerFrontPic_BlueLeagueDefeat[] = INCBIN_U32("graphics/trainers/front_pics/blue_league_defeat.4bpp.lz");
+static const u32 gTrainerPalette_BlueLeague[] = INCBIN_U32("graphics/trainers/palettes/blue_league.gbapal.lz");
+static const u32 gTrainerFrontPic_LoreleiLeagueOpening[] = INCBIN_U32("graphics/trainers/front_pics/lorelei_league_opening.4bpp.lz");
+static const u32 gTrainerFrontPic_LoreleiLeagueDefeat[] = INCBIN_U32("graphics/trainers/front_pics/lorelei_league_defeat.4bpp.lz");
+static const u32 gTrainerPalette_LoreleiLeague[] = INCBIN_U32("graphics/trainers/palettes/lorelei_league.gbapal.lz");
+static const u32 gTrainerFrontPic_AgathaLeagueOpening[] = INCBIN_U32("graphics/trainers/front_pics/agatha_league_opening.4bpp.lz");
+static const u32 gTrainerFrontPic_AgathaLeagueDefeat[] = INCBIN_U32("graphics/trainers/front_pics/agatha_league_defeat.4bpp.lz");
+static const u32 gTrainerPalette_AgathaLeague[] = INCBIN_U32("graphics/trainers/palettes/agatha_league.gbapal.lz");
+static const u32 gTrainerFrontPic_LanceLeagueOpening[] = INCBIN_U32("graphics/trainers/front_pics/lance_league_opening.4bpp.lz");
+static const u32 gTrainerFrontPic_LanceLeagueDefeat[] = INCBIN_U32("graphics/trainers/front_pics/lance_league_defeat.4bpp.lz");
+static const u32 gTrainerPalette_LanceLeague[] = INCBIN_U32("graphics/trainers/palettes/lance_league.gbapal.lz");
 static const u32 gTrainerFrontPic_Leilani[] = INCBIN_U32("graphics/trainers/front_pics/leilani.4bpp.lz");
 static const u32 gTrainerPalette_Leilani[] = INCBIN_U32("graphics/trainers/palettes/leilani.gbapal.lz");
 static const u32 gTrainerFrontPic_Lehua[] = INCBIN_U32("graphics/trainers/front_pics/lehua.4bpp.lz");
@@ -360,6 +372,14 @@ const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
     TRAINER_SPRITE(THOMAS, gTrainerFrontPic_Thomas, 0x800),
     TRAINER_SPRITE(MAYA_CELADON, gTrainerFrontPic_MayaCeladon, 0x800),
     TRAINER_SPRITE(NORA_CELADON, gTrainerFrontPic_NoraCeladon, 0x800),
+    TRAINER_SPRITE(BLUE_LEAGUE_OPENING, gTrainerFrontPic_BlueLeagueOpening, 0x800),
+    TRAINER_SPRITE(BLUE_LEAGUE_DEFEAT, gTrainerFrontPic_BlueLeagueDefeat, 0x800),
+    TRAINER_SPRITE(LORELEI_LEAGUE_OPENING, gTrainerFrontPic_LoreleiLeagueOpening, 0x800),
+    TRAINER_SPRITE(LORELEI_LEAGUE_DEFEAT, gTrainerFrontPic_LoreleiLeagueDefeat, 0x800),
+    TRAINER_SPRITE(AGATHA_LEAGUE_OPENING, gTrainerFrontPic_AgathaLeagueOpening, 0x800),
+    TRAINER_SPRITE(AGATHA_LEAGUE_DEFEAT, gTrainerFrontPic_AgathaLeagueDefeat, 0x800),
+    TRAINER_SPRITE(LANCE_LEAGUE_OPENING, gTrainerFrontPic_LanceLeagueOpening, 0x800),
+    TRAINER_SPRITE(LANCE_LEAGUE_DEFEAT, gTrainerFrontPic_LanceLeagueDefeat, 0x800),
 };
 
 const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
@@ -529,4 +549,12 @@ const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
     TRAINER_PAL(THOMAS, gTrainerPalette_Thomas),
     TRAINER_PAL(MAYA_CELADON, gTrainerPalette_MayaCeladon),
     TRAINER_PAL(NORA_CELADON, gTrainerPalette_NoraCeladon),
+    TRAINER_PAL(BLUE_LEAGUE_OPENING, gTrainerPalette_BlueLeague),
+    TRAINER_PAL(BLUE_LEAGUE_DEFEAT, gTrainerPalette_BlueLeague),
+    TRAINER_PAL(LORELEI_LEAGUE_OPENING, gTrainerPalette_LoreleiLeague),
+    TRAINER_PAL(LORELEI_LEAGUE_DEFEAT, gTrainerPalette_LoreleiLeague),
+    TRAINER_PAL(AGATHA_LEAGUE_OPENING, gTrainerPalette_AgathaLeague),
+    TRAINER_PAL(AGATHA_LEAGUE_DEFEAT, gTrainerPalette_AgathaLeague),
+    TRAINER_PAL(LANCE_LEAGUE_OPENING, gTrainerPalette_LanceLeague),
+    TRAINER_PAL(LANCE_LEAGUE_DEFEAT, gTrainerPalette_LanceLeague),
 };
