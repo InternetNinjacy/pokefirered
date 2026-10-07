@@ -172,8 +172,8 @@ FuchsiaCity_EventScript_GreenRaichu::
 	trainerbattle_no_intro TRAINER_GREEN_FUCHSIA_RAICHU, FuchsiaCity_Text_GreenDefeat
 	goto FuchsiaCity_EventScript_GreenWon
 FuchsiaCity_EventScript_GreenWon::
-	msgbox FuchsiaCity_Text_GreenPost
-	closemessage
+	@ Opening/post prose is descriptive rather than verbatim in Green Decision Record v1.0.
+	@ Do not invent final dialogue; resolve the mandatory battle state only.
 	setflag FLAG_TEMP_11
 	removeobject LOCALID_FUCHSIA_GREEN
 	fadedefaultbgm
@@ -182,7 +182,3 @@ FuchsiaCity_EventScript_GreenWon::
 
 FuchsiaCity_Text_GreenDefeat::
 	.string "Yep. You caught me.$"
-FuchsiaCity_Text_GreenPost::
-	.string "Next time I want six. Then there\n"
-	.string "really won't be anywhere for a bad\l"
-	.string "matchup to hide.$"
