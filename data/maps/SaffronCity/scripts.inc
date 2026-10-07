@@ -144,6 +144,7 @@ SaffronCity_EventScript_Green::
 	lock
 	faceplayer
 	goto_if_set FLAG_GREEN_SAFFRON_ATTEMPTED, SaffronCity_EventScript_GreenRetryText
+	msgbox SaffronCity_Text_GreenOpening
 	goto SaffronCity_EventScript_GreenBattleEntry
 
 SaffronCity_EventScript_GreenRetryText::
@@ -166,16 +167,34 @@ SaffronCity_EventScript_GreenRaichu::
 	trainerbattle_no_intro TRAINER_GREEN_SAFFRON_RAICHU, SaffronCity_Text_GreenDefeat
 	goto SaffronCity_EventScript_GreenWon
 SaffronCity_EventScript_GreenWon::
-	@ Opening/post prose is descriptive rather than verbatim in Green Decision Record v1.0.
-	@ Do not invent final dialogue; resolve the mandatory battle state only.
+	msgbox SaffronCity_Text_GreenPost
+	closemessage
 	setflag FLAG_TEMP_11
 	removeobject LOCALID_SAFFRON_GREEN
 	fadedefaultbgm
 	release
 	end
 
+SaffronCity_Text_GreenOpening::
+	.string "I still only have five. I could\n"
+	.string "fill the sixth slot right now,\l"
+	.string "but that's not the point.\p"
+	.string "If the next POKéMON doesn't make\n"
+	.string "the team better, I don't want it\l"
+	.string "there just to say I have six.\p"
+	.string "Come on. Show me where these five\n"
+	.string "still slip.$"
+
 SaffronCity_Text_GreenDefeat::
 	.string "There it is.$"
+
+SaffronCity_Text_GreenPost::
+	.string "The mistakes are getting smaller.\n"
+	.string "That's good. It means I'm getting\l"
+	.string "better.\p"
+	.string "But you're getting better too, and\n"
+	.string "now you're finding things I almost\l"
+	.string "got right. I need to be that exact.$"
 
 SaffronCity_Text_GreenRetry::
 	.string "I'm not filling that sixth slot\n"
