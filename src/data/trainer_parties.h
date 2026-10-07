@@ -5738,6 +5738,67 @@ static const struct TrainerMonNoItemCustomMoves sParty_LeaderLtSurge[] = {
     },
 };
 
+
+static const struct TrainerMonNoItemCustomMoves sParty_BugCatcherOwenCeladon[] = {
+    {
+        .iv = 0,
+        .lvl = 26,
+        .species = SPECIES_BEEDRILL,
+        .moves = {MOVE_TWINEEDLE, MOVE_AERIAL_ACE, MOVE_FOCUS_ENERGY, MOVE_PURSUIT},
+    },
+    {
+        .iv = 0,
+        .lvl = 28,
+        .species = SPECIES_SCYTHER,
+        .moves = {MOVE_WING_ATTACK, MOVE_SLASH, MOVE_QUICK_ATTACK, MOVE_FOCUS_ENERGY},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_BugCatcherMayaCeladon[] = {
+    {
+        .iv = 0,
+        .lvl = 27,
+        .species = SPECIES_BEEDRILL,
+        .moves = {MOVE_TWINEEDLE, MOVE_SLUDGE_BOMB, MOVE_BRICK_BREAK, MOVE_AGILITY},
+    },
+    {
+        .iv = 0,
+        .lvl = 29,
+        .species = SPECIES_PINSIR,
+        .moves = {MOVE_FURY_CUTTER, MOVE_BRICK_BREAK, MOVE_ROCK_TOMB, MOVE_SWORDS_DANCE},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_ScientistEliasCeladon[] = {
+    {
+        .iv = 0,
+        .lvl = 26,
+        .species = SPECIES_BUTTERFREE,
+        .moves = {MOVE_PSYBEAM, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER, MOVE_STUN_SPORE},
+    },
+    {
+        .iv = 0,
+        .lvl = 28,
+        .species = SPECIES_PARASECT,
+        .moves = {MOVE_GIGA_DRAIN, MOVE_SPORE, MOVE_TOXIC, MOVE_PROTECT},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_ScientistNoraCeladon[] = {
+    {
+        .iv = 0,
+        .lvl = 27,
+        .species = SPECIES_BUTTERFREE,
+        .moves = {MOVE_PSYCHIC, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER, MOVE_WHIRLWIND},
+    },
+    {
+        .iv = 0,
+        .lvl = 29,
+        .species = SPECIES_VENOMOTH,
+        .moves = {MOVE_PSYCHIC, MOVE_GIGA_DRAIN, MOVE_SLEEP_POWDER, MOVE_SUPERSONIC},
+    },
+};
+
 static const struct TrainerMonNoItemCustomMoves sParty_LeaderErika[] = {
     {
         .iv = 0,
