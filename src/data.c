@@ -299,7 +299,9 @@ const union AnimCmd *const gAnims_MonPic[] =
 #include "data/pokemon_graphics/enemy_mon_elevation.h"
 
 #include "data/trainer_parties.h"
+#include "data/sam_blue_parties.h"
 #include "data/sam_satoshi_trainer_parties.h"
+#include "data/sam_green_trainer_parties.h"
 #include "data/sam_route3_trainer_parties.h"
 #include "data/sam_route24_trainer_parties.h"
 #include "data/sam_hothouse_trainer_parties.h"
