@@ -5,6 +5,7 @@ SaffronCity_MapScripts::
 SaffronCity_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_SAFFRON_CITY
 	call_if_unset FLAG_RESCUED_MR_FUJI, SaffronCity_EventScript_MoveDoorGuardGrunt
+	call SaffronCity_EventScript_UpdateGreen
 	end
 
 SaffronCity_EventScript_MoveDoorGuardGrunt::
@@ -122,3 +123,58 @@ SaffronCity_EventScript_SilphProductSign::
 SaffronCity_EventScript_TrainerFanClubSign::
 	msgbox SaffronCity_Text_TrainerFanClubSign, MSGBOX_SIGN
 	end
+
+@ Pokémon: Sam Edition — Green rival checkpoint.
+SaffronCity_EventScript_UpdateGreen::
+	setvar VAR_TEMP_1, 0
+	setflag FLAG_TEMP_11
+	goto_if_unset FLAG_DEFEATED_SABRINA, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_DITTO, SaffronCity_EventScript_GreenPriorDone
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_ESPEON, SaffronCity_EventScript_GreenPriorDone
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_RAICHU, SaffronCity_EventScript_GreenPriorDone
+	return
+
+SaffronCity_EventScript_GreenPriorDone::
+	goto_if_defeated TRAINER_GREEN_SAFFRON_DITTO, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_SAFFRON_ESPEON, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_SAFFRON_RAICHU, EventScript_Return
+	clearflag FLAG_TEMP_11
+	setvar VAR_TEMP_1, 1
+	return
+
+SaffronCity_EventScript_GreenExitTrigger::
+	goto SaffronCity_EventScript_Green
+
+SaffronCity_EventScript_Green::
+	lockall
+	applymovement LOCALID_SAFFRON_GREEN, Common_Movement_FacePlayer
+	waitmovement 0
+	setvar VAR_LAST_TALKED, LOCALID_SAFFRON_GREEN
+	playbgm MUS_ENCOUNTER_RIVAL, 0
+	goto_if_eq VAR_STARTER_MON, 0, SaffronCity_EventScript_GreenRaichu
+	goto_if_eq VAR_STARTER_MON, 1, SaffronCity_EventScript_GreenDitto
+	goto SaffronCity_EventScript_GreenEspeon
+SaffronCity_EventScript_GreenDitto::
+	trainerbattle_no_intro TRAINER_GREEN_SAFFRON_DITTO, SaffronCity_Text_GreenDefeat
+	goto SaffronCity_EventScript_GreenWon
+SaffronCity_EventScript_GreenEspeon::
+	trainerbattle_no_intro TRAINER_GREEN_SAFFRON_ESPEON, SaffronCity_Text_GreenDefeat
+	goto SaffronCity_EventScript_GreenWon
+SaffronCity_EventScript_GreenRaichu::
+	trainerbattle_no_intro TRAINER_GREEN_SAFFRON_RAICHU, SaffronCity_Text_GreenDefeat
+	goto SaffronCity_EventScript_GreenWon
+SaffronCity_EventScript_GreenWon::
+	msgbox SaffronCity_Text_GreenPost
+	closemessage
+	setvar VAR_TEMP_1, 0
+	setflag FLAG_TEMP_11
+	removeobject LOCALID_SAFFRON_GREEN
+	fadedefaultbgm
+	release
+	end
+
+SaffronCity_Text_GreenDefeat::
+	.string "There it is.$"
+SaffronCity_Text_GreenPost::
+	.string "I'm not filling that sixth slot\n"
+	.string "until I'm sure.$"
