@@ -286,10 +286,24 @@ SaffronCity_Gym_Text_SatoshiPostVictorySkipped::
     .string "is GHOSTLY WAIL. I'd say you earned\n"
     .string "both.$"
 
-SaffronCity_Gym_Text_SatoshiPostgamePending::
-    .string "My postgame Saffron rematch dialogue\n"
-    .string "is still awaiting final authority.\p"
-    .string "The rematch team itself is ready.$"
+SaffronCity_Gym_Text_SatoshiRematchOffer::
+    .string "Want another shot?$"
+
+SaffronCity_Gym_Text_SatoshiRematchAccept::
+    .string "Good.\p"
+    .string "Watch every turn.$"
+
+SaffronCity_Gym_Text_SatoshiRematchDecline::
+    .string "Fair enough.\p"
+    .string "I'll be here.\p"
+    .string "Assuming this room stays where it\n"
+    .string "is.$"
+
+SaffronCity_Gym_Text_SatoshiRematchBattle::
+    .string "Watch every turn.$"
+
+SaffronCity_Gym_Text_SatoshiRematchDefeat::
+    .string "Exactly.$"
 
 SaffronCity_Gym_Text_GymStatue::
     .string "SAFFRON CITY POKéMON GYM\n"
