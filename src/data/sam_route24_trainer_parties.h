@@ -40,3 +40,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SamRoute24CamperShane[] 
 
 // Five Island locked ordinary trainers; Rocket operation excluded.
 #include "sam_batch14_five_island_trainer_remaps.h"
+
+// Six Island locked ordinary trainers.
+#include "sam_batch15_six_island_trainer_remaps.h"
