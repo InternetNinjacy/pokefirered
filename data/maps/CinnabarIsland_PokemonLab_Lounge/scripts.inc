@@ -2,7 +2,26 @@ CinnabarIsland_PokemonLab_Lounge_MapScripts::
 	.byte 0
 
 CinnabarIsland_PokemonLab_Lounge_EventScript_Scientist::
-	msgbox CinnabarIsland_PokemonLab_Lounge_Text_FoundFossilInMtMoon, MSGBOX_NPC
+	lock
+	faceplayer
+	goto_if_set FLAG_0x377, CinnabarIsland_PokemonLab_Lounge_EventScript_ProtectorReceived
+	msgbox CinnabarIsland_PokemonLab_Lounge_Text_ProtectorIntro
+	checkitemspace ITEM_PROTECTOR, 1
+	goto_if_eq VAR_RESULT, FALSE, CinnabarIsland_PokemonLab_Lounge_EventScript_ProtectorBagFull
+	giveitem_msg CinnabarIsland_PokemonLab_Lounge_Text_ReceivedProtector, ITEM_PROTECTOR, 1, MUS_OBTAIN_ITEM
+	setflag FLAG_0x377
+	msgbox CinnabarIsland_PokemonLab_Lounge_Text_ProtectorUse
+	release
+	end
+
+CinnabarIsland_PokemonLab_Lounge_EventScript_ProtectorBagFull::
+	msgbox CinnabarIsland_PokemonLab_Lounge_Text_ProtectorBagFull
+	release
+	end
+
+CinnabarIsland_PokemonLab_Lounge_EventScript_ProtectorReceived::
+	msgbox CinnabarIsland_PokemonLab_Lounge_Text_ProtectorReceived
+	release
 	end
 
 CinnabarIsland_PokemonLab_Lounge_EventScript_Clifton::
