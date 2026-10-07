@@ -1,3 +1,23 @@
+# RIV-016E — production closure
+
+Status: **IMPLEMENTED / MERGED / SYNCHRONIZATION COMPLETE PENDING FINAL DOC PR**
+
+Gameplay PR #303 merged into `sam-edition-dev` at `eeea5bbc23d4ca70614180552220f317a286bc89` from validated feature head `3af4f344a10b6c0aceadcb5e0bcd0f58d14aa55f`.
+
+CI run `37675450935` passed all configured variants: FireRed, FireRed rev1, FireRed rev10, LeafGreen, LeafGreen rev1, LeafGreen rev10, and Modern.
+
+Production now implements the locked lineage rule:
+- Cinnabar trainer 788 remains Single and replaces Seadra with the branch fossil at Lv45.
+- Viridian trainer 789 remains Single and replaces the normal-story Kingdra sixth slot with the same branch fossil at Lv52.
+- Dome stolen -> Kabutops; Helix stolen -> Omastar.
+- Gengar remains absent.
+- No new trainer, flag, variable, item, map object, story event, or Thomas battle.
+- Lab preview, Doll handoff, quit-Rocket transition, Giovanni routing and the seven-battle cadence remain unchanged.
+
+RIV-016 returns to **COMPLETE**. BLK-THOMAS-FOSSIL remains **CLOSED**. Full assembled-ROM gameplay testing remains deferred.
+
+---
+
 # RIV-016E — Thomas fossil continuation authority
 
 Date: October 7, 2026  

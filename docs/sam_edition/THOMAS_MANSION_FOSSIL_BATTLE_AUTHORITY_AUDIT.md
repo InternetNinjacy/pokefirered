@@ -1,3 +1,13 @@
+# RIV-016E final follow-up closure
+
+The post-PR #302 continuation decision is production-integrated through PR #303 at `eeea5bbc23d4ca70614180552220f317a286bc89`.
+
+The Mansion-specific PR #302 result remains unchanged. The only follow-up is that the same stolen-fossil branch continues into Viridian and replaces the normal-story Kingdra sixth slot at Lv52/IV24. Trainer 789 remains Single/no Gengar and existing Viridian progression is untouched.
+
+CI `37675450935` passed all seven configured builds. No further Mansion/Viridian fossil authority or implementation work remains. RIV-016 is COMPLETE; BLK-THOMAS-FOSSIL is CLOSED.
+
+---
+
 # RIV-016E — explicit continuation beyond the PR #302 Mansion closure
 
 PR #302 remains the authoritative Cinnabar implementation. A newer explicit instruction changes only the duration of the team substitution: the fossil replacement is not Cinnabar-only.
