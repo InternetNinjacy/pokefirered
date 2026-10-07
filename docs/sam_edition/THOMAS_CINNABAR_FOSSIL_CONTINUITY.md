@@ -1,3 +1,21 @@
+# RIV-016E — fossil continuation through Viridian
+
+Explicit October 7 authority supersedes the PR #302 **Cinnabar-only** limitation while preserving the rest of that closure.
+
+**Seadra is replaced by Thomas's stolen-fossil branch for the remainder of his battles from Cinnabar Mansion forward.** In the current seven-battle route, that means the fossil appears at both Cinnabar Mansion and Viridian Gym. The Seadra/Kingdra battle lineage ends after Silph Co.; Kingdra is no longer the normal-story Viridian sixth slot.
+
+Cinnabar remains exactly as merged in PR #302: trainer 788 Single, no Gengar, slot 4 fossil at Lv45 from Mt. Moon state 3/4, Lab optional, current dialogue and retry/victory routing preserved.
+
+Viridian continuation is now locked: trainer 789 remains Single; the first five members remain unchanged; party slot 6 uses the same fossil branch at the existing Lv52 / IV-tier-24 point. Dome stolen -> Kabutops Lv52 @ Mystic Water with Rock Slide / Brick Break / Water Pulse / Protect. Helix stolen -> Omastar Lv52 @ Mystic Water with Hydro Pump / Ice Beam / AncientPower / Protect.
+
+No new trainer, flag, variable, item, map object, story event, or Thomas battle is added. Existing Doll handoff, quit-Rocket transition and Giovanni routing remain unchanged. The static Kingdra baseline may remain only as an invalid/debug-state fallback; it does not appear on the authored story path.
+
+Authority detail: [THOMAS_FOSSIL_CONTINUATION_AUTHORITY.md](THOMAS_FOSSIL_CONTINUATION_AUTHORITY.md).
+
+Current implementation branch: `sam/riv-016e-viridian-fossil-continuation`. RIV-016 is reopened only for this bounded continuation delta and returns to COMPLETE when the follow-up implementation merges.
+
+---
+
 # RIV-016 final closure — Thread 03 / PR #302
 
 The prior PARTIAL sections below are retained as implementation provenance and are superseded for current status by this closure.

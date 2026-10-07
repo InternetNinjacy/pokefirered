@@ -74,16 +74,13 @@ void ApplyThomasMtMoonStarterBranch(struct Pokemon *party, u16 trainerNum)
 }
 
 
-void ApplyThomasCinnabarFossilBranch(struct Pokemon *party, u16 trainerNum)
+static void ApplyThomasFossilReplacement(struct Pokemon *party, u8 slot, u8 level, u16 omastarWaterMove)
 {
     struct Pokemon *mon;
     u16 species, heldItem = ITEM_MYSTIC_WATER;
     u16 moves[MAX_MON_MOVES];
     u32 personality, otId;
     u8 i;
-
-    if (trainerNum != TRAINER_THOMAS_CINNABAR_MANSION)
-        return;
 
     switch (VarGet(VAR_MAP_SCENE_MT_MOON_B2F))
     {
@@ -96,7 +93,7 @@ void ApplyThomasCinnabarFossilBranch(struct Pokemon *party, u16 trainerNum)
         break;
     case 4: // Thomas stole the Helix Fossil.
         species = SPECIES_OMASTAR;
-        moves[0] = MOVE_SURF;
+        moves[0] = omastarWaterMove;
         moves[1] = MOVE_ICE_BEAM;
         moves[2] = MOVE_ANCIENT_POWER;
         moves[3] = MOVE_PROTECT;
@@ -107,14 +104,33 @@ void ApplyThomasCinnabarFossilBranch(struct Pokemon *party, u16 trainerNum)
         return;
     }
 
-    mon = &party[3]; // Cinnabar-only replacement for Thomas's Seadra slot.
+    mon = &party[slot];
     personality = GetMonData(mon, MON_DATA_PERSONALITY);
     otId = GetMonData(mon, MON_DATA_OT_ID);
 
-    // Retain the replaced slot's IV tier (24) while applying the locked fossil
-    // level, held item, and moves. No fossil-specific nature/ability is authored.
-    CreateMon(mon, species, 45, 24, TRUE, personality, OT_ID_PRESET, otId);
+    // Retain the replaced slot's IV tier (24) and generated identity while
+    // applying the locked fossil species, level, held item, and moves.
+    CreateMon(mon, species, level, 24, TRUE, personality, OT_ID_PRESET, otId);
     SetMonData(mon, MON_DATA_HELD_ITEM, &heldItem);
     for (i = 0; i < MAX_MON_MOVES; i++)
         SetMonMoveSlot(mon, moves[i], i);
+}
+
+void ApplyThomasCinnabarFossilBranch(struct Pokemon *party, u16 trainerNum)
+{
+    if (trainerNum != TRAINER_THOMAS_CINNABAR_MANSION)
+        return;
+
+    // The fossil debuts by replacing Seadra in party slot 4.
+    ApplyThomasFossilReplacement(party, 3, 45, MOVE_SURF);
+}
+
+void ApplyThomasViridianFossilBranch(struct Pokemon *party, u16 trainerNum)
+{
+    if (trainerNum != TRAINER_THOMAS_VIRIDIAN_GYM)
+        return;
+
+    // From Cinnabar onward the fossil permanently owns the former Seadra/Kingdra
+    // lineage slot. Preserve Viridian's existing sixth-slot Lv52 difficulty.
+    ApplyThomasFossilReplacement(party, 5, 52, MOVE_HYDRO_PUMP);
 }

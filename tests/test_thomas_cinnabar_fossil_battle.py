@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Host/static checks for RIV-016D Cinnabar Thomas fossil branching."""
+"""Host/static checks for RIV-016D/E Thomas fossil branching through Viridian."""
 from pathlib import Path
 import re
 import subprocess
@@ -80,6 +80,9 @@ static void SeedParty(struct Pokemon *party) {
     party[3].species = SPECIES_SEADRA;
     party[3].level = 45;
     party[3].iv = 24;
+    party[5].species = SPECIES_KINGDRA;
+    party[5].level = 52;
+    party[5].iv = 24;
 }
 
 int main(void) {
@@ -120,6 +123,35 @@ int main(void) {
     assert(party[3].moves[1] == MOVE_ICE_BEAM);
     assert(party[3].moves[2] == MOVE_ANCIENT_POWER);
     assert(party[3].moves[3] == MOVE_PROTECT);
+
+    SeedParty(party); memcpy(before, party, sizeof(party));
+    theftState = 0;
+    ApplyThomasViridianFossilBranch(party, TRAINER_THOMAS_VIRIDIAN_GYM);
+    assert(!memcmp(before, party, sizeof(party)));
+
+    SeedParty(party); memcpy(before, party, sizeof(party));
+    theftState = 3;
+    ApplyThomasViridianFossilBranch(party, TRAINER_THOMAS_VIRIDIAN_GYM);
+    assert(!memcmp(before, party, sizeof(struct Pokemon) * 5));
+    assert(party[5].species == SPECIES_KABUTOPS);
+    assert(party[5].level == 52 && party[5].iv == 24 && party[5].held == ITEM_MYSTIC_WATER);
+    assert(party[5].personality == before[5].personality && party[5].ot == before[5].ot);
+    assert(party[5].moves[0] == MOVE_ROCK_SLIDE);
+    assert(party[5].moves[1] == MOVE_BRICK_BREAK);
+    assert(party[5].moves[2] == MOVE_WATER_PULSE);
+    assert(party[5].moves[3] == MOVE_PROTECT);
+
+    SeedParty(party); memcpy(before, party, sizeof(party));
+    theftState = 4;
+    ApplyThomasViridianFossilBranch(party, TRAINER_THOMAS_VIRIDIAN_GYM);
+    assert(!memcmp(before, party, sizeof(struct Pokemon) * 5));
+    assert(party[5].species == SPECIES_OMASTAR);
+    assert(party[5].level == 52 && party[5].iv == 24 && party[5].held == ITEM_MYSTIC_WATER);
+    assert(party[5].personality == before[5].personality && party[5].ot == before[5].ot);
+    assert(party[5].moves[0] == MOVE_HYDRO_PUMP);
+    assert(party[5].moves[1] == MOVE_ICE_BEAM);
+    assert(party[5].moves[2] == MOVE_ANCIENT_POWER);
+    assert(party[5].moves[3] == MOVE_PROTECT);
     return 0;
 }
 ''')
@@ -137,17 +169,24 @@ record = re.search(r'\[TRAINER_THOMAS_CINNABAR_MANSION\] = \{.*?\n    \},', trai
 assert '.doubleBattle = FALSE' in record
 assert '.party = ITEM_CUSTOM_MOVES(sParty_ThomasCinnabar)' in record
 
-# The protected six-line baseline remains static; only the runtime fourth slot is replaced.
+viridian_record = re.search(r'\[TRAINER_THOMAS_VIRIDIAN_GYM\] = \{.*?\n    \},', trainers, re.S).group()
+assert '.doubleBattle = FALSE' in viridian_record
+assert '.party = ITEM_CUSTOM_MOVES(sParty_ThomasViridian)' in viridian_record
+
+# The protected static baselines remain intact; runtime replaces the lineage slot in story-valid states.
 parties = (ROOT / 'src/data/sam_thomas_trainer_parties.h').read_text()
 cinnabar = re.search(r'sParty_ThomasCinnabar\[\] = \{(.*?)\n\};', parties, re.S).group(1)
 assert cinnabar.count('.species =') == 6
 assert '.species = SPECIES_SEADRA' in cinnabar
 for species in ('SPECIES_CLAYDOL', 'SPECIES_HOUNDOOM', 'SPECIES_MAGNETON', 'SPECIES_MACHAMP', 'SPECIES_SALAMENCE'):
     assert species in cinnabar
+viridian = re.search(r'sParty_ThomasViridian\[\] = \{(.*?)\n\};', parties, re.S).group(1)
+assert viridian.count('.species =') == 6
+assert '.species = SPECIES_KINGDRA' in viridian
 
-# The runtime hook is scoped to party construction and does not allocate a new trainer.
+# The runtime hooks are scoped to party construction and allocate no new trainer.
 battle = (ROOT / 'src/battle_main.c').read_text()
-assert 'ApplyThomasMtMoonStarterBranch(party, trainerNum);\n        ApplyThomasCinnabarFossilBranch(party, trainerNum);' in battle
+assert 'ApplyThomasMtMoonStarterBranch(party, trainerNum);\n        ApplyThomasCinnabarFossilBranch(party, trainerNum);\n        ApplyThomasViridianFossilBranch(party, trainerNum);' in battle
 
 # Mansion battle remains optional with respect to the Lab preview. Victory alone advances;
 # loss returns before the post-trainer commands, leaving stage 4/visibility retryable.
@@ -164,4 +203,10 @@ chain = (ROOT / 'data/maps/Route24/scripts.inc').read_text()
 assert 'goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_SILPH_CLEARED, EventScript_ThomasShowCinnabar' in chain
 assert 'goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_CINNABAR_CLEARED, EventScript_ThomasShowViridian' in chain
 
-print('PASS: trainer 788 single battle branches Seadra->Kabutops/Omastar from theft state; Lab remains optional; victory advances and loss remains retryable')
+# Viridian keeps its current Single Battle and existing Doll/quit transition.
+viridian_script = (ROOT / 'data/maps/ViridianCity_Gym/scripts.inc').read_text()
+vblock = viridian_script.split('ViridianCity_Gym_EventScript_ThomasBattle::', 1)[1].split('\n\n', 1)[0]
+assert 'TRAINER_THOMAS_VIRIDIAN_GYM' in vblock
+assert 'goto ViridianCity_Gym_EventScript_ThomasDollHandoff' in vblock
+
+print('PASS: Thomas fossil branch replaces Seadra at Cinnabar and Kingdra at Viridian from durable theft state; both battles stay Single and existing progression is preserved')
