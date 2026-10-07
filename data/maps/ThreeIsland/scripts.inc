@@ -388,7 +388,10 @@ ThreeIsland_EventScript_Biker6::
 @ Pokémon: Sam Edition — Green rival checkpoint.
 ThreeIsland_EventScript_UpdateGreen::
 	setflag FLAG_TEMP_11
-	goto_if_set FLAG_RESCUED_LOSTELLE, ThreeIsland_EventScript_ShowGreen
+	goto_if_unset FLAG_RESCUED_LOSTELLE, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_SAFFRON_DITTO, ThreeIsland_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_SAFFRON_ESPEON, ThreeIsland_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_SAFFRON_RAICHU, ThreeIsland_EventScript_ShowGreen
 	return
 
 ThreeIsland_EventScript_ShowGreen::
