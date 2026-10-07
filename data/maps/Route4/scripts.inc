@@ -30,16 +30,16 @@ Route4_EventScript_CheckDone::
 	return
 
 Route4_EventScript_ShowBlueGreen::
-	showobjectat 8, MAP_ROUTE4
-	showobjectat 9, MAP_ROUTE4
+	showobjectat LOCALID_ROUTE4_BLUE, MAP_ROUTE4
+	showobjectat LOCALID_ROUTE4_GREEN, MAP_ROUTE4
 	end
 Route4_EventScript_HideBlueGreen::
-	hideobjectat 8, MAP_ROUTE4
-	hideobjectat 9, MAP_ROUTE4
+	hideobjectat LOCALID_ROUTE4_BLUE, MAP_ROUTE4
+	hideobjectat LOCALID_ROUTE4_GREEN, MAP_ROUTE4
 	end
 
 Route4_EventScript_BlueGreenTrigger::
-	setvar VAR_LAST_TALKED, 8
+	setvar VAR_LAST_TALKED, LOCALID_ROUTE4_BLUE
 	goto Route4_EventScript_BlueGreen
 	end
 
@@ -126,8 +126,8 @@ Route4_EventScript_WonBattle::
 	msgbox Route4_Text_BlueHey
 	closemessage
 	fadedefaultbgm
-	hideobjectat 8, MAP_ROUTE4
-	hideobjectat 9, MAP_ROUTE4
+	hideobjectat LOCALID_ROUTE4_BLUE, MAP_ROUTE4
+	hideobjectat LOCALID_ROUTE4_GREEN, MAP_ROUTE4
 	setvar VAR_TEMP_1, 0
 	releaseall
 	end
