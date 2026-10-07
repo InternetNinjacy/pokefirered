@@ -8,6 +8,7 @@ ViridianCity_OnTransition::
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 1, ViridianCity_EventScript_SetOldManStandingByRoad
 	call_if_ge VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 2, ViridianCity_EventScript_SetOldManNormal
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_GYM_DOOR, 0, ViridianCity_EventScript_TryUnlockGym
+	call ViridianCity_EventScript_UpdateGreen
 	end
 
 ViridianCity_EventScript_SetOldManNormal::
@@ -235,3 +236,65 @@ ViridianCity_EventScript_DoTutorialBattle::
 	giveitem ITEM_TEACHY_TV
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
 	return
+
+@ Pokémon: Sam Edition — Green rival checkpoint.
+ViridianCity_EventScript_UpdateGreen::
+	setflag FLAG_TEMP_13
+	goto_if_ne VAR_MAP_SCENE_VIRIDIAN_CITY_GYM_DOOR, 1, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_DITTO, ViridianCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_ESPEON, ViridianCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_RAICHU, ViridianCity_EventScript_ShowGreen
+	return
+
+ViridianCity_EventScript_ShowGreen::
+	goto_if_defeated TRAINER_GREEN_VIRIDIAN_DITTO, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_VIRIDIAN_ESPEON, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_VIRIDIAN_RAICHU, EventScript_Return
+	clearflag FLAG_TEMP_13
+	return
+
+ViridianCity_EventScript_Green::
+	lock
+	faceplayer
+	goto_if_set FLAG_GREEN_VIRIDIAN_ATTEMPTED, ViridianCity_EventScript_GreenRetryText
+	goto ViridianCity_EventScript_GreenBattleEntry
+
+ViridianCity_EventScript_GreenRetryText::
+	msgbox ViridianCity_Text_GreenRetry
+
+ViridianCity_EventScript_GreenBattleEntry::
+	setflag FLAG_GREEN_VIRIDIAN_ATTEMPTED
+	setvar VAR_LAST_TALKED, LOCALID_VIRIDIAN_GREEN
+	playbgm MUS_ENCOUNTER_RIVAL, 0
+	goto_if_eq VAR_STARTER_MON, 0, ViridianCity_EventScript_GreenRaichu
+	goto_if_eq VAR_STARTER_MON, 1, ViridianCity_EventScript_GreenDitto
+	goto ViridianCity_EventScript_GreenEspeon
+ViridianCity_EventScript_GreenDitto::
+	trainerbattle_no_intro TRAINER_GREEN_VIRIDIAN_DITTO, ViridianCity_Text_GreenDefeat
+	goto ViridianCity_EventScript_GreenWon
+ViridianCity_EventScript_GreenEspeon::
+	trainerbattle_no_intro TRAINER_GREEN_VIRIDIAN_ESPEON, ViridianCity_Text_GreenDefeat
+	goto ViridianCity_EventScript_GreenWon
+ViridianCity_EventScript_GreenRaichu::
+	trainerbattle_no_intro TRAINER_GREEN_VIRIDIAN_RAICHU, ViridianCity_Text_GreenDefeat
+	goto ViridianCity_EventScript_GreenWon
+ViridianCity_EventScript_GreenWon::
+	msgbox ViridianCity_Text_GreenPost
+	closemessage
+	setflag FLAG_TEMP_13
+	removeobject LOCALID_VIRIDIAN_GREEN
+	fadedefaultbgm
+	release
+	end
+
+ViridianCity_Text_GreenDefeat::
+	.string "Found it.$"
+ViridianCity_Text_GreenPost::
+	.string "There aren't any big holes left.\n"
+	.string "Now it's little decisions...\p"
+	.string "You're really good at finding\n"
+	.string "those. Thanks, {PLAYER}.$"
+
+ViridianCity_Text_GreenRetry::
+	.string "I know what I'm changing. Not the\n"
+	.string "POKéMON. Just the details.$"
