@@ -1,51 +1,51 @@
 CinnabarIsland_Gym_Text_BlaineIntro::
-    .string "So, you've completed the practicum. Excellent.\\n"
-    .string "My teaching assistants can be rather enthusiastic about terminology. I prefer results.\\n"
-    .string "Geology teaches us that the world is never truly still. Pressure builds. Stone fractures. Continents move.\\n"
-    .string "A good Trainer learns much the same lesson.\\n"
-    .string "I'm Professor Blaine, Chair of the Department of Geology-and Cinnabar's Gym Leader.\\n"
+    .string "So, you've completed the practicum. Excellent.\n"
+    .string "My teaching assistants can be rather enthusiastic about terminology. I prefer results.\n"
+    .string "Geology teaches us that the world is never truly still. Pressure builds. Stone fractures. Continents move.\n"
+    .string "A good Trainer learns much the same lesson.\n"
+    .string "I'm Professor Blaine, Chair of the Department of Geology-and Cinnabar's Gym Leader.\n"
     .string "Your final examination begins now.$"
 
 CinnabarIsland_Gym_Text_BlaineDefeat::
     .string "Excellent work.$"
 
 CinnabarIsland_Gym_Text_FireBlastIsUltimateFireMove::
-    .string "And take this.\\n"
-    .string "TM23 contains Boulder Bash.\\n"
-    .string "It hits with enough force to fracture stone, and the impact may lower the target's Defense.\\n"
+    .string "And take this.\n"
+    .string "TM23 contains Boulder Bash.\n"
+    .string "It hits with enough force to fracture stone, and the impact may lower the target's Defense.\n"
     .string "Consider it your final piece of field equipment.$"
 
 CinnabarIsland_Gym_Text_ExplainVolcanoBadge::
-    .string "You didn't merely endure pressure. You adapted to it.\\n"
-    .string "That's the distinction between something that breaks…and something that changes.\\n"
+    .string "You didn't merely endure pressure. You adapted to it.\n"
+    .string "That's the distinction between something that breaks…and something that changes.\n"
     .string "You've earned the Strata Badge.$"
 
 CinnabarIsland_Gym_Text_ReceivedTM38FromBlaine::
     .string "{PLAYER} received TM23 from BLAINE!$"
 
 CinnabarIsland_Gym_Text_BlainePostBattle::
-    .string "Geology rewards attention-to what changes, and what refuses to.\\n"
+    .string "Geology rewards attention-to what changes, and what refuses to.\n"
     .string "Keep doing both.$"
 
 CinnabarIsland_Gym_Text_MakeSpaceForThis::
     .string "Make room in your Bag and come back for TM23.$"
 
 CinnabarIsland_Gym_Text_BlaineRematchPre::
-    .string "Back for another examination?\\n"
-    .string "Excellent.\\n"
-    .string "Geology is not a subject one finishes. New evidence changes old conclusions, and every layer exposes another beneath it.\\n"
-    .string "You've had time to change since our first battle.\\n"
-    .string "So have I.\\n"
+    .string "Back for another examination?\n"
+    .string "Excellent.\n"
+    .string "Geology is not a subject one finishes. New evidence changes old conclusions, and every layer exposes another beneath it.\n"
+    .string "You've had time to change since our first battle.\n"
+    .string "So have I.\n"
     .string "Let's see what the new data says.$"
 
 CinnabarIsland_Gym_Text_BlaineRematchDefeat::
-    .string "Excellent.\\n"
+    .string "Excellent.\n"
     .string "Your results remain reproducible.$"
 
 CinnabarIsland_Gym_Text_BlaineRematchAfter::
-    .string "The first time you came here, I asked whether you could withstand pressure.\\n"
-    .string "This time, you used it.\\n"
-    .string "That is the difference between knowing a principle and understanding it.\\n"
+    .string "The first time you came here, I asked whether you could withstand pressure.\n"
+    .string "This time, you used it.\n"
+    .string "That is the difference between knowing a principle and understanding it.\n"
     .string "No new Badge today. Just a very satisfactory result.$"
 
 CinnabarIsland_Gym_Text_ErikIntro::
@@ -130,22 +130,22 @@ CinnabarIsland_Gym_Text_GymGuyPostVictory::
     .string "You beat that firebrand!$"
 
 CinnabarIsland_Gym_Text_GymStatue::
-    .string "CINNABAR UNIVERSITY\\n"
-    .string "DEPARTMENT OF GEOLOGY\\n"
-    .string "GYM PRACTICUM - FINAL EXAMINATION\\n"
+    .string "CINNABAR UNIVERSITY\n"
+    .string "DEPARTMENT OF GEOLOGY\n"
+    .string "GYM PRACTICUM - FINAL EXAMINATION\n"
     .string "PROF. BLAINE, PRESIDING$"
 
 CinnabarIsland_Gym_Text_GymStatuePlayerWon::
-    .string "CINNABAR UNIVERSITY\\n"
-    .string "DEPARTMENT OF GEOLOGY\\n"
-    .string "GYM PRACTICUM - FINAL EXAMINATION\\n"
-    .string "PROF. BLAINE, PRESIDING\\n"
+    .string "CINNABAR UNIVERSITY\n"
+    .string "DEPARTMENT OF GEOLOGY\n"
+    .string "GYM PRACTICUM - FINAL EXAMINATION\n"
+    .string "PROF. BLAINE, PRESIDING\n"
     .string "PASSED: {PLAYER}$"
 
 CinnabarIsland_Gym_Text_PokemonQuizRules::
-    .string "GEOLOGY PRACTICUM\\n"
-    .string "Answer YES or NO.\\n"
-    .string "Correct answers open the route.\\n"
+    .string "GEOLOGY PRACTICUM\n"
+    .string "Answer YES or NO.\n"
+    .string "Correct answers open the route.\n"
     .string "Incorrect answers require a practical demonstration.$"
 
 CinnabarIsland_Gym_Text_QuizQuestion1::
@@ -167,11 +167,11 @@ CinnabarIsland_Gym_Text_QuizQuestion6::
     .string "Wind and water can slowly wear away rock. Yes or no?$"
 
 CinnabarIsland_Gym_Text_CorrectGoOnThrough::
-    .string "Correct.\\n"
+    .string "Correct.\n"
     .string "The route is open.$"
 
 CinnabarIsland_Gym_Text_SorryBadCall::
-    .string "Incorrect.\\n"
+    .string "Incorrect.\n"
     .string "Your Teaching Assistant will provide a practical correction.$"
 
 CinnabarIsland_Gym_Text_QuinnWrong::
@@ -194,84 +194,84 @@ CinnabarIsland_Gym_Text_ZacWrong::
 
 
 CinnabarIsland_Gym_Text_SatoshiFirst::
-    .string "Back again?\\n"
-    .string "Blaine teaches ROCK through geology.\\n"
-    .string "His assistants can make it sound complicated, but the matchup is simple.\\n"
-    .string "Rock is weak to WATER, GRASS, FIGHTING, GROUND, and STEEL.\\n"
-    .string "Rock Pokémon are usually sturdy on the physical side, so don't waste turns trying to out-muscle them.\\n"
-    .string "And check the second type. Omastar, Kabutops, and Aerodactyl don't all have the same weaknesses.\\n"
-    .string "My Rhyhorn is a pure Rock-type.\\n"
+    .string "Back again?\n"
+    .string "Blaine teaches ROCK through geology.\n"
+    .string "His assistants can make it sound complicated, but the matchup is simple.\n"
+    .string "Rock is weak to WATER, GRASS, FIGHTING, GROUND, and STEEL.\n"
+    .string "Rock Pokémon are usually sturdy on the physical side, so don't waste turns trying to out-muscle them.\n"
+    .string "And check the second type. Omastar, Kabutops, and Aerodactyl don't all have the same weaknesses.\n"
+    .string "My Rhyhorn is a pure Rock-type.\n"
     .string "Want a quick practice battle?$"
 
 CinnabarIsland_Gym_Text_SatoshiYes::
-    .string "Good.\\n"
-    .string "Find the weakness.\\n"
-    .string "Don't just hammer away.\\n"
+    .string "Good.\n"
+    .string "Find the weakness.\n"
+    .string "Don't just hammer away.\n"
     .string "Let's go.$"
 
 CinnabarIsland_Gym_Text_SatoshiDecline::
-    .string "Fair enough.\\n"
-    .string "Remember the five:\\n"
-    .string "WATER, GRASS, FIGHTING, GROUND, and STEEL.\\n"
+    .string "Fair enough.\n"
+    .string "Remember the five:\n"
+    .string "WATER, GRASS, FIGHTING, GROUND, and STEEL.\n"
     .string "Then check the second type.$"
 
 CinnabarIsland_Gym_Text_SatoshiWin::
-    .string "That's it.\\n"
-    .string "You read the matchup instead of the shape.\\n"
-    .string "Blaine's assistants will make the lesson sound complicated.\\n"
+    .string "That's it.\n"
+    .string "You read the matchup instead of the shape.\n"
+    .string "Blaine's assistants will make the lesson sound complicated.\n"
     .string "The battle doesn't have to be.$"
 
 CinnabarIsland_Gym_Text_SatoshiLoss::
-    .string "See what I mean?\\n"
-    .string "Rock can take a physical hit.\\n"
-    .string "If you attack the wrong way, it feels like punching a wall.\\n"
+    .string "See what I mean?\n"
+    .string "Rock can take a physical hit.\n"
+    .string "If you attack the wrong way, it feels like punching a wall.\n"
     .string "Want another try?$"
 
 CinnabarIsland_Gym_Text_SatoshiRetry::
     .string "Want another try?$"
 
 CinnabarIsland_Gym_Text_SatoshiRetryYes::
-    .string "Good.\\n"
+    .string "Good.\n"
     .string "This time, make the type chart do some of the work.$"
 
 CinnabarIsland_Gym_Text_SatoshiRetryNo::
-    .string "No problem.\\n"
+    .string "No problem.\n"
     .string "Blaine's exam will still be there.$"
 
 CinnabarIsland_Gym_Text_SatoshiRepeat::
-    .string "Short version?\\n"
-    .string "WATER, GRASS, FIGHTING, GROUND, and STEEL all pressure Rock.\\n"
+    .string "Short version?\n"
+    .string "WATER, GRASS, FIGHTING, GROUND, and STEEL all pressure Rock.\n"
     .string "Check the second type before you commit.$"
 
 CinnabarIsland_Gym_Text_SatoshiAfterPracticed::
-    .string "Strata Badge.\\n"
-    .string "Nice work.\\n"
-    .string "TM23 contains Boulder Bash-strong Rock damage with a chance to lower Defense.\\n"
+    .string "Strata Badge.\n"
+    .string "Nice work.\n"
+    .string "TM23 contains Boulder Bash-strong Rock damage with a chance to lower Defense.\n"
     .string "Looks like you passed both the lecture and the lab.$"
 
 CinnabarIsland_Gym_Text_SatoshiAfterSkipped::
-    .string "You passed without my practice round.\\n"
-    .string "Can't argue with the grade.\\n"
+    .string "You passed without my practice round.\n"
+    .string "Can't argue with the grade.\n"
     .string "TM23 contains Boulder Bash-strong Rock damage with a chance to lower Defense.$"
 
 CinnabarIsland_Gym_Text_SatoshiRematchOffer::
-    .string "Back on campus?\\n"
-    .string "I've expanded the lesson since last time.\\n"
+    .string "Back on campus?\n"
+    .string "I've expanded the lesson since last time.\n"
     .string "Want the advanced course?$"
 
 CinnabarIsland_Gym_Text_SatoshiRematchDecline::
-    .string "Fair enough.\\n"
+    .string "Fair enough.\n"
     .string "Office hours aren't mandatory.$"
 
 CinnabarIsland_Gym_Text_SatoshiRematchStart::
     .string "Let's see what the advanced course taught you.$"
 
 CinnabarIsland_Gym_Text_SatoshiRematchDefeat::
-    .string "Excellent.\\n"
+    .string "Excellent.\n"
     .string "You've moved well beyond the introductory material.$"
 
 CinnabarIsland_Gym_Text_SatoshiRematchAfter::
-    .string "Excellent.\\n"
+    .string "Excellent.\n"
     .string "You've moved well beyond the introductory material.$"
 
 CinnabarIsland_Gym_Text_SatoshiBattleDefeatEmpty::
