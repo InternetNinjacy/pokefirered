@@ -6,6 +6,7 @@ FuchsiaCity_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_FUCHSIA_CITY
 	call_if_set FLAG_GOT_DOME_FOSSIL, FuchsiaCity_EventScript_SetOmanyteGfx
 	call_if_unset FLAG_GOT_DOME_FOSSIL, FuchsiaCity_EventScript_SetKabutoGfx
+	call FuchsiaCity_EventScript_UpdateGreen
 	end
 
 FuchsiaCity_EventScript_SetOmanyteGfx::
@@ -137,3 +138,59 @@ FuchsiaCity_EventScript_OmanyteSign::
 	hidemonpic
 	releaseall
 	end
+
+@ Pokémon: Sam Edition — Green rival checkpoint.
+FuchsiaCity_EventScript_UpdateGreen::
+	setflag FLAG_TEMP_11
+	goto_if_defeated TRAINER_GREEN_CELADON_DITTO, FuchsiaCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_CELADON_ESPEON, FuchsiaCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_CELADON_RAICHU, FuchsiaCity_EventScript_ShowGreen
+	return
+
+FuchsiaCity_EventScript_ShowGreen::
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_DITTO, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_ESPEON, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_RAICHU, EventScript_Return
+	clearflag FLAG_TEMP_11
+	return
+
+FuchsiaCity_EventScript_Green::
+	lock
+	faceplayer
+	setvar VAR_LAST_TALKED, LOCALID_FUCHSIA_GREEN
+	playbgm MUS_ENCOUNTER_RIVAL, 0
+	goto_if_set FLAG_GREEN_FUCHSIA_ATTEMPTED, FuchsiaCity_EventScript_GreenRetry
+	setflag FLAG_GREEN_FUCHSIA_ATTEMPTED
+	goto FuchsiaCity_EventScript_GreenChooseBranch
+
+FuchsiaCity_EventScript_GreenRetry::
+	msgbox FuchsiaCity_Text_GreenRetry
+FuchsiaCity_EventScript_GreenChooseBranch::
+	goto_if_eq VAR_STARTER_MON, 0, FuchsiaCity_EventScript_GreenRaichu
+	goto_if_eq VAR_STARTER_MON, 1, FuchsiaCity_EventScript_GreenDitto
+	goto FuchsiaCity_EventScript_GreenEspeon
+FuchsiaCity_EventScript_GreenDitto::
+	trainerbattle_no_intro TRAINER_GREEN_FUCHSIA_DITTO, FuchsiaCity_Text_GreenDefeat
+	goto FuchsiaCity_EventScript_GreenWon
+FuchsiaCity_EventScript_GreenEspeon::
+	trainerbattle_no_intro TRAINER_GREEN_FUCHSIA_ESPEON, FuchsiaCity_Text_GreenDefeat
+	goto FuchsiaCity_EventScript_GreenWon
+FuchsiaCity_EventScript_GreenRaichu::
+	trainerbattle_no_intro TRAINER_GREEN_FUCHSIA_RAICHU, FuchsiaCity_Text_GreenDefeat
+	goto FuchsiaCity_EventScript_GreenWon
+FuchsiaCity_EventScript_GreenWon::
+	@ Opening/post prose is descriptive rather than verbatim in Green Decision Record v1.0.
+	@ Do not invent final dialogue; resolve the mandatory battle state only.
+	setflag FLAG_TEMP_11
+	removeobject LOCALID_FUCHSIA_GREEN
+	fadedefaultbgm
+	release
+	end
+
+FuchsiaCity_Text_GreenDefeat::
+	.string "Yep. You caught me.$"
+
+FuchsiaCity_Text_GreenRetry::
+	.string "Next time I want six. Then there\n"
+	.string "really won't be anywhere for a bad\l"
+	.string "matchup to hide.$"
