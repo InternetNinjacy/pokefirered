@@ -682,6 +682,7 @@
 #define FLAG_PALLET_LADY_NOT_BLOCKING_SIGN               0x291
 #define FLAG_GOT_VS_SEEKER                               0x292
 #define FLAG_GOT_TM19_FROM_ERIKA                         0x293
+#define FLAG_GOT_TM26_FROM_ERIKA                         FLAG_GOT_TM19_FROM_ERIKA
 #define FLAG_GOT_TM33_FROM_THIRSTY_GIRL                  0x294
 #define FLAG_GOT_TM20_FROM_THIRSTY_GIRL                  0x295
 #define FLAG_GOT_TM16_FROM_THIRSTY_GIRL                  0x296
@@ -877,10 +878,10 @@
 // Sam Edition centrally allocated rival-state flags.
 #define FLAG_GREEN_CHAMPION_REVEALED      0x340
 #define FLAG_GREEN_TITLE_CHALLENGE_SEEN   0x341
-#define FLAG_GREEN_CELADON_ATTEMPTED       0x342
-#define FLAG_GREEN_FUCHSIA_ATTEMPTED       0x343
-#define FLAG_GREEN_SAFFRON_ATTEMPTED       0x344
-#define FLAG_GREEN_VIRIDIAN_ATTEMPTED      0x345
+#define FLAG_GREEN_CELADON_ATTEMPTED      0x342
+#define FLAG_GREEN_FUCHSIA_ATTEMPTED      0x343
+#define FLAG_GREEN_SAFFRON_ATTEMPTED      0x344
+#define FLAG_GREEN_VIRIDIAN_ATTEMPTED     0x345
 // Preserve vanilla placeholder aliases for source compatibility.
 #define FLAG_0x340               FLAG_GREEN_CHAMPION_REVEALED
 #define FLAG_0x341               FLAG_GREEN_TITLE_CHALLENGE_SEEN
