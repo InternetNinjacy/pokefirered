@@ -81,3 +81,18 @@ RockTunnel_1F_Text_RouteSign::
     .string "ROCK TUNNEL\n"
     .string "CERULEAN CITY - LAVENDER TOWN$"
 
+RockTunnel_1F_Text_ThomasPorygonLocked::
+    .string "It's an occupied POKé BALL marked\n"
+    .string "SILPH CO. It won't open.$"
+
+RockTunnel_1F_Text_ThomasPorygonFound::
+    .string "The SILPH CO. POKé BALL responds.\n"
+    .string "A POKéMON is still inside.$"
+
+RockTunnel_1F_Text_ThomasPorygonRecovered::
+    .string "PORYGON was recovered from the\n"
+    .string "SILPH CO. POKé BALL!$"
+
+RockTunnel_1F_Text_ThomasPorygonNoRoom::
+    .string "There isn't room for PORYGON.\n"
+    .string "The POKé BALL remains here.$"

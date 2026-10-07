@@ -947,6 +947,7 @@
 #define FLAG_0x373               0x373
 #define FLAG_0x374               0x374
 #define FLAG_0x375               0x375
+#define FLAG_ROCK_TUNNEL_PORYGON_RECEIVED 0x376
 #define FLAG_0x376               0x376
 #define FLAG_CINNABAR_PROTECTOR_RECEIVED                      0x377
 #define FLAG_0x377               FLAG_CINNABAR_PROTECTOR_RECEIVED
