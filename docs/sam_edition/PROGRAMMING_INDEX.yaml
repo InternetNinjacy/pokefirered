@@ -17,7 +17,7 @@ project: &id002
 current_state:
   verified_at: '2026-10-07'
   production_branch: sam-edition-dev
-  production_head: 53ef5073bda7ee7c7abca9e27310eab9f2ce2c36
+  production_head: aa3d3859d44aeb2b27334a5eda08b9b683733e82
   status_authority: Programming Readiness Registry / Backlog
   current_audit: docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-10-07.md
   runtime_policy: Full assembled-ROM playtesting deferred; do not reopen completed
@@ -30,7 +30,7 @@ current_state:
   open_owner_work:
   - 'GYM1-001: approved package integration'
   - 'GYM8-001: approved Dragon/Dominion/TM54 package restoration'
-  - 'RIV-016: Mt. Moon merged #294; Lab slice #298; Mansion fossil roster mapping requires specialist reconciliation'
+  - 'RIV-016: Mt. Moon merged #294; Lab slice merged #298; Mansion fossil roster mapping requires specialist reconciliation'
   - 'ROCKET-002: remaining operation conversions/evidence consumers; ROCKET-001 shared framework complete in PR #297'
   - shared asset pipeline and League final assembly
   - final Thomas/Rocket closure (Five Island Thread 1E complete in PR #295)
@@ -46,13 +46,18 @@ thomas_mt_moon_checkpoint:
   runtime: assembled-ROM playtest deferred
 thomas_cinnabar_fossil_checkpoint:
   task: RIV-016
-  status: PARTIAL (independent non-battle Lab scene implemented; Mansion blocked)
+  status: PARTIAL (independent non-battle Lab scene production-complete via PR #298; Mansion blocked)
+  pr: 298
   working_branch: sam/thomas-cinnabar-fossil-continuity
+  feature_head: c8dbc5abc890810e0a5b7db768c995ec928201c5
+  production_merge: aa3d3859d44aeb2b27334a5eda08b9b683733e82
   source_audit: docs/sam_edition/THOMAS_CINNABAR_FOSSIL_CONTINUITY.md
   authority: reopened Lab beat and exact September 29 Lab dialogue; current preserve-six-data instruction
   implementation: one-time Lab exit at current arc4; reads completed MtMoon theft; no player inventory or main arc mutation
   resources: flags 0x35E/0x35F; local Lab object2; no new trainer or persistent variable
   blocker: exact fossil sets found; approve slot mapping, Gengar package and format against protected Mansion roster before changing battle
+  validation: final seven-variant CI 37663794925 PASS; initial CI 37663134291 PASS; host Lab960/MtMoon/Rocket/map/text/diff checks PASS
+  synchronization: SYNC-2026-10-07-CINNABAR-FOSSIL-PARTIAL finalized after merge; seven native authority overlays and Registry final checkpoint synchronized
   runtime: assembled-ROM playtest deferred
 five_island_thread_1e_checkpoint:
   task: ROCKET-002
