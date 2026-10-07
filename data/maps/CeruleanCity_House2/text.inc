@@ -18,6 +18,10 @@ CeruleanCity_House2_Text_ReturnedStolenGoods::
     .string "You've earned it more than we\p"
     .string "have.$"
 
+CeruleanCity_House2_Text_ReceivedTM08::
+    .string "{PLAYER} received TM08 from\n"
+    .string "the homeowner.$"
+
 CeruleanCity_House2_Text_PostClearThanks::
     .string "Thank you for bringing our\n"
     .string "things back.$"
