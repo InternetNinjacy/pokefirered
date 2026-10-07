@@ -3,6 +3,7 @@ CeruleanCity_House2_MapScripts::
 	.byte 0
 
 CeruleanCity_House2_OnFrame::
+@ Cerulean Rocket transaction: 1 = goods recovered, 2 = TM08 owed, 3 = complete.
 	map_script_2 VAR_MAP_SCENE_CERULEAN_CITY_ROCKET, 1, CeruleanCity_House2_EventScript_ReturnStolenGoods
 	.2byte 0
 
