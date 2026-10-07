@@ -55,6 +55,8 @@ const u16 gObjectEventPal_Rhyhorn[] = {
 };
 const u16 gObjectEventPal_Hawthorne[] = INCBIN_U16("graphics/object_events/palettes/hawthorne.gbapal");
 const u16 gObjectEventPal_TropiusHothouse[] = INCBIN_U16("graphics/object_events/palettes/tropius_hothouse.gbapal");
+const u16 gObjectEventPal_Pinsir[] = INCBIN_U16("graphics/object_events/palettes/pinsir.gbapal");
+const u16 gObjectEventPal_Venomoth[] = INCBIN_U16("graphics/object_events/palettes/venomoth.gbapal");
 const u16 gObjectEventPal_Abra[] = {
     0x0000, 0x1087, 0x190D, 0x21B3, 0x1258, 0x16FD, 0x2F7F, 0x53BF,
     0x0C64, 0x14CC, 0x21F7, 0x1B1E, 0x129B, 0x3B9F, 0x1D4F, 0x14A9,
@@ -207,6 +209,8 @@ const u32 gObjectEventPic_Rhyhorn[] = {
     0x16661100, 0x56661100, 0x51161000, 0x51110000, 0x51100000, 0x51000000, 0x51000000, 0x11000000,
     0x33355555, 0x03355555, 0x03351555, 0x00111555, 0x00001555, 0x00001555, 0x00001555, 0x00001111,
 };
+const u16 gObjectEventPic_Pinsir[] = INCBIN_U16("graphics/object_events/pics/pokemon/pinsir.4bpp");
+const u16 gObjectEventPic_Venomoth[] = INCBIN_U16("graphics/object_events/pics/pokemon/venomoth.4bpp");
 const u32 gObjectEventPic_Scyther[] = {
     0x00000000, 0x00001000, 0x11008100, 0x51088100, 0x51088000, 0xF0888000, 0x41811000, 0x61110000,
     0x00000001, 0x00010001, 0x00180115, 0x00188155, 0x00088155, 0x000881F5, 0x00011144, 0x00011166,

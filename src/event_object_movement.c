@@ -473,6 +473,8 @@ static const u8 gInitialMovementTypeFacingDirections[MOVEMENT_TYPES_COUNT] = {
 #define OBJ_EVENT_PAL_TAG_ABRA                         0x111E
 #define OBJ_EVENT_PAL_TAG_HAWTHORNE                    0x111F
 #define OBJ_EVENT_PAL_TAG_TROPIUS_HOTHOUSE             0x1120
+#define OBJ_EVENT_PAL_TAG_PINSIR                        0x1121
+#define OBJ_EVENT_PAL_TAG_VENOMOTH                      0x1122
 #define OBJ_EVENT_PAL_TAG_NONE                        0x11FF
 
 #include "data/object_events/object_event_graphics_info_pointers.h"
@@ -492,6 +494,8 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_Abra,                    OBJ_EVENT_PAL_TAG_ABRA},
     {gObjectEventPal_Hawthorne,               OBJ_EVENT_PAL_TAG_HAWTHORNE},
     {gObjectEventPal_TropiusHothouse,         OBJ_EVENT_PAL_TAG_TROPIUS_HOTHOUSE},
+    {gObjectEventPal_Pinsir,                   OBJ_EVENT_PAL_TAG_PINSIR},
+    {gObjectEventPal_Venomoth,                 OBJ_EVENT_PAL_TAG_VENOMOTH},
     {gObjectEventPal_NpcWhite,                OBJ_EVENT_PAL_TAG_NPC_WHITE},
     {gObjectEventPal_NpcBlueReflection,       OBJ_EVENT_PAL_TAG_NPC_BLUE_REFLECTION},
     {gObjectEventPal_NpcPinkReflection,       OBJ_EVENT_PAL_TAG_NPC_PINK_REFLECTION},
