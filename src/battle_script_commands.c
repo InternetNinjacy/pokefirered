@@ -2641,6 +2641,15 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 break;
             case MOVE_EFFECT_STEAL_ITEM:
                 {
+                    if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+                        && IsGreenTrainerBattle()
+                        && GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER
+                        && GetBattlerSide(gBattlerTarget) == B_SIDE_OPPONENT)
+                    {
+                        gBattlescriptCurrInstr++;
+                        break;
+                    }
+
                     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER)
                     {
                         gBattlescriptCurrInstr++;
