@@ -36,9 +36,9 @@ int main(void) {
  for(i=0;i<65536;i++) {gSpecialVar_0x8004=i;Script_SamRocketCompleteOperation();assert(ops==before);}
  for(i=0;i<16;i++) {
   gSpecialVar_0x8004=1u<<i; before=evidence;Script_SamRocketRecordEvidence();
-  assert(gSpecialVar_Result==(i==0||i==2||i==3));
-  assert(evidence==((i==0||i==2||i==3)?before|(1u<<i):before));
-  Script_SamRocketCheckEvidence();assert(gSpecialVar_Result==(i==0||i==2||i==3));
+  assert(gSpecialVar_Result==(i<4));
+  assert(evidence==(i<4?before|(1u<<i):before));
+  Script_SamRocketCheckEvidence();assert(gSpecialVar_Result==(i<4));
  }
  assert(evidence==ROCKET_EVIDENCE_BOUND_MASK);before=evidence;
  for(i=0;i<65536;i++) {gSpecialVar_0x8004=i;Script_SamRocketRecordEvidence();assert(evidence==before);}
@@ -113,6 +113,20 @@ for balls_full in (False,True):
    assert v.vars['VAR_SAM_ROCKET_OPERATIONS']==1 and v.vars['VAR_SAM_ROCKET_EVIDENCE']==1
    v.run('ViridianCity_Mart_EventScript_Clerk');assert v.ended=='pokemart' and v.items['ITEM_POKE_BALL']==5 and v.items['ITEM_ROCKET_DOSSIER']==1
 
+# Delivery 02 is bound only after the successful physical Mt. Moon theft.
+mtmoon=(ROOT/'data/maps/MtMoon_B2F/scripts.inc').read_text()
+theft=mtmoon[mtmoon.index('MtMoon_B2F_EventScript_TheftComplete::'):].split('\n\n',1)[0]
+assert 'ROCKET_OPERATION_MT_MOON' in theft
+assert 'Script_SamRocketCompleteOperation' in theft
+assert 'ROCKET_EVIDENCE_DELIVERY_02' in theft
+assert 'Script_SamRocketRecordEvidence' in theft
+assert theft.index('ROCKET_OPERATION_MT_MOON') < theft.index('ROCKET_EVIDENCE_DELIVERY_02')
+dossier=(ROOT/'data/scripts/sam_rocket.inc').read_text()
+assert 'SamRocket_EventScript_ReadDelivery02::' in dossier
+assert 'MT. MOON ACQUISITION -\\n' in dossier
+assert 'UNCHOSEN FOSSIL - SECURED' in dossier
+assert 'THOMAS RETAINS ASSET' in dossier
+
 # Existing maps, trainer records and warehouse work must survive reconciliation.
 path='data/maps/ViridianCity/map.json';a=json.loads(old(path));b=json.loads((ROOT/path).read_text())
 assert b['object_events'][:len(a['object_events'])]==a['object_events']
@@ -126,7 +140,7 @@ for path in ['src/data/trainers.h']:
  for name in re.findall(r'\[TRAINER_[A-Z0-9_]+\]',old(path)):
   pattern=re.escape(name)+r' = \{.*?\n    \},'
   assert re.search(pattern,old(path),re.S).group()==re.search(pattern,(ROOT/path).read_text(),re.S).group(),name
-for path in ['data/maps/FiveIsland_RocketWarehouse/scripts.inc','data/maps/FiveIsland_RocketWarehouse/map.json','src/battle_ai_switch_items.c','src/new_game.c','data/maps/MtMoon_B2F/scripts.inc']:
+for path in ['data/maps/FiveIsland_RocketWarehouse/scripts.inc','data/maps/FiveIsland_RocketWarehouse/map.json','src/battle_ai_switch_items.c','src/new_game.c']:
  assert (ROOT/path).read_text()==old(path),path
 items=json.loads((ROOT/'src/data/items.json').read_text())['items'];baseline=json.loads(old('src/data/items.json'))['items']
 assert len(items)==len(baseline)==375

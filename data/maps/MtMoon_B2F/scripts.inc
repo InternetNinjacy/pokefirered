@@ -218,6 +218,10 @@ MtMoon_B2F_EventScript_StealDome::
 	setflag FLAG_HIDE_DOME_FOSSIL
 	setvar VAR_MAP_SCENE_MT_MOON_B2F, 3
 MtMoon_B2F_EventScript_TheftComplete::
+	setvar VAR_0x8004, ROCKET_OPERATION_MT_MOON
+	callnative Script_SamRocketCompleteOperation
+	setvar VAR_0x8004, ROCKET_EVIDENCE_DELIVERY_02
+	callnative Script_SamRocketRecordEvidence
 	msgbox MtMoon_B2F_Text_GruntGotFossil
 	msgbox MtMoon_B2F_Text_ThomasThereWeAre
 	msgbox MtMoon_B2F_Text_MiguelNo

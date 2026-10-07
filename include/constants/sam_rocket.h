@@ -17,11 +17,10 @@
 #define ROCKET_OPERATION_MASK              0x07FF
 
 #define ROCKET_EVIDENCE_DELIVERY_01         (1 << 0)
-// Bit 1 is reserved for DELIVERY 02. Its older fossil-stock outcome conflicts
-// with the reopened Mt. Moon theft, so it is deliberately not accepted yet.
+#define ROCKET_EVIDENCE_DELIVERY_02         (1 << 1)
 #define ROCKET_EVIDENCE_DELIVERY_03         (1 << 2)
 #define ROCKET_EVIDENCE_DELIVERY_04         (1 << 3)
-#define ROCKET_EVIDENCE_BOUND_MASK          0x000D
+#define ROCKET_EVIDENCE_BOUND_MASK          0x000F
 
 #define ROCKET_VIRIDIAN_PENDING             0
 #define ROCKET_VIRIDIAN_GOODS_RECOVERED     1
