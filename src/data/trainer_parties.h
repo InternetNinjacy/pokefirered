@@ -4198,16 +4198,18 @@ static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt4[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt5[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_TeamRocketGrunt5[] = {
     {
         .iv = 0,
         .lvl = 17,
-        .species = SPECIES_MACHOP,
+        .species = SPECIES_SANDSHREW,
+        .moves = {MOVE_DIG, MOVE_SAND_ATTACK, MOVE_SCRATCH, MOVE_DEFENSE_CURL},
     },
     {
         .iv = 0,
         .lvl = 17,
         .species = SPECIES_DROWZEE,
+        .moves = {MOVE_CONFUSION, MOVE_HYPNOSIS, MOVE_DISABLE, MOVE_POUND},
     },
 };
 
