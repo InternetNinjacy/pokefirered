@@ -7,8 +7,8 @@ The active integration branch is `sam-edition-dev`.
 ## Source-of-truth order
 
 1. Current explicit project decision.
-2. Current Canon Authority Index.
-3. Current specialist design authority.
+2. Newest applicable specialist authority (design and technical handoff).
+3. Newest non-conflicting Design Bible; Canon Authority Index routes these authorities.
 4. Current specialist Implementation Addendum / Programmer Handoff and its Standard Implementation Contract.
 5. Programming Readiness Registry:
    - Backlog = operational work queue
@@ -17,7 +17,7 @@ The active integration branch is `sam-edition-dev`.
    - QA Matrix = shared acceptance/regression tests
    - Blocking Decisions = unresolved inputs
    - Contract Coverage = implementation-contract coverage
-6. Source code after a change has been merged and QA has passed.
+6. Merged source establishes actual implementation; documentation establishes approved requirements.
 
 Design documentation explains **what and why**. Source code becomes the truth for **what is actually implemented**.
 
@@ -94,7 +94,7 @@ Drive Backlog status is the project status authority.
 - **BLOCKED** — do not invent missing design or technical input.
 - **IN PROGRESS** — active implementation branch/PR exists.
 - **QA** — code is present; required acceptance/regression tests are running.
-- **COMPLETE** — implementation is merged and required QA has passed.
+- **COMPLETE** — programming is production-integrated and required current-policy automated/build checks have passed. Full assembled-ROM playtesting is explicitly deferred and does not reopen completed programming.
 - **DEFERRED** — intentionally postponed.
 
 GitHub issue state does not override the Drive Backlog state.
@@ -142,7 +142,9 @@ Script addresses remain linker-resolved; do not manually reserve raw addresses.
 
 ## QA rule
 
-Every merged implementation task must pass:
+Apply current explicit project policy. Full assembled-ROM gameplay/save/load/balance playtesting is deferred until full assembly; record that pending QA separately. Do not demand feature-specific emulator playtests as a programming-merge gate. Applicable automated source/build checks still apply.
+
+The later full-game QA pass covers:
 
 - its specialist acceptance tests;
 - its Backlog "Done When / Acceptance" criterion;
@@ -171,3 +173,4 @@ GitHub phase tracker issues group the Drive Backlog by P0–P7 for repository na
 They are views of the Drive Backlog, not a second source of project status.
 
 Task-specific branches and PRs always use the stable Backlog Task ID.
+
