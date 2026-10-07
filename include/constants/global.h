@@ -30,13 +30,17 @@
 #define GAME_LANGUAGE (LANGUAGE_ENGLISH)
 #endif
 
+// Sam Edition final machine counts; needed by SaveBlock1 layout.
+#define NUM_TECHNICAL_MACHINES 68
+#define NUM_HIDDEN_MACHINES     8
+
 // capacities of various saveblock objects
 #define DAYCARE_MON_COUNT   2
 #define PC_ITEMS_COUNT      30
 #define BAG_ITEMS_COUNT     42
 #define BAG_KEYITEMS_COUNT  30
 #define BAG_POKEBALLS_COUNT 13
-#define BAG_TMHM_COUNT      58
+#define BAG_TMHM_COUNT      (NUM_TECHNICAL_MACHINES + NUM_HIDDEN_MACHINES)
 #define BAG_BERRIES_COUNT   43
 #define OBJECT_EVENTS_COUNT 16
 #define OBJECT_EVENT_TEMPLATES_COUNT 64
