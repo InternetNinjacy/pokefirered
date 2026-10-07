@@ -35,6 +35,14 @@ PokemonLeague_HallOfFame_EventScript_EnterRoom::
 	delay 40
 	setvar VAR_TEMP_1, 1
 	call EventScript_SetDefeatedEliteFourFlagsVars
+	// Green's Champion/title-challenge trainer flags are per-run battle state.
+	// Clear all branches after a Hall of Fame entry so later title challenges remain repeatable.
+	cleartrainerflag TRAINER_GREEN_CHAMPION_DITTO
+	cleartrainerflag TRAINER_GREEN_CHAMPION_ESPEON
+	cleartrainerflag TRAINER_GREEN_CHAMPION_RAICHU
+	cleartrainerflag TRAINER_GREEN_POSTGAME_DITTO
+	cleartrainerflag TRAINER_GREEN_POSTGAME_ESPEON
+	cleartrainerflag TRAINER_GREEN_POSTGAME_RAICHU
 	setrespawn HEAL_LOCATION_PALLET_TOWN
 	fadescreenspeed FADE_TO_BLACK, 24
 	special EnterHallOfFame
