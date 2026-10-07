@@ -155,8 +155,8 @@ SaffronCity_EventScript_GreenRaichu::
 	trainerbattle_no_intro TRAINER_GREEN_SAFFRON_RAICHU, SaffronCity_Text_GreenDefeat
 	goto SaffronCity_EventScript_GreenWon
 SaffronCity_EventScript_GreenWon::
-	msgbox SaffronCity_Text_GreenPost
-	closemessage
+	@ Opening/post prose is descriptive rather than verbatim in Green Decision Record v1.0.
+	@ Do not invent final dialogue; resolve the mandatory battle state only.
 	setflag FLAG_TEMP_11
 	removeobject LOCALID_SAFFRON_GREEN
 	fadedefaultbgm
@@ -165,6 +165,3 @@ SaffronCity_EventScript_GreenWon::
 
 SaffronCity_Text_GreenDefeat::
 	.string "There it is.$"
-SaffronCity_Text_GreenPost::
-	.string "I'm not filling that sixth slot\n"
-	.string "until I'm sure.$"
