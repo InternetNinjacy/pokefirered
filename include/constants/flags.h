@@ -18,6 +18,13 @@
 #define FLAG_THOMAS_CINNABAR_LAB_COMPLETE 0x35E
 #define FLAG_HIDE_THOMAS_CINNABAR_LAB     0x35F
 
+// MEW-001: S.S. Anne truck secret and Vermilion harbor handoff.
+#define FLAG_MEW_TRUCK_MOVED               0x35B
+#define FLAG_MEW_TRUCK_RESOLVED            0x35C
+#define FLAG_HIDE_SS_ANNE_TRUCK_MEW        0x35D
+#define FLAG_HIDE_SS_ANNE_HARBOR_GUARD     0x360
+#define FLAG_HIDE_VERMILION_FERRY_SAILOR   0x361
+
 
 // Temporary Flags
 // These temporary flags are are cleared every time a map is loaded. They are used
