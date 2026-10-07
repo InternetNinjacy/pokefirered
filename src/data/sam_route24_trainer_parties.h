@@ -43,3 +43,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SamRoute24CamperShane[] 
 
 // Six Island locked ordinary trainers.
 #include "sam_batch15_six_island_trainer_remaps.h"
+
+// Seven Island ordinary trainers; Trainer Tower remains separate.
+#include "sam_batch16_seven_island_trainer_remaps.h"
