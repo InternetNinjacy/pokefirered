@@ -1,6 +1,6 @@
 # MEW-001 — S.S. Anne Truck Mew
 
-Status: implementation complete on PR #318, pending production merge and assembled-ROM playtest.
+Status: COMPLETE in production. PR #318 merged to `sam-edition-dev` at `3a6d5c63012ccbf397ae89c51f15a02db19bf781`. Full assembled-ROM playtest remains deferred.
 
 ## Locked player-facing behavior
 
@@ -66,3 +66,14 @@ Full interactive validation belongs to the assembled-ROM playtest pass. Include 
 12. Both Vermilion rumors remain vague and do not name Mew or explain Surf/Strength.
 13. Seagallop ferry access remains usable later.
 14. Existing Lava Cookie hidden item remains intact.
+
+
+## Production closure
+
+- Production PR: #318
+- Merge commit: `3a6d5c63012ccbf397ae89c51f15a02db19bf781`
+- Final feature head: `d950ba08ea2aad857d0ec17b44ed2c72087a7dde`
+- Thread status: RETIRED FROM ACTIVE DEVELOPMENT
+- Remaining Mew-specific work: assembled-ROM regression only.
+
+The final PR CI run failed on duplicate Satoshi Viridian trainer-party definitions in `src/data/sam_satoshi_trainer_parties.h` and `src/data/sam_satoshi_viridian_parties.h`. That is a separate production build blocker and does not reopen MEW-001.
