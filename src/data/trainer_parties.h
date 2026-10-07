@@ -5830,6 +5830,15 @@ static const struct TrainerMonNoItemCustomMoves sParty_LeaderBlaine[] = {
     },
 };
 
+static const struct TrainerMonItemCustomMoves sParty_LeaderBlaineRematch[] = {
+    {.iv = 0, .lvl = 57, .species = SPECIES_ONIX, .heldItem = ITEM_LEFTOVERS, .moves = {MOVE_ROCK_SLIDE, MOVE_EARTHQUAKE, MOVE_SANDSTORM, MOVE_TOXIC}},
+    {.iv = 0, .lvl = 58, .species = SPECIES_OMASTAR, .heldItem = ITEM_MYSTIC_WATER, .moves = {MOVE_SURF, MOVE_ICE_BEAM, MOVE_TOXIC, MOVE_PROTECT}},
+    {.iv = 0, .lvl = 59, .species = SPECIES_KABUTOPS, .heldItem = ITEM_SCOPE_LENS, .moves = {MOVE_BOULDER_BASH, MOVE_BRICK_BREAK, MOVE_AERIAL_ACE, MOVE_SWORDS_DANCE}},
+    {.iv = 0, .lvl = 59, .species = SPECIES_GOLEM, .heldItem = ITEM_SOFT_SAND, .moves = {MOVE_BOULDER_BASH, MOVE_EARTHQUAKE, MOVE_BRICK_BREAK, MOVE_EXPLOSION}},
+    {.iv = 0, .lvl = 60, .species = SPECIES_RHYDON, .heldItem = ITEM_QUICK_CLAW, .moves = {MOVE_BOULDER_BASH, MOVE_EARTHQUAKE, MOVE_MEGAHORN, MOVE_DOUBLE_EDGE}},
+    {.iv = 0, .lvl = 62, .species = SPECIES_AERODACTYL, .heldItem = ITEM_HARD_STONE, .moves = {MOVE_BOULDER_BASH, MOVE_AERIAL_ACE, MOVE_STEEL_WING, MOVE_DOUBLE_EDGE}},
+};
+
 static const struct TrainerMonItemCustomMoves sParty_LeaderSabrina[] = {
     {
         .iv = 200,
