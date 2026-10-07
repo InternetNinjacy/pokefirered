@@ -17,7 +17,7 @@ project: &id002
 current_state:
   verified_at: '2026-10-07'
   production_branch: sam-edition-dev
-  production_head: c279459143b6e68522e2c6a876377e2786bb9c2d
+  production_head: c7a589261d4642f67ed823873817c5998364aae7
   status_authority: Programming Readiness Registry / Backlog
   current_audit: docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-10-07.md
   runtime_policy: Full assembled-ROM playtesting deferred; do not reopen completed
@@ -28,11 +28,19 @@ current_state:
   - newest non-conflicting Design Bible
   - earlier authority
   open_owner_work:
-  - 'GYM8-001: approved Dragon/Dominion/TM54 package restoration'
   - 'ROCKET-002: remaining operation conversions/evidence consumers; ROCKET-001 shared framework complete in PR #297'
   - shared asset pipeline and League final assembly
   - final Thomas/Rocket closure (Five Island Thread 1E complete in PR #295)
   - recurring integration and deferred full-game QA
+gym8_viridian_restoration_checkpoint:
+  task: GYM8-001
+  status: COMPLETE
+  donor_prs: [169, 175]
+  production_pr: 315
+  production_merge: c7a589261d4642f67ed823873817c5998364aae7
+  implementation: current-ancestry restoration of the approved Dragon-focused trainer/Giovanni package, Dominion Badge, TM54 Psychic reward flow and Viridian dialogue
+  preserved: current Viridian Satoshi object/router, Thomas battle/Doll/quit-Rocket path, spinner topology and unrelated production state
+  provenance: historical PRs #169/#175 remain donor evidence only and must not be merged wholesale
 gym1_pewter_restoration_checkpoint:
   task: GYM1-001
   status: COMPLETE
