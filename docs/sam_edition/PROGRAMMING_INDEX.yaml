@@ -41,8 +41,18 @@ thomas_mt_moon_checkpoint:
   working_branch: sam/thomas-mt-moon-current-production
   implementation: approved Mt. Moon encounter, starter branches, exact dialogue, victory-only theft and mandatory 1-vs-2 fallback
   preserved: original six Thomas records/data; fossil revival; opposite-fossil researcher
-  closure_blocker: claimed Cinnabar Thomas Lab/fossil-dependent Mansion hooks are absent; preserve-six-data instruction prevents inventing a replacement roster
+  closure_blocker: Cinnabar Lab independent scene restored by the RIV-016 continuation; Mansion fossil slot/Gengar/format mapping still requires explicit reconciliation with the protected six records
   validation: host helper and static preservation checks passed; ROM CI tracked on PR
+  runtime: assembled-ROM playtest deferred
+thomas_cinnabar_fossil_checkpoint:
+  task: RIV-016
+  status: PARTIAL (independent non-battle Lab scene implemented; Mansion blocked)
+  working_branch: sam/thomas-cinnabar-fossil-continuity
+  source_audit: docs/sam_edition/THOMAS_CINNABAR_FOSSIL_CONTINUITY.md
+  authority: reopened Lab beat and exact September 29 Lab dialogue; current preserve-six-data instruction
+  implementation: one-time Lab exit at current arc4; reads completed MtMoon theft; no player inventory or main arc mutation
+  resources: flags 0x35E/0x35F; local Lab object2; no new trainer or persistent variable
+  blocker: exact fossil sets found; approve slot mapping, Gengar package and format against protected Mansion roster before changing battle
   runtime: assembled-ROM playtest deferred
 five_island_thread_1e_checkpoint:
   task: ROCKET-002

@@ -1,3 +1,7 @@
+# RIV-016 Cinnabar fossil continuity continuation
+
+Starting production 8c3bbdaaae97ff1e4c446aca7dbbcf8209d7fdf2. Authority is partially specified: exact Lab dialogue and Lv45 fossil sets are found in the specialist record, but older Gengar/fossil Mansion architecture conflicts with the protected current six-member Single roster. Independent one-time Lab exit is implemented in the Entrance map using completed MtMoon scene3/4, current arc4 and centrally allocated flags35E/35F. No player fossil transaction, main arc change, trainer change or PowerPlant dependency. BLK-THOMAS-FOSSIL remains PARTIAL for Mansion roster/format mapping; SYS-THOMAS remains PARTIAL. Detailed reconciliation and verification: THOMAS_CINNABAR_FOSSIL_CONTINUITY.md. Earlier missing-Lab/exact-set assertions below are historical starting-state evidence.
+
 ## RIV-016 / Thread 1B source delta — PR #294
 
 The approved Mt. Moon fossil encounter and one-usable-mon Double fallback are implemented in PR #294 on the reconciled PR #293 documentation ancestry. Original map objects, ordinary Rockets, fossil revival/opposite-fossil researcher and six baseline Thomas records/data remain unchanged. Host helper/static checks pass; ROM CI and merge evidence are tracked on the PR.
