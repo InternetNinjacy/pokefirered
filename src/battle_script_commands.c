@@ -60,12 +60,21 @@ static void PutMonIconOnLvlUpBanner(void);
 static void DrawLevelUpBannerText(void);
 static void SpriteCB_MonIconOnLvlUpBanner(struct Sprite* sprite);
 
+static bool8 IsGreenTrainerBattle(void)
+{
+    return (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+        && gTrainerBattleOpponent_A >= TRAINER_GREEN_OAK_DITTO
+        && gTrainerBattleOpponent_A <= TRAINER_GREEN_POSTGAME_RAICHU;
+}
+
 static void Cmd_attackcanceler(void);
 static void Cmd_accuracycheck(void);
 static void Cmd_attackstring(void);
 static void Cmd_ppreduce(void);
 static void Cmd_critcalc(void);
 static void Cmd_damagecalc(void);
+static bool8 BattlerIsOriginalDittoHoldingAdaptiveGene(u8 battler);
+static u32 ApplyAdaptiveGeneDamageModifier(u32 damage, u8 battler);
 static void Cmd_typecalc(void);
 static void Cmd_adjustnormaldamage(void);
 static void Cmd_adjustnormaldamage2(void);
@@ -1206,6 +1215,27 @@ static void Cmd_critcalc(void)
     gBattlescriptCurrInstr++;
 }
 
+static bool8 BattlerIsOriginalDittoHoldingAdaptiveGene(u8 battler)
+{
+    struct Pokemon *party;
+    u8 partyIndex = gBattlerPartyIndexes[battler];
+
+    if (GetBattlerSide(battler) == B_SIDE_PLAYER)
+        party = gPlayerParty;
+    else
+        party = gEnemyParty;
+
+    return GetMonData(&party[partyIndex], MON_DATA_SPECIES, NULL) == SPECIES_DITTO
+        && gBattleMons[battler].item == ITEM_ADAPTIVE_GENE;
+}
+
+static u32 ApplyAdaptiveGeneDamageModifier(u32 damage, u8 battler)
+{
+    if (BattlerIsOriginalDittoHoldingAdaptiveGene(battler))
+        return damage * 6 / 5;
+    return damage;
+}
+
 static void Cmd_damagecalc(void)
 {
     u16 sideStatus = gSideStatuses[GET_BATTLER_SIDE(gBattlerTarget)];
@@ -1218,6 +1248,7 @@ static void Cmd_damagecalc(void)
         gBattleMoveDamage *= 2;
     if (gProtectStructs[gBattlerAttacker].helpingHand)
         gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
+    gBattleMoveDamage = ApplyAdaptiveGeneDamageModifier(gBattleMoveDamage, gBattlerAttacker);
 
     gBattlescriptCurrInstr++;
 }
@@ -2616,7 +2647,13 @@ void SetMoveEffect(bool8 primary, u8 certain)
                     }
 
                     side = GetBattlerSide(gBattlerAttacker);
-                    if (GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
+                    if (IsGreenTrainerBattle()
+                        && GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER
+                        && GetBattlerSide(gBattlerTarget) == B_SIDE_OPPONENT)
+                    {
+                        gBattlescriptCurrInstr++;
+                    }
+                    else if (GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
                         && !(gBattleTypeFlags &
                             (BATTLE_TYPE_EREADER_TRAINER
                             | BATTLE_TYPE_BATTLE_TOWER
@@ -8797,8 +8834,14 @@ static void Cmd_trysethelpinghand(void)
 // Trick
 static void Cmd_tryswapitems(void)
 {
+    // Green's held items are trainer-owned equipment and must not become permanent player inventory.
+    if (IsGreenTrainerBattle()
+        && GetBattlerSide(gBattlerAttacker) != GetBattlerSide(gBattlerTarget))
+    {
+        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
+    }
     // opponent can't swap items with player in regular battles
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER
+    else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER
         || (GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
             && !(gBattleTypeFlags & (BATTLE_TYPE_LINK
                                   | BATTLE_TYPE_BATTLE_TOWER
