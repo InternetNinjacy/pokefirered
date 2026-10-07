@@ -164,8 +164,8 @@ SaffronCity_EventScript_GreenRaichu::
 	trainerbattle_no_intro TRAINER_GREEN_SAFFRON_RAICHU, SaffronCity_Text_GreenDefeat
 	goto SaffronCity_EventScript_GreenWon
 SaffronCity_EventScript_GreenWon::
-	msgbox SaffronCity_Text_GreenPost
-	closemessage
+	@ The authority gives the post-battle beat only as prose, not exact dialogue.
+	@ Do not invent a canonical line here; the battle's exact defeat text above is preserved.
 	setvar VAR_TEMP_1, 0
 	setflag FLAG_TEMP_11
 	removeobject LOCALID_SAFFRON_GREEN
@@ -175,6 +175,6 @@ SaffronCity_EventScript_GreenWon::
 
 SaffronCity_Text_GreenDefeat::
 	.string "There it is.$"
-SaffronCity_Text_GreenPost::
+SaffronCity_Text_GreenRepeat::
 	.string "I'm not filling that sixth slot\n"
 	.string "until I'm sure.$"
