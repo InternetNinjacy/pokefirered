@@ -87,6 +87,14 @@ u8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 unused1, u32 unused2, u8 u
     return sentToPc;
 }
 
+void MarkSamOriginalStarter(void)
+{
+    bool8 isOriginalStarter = TRUE;
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1 && gPlayerPartyCount != 0)
+        SetMonData(&gPlayerParty[0], MON_DATA_SAM_ORIGINAL_STARTER, &isOriginalStarter);
+}
+
 u8 ScriptGiveEgg(u16 species)
 {
     struct Pokemon *mon = AllocZeroed(sizeof(struct Pokemon));
