@@ -107,6 +107,12 @@ CeladonCity_EventScript_GameCornerSign::
 CeladonCity_EventScript_UpdateGreen::
 	setflag FLAG_TEMP_11
 	goto_if_unset FLAG_DEFEATED_ERIKA, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_SS_ANNE_DITTO, CeladonCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_SS_ANNE_ESPEON, CeladonCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_SS_ANNE_RAICHU, CeladonCity_EventScript_ShowGreen
+	return
+
+CeladonCity_EventScript_ShowGreen::
 	goto_if_defeated TRAINER_GREEN_CELADON_DITTO, EventScript_Return
 	goto_if_defeated TRAINER_GREEN_CELADON_ESPEON, EventScript_Return
 	goto_if_defeated TRAINER_GREEN_CELADON_RAICHU, EventScript_Return
