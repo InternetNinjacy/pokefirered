@@ -299,8 +299,18 @@ const union AnimCmd *const gAnims_MonPic[] =
 #include "data/pokemon_graphics/enemy_mon_elevation.h"
 
 #include "data/trainer_parties.h"
+#include "data/sam_route3_trainer_parties.h"
+#include "data/sam_route24_trainer_parties.h"
 #include "data/sam_hothouse_trainer_parties.h"
 #include "data/text/trainer_class_names.h"
+
+// Ordinary-trainer reconciliation overlays preserve current trainer IDs/records
+// while selecting the locked Sam Edition parties for mapped ordinary trainers.
+#define sParty_YoungsterBen sParty_SamRoute3YoungsterBen
+#define sParty_YoungsterCalvin sParty_SamRoute3YoungsterCalvin
+#define sParty_BugCatcherColton sParty_SamRoute3BugCatcherColton
+#define sParty_BugCatcherGreg sParty_SamRoute3BugCatcherGreg
+#define sParty_CamperShane sParty_SamRoute24CamperShane
 
 // The Hothouse reuses five otherwise-dormant Ruby/Sapphire trainer slots.
 // Redirect only those party pointers; all ordinary FireRed trainer data remains
@@ -352,6 +362,12 @@ const union AnimCmd *const gAnims_MonPic[] =
     SAM_HOTHOUSE_NO_ITEM_DEFAULT_HAWTHORNE_SELECT(SAM_HOTHOUSE_IS_HAWTHORNE(party), party)
 
 #include "data/trainers.h"
+
+#undef sParty_CamperShane
+#undef sParty_YoungsterBen
+#undef sParty_YoungsterCalvin
+#undef sParty_BugCatcherColton
+#undef sParty_BugCatcherGreg
 
 #undef NO_ITEM_DEFAULT_MOVES
 #define NO_ITEM_DEFAULT_MOVES(party) { .NoItemDefaultMoves = party }, .partySize = ARRAY_COUNT(party), .partyFlags = 0
