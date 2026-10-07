@@ -65,7 +65,7 @@
       "secondaryId": 2
     },
     {
-      "english": "POKé BALL",
+      "english": "POK\u00e9 BALL",
       "itemId": "ITEM_POKE_BALL",
       "price": 200,
       "holdEffect": "HOLD_EFFECT_NONE",
@@ -1281,7 +1281,7 @@
       "secondaryId": 0
     },
     {
-      "english": "POKé DOLL",
+      "english": "POK\u00e9 DOLL",
       "itemId": "ITEM_POKE_DOLL",
       "price": 1000,
       "holdEffect": "HOLD_EFFECT_NONE",
@@ -5659,7 +5659,7 @@
       "secondaryId": 0
     },
     {
-      "english": "POKé FLUTE",
+      "english": "POK\u00e9 FLUTE",
       "itemId": "ITEM_POKE_FLUTE",
       "price": 0,
       "holdEffect": "HOLD_EFFECT_NONE",
