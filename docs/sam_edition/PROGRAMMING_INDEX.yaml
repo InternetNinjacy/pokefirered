@@ -1,0 +1,712 @@
+framework: &id001
+  name: firered-rom-hack-programming-framework
+  version: 1
+  framework_doc: docs/fire_red_framework/README.md
+  template: docs/fire_red_framework/PROJECT_INDEX_TEMPLATE.yaml
+project: &id002
+  name: 'Pokemon: Sam Edition'
+  repository: InternetNinjacy/pokefirered
+  upstream_repository: pret/pokefirered
+  upstream_commit: c75f352304d529f6ba92d4f74b9cf8b5c3810788
+  target_game: Pokemon FireRed
+  revision: English revision 0 / original release
+  language: English
+  expected_clean_rom_sha1: 41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc
+  baseline_branch: sam-baseline
+  integration_branch: sam-edition-dev
+current_state:
+  verified_at: '2026-10-07'
+  production_branch: sam-edition-dev
+  production_head: ca15b79af8aea55664fc190e03b5d4672d4de940
+  status_authority: Programming Readiness Registry / Backlog
+  current_audit: docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-10-07.md
+  runtime_policy: Full assembled-ROM playtesting deferred; do not reopen completed
+    programming for deferred runtime QA
+  authority_order:
+  - current explicit project decision
+  - newest applicable specialist authority
+  - newest non-conflicting Design Bible
+  - earlier authority
+  open_owner_work:
+  - 'GYM1-001: approved package integration'
+  - 'GYM8-001: approved Dragon/Dominion/TM54 package restoration'
+  - 'RIV-016: Mt. Moon Thomas delta'
+  - 'ROCKET-001/002: organization/evidence and story conversion'
+  - shared asset pipeline and League final assembly
+  - Five Island and final Thomas/Rocket closure
+  - recurring integration and deferred full-game QA
+historical_index_provenance:
+  framework: *id001
+  project: *id002
+  authority:
+    order:
+    - current explicit project decision
+    - current Canon Authority Index
+    - current specialist design authority
+    - current specialist Implementation Addendum / Programmer Handoff
+    - Programming Readiness Registry
+    - verified source state after merge and QA
+    registry:
+      name: Pokemon_Sam_Edition_Programming_Readiness_Registry_v1.0
+      status_authority: Backlog
+      symbol_authority: Symbol Registry
+      dependency_authority: Dependencies
+      qa_authority: QA Matrix
+      blocking_authority: Blocking Decisions
+      contract_authority: Contract Coverage
+    repository_mirrors:
+      workflow: docs/sam_edition/IMPLEMENTATION_WORKFLOW.md
+      backlog: docs/sam_edition/IMPLEMENTATION_BACKLOG.md
+      source_audit: docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-09-30.md
+      baseline: docs/sam_edition/BASELINE.md
+  live_state:
+    last_refresh_date: '2026-10-02'
+    integration_head: 1ac7382fd5ecb34cb2de6bdf5bba8e7fcf08e869
+    known_good_gameplay_tip:
+      branch: sam/gift-001-remaining-special-acquisitions
+      pr: 88
+      production_head: 9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0
+      state: draft / open / unmerged; Group 2 POC COMPLETE; production CI build-clean
+        through expected stock SHA gate
+      parent_branch: sam/gift-001-starter-family-gifts
+      parent_pr: 86
+      parent_head: be0c6ab2500f188ce20d49ae69b66f028dea332b
+      production_ancestry: 'direct descendant of verified PR #86 production head;
+        no QA branch in production ancestry'
+      qa_policy: 'Evidence-only QA PR #90 @ 26c2ed84ef6a486a91679f103a6de7e50ee3f483
+        passed run 37069227822; ROM SHA-1 d59142366a786b9a04c22e877bfb6a58a6456c6d.
+        QA PRs #87/#89/#90 never become production ancestry.'
+    notes:
+    - Live GitHub state must be refreshed before implementation.
+    - 'Pokemon: Weather branches are a separate project and are not Sam implementation
+      evidence.'
+  source_locator:
+    trainer_focused_corrections:
+      notes:
+      - TRAIN-002 and TRAIN-003 are COMPLETE on the current verified production stack.
+      - Production delta includes trainer party/record data plus the Mt. Moon Kent
+        event script/text required to invoke a real Double Battle; no global Bug Bite
+        move was introduced.
+      - 'Final QA PR #76 is evidence/instrumentation only and is not production ancestry;
+        QA PRs #74/#75 are superseded.'
+      branch: sam/train-002-003-focused-corrections
+      pr: 73
+      production_head: 7b6e3c29e593cb43878cc2ef9fbc70ce741d7689
+      parent_branch: sam/enc-003-surf-fishing-finalization
+      parent_pr: 72
+      files:
+      - src/data/trainer_parties.h
+      - src/data/trainers.h
+      - data/maps/MtMoon_1F/scripts.inc
+      - data/maps/MtMoon_1F/text.inc
+      production_ci_run: 37018740141
+      runtime_qa_branch: qa/train-002-003-focused-corrections-v3
+      runtime_qa_pr: 76
+      runtime_qa_source: ccf3911506afdb5feb105f6bb6a070fdf1f441b9
+      runtime_qa_run: 37018864159
+      runtime_qa_rom_sha1: ae4df7c1298ccb95c32cfeb49f0c4c2aadc086ef
+    project_workflow:
+      files:
+      - docs/sam_edition/IMPLEMENTATION_WORKFLOW.md
+      - docs/sam_edition/IMPLEMENTATION_BACKLOG.md
+      - docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-09-30.md
+      - docs/sam_edition/BASELINE.md
+      notes:
+      - Repository-local programming control surfaces.
+      last_verified_ref: sam-edition-dev
+    starter_system:
+      notes:
+      - Detailed source locations are intentionally populated from verified implementation
+        branches rather than inferred here.
+      - 'Current production implementation branch: sam/start-001-004-starter-system.'
+      branch: sam/start-001-004-starter-system
+      pr: 59
+      production_head: 2525442045c69501c5574a3827ebed7921c3b841
+      runtime_qa_branch: qa/start-001-004-runtime
+    species_evolution_integration:
+      notes:
+      - Current integration base relevant to the Starter System production branch.
+      branch: sam/spec-009-part4-evolution-integration
+      head_at_framework_initialization: ba530e510fb8db6ea9eb7c4dd47388d0170faa40
+    gift_npc_trades:
+      notes:
+      - Nine standard Sam Edition NPC trades are implemented and runtime-QA-passed.
+      - GIFT-001 remains PARTIAL overall because other acquisition classes still have
+        open source/package routing.
+      - 'Do not recreate the nine-trade package; continue delta-only from the verified
+        PR #62 head or a documented descendant.'
+      branch: sam/gift-001-npc-trades
+      pr: 62
+      production_head: 76ed58d096e88f4beb898c944d69c61760f15d35
+      parent_branch: sam/gift-001-002-special-acquisition-core
+      runtime_qa_branch: qa/gift-001-npc-trades-runtime
+    group2_special_acquisitions:
+      status: POC COMPLETE
+      notes:
+      - Group 2 remains permanently numbered Group 2 — Special Acquisitions; Group
+        1 Breeding remains POC COMPLETE.
+      - 'All independent SYS-GIFT implementation/QA work is complete on draft production
+        PR #88; do not renumber or merge without explicit authorization.'
+      - 'Central Pokémon OT IDs: 52005 LUNA, 52006 MELODY, 52007 SILPH, 52008 VENDOR,
+        52009 CELADON, 52010 LAB; next free authored Gift OT ID is 52011.'
+      - 'Central flags: 0x373 Cleffa, 0x374 Igglybuff, 0x375 Elekid Egg, 0x376 Rock
+        Tunnel Porygon; overflow headroom resumes at 0x377.'
+      - 'PR #88 implements LUNA Cleffa, MELODY Igglybuff, Route 4 purchased Magikarp
+        OT VENDOR, Celadon Game Corner OT CELADON, Cinnabar fossil OT LAB, Silph 7F
+        Lapras OT SILPH, and the Celadon Surf House NORA Elekid Egg.'
+      - Elekid placement was derived from the actual Celadon 60x40 block data; MAP_CELADON_CITY_SURF_HOUSE
+        uses LAYOUT_HOUSE5 and player-owned giveegg behavior with the global exact
+        50% shiny Egg path.
+      - Final production integration fix 9ff410a1 registers the new map scripts/text
+        in data/event_scripts.s.
+      - Cinnabar Magby Egg is OWNER-SYSTEM READY under Town Side Quests; Rock Tunnel
+        Porygon is OWNER-SYSTEM READY under Thomas/Team Rocket; later P5 Oak Research
+        Milestones is owner-system work that consumes the completed Gift system and
+        remains blocked only by TM-001. None is unresolved Group 2 work.
+      - 'Evidence-only QA PR #90 passed final static/runtime/save-reload validation
+        and must never become production ancestry.'
+      verified_parent_tip: be0c6ab2500f188ce20d49ae69b66f028dea332b
+      production_branch: sam/gift-001-remaining-special-acquisitions
+      production_pr: 88
+      production_head: 9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0
+      production_ci_run: 37069196924
+      production_ci_result: compile/link/ELF/GBA/SYM succeeded; expected stock FireRed
+        SHA comparison failed
+      runtime_qa_branch: qa/gift-001-group2-final-runtime
+      runtime_qa_pr: 90
+      runtime_qa_source: 26c2ed84ef6a486a91679f103a6de7e50ee3f483
+      runtime_qa_run: 37069227822
+      runtime_qa_rom_sha1: d59142366a786b9a04c22e877bfb6a58a6456c6d
+      runtime_qa_status: PASS — static geometry/source gate, QA ROM build, package/storage/ownership/shiny-path
+        runtime checks, real save/fresh-process reload, duplicate guards, and transaction-order
+        checks all passed
+      registry_checkpoint: SYNC-2026-10-02-018
+    group3_species_current_stack_reconciliation:
+      notes:
+      - Group 3 — Species work follows blocked Group 2 without renumbering either
+        group.
+      - 'SPEC-004 Ghost Families is POC COMPLETE on the verified PR #79 production
+        tip; no new gameplay delta was required because historical Parts 11–13 and
+        final TM/HM compatibility are already inherited.'
+      - 'Gastly/Haunter/Gengar must be read against the later Design Closure supersession
+        inside the current Gastly authority: baseline Attack values, shared natural
+        progression, exact final-68 Design Closure TM rows, no TM39 Will-O-Wisp, and
+        no HMs.'
+      - SPEC-005 Early Bug Final Evolutions is POC COMPLETE on the same production
+        tip; exact 450-BST stats, post-redesign learnsets, final TM rows, and the
+        TM-003 Signal Beam Special-class override are already inherited.
+      - QA-004 evolution and QA-005 final TM/HM matrix are PASS.
+      - 'SPEC-006 Nosepass / Gen-I pure-Rock cleanup is POC COMPLETE. Evidence-only
+        draft PR #80 / qa/spec-006-rock-runtime @ e297c5242b10b12fe4651e6af4b7c42f2c552bd5
+        passed QA-ROCK-001 on Actions run 37036207034; ROM SHA-1 ea945aeeb4d24b37a25e81e789ff02efae8ff11e.
+        Runtime verified the six pure-Rock targets, Steelix control, loss of Ground
+        STAB/Electric immunity, exact 2x Water/Grass weakness, and matching AI type
+        calculation. No production defect or gameplay delta was found.'
+      - 'SPEC-007 Feebas / Milotic is POC COMPLETE with no production patch. Evidence-only
+        draft PR #81 / qa/spec-007-feebas-milotic-runtime @ 61580f505211e3900e6f59c48b9c5b67082c7dd1
+        passed Actions run 37045556350; ROM SHA-1 c05cc4fe6bb5052806e8d75ab20c03bdd4473538.
+        QA covered species data, Lv20 evolution, Water Pulse timing, exact TM/HM,
+        Milotic Water/Psychic battle behavior, Pokédex mapping/metadata, and inherited
+        Route 6 acquisition surfaces.'
+      - 'SPEC-008 Legendary Birds is POC COMPLETE. Current-stack QA found one real
+        production mismatch: father-side TM inheritance could replace the locked exact
+        Lv5 bred opening sets. Draft production PR #83 / sam/spec-008-legendary-birds-breeding-closure
+        @ 204fb8043736e20a45eaed5eff5a5e1fa8dac802 suppresses inherited move additions
+        only for Articuno/Zapdos/Moltres. Evidence-only draft PR #82 @ df1ffbb678f0a99d598747845f2224c6d9e8df9e
+        passed Actions run 37050108196; ROM SHA-1 d625890fc47f21127c41d50e0dc5c6f4e4e09229.
+        Runtime proved Ditto-only breeding, no bird/bird breeding, exact Lv5 bred
+        sets and exact Lv50 static sets.'
+      - 'SPEC-009 current-stack core advanced on draft production PR #84 / sam/spec-009-current-stack-core
+        @ d2b66dfee8cfe576ac2b12341f1ebd70f4a90ab3. Parts 1–4 remain inherited. PR
+        #84 assigns ABILITY_SOUL_ROT to Ectoceon and replaces ARCH-004 placeholder
+        custom cries with zero-based Eevee/Vaporeon/Rhydon reuse IDs; final 68-TM/HM
+        compatibility was reverified as already inherited. Evidence-only draft PR
+        #85 @ 9e1ad638030d21b2dbd76d3f961b452cf8b371e6 passed Actions run 37051864520;
+        ROM SHA-1 28ac40980514bc56668deabea9cabb3b1849290b.'
+      - 'SPEC-011 player-facing display numbering is implemented separately on draft
+        production PR #103 / sam/spec-011-pokedex-numbering @ f2a1c0757040979ec3ab7c469d9b7f8a18a6f7c5.
+        Display numbers remain independent of internal species IDs and seen/owned
+        backing.'
+      - 'SPEC-009 custom Pokédex seen/owned backing is implemented on draft production
+        PR #108 / sam/spec-009-pokedex-backing @ a6d92e6c1c8f869455454b68f3f8434396a741c6.
+        Leafeon/Ectoceon/Rhyperior use hidden backing values 412/413/414; 387–411
+        remain legacy Old Unown mappings; NATIONAL_DEX_COUNT remains 386; the existing
+        52-byte flag store is bounds-guarded. Evidence-only draft PR #109 @ 4cc3c20be604264ddd7f8c5cae00fba4f673b7da
+        passed Actions run 37085938237; ROM SHA-1 8052bceddb328acd1aaedfdc3fac31c9f273e7c4.
+        The first QA attempt failed only because the QA logger had not enabled the
+        mGBA debug API; production was unchanged.'
+      - 'SPEC-009 trade/transfer safety is implemented on draft production PR #112
+        / sam/spec-009-trade-transfer-safety @ b4f9f0fc6b881928221a4b00307d4296cfad5a13,
+        directly descended from PR #108 production ancestry. Sam uses stock-unused
+        LinkPlayer.neverRead and RFU compatibility.unknown as boolean compatibility
+        capabilities. Cable/Trade Center paths reject a legacy peer before full-party
+        transfer when the player party contains Leafeon/Ectoceon/Rhyperior; direct
+        Union Room trades reject legacy custom-species transfer and permit compatible
+        Sam peers; ordinary stock species behavior is unchanged. Public Union Room
+        Trade Board registration of custom species is intentionally blocked because
+        the species ID is broadcast before a specific peer is selected, so compatibility
+        cannot yet be proven. Evidence-only draft PR #113 @ 5c726bc4d6ecef11b47dd8cbb4fe6426ea7b215a
+        passed Actions run 37086546537; ROM SHA-1 50fa6dc788c79a5691a61e0afe84085db22b0f16.
+        Production CI 37086225837 compiled/linked/generated GBA and stopped only at
+        the expected modified-ROM stock SHA gate.'
+      - 'SPEC-009 final species-index bounds sweep and save/load regression are PASS
+        with no production defect. Evidence-only draft PR #115 / qa/spec-009-bounds-save-load
+        @ cb0a5ca346e85dde48ae2252b6f7bb69148153e4 passed Actions run 37087360025;
+        ROM SHA-1 39cf30c14f8152a9911d7deb097a1d6e01943ef4. Static coverage verified
+        IDs 412–414 across species data, learnsets, evolution, TM/HM, tutor, cry,
+        graphics placeholders/palettes/coords/footprints/icons and Pokédex storage.
+        Runtime saved and fresh-process reloaded exact Leafeon/Ectoceon/Rhyperior
+        party + PC species and hidden seen/owned state while preserving display/backing
+        mappings.'
+      - Overall SPEC-009 remains IN PROGRESS only for SPRITE-003 ROM-ready custom-species
+        battle/shiny/menu/footprint assets and final integrated art-dependent QA.
+        A true two-peer emulator/hardware link smoke can be retained for that final
+        integrated QA.
+      - No QA branch is production ancestry.
+      verified_production_branch: sam/spec-009-trade-transfer-safety
+      verified_production_head: b4f9f0fc6b881928221a4b00307d4296cfad5a13
+      production_pr: 112
+      spec_004_status: POC COMPLETE
+      spec_005_status: POC COMPLETE
+      next_species_task: SPRITE-003 ROM-ready custom-species assets; then final integrated
+        SPEC-009 QA including art-dependent runtime and true two-peer link smoke
+    core_001_004_current_stack:
+      notes:
+      - Verified delta-only reconciliation of existing CORE-001 through CORE-004 onto
+        the current gameplay stack.
+      - CORE-001 remains QA pending one real human interactive selector smoke; CORE-002/003/004
+        remain COMPLETE.
+      - Do not use the QA branch as a production ancestor.
+      branch: sam/core-001-004-current-stack-integration
+      pr: 63
+      production_head: 0b7f1481134d13fbcdea90b7fb99edb01ce3b639
+      parent_branch: sam/gift-001-npc-trades
+      parent_pr: 62
+      runtime_qa_branch: qa/core-001-004-current-stack-runtime
+      runtime_qa_source: 59ce704108a16559047737d25723c663a6dc3188
+      runtime_qa_run: 36958060624
+      runtime_qa_rom_sha1: a55794ae62ed5295a3c0bd2baf22e9ca10918d40
+    tm_003_signal_beam:
+      notes:
+      - 'TM-003 is COMPLETE for its current scope: pre-existing Shadow Punch behavior
+        plus the Signal Beam move-level Special-class override.'
+      - Signal Beam remains Bug-type and uses Sp. Atk / Sp. Def without introducing
+        a global physical/special split.
+      - Do not use the QA branch as a production ancestor.
+      branch: sam/tm-003-signal-beam-special-class
+      pr: 64
+      production_head: fb9ba45065d6e87b28db24d76e800e57f72a7594
+      parent_branch: sam/core-001-004-current-stack-integration
+      parent_pr: 63
+      runtime_qa_branch: qa/tm-003-signal-beam-special-class
+      runtime_qa_source: a724e917f639e1cb19e67a3e8909f1f926def0be
+      runtime_qa_run: 36960213040
+      runtime_qa_rom_sha1: 791c217ab9a6596e3447a910f1ad61a9d93b26c5
+    evol_001_003_accessibility:
+      notes:
+      - EVOL-001, EVOL-002, and EVOL-003 are COMPLETE for the current authority/roster
+        scope; QA-004 is PASS.
+      - Conditional Clamperl trade-item methods remain untouched because the family
+        is not currently authorized.
+      - Do not use the QA branch as a production ancestor.
+      branch: sam/evol-001-003-accessibility
+      pr: 65
+      production_head: 60caa7ffdf2730bcd75c630c2f421cc30b554711
+      parent_branch: sam/tm-003-signal-beam-special-class
+      parent_pr: 64
+      runtime_qa_branch: qa/evol-001-003-accessibility
+      runtime_qa_source: fdc3b14b0551772ba8b32d96324e7faa32bdaf8c
+      runtime_qa_run: 36961288046
+      runtime_qa_rom_sha1: 5c1c083070867654ae5625bcdb15c0e161242582
+    enc_001_ralts_natu_tables:
+      notes:
+      - Verified focused Ralts/Natu encounter-table advancement; broader ENC-001 remains
+        IN PROGRESS.
+      - Unique production delta is src/data/wild_encounters.json.
+      - Do not reuse the stale standalone 4% Rock Tunnel Nosepass branch verbatim;
+        current authority requires 5%.
+      - QA branch is evidence/instrumentation only and is not a production ancestor.
+      branch: sam/enc-001-ralts-natu-final-tables
+      pr: 67
+      production_head: 1e03ef56cc063e3f9a2888640ec760e4d23d4c8a
+      parent_branch: sam/evol-001-003-accessibility
+      parent_pr: 65
+      runtime_qa_branch: qa/enc-001-ralts-natu-final-tables
+      runtime_qa_source: 08533e014c8040502ed6f3aa5e5e3f3943562ac0
+      runtime_qa_run: 37004528658
+      runtime_qa_rom_sha1: e554917c75f6500a919e2f1862598340b70b7f65
+    enc_001_locked_packet:
+      notes:
+      - ENC-001 is COMPLETE for the current Ralts/Natu/Nosepass/Feebas scope.
+      - 'PR #67 verifies Ralts/Natu final land tables; PR #69 adds current 5% deeper-Rock-Tunnel
+        Nosepass and exact Route 6 Feebas Surf/fishing.'
+      - Route 6 uses a local selector because the global native Good Rod has only
+        three 60/20/20 slots; global weights remain unchanged.
+      - Do not use either encounter QA branch as production ancestry.
+      branch: sam/enc-001-nosepass-feebas-final-tables
+      pr: 69
+      production_head: 9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a
+      parent_branch: sam/enc-001-ralts-natu-final-tables
+      parent_pr: 67
+      runtime_qa_branch: qa/enc-001-nosepass-feebas-final-tables
+      runtime_qa_source: c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8
+      runtime_qa_run: 37005383850
+      runtime_qa_rom_sha1: 32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9
+    enc_003_surf_fishing_partial:
+      notes:
+      - 'Verified partial ENC-003 implementation: 20 source-supported FireRed Surf/fishing
+        tables are encoded and runtime-QA-passed.'
+      - Land tables, existing encounter-rate fields, LeafGreen data, Route 6 local
+        selector and global slot-weight source are preserved.
+      - ENC-003 remains IN PROGRESS because MAP_SEVEN_ISLAND has no existing wild
+        header and current authority supplies no encounter-rate value; do not invent
+        one.
+      - QA branch is evidence/instrumentation only and is not a production ancestor.
+      branch: sam/enc-003-surf-fishing-finalization
+      pr: 72
+      production_head: 6e84b85cf47ad76fe81bf5d27a5aac1da127d79a
+      parent_branch: sam/enc-001-nosepass-feebas-final-tables
+      parent_pr: 69
+      runtime_qa_branch: qa/enc-003-surf-fishing-finalization
+      runtime_qa_source: 58cce3b6f53505bba929f07179cf23917694e844
+      runtime_qa_run: 37006884530
+      runtime_qa_rom_sha1: 0a02ff27d52fdf6e7100178de438dd10d61ecfdd
+    gym_audit_001_readiness:
+      status: PARTIAL — audit complete; one Gym authority blocker remains
+      checkpoint: SYNC-2026-10-02-020
+      notes:
+      - GYM-AUDIT-001 was run against every still-unimplemented Gym whose implementation
+        handoff required Cerulean-depth verification.
+      - 'Gym 1 Pewter: READY — literal 19x23 blueprint/state contract is sufficient;
+        source IDs/metatiles and non-traversal dressing are implementation discretion.'
+      - 'Gym 3 Vermilion: READY — later FINAL LAYOUT CLOSURE supplies the deterministic
+        canonical map handoff; stale earlier open-coordinate prose is superseded.'
+      - 'Gym 4 Celadon: PARTIALLY READY — trainer/battle/state logic is usable and
+        PR #77 remains valid, but major Field/Lab map/event work is blocked by BLK-GYM4-MAP
+        pending a literal deterministic topology handoff.'
+      - 'Gym 5 Fuchsia: READY — Map Blueprint v1.0 fixes the 15x70 gauntlet, anchors,
+        collision and decorative/non-traversal rules.'
+      - 'Gym 6 Saffron: READY WITH DOCUMENTED IMPLEMENTATION DISCRETION — preserve
+        vanilla room/warp topology; exact stock coordinate/ID mapping is technical
+        implementation.'
+      - 'Gym 7 Cinnabar: READY WITH DOCUMENTED IMPLEMENTATION DISCRETION — preserve
+        vanilla quiz-room/door topology; six-station state logic and retry/persistence
+        contract are explicit.'
+      - 'Gym 8 Viridian: READY WITH DOCUMENTED IMPLEMENTATION DISCRETION — preserve
+        vanilla spinner geometry; first-clear/postgame object-state replacement is
+        explicit.'
+      - Cerulean Gym 2 remains the reference-depth benchmark and was not reopened.
+    enc_002_static_overworld_readiness:
+      status: PARTIAL / BLOCKED FOR SEVEN NON-MACHOKE STATICS
+      checkpoint: SYNC-2026-10-02-020
+      production_branch: sam/enc-readiness-gym-audit-001
+      production_pr: 91
+      current_head: 41d3177981037fe2dc0a47b9ddb560b05ea3ff95
+      base_branch: sam/gift-001-remaining-special-acquisitions
+      base_pr: 88
+      base_head: 9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0
+      notes:
+      - 'Resource strategy is explicit: reuse an exact native species OBJ_EVENT_GFX
+        when it exists; otherwise require approved species-specific overworld art
+        and allocate it centrally. Do not substitute unrelated stock sprites by convenience.'
+      - Scyther, Rhyhorn, Abra, Miltank, Lickitung, Onix and Magneton remain blocked
+        by BLK-ENC-002-GFX because no exact native species overworld graphics or approved
+        Sam replacement resources are present.
+      - Rock Tunnel Machoke is independently implementation-eligible because native
+        OBJ_EVENT_GFX_MACHOKE=134 exists.
+      - FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE is centrally allocated at 0x367;
+        prior encounter headroom now resumes at 0x368-0x36F.
+      - 'PR #91 implements Machoke Lv29 @ Black Belt with Karate Chop / Seismic Toss
+        / Foresight / Revenge in the optional southwest Rock Tunnel B1F dead-end chamber,
+        with capture/defeat completion and flee/teleport persistence.'
+      - A reusable SetEnemyEventMonMoveSlot special was added for fixed-move scripted
+        wild encounters.
+      - 'PR #91 remains draft/open/unmerged. Production CI 37075239129 compiled/linked/generated
+        ELF/GBA/SYM and stopped only at the expected stock-ROM SHA comparison.'
+      - 'Evidence-only QA PR #92 / qa/enc-002-machoke-static-runtime @ c45d0a490d316233a50e5dedffc778a5f0b42dc8
+        passed workflow run 37075861109; QA ROM SHA-1 8f1b5aa1efc7a1f9800275564b0b591e551959c1.'
+      - Focused QA verified exact source contract, runtime Machoke level/item/four-move
+        package, central flag set, and real save/fresh-process reload persistence.
+        It did not substitute for later human-played field capture/flee integration
+        smoke.
+      - 'QA PR #92 is evidence only and must never become production ancestry.'
+    enc_003_seven_island_readiness:
+      status: BLOCKED ON AUTHORITATIVE RATE VALUES
+      checkpoint: SYNC-2026-10-02-020
+      notes:
+      - The intended missing source resource is a new MAP_SEVEN_ISLAND FireRed wild
+        header using the already-locked Table Family F Surf/fishing species, levels
+        and slot ordering.
+      - Current FireRed source has no MAP_SEVEN_ISLAND wild header.
+      - Existing Family F peer headers at Trainer Tower and Tanoby Ruins use water
+        encounter_rate 2 and fishing encounter_rate 20, but this was treated only
+        as source evidence, not authority.
+      - BLK-ENC-003-RATE requires explicit MAP_SEVEN_ISLAND water_mons.encounter_rate
+        and fishing_mons.encounter_rate values, or explicit authority to inherit a
+        named peer pair.
+      - 'No Seven Island header/rate was invented; PR #72 remains the verified partial
+        ENC-003 implementation for the 20 source-supported tables.'
+  work_item_policy:
+    stable_ids: true
+    create_parallel_numbering_system: false
+    statuses:
+    - READY
+    - BLOCKED
+    - IN PROGRESS
+    - QA
+    - COMPLETE
+    - DEFERRED
+    completion_rule: Do not claim COMPLETE merely because code exists.
+    numeric_resource_rule: Do not invent Sam-specific numeric resources outside the
+      current Symbol Registry.
+  qa_policy:
+    required_categories:
+    - specialist_acceptance_tests
+    - backlog_done_when
+    - shared_qa_matrix
+    - clean_build
+    - save_load_and_reentry_for_stateful_features
+    - focused_regression
+    evidence_rule: Record source commit used for QA separately from implementation
+      branch state.
+  known_good_builds:
+    enc_002_machoke_static_runtime_qa:
+      production_source_commit: 41d3177981037fe2dc0a47b9ddb560b05ea3ff95
+      production_branch: sam/enc-readiness-gym-audit-001
+      production_pr: 91
+      qa_branch: qa/enc-002-machoke-static-runtime
+      qa_pr: 92
+      qa_source_commit: c45d0a490d316233a50e5dedffc778a5f0b42dc8
+      workflow_run: 37075861109
+      rom_sha1: 8f1b5aa1efc7a1f9800275564b0b591e551959c1
+      notes:
+      - Production CI 37075239129 compiled/linked/generated ELF/GBA/SYM and stopped
+        only at expected stock-ROM SHA comparison.
+      - Static QA verified central flag 0x367, native Machoke object resource, B1F
+        object at (7,36), exact script outcome routing and reusable move-slot helper.
+      - Runtime QA verified Machoke Lv29 @ Black Belt with Karate Chop / Seismic Toss
+        / Foresight / Revenge and persistent completion flag through real save/fresh-process
+        reload.
+      - Human-played field capture/flee interaction smoke remains later integration
+        QA.
+      - 'QA PR #92 is evidence/instrumentation only and must never be used as production
+        ancestry.'
+    spec_003_ralts_natu_current_stack_qa:
+      production_source_commit: 7b6e3c29e593cb43878cc2ef9fbc70ce741d7689
+      production_branch: sam/train-002-003-focused-corrections
+      production_pr: 73
+      qa_branch: qa/spec-003-qa-rn-001
+      qa_pr: 78
+      qa_source_commit: 511adaa66b2adeffa6832bf6c7be73f96fed26bb
+      workflow_run: 37027682738
+      rom_sha1: 967eaabdd0861714ec4846b9fd8c5f832db82f85
+      notes:
+      - 'No new production delta was required: the current verified PR #73 stack already
+        contains the approved SPEC-003 Ralts/Natu source packet.'
+      - Runtime QA passed Ralts->Kirlia Lv20, Kirlia->Gardevoir Lv30 and Natu->Xatu
+        Lv25 with immediately-below negative controls.
+      - Exact positive and negative TM01-TM68 / HM01-HM08 compatibility passed for
+        Ralts, Kirlia, Gardevoir, Natu and Xatu.
+      - Party/PC round-trip, Pokedex species mapping plus seen/caught flags, real
+        flash save and fresh-process reload passed.
+      - Static/runtime checks confirmed Psychic-only Ralts line, Psychic/Flying Natu
+        line, locked abilities, no Fairy typing, no Gallade evolution and no wild
+        Gardevoir.
+      - 'QA PR #78 is evidence/instrumentation only and must never be used as production
+        ancestry.'
+    spec_006_rock_runtime_qa:
+      production_source_commit: 7ec21e900341b91b50df618a89f39cd9e4a6da92
+      production_branch: sam/breed-001-003-route5-breeding-v2
+      production_pr: 79
+      qa_branch: qa/spec-006-rock-runtime
+      qa_pr: 80
+      qa_source_commit: e297c5242b10b12fe4651e6af4b7c42f2c552bd5
+      workflow_run: 37036207034
+      rom_sha1: ea945aeeb4d24b37a25e81e789ff02efae8ff11e
+      notes:
+      - QA-ROCK-001 PASS. No gameplay production delta was required.
+      - Runtime verified Geodude/Graveler/Golem/Onix/Rhyhorn/Rhydon are pure Rock,
+        Steelix remains Steel/Ground, Ground STAB and Electric immunity are removed,
+        Water/Grass are exactly 2x, and AI type calculation agrees.
+      - 'QA PR #80 is evidence/instrumentation only and must never be used as production
+        ancestry.'
+    enc_003_partial_runtime_qa:
+      production_source_commit: 6e84b85cf47ad76fe81bf5d27a5aac1da127d79a
+      qa_source_commit: 58cce3b6f53505bba929f07179cf23917694e844
+      workflow_run: 37006884530
+      rom_sha1: 0a02ff27d52fdf6e7100178de438dd10d61ecfdd
+      production_ci_run: 37006480220
+      notes:
+      - Production compiled, linked, generated ELF/GBA/SYM, then failed only the expected
+        stock FireRed SHA comparison.
+      - Static QA proved only 20 intended FireRed water/fishing mon arrays changed;
+        land/rates/LeafGreen/Route6 remained unchanged.
+      - Runtime QA inspected compiled gWildMonHeaders and verified exact species/level
+        slot ordering plus preserved per-map encounter rates for all 20 tables.
+      - No MAP_SEVEN_ISLAND header was invented; ENC-003 remains IN PROGRESS pending
+        authoritative shoreline header/rate resolution.
+      - 'PR #72 remains draft/open/unmerged and is the current verified production
+        continuation tip.'
+    enc_001_final_runtime_qa:
+      production_source_commit: 9c2ffa3c8fcff5445cbcf9778cb9e766ae7e534a
+      qa_source_commit: c96ab7f8e70da3036574b6eeb5e090f9ae9cc2b8
+      workflow_run: 37005383850
+      rom_sha1: 32d85fc0f0fdb208fe367fc19a7dd4d73dc921f9
+      production_ci_run: 37005190293
+      notes:
+      - Rock Tunnel B1F final 25/25/20/15/10/5 table passed, including Nosepass 5%
+        Lv24-26.
+      - Route 6 Surf 50/30/20 and Good/Super Rod Feebas tables passed exact runtime
+        selector sampling.
+      - Generic non-Route-6 native water and Good Rod weighting regression passed.
+      - ENC-001 is COMPLETE; SYS-ENC remains IN PROGRESS for statics, remaining Surf/fishing
+        and whole-game QA.
+      - 'PR #69 remains draft/open/unmerged.'
+    enc_001_ralts_natu_table_qa:
+      production_source_commit: 1e03ef56cc063e3f9a2888640ec760e4d23d4c8a
+      qa_source_commit: 08533e014c8040502ed6f3aa5e5e3f3943562ac0
+      workflow_run: 37004528658
+      rom_sha1: e554917c75f6500a919e2f1862598340b70b7f65
+      production_ci_run: 37002067939
+      notes:
+      - Production compiled, linked, generated ELF/GBA/SYM, then failed only the expected
+        stock FireRed SHA comparison.
+      - Focused QA validated production/QA isolation and native land-slot percentages/levels
+        for Route 5, Route 16, Berry Forest and Ruin Valley.
+      - Ralts/Natu encounter subpacket is verified; ENC-001 remains IN PROGRESS for
+        Feebas and Rock Tunnel Nosepass reconciliation.
+      - QA branch is evidence/instrumentation only and is not in production ancestry.
+      - 'PR #67 remains draft/open/unmerged and is the current verified gameplay-stack
+        tip.'
+    tm_004_005_compatibility_qa:
+      production_source_commit: 60caa7ffdf2730bcd75c630c2f421cc30b554711
+      canonical_tmcomp_source_commit: 10e48e687a414f621a554796aaff2c277d935b1f
+      compatibility_blob_sha: 38e36d942662a38c864cf99c270fd64ede18490d
+      qa_source_commit: b8a6dc980bbe306d4b49724f55561069ca807bdc
+      workflow_run: 36962584342
+      rom_sha1: 28e65e065e466a0973843bc6985eeaa2fb6b8f69
+      notes:
+      - 'No production delta was required: canonical TM-COMP PR #47 -> PR #48 is already
+        inherited by PR #65 and the compatibility blob is unchanged.'
+      - Static QA verified the 68-TM / 8-HM 96-bit architecture, exact canonical blob
+        inheritance, and no active TM69-TM79 source references.
+      - Runtime QA exercised every TM/HM logical index and exact representative current
+        specialist compatibility rows.
+      - TM-004 and TM-005 are COMPLETE; QA-005 is PASS.
+      - QA branch qa/tm-004-005-compatibility is evidence/instrumentation only and
+        is not a production ancestor.
+    evol_001_003_runtime_qa:
+      production_source_commit: 60caa7ffdf2730bcd75c630c2f421cc30b554711
+      qa_source_commit: fdc3b14b0551772ba8b32d96324e7faa32bdaf8c
+      workflow_run: 36961288046
+      rom_sha1: 5c1c083070867654ae5625bcdb15c0e161242582
+      production_ci_run: 36961159729
+      notes:
+      - Production compiled, linked, generated ELF/GBA/SYM, then failed only the expected
+        stock FireRed SHA comparison.
+      - Runtime/static QA passed Lv42 pure-trade replacements, current fixed-level
+        replacements, seven authorized direct-use trade-item routes, invalid-use rejection,
+        Protector routing, and Eevee/Pikachu regressions.
+      - Conditional Clamperl direct-use routes remain inactive because the family
+        is not currently authorized.
+      - QA branch is evidence/instrumentation only and is not in production ancestry.
+      - 'PR #65 remains draft/open/unmerged and is the verified parent of the current
+        PR #67 gameplay-stack tip.'
+    tm_003_signal_beam_runtime_qa:
+      production_source_commit: fb9ba45065d6e87b28db24d76e800e57f72a7594
+      qa_source_commit: a724e917f639e1cb19e67a3e8909f1f926def0be
+      workflow_run: 36960213040
+      rom_sha1: 791c217ab9a6596e3447a910f1ad61a9d93b26c5
+      production_ci_run: 36960016126
+      notes:
+      - Production compiled, linked, generated ELF/GBA/SYM, then failed only the expected
+        stock FireRed SHA comparison.
+      - Runtime QA proved Signal Beam uses Sp. Atk / Sp. Def, Light Screen rather
+        than Reflect, no burn/Hustle physical penalty, and preserves physical Bug
+        controls.
+      - Ghostly Wail's existing Special-class override remained intact.
+      - QA branch is evidence/instrumentation only and is not in production ancestry.
+      - 'PR #64 remains draft/open/unmerged and is the verified parent of PR #65.'
+    core_001_004_current_stack_runtime_qa:
+      production_source_commit: 0b7f1481134d13fbcdea90b7fb99edb01ce3b639
+      qa_source_commit: 59ce704108a16559047737d25723c663a6dc3188
+      workflow_run: 36958060624
+      rom_sha1: a55794ae62ed5295a3c0bd2baf22e9ca10918d40
+      production_ci_run: 36957629488
+      notes:
+      - Production compiled, linked, generated ELF/GBA/SYM, then failed only the expected
+        stock FireRed SHA comparison.
+      - Runtime QA passed all six Eevee/Pichu/Ditto x Standard/Permanent state paths.
+      - Both mode states survived real save and fresh-process reload.
+      - Exact individual starter protection/death, evolution retention, Adaptive Gene,
+        PC round-trip, healing/revival restrictions, Standard regression, and IMUGI
+        integrity passed.
+      - QA branch is evidence/instrumentation only and is not in production ancestry.
+      - 'PR #63 remains draft/open/unmerged; CORE-001 still needs one human interactive
+        selector smoke.'
+    gift_npc_trades_runtime_qa:
+      production_source_commit: 76ed58d096e88f4beb898c944d69c61760f15d35
+      qa_source_commit: c0dbfdc18492a8893aa10a28ca549cea079c3841
+      workflow_run: 36956041525
+      rom_sha1: 54b28df3645156de944f983864111633b0c7868a
+      production_ci_run: 36956020656
+      notes:
+      - All nine fixed NPC-trade packages passed runtime validation.
+      - Wrong-species, egg, and empty selections were rejected.
+      - A six-Pokemon full-party trade replaced the selected slot without overflow.
+      - All nine one-time flags survived real flash save/fresh-process reload.
+      - IMUGI retained outsider ownership through evolution.
+      - QA found and verified the fix for authored-OT encryption-key corruption.
+      - 'PR #62 remains draft/open/unmerged and is the verified parent of the current
+        PR #63 gameplay-stack tip.'
+    starter_runtime_qa:
+      source_commit: bc7cd174744532360df1170db9b7f7cfcd262b97
+      workflow_run: 36903953035
+      rom_sha1: e6044c6d72c6643fbb3c
+      notes:
+      - Hash retained exactly as supplied in the current programming handoff; refresh/complete
+        from live QA records if needed.
+  session_refresh:
+    verify_before_work:
+    - sam-edition-dev head
+    - selected feature branch head
+    - selected PR state and base/head
+    - Programming Readiness Registry status
+    - dependencies and blockers
+    - governing authority versions
+    - recorded source surfaces
+    full_rescan_triggers:
+    - baseline change
+    - major source-tree reorganization
+    - architecture refactor affecting indexed systems
+    - stale or contradictory audit/index state
+    enc_readiness_gym_audit_001:
+      notes:
+      - Readiness checkpoint SYNC-2026-10-02-020 is persisted in the Programming Readiness
+        Registry.
+      - 'GYM-AUDIT-001 classifications: Gym1 READY; Gym3 READY; Gym5 READY; Gym6/Gym7/Gym8
+        READY WITH DOCUMENTED IMPLEMENTATION DISCRETION; Gym4 PARTIALLY READY.'
+      - 'Gym4 major map/event implementation is blocked by BLK-GYM4-MAP pending a
+        literal Cerulean-depth Field/Lab topology handoff. Existing trainer-data PR
+        #77 remains valid.'
+      - 'ENC-002 resource strategy is now explicit: exact native species overworld
+        graphics when present, otherwise centrally allocated approved custom graphics.
+        Machoke reuses native OBJ_EVENT_GFX_MACHOKE=134.'
+      - FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE is centrally allocated at 0x367;
+        remaining encounter flag headroom is 0x368-0x36F.
+      - Seven other ENC-002 statics remain blocked by BLK-ENC-002-GFX because no exact
+        native species overworld graphics or approved substitute policy exists.
+      - ENC-003 intends a new MAP_SEVEN_ISLAND shoreline header using locked Table
+        Family F contents, but authoritative water/fishing encounter-rate values remain
+        open under BLK-ENC-003-RATE. Peer 2/20 values were observed but not promoted
+        to canon.
+      - QA branches remain excluded from production ancestry.
+      branch: sam/enc-readiness-gym-audit-001
+      pr: 91
+      production_head: a216854718a21cf1af940f4b933841485d02ff45
+      parent_branch: sam/gift-001-remaining-special-acquisitions
+      parent_pr: 88
+      parent_head: 9ff410a1dfcdba149721e8c9b5dc7fba9b8fd0e0
+      production_ci_run: 37074194967
+      production_ci_result: Compare FireRed failed at expected stock-ROM comparison;
+        no runtime QA claimed.

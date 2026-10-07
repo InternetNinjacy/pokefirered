@@ -28,13 +28,8 @@ Repository: `InternetNinjacy/pokefirered`
 4. Do not start gameplay implementation until the resource-allocation audit is accepted.
 5. Do not claim a reproducible baseline build until `pokefirered.gba` has actually been built from `sam-baseline` and its SHA-1 has been checked.
 
-## Current build gate
+## Current build gate — resolved prior evidence
 
-Repository identity, target revision, baseline commit, and branch structure are resolved.
+Registry Blocking Decisions records a successful untouched-baseline build: Ubuntu 24.04.1 LTS, agbcc `da598c1d918402c42c0c0d7128ba14567f3175e9`, binutils 2.42, Git 2.43, Make 4.3, GCC 13.3; `make compare` OK and SHA-1 `41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc`. This audit did not rerun that build.
 
-The clean local/toolchain build gate is still open. A future environment/CI pass must:
-- install the toolchain required by `pret/pokefirered`;
-- build `sam-baseline` without Sam Edition modifications;
-- produce `pokefirered.gba`;
-- verify SHA-1 `41cb23d8dccc8ebd7c649cd8fbb58eeace6e2fdc`;
-- record the toolchain versions and command used.
+Modified Sam builds use the established `COMPARE=0` targets; the vanilla SHA must not be applied as a modified-ROM gate. Record the actual checkout, command, toolchain, result and generated artifact hash.
