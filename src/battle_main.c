@@ -1536,9 +1536,20 @@ static void SpriteCB_UnusedDebugSprite_Step(struct Sprite *sprite)
     }
 }
 
-static bool8 IsGreenTrainer(u16 trainerNum)
+static bool8 IsRoute4GreenPartySlot(u16 trainerNum, s32 partyIndex)
 {
-    return trainerNum >= TRAINER_GREEN_OAK_DITTO && trainerNum <= TRAINER_GREEN_POSTGAME_RAICHU;
+    if ((partyIndex & 1) == 0)
+        return FALSE;
+
+    return trainerNum == TRAINER_RIVAL_CERULEAN_SQUIRTLE
+        || trainerNum == TRAINER_RIVAL_CERULEAN_BULBASAUR
+        || trainerNum == TRAINER_RIVAL_CERULEAN_CHARMANDER;
+}
+
+static bool8 IsGreenTrainerPartySlot(u16 trainerNum, s32 partyIndex)
+{
+    return (trainerNum >= TRAINER_GREEN_OAK_DITTO && trainerNum <= TRAINER_GREEN_POSTGAME_RAICHU)
+        || IsRoute4GreenPartySlot(trainerNum, partyIndex);
 }
 
 static u8 GetGreenNature(u16 species)
@@ -1584,8 +1595,9 @@ static u8 GetGreenNature(u16 species)
     }
 }
 
-static u8 GetGreenEvPercent(u16 trainerNum)
+static u8 GetGreenEvPercent(u16 trainerNum, s32 partyIndex)
 {
+    if (IsRoute4GreenPartySlot(trainerNum, partyIndex)) return 10;
     if (trainerNum <= TRAINER_GREEN_OAK_RAICHU) return 0;
     if (trainerNum <= TRAINER_GREEN_SS_ANNE_RAICHU) return 20;
     if (trainerNum <= TRAINER_GREEN_CELADON_RAICHU) return 40;
@@ -1602,15 +1614,15 @@ static void SetScaledGreenEv(struct Pokemon *mon, s32 stat, u16 finalEv, u8 perc
     SetMonData(mon, MON_DATA_HP_EV + stat, &ev);
 }
 
-static void ApplyGreenCompetitiveData(struct Pokemon *mon, u16 trainerNum)
+static void ApplyGreenCompetitiveData(struct Pokemon *mon, u16 trainerNum, s32 partyIndex)
 {
     u16 species = GetMonData(mon, MON_DATA_SPECIES);
-    u8 percent = GetGreenEvPercent(trainerNum);
+    u8 percent = GetGreenEvPercent(trainerNum, partyIndex);
     u8 abilityNum = 0;
     u8 iv = 31;
     u16 hp = 0, atk = 0, def = 0, spe = 0, spa = 0, spd = 0;
 
-    if (!IsGreenTrainer(trainerNum))
+    if (!IsGreenTrainerPartySlot(trainerNum, partyIndex))
         return;
 
     // Locked ability choices that require the second Gen III ability slot.
@@ -1688,11 +1700,11 @@ static void ApplyGreenCompetitiveData(struct Pokemon *mon, u16 trainerNum)
     CalculateMonStats(mon);
 }
 
-static u32 ApplyGreenNatureToPersonality(u16 trainerNum, u16 species, u32 personality)
+static u32 ApplyGreenNatureToPersonality(u16 trainerNum, s32 partyIndex, u16 species, u32 personality)
 {
     u8 nature;
 
-    if (!IsGreenTrainer(trainerNum))
+    if (!IsGreenTrainerPartySlot(trainerNum, partyIndex))
         return personality;
 
     nature = GetGreenNature(species);
@@ -1739,7 +1751,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                personalityValue = ApplyGreenNatureToPersonality(trainerNum, partyData[i].species, personalityValue);
+                personalityValue = ApplyGreenNatureToPersonality(trainerNum, i, partyData[i].species, personalityValue);
                 CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 break;
             }
@@ -1752,7 +1764,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                personalityValue = ApplyGreenNatureToPersonality(trainerNum, partyData[i].species, personalityValue);
+                personalityValue = ApplyGreenNatureToPersonality(trainerNum, i, partyData[i].species, personalityValue);
                 CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
 
                 for (j = 0; j < MAX_MON_MOVES; j++)
@@ -1771,7 +1783,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                personalityValue = ApplyGreenNatureToPersonality(trainerNum, partyData[i].species, personalityValue);
+                personalityValue = ApplyGreenNatureToPersonality(trainerNum, i, partyData[i].species, personalityValue);
                 CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
 
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
@@ -1786,7 +1798,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                personalityValue = ApplyGreenNatureToPersonality(trainerNum, partyData[i].species, personalityValue);
+                personalityValue = ApplyGreenNatureToPersonality(trainerNum, i, partyData[i].species, personalityValue);
                 CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 
@@ -1798,7 +1810,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 break;
             }
             }
-            ApplyGreenCompetitiveData(&party[i], trainerNum);
+            ApplyGreenCompetitiveData(&party[i], trainerNum, i);
         }
 
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
