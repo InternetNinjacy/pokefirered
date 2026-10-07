@@ -237,7 +237,7 @@ ViridianCity_EventScript_DoTutorialBattle::
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
 	return
 
-@ Pokémon: Sam Edition — Green rival checkpoint.
+@ Pokémon: Sam Edition ,  Green rival checkpoint.
 ViridianCity_EventScript_UpdateGreen::
 	setflag FLAG_TEMP_13
 	goto_if_ne VAR_MAP_SCENE_VIRIDIAN_CITY_GYM_DOOR, 1, EventScript_Return
@@ -290,7 +290,7 @@ ViridianCity_EventScript_GreenWon::
 
 ViridianCity_Text_GreenOpening::
 	.string "I'm done changing the six. Now I'm\n"
-	.string "changing the details—what they do,\l"
+	.string "changing the details, what they do,\l"
 	.string "what they carry, when I switch,\l"
 	.string "when I stay in.\p"
 	.string "I don't think there's a big answer\n"
