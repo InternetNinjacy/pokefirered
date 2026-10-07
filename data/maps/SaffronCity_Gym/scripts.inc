@@ -3,9 +3,10 @@ SaffronCity_Gym_MapScripts::
 
 SaffronCity_Gym_EventScript_Sabrina::
 	famechecker FAMECHECKER_SABRINA, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	goto_if_set FLAG_SYS_GAME_CLEAR, SaffronCity_Gym_EventScript_SabrinaRematch
 	trainerbattle_single TRAINER_LEADER_SABRINA, SaffronCity_Gym_Text_SabrinaIntro, SaffronCity_Gym_Text_SabrinaDefeat, SaffronCity_Gym_EventScript_DefeatedSabrina, NO_MUSIC
-	goto_if_unset FLAG_GOT_TM04_FROM_SABRINA, SaffronCity_Gym_EventScript_GiveTM04
-	msgbox SaffronCity_Gym_Text_ExplainTM04
+	goto_if_unset FLAG_GOT_TM30_FROM_SABRINA, SaffronCity_Gym_EventScript_GiveTM30
+	msgbox SaffronCity_Gym_Text_SabrinaPostBattle
 	release
 	end
 
@@ -16,21 +17,33 @@ SaffronCity_Gym_EventScript_DefeatedSabrina::
 	setflag FLAG_DEFEATED_SABRINA
 	setflag FLAG_BADGE06_GET
 	set_gym_trainers 6
-	goto SaffronCity_Gym_EventScript_GiveTM04
+	goto SaffronCity_Gym_EventScript_GiveTM30
 	end
 
-SaffronCity_Gym_EventScript_GiveTM04::
-	msgbox SaffronCity_Gym_Text_ExplainMarshBadgeTakeThis
-	checkitemspace ITEM_TM04
-	goto_if_eq VAR_RESULT, FALSE, SaffronCity_Gym_EventScript_NoRoomForTM04
-	giveitem_msg SaffronCity_Gym_Text_ReceivedTM04FromSabrina, ITEM_TM04
-	setflag FLAG_GOT_TM04_FROM_SABRINA
-	msgbox SaffronCity_Gym_Text_SabrinaPostBattle
+SaffronCity_Gym_EventScript_GiveTM30::
+	msgbox SaffronCity_Gym_Text_PhantomBadgeHandoff
+	checkitemspace ITEM_TM30_GHOSTLY_WAIL
+	goto_if_eq VAR_RESULT, FALSE, SaffronCity_Gym_EventScript_NoRoomForTM30
+	giveitem_msg SaffronCity_Gym_Text_ReceivedTM30FromSabrina, ITEM_TM30_GHOSTLY_WAIL
+	setflag FLAG_GOT_TM30_FROM_SABRINA
+	msgbox SaffronCity_Gym_Text_ExplainTM30
 	release
 	end
 
-SaffronCity_Gym_EventScript_NoRoomForTM04::
+SaffronCity_Gym_EventScript_NoRoomForTM30::
 	msgbox SaffronCity_Gym_Text_BagFullOfOtherItems
+	release
+	end
+
+SaffronCity_Gym_EventScript_SabrinaRematch::
+	trainerbattle_single TRAINER_LEADER_SABRINA_REMATCH, SaffronCity_Gym_Text_SabrinaRematchIntro, SaffronCity_Gym_Text_SabrinaRematchDefeat, SaffronCity_Gym_EventScript_SabrinaRematchWon, NO_MUSIC
+	msgbox SaffronCity_Gym_Text_SabrinaRematchPostBattle
+	release
+	end
+
+SaffronCity_Gym_EventScript_SabrinaRematchWon::
+	cleartrainerflag TRAINER_LEADER_SABRINA_REMATCH
+	msgbox SaffronCity_Gym_Text_SabrinaRematchPostBattle
 	release
 	end
 
@@ -73,13 +86,55 @@ SaffronCity_Gym_EventScript_Tasha::
 SaffronCity_Gym_EventScript_GymGuy::
 	lock
 	faceplayer
-	goto_if_set FLAG_DEFEATED_SABRINA, SaffronCity_Gym_EventScript_GymGuyPostVictory
-	msgbox SaffronCity_Gym_Text_GymGuyAdvice
+	goto_if_set FLAG_SYS_GAME_CLEAR, SaffronCity_Gym_EventScript_SatoshiPostgame
+	goto_if_set FLAG_DEFEATED_SABRINA, SaffronCity_Gym_EventScript_SatoshiPostVictory
+	goto_if_set FLAG_SATOSHI_SAFFRON_PRACTICE_WON, SaffronCity_Gym_EventScript_SatoshiPracticeWon
+	msgbox SaffronCity_Gym_Text_SatoshiFirstApproach
+	yesnobox 20, 8
+	goto_if_eq VAR_RESULT, NO, SaffronCity_Gym_EventScript_SatoshiDecline
+	msgbox SaffronCity_Gym_Text_SatoshiPracticeYes
+	trainerbattle_single TRAINER_SATOSHI_SAFFRON_PRACTICE, SaffronCity_Gym_Text_SatoshiPracticeBattle, SaffronCity_Gym_Text_SatoshiPracticeLoss, SaffronCity_Gym_EventScript_SatoshiPracticeVictory
 	release
 	end
 
-SaffronCity_Gym_EventScript_GymGuyPostVictory::
-	msgbox SaffronCity_Gym_Text_GymGuyPostVictory
+SaffronCity_Gym_EventScript_SatoshiPracticeVictory::
+	setflag FLAG_SATOSHI_SAFFRON_PRACTICE_WON
+	msgbox SaffronCity_Gym_Text_SatoshiPracticeWin
+	release
+	end
+
+SaffronCity_Gym_EventScript_SatoshiDecline::
+	msgbox SaffronCity_Gym_Text_SatoshiDecline
+	release
+	end
+
+SaffronCity_Gym_EventScript_SatoshiPracticeWon::
+	msgbox SaffronCity_Gym_Text_SatoshiPreSabrinaRepeat
+	release
+	end
+
+SaffronCity_Gym_EventScript_SatoshiPostVictory::
+	goto_if_set FLAG_SATOSHI_SAFFRON_PRACTICE_WON, SaffronCity_Gym_EventScript_SatoshiPostVictoryPracticed
+	msgbox SaffronCity_Gym_Text_SatoshiPostVictorySkipped
+	release
+	end
+
+SaffronCity_Gym_EventScript_SatoshiPostVictoryPracticed::
+	msgbox SaffronCity_Gym_Text_SatoshiPostVictoryPracticed
+	release
+	end
+
+SaffronCity_Gym_EventScript_SatoshiPostgame::
+	msgbox SaffronCity_Gym_Text_SatoshiRematchOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, SaffronCity_Gym_EventScript_SatoshiRematchAccept
+	msgbox SaffronCity_Gym_Text_SatoshiRematchDecline
+	release
+	end
+
+SaffronCity_Gym_EventScript_SatoshiRematchAccept::
+	msgbox SaffronCity_Gym_Text_SatoshiRematchAccept
+	cleartrainerflag TRAINER_SATOSHI_SAFFRON_REMATCH
+	trainerbattle_single TRAINER_SATOSHI_SAFFRON_REMATCH, SaffronCity_Gym_Text_SatoshiRematchBattle, SaffronCity_Gym_Text_SatoshiRematchDefeat
 	release
 	end
 

@@ -5123,7 +5123,7 @@
       "price": 3000,
       "holdEffect": "HOLD_EFFECT_NONE",
       "holdEffectParam": 0,
-      "description_english": "The foe is attacked with a shadowy\\nlump. It may lower the target's\\nSP. DEF stat.",
+      "description_english": "Teaches GHOSTLY WAIL.",
       "importance": 0,
       "registrability": 0,
       "pocket": "POCKET_TM_CASE",
@@ -5132,7 +5132,7 @@
       "battleUsage": 0,
       "battleUseFunc": "NULL",
       "secondaryId": 0,
-      "moveId": "ShadowBall"
+      "moveId": "GhostlyWail"
     },
     {
       "english": "TM31",

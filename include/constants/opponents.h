@@ -780,12 +780,13 @@
 #define TRAINER_BUSHRANGER_NARELLE                766
 #define TRAINER_LEADER_BAZ                        767
 #define TRAINER_LEADER_BAZ_REMATCH                768
+#define TRAINER_LEADER_SABRINA_REMATCH            769
 
 // Sam Edition expands trainer defeat-flag capacity to 1024 records.
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             743
+#define NUM_TRAINERS                             770
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
