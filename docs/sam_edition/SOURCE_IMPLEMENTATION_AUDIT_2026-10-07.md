@@ -1,3 +1,15 @@
+# GYM1A Pewter restoration closure — 2026-10-07
+
+GYM1-001 is production-complete again on current `sam-edition-dev`. Historical PR #93 was reconciled as donor evidence only; its stale ancestry was not merged. Current-ancestry PR #311 restored the locked Pewter Endurance Gym package and merged at `c279459143b6e68522e2c6a876377e2786bb9c2d`.
+
+Restored scope: 19x23 Endurance Gym map and bypass hierarchy; brittle thin-ice crack/break/fall/reset behavior; Cliff and Miles; Boreal first challenge/rematch; automatic normal-duration Hail fallback; Fortitude Badge / TM55 Icy Wind reward state; Boreal battle/overworld assets; Trainer Card badge slot; locked Gym dialogue and movement behavior. Current reusable Satoshi trainer IDs/data and practice flag were preserved rather than duplicated. The historical donor's Hail-duration initialization defect was corrected so the five-turn fallback survives battle-state reset.
+
+Validation: CI run `37690852677` passed FireRed, FireRed rev1, FireRed rev10, LeafGreen, LeafGreen rev1, LeafGreen rev10, and Modern. Full assembled-ROM human traversal/visual playtesting remains deferred under project policy.
+
+Routing: exclude GYM1-001 from active implementation backlog unless a demonstrated regression or explicit new decision reopens it. PR #93 remains historical provenance and must not be merged wholesale.
+
+---
+
 # RIV-016E production closure — PR #303
 
 PR #303 merged at `eeea5bbc23d4ca70614180552220f317a286bc89` from feature head `3af4f344a10b6c0aceadcb5e0bcd0f58d14aa55f`. CI run `37675450935` completed SUCCESS across FireRed, FireRed rev1/rev10, LeafGreen, LeafGreen rev1/rev10, and Modern.

@@ -64,7 +64,7 @@ Snapshot: 2026-10-07. Native Programming Readiness Registry Backlog is authorita
 | SAT-003 | SYS-SATOSHI | Viridian Satoshi Integration | COMPLETE |  |
 | SAT-004 | SYS-SATOSHI | Pewter Rematch | COMPLETE |  |
 | SAT-005 | SYS-SATOSHI | Cerulean Rematch | COMPLETE |  |
-| GYM1-001 | SYS-GYM1 | Pewter Endurance Gym | IN PROGRESS | Current production lacks approved Gym1 map/script integration; historical PR #93 is not merged. |
+| GYM1-001 | SYS-GYM1 | Pewter Endurance Gym | COMPLETE | Restored from historical donor PR #93 onto current production in PR #311; merged at c279459143b6e68522e2c6a876377e2786bb9c2d. PR #93 remains provenance only. |
 | GYM2-001 | SYS-GYM2 | Cerulean Fire Gym | COMPLETE |  |
 | GYM3-001 | SYS-GYM3 | Vermilion Water Gym | COMPLETE | None |
 | GYM4-001 | SYS-GYM4 | Celadon Bug Gym | COMPLETE |  |

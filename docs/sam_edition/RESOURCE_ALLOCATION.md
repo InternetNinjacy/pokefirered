@@ -1,3 +1,5 @@
+GYM1A Pewter production allocation closure: PR #311 reuses centrally safe trainer IDs 775–778 for Cliff, Miles, Boreal and Boreal rematch; OBJ_EVENT_GFX_BOREAL = 159; TRAINER_PIC_BOREAL = 155; FLAG_GYM1_TM55_RECEIVED = 0x318; STEP_CB_GYM1_ICE = 8. Current Satoshi IDs 743/751 and FLAG_SATOSHI_PEWTER_PRACTICE_WON = 0x310 are preserved rather than reallocated. Historical PR #93 remains provenance only.
+
 # Pokémon: Sam Edition — Resource Allocation Plan
 
 Baseline: `pret/pokefirered@c75f352304d529f6ba92d4f74b9cf8b5c3810788`
