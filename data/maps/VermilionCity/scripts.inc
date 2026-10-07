@@ -23,7 +23,7 @@ VermilionCity_Movement_ExitSSAnne::
 VermilionCity_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_VERMILION_CITY
 	call_if_set FLAG_TALKED_TO_OAKS_AIDE_IN_VERMILION, VermilionCity_EventScript_HideOaksAide
-	goto_if_eq VAR_MAP_SCENE_VERMILION_CITY, 3, VermilionCity_EventScript_SetPostSSAnneHarborState
+	goto_if_ge VAR_MAP_SCENE_VERMILION_CITY, 2, VermilionCity_EventScript_SetPostSSAnneHarborState
 	setflag FLAG_HIDE_VERMILION_SEAGALLOP_SAILOR
 	clearflag FLAG_HIDE_VERMILION_SS_ANNE_GUARD
 	end
