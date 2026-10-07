@@ -37,3 +37,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SamRoute24CamperShane[] 
 
 // ST-IMP-13 Three Island / Bond Bridge ordinary trainers.
 #include "sam_batch13_three_island_trainer_remaps.h"
+
+// Five Island locked ordinary trainers; Rocket operation excluded.
+#include "sam_batch14_five_island_trainer_remaps.h"
