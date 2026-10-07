@@ -48,32 +48,24 @@ CeruleanCity_Text_RivalVictory::
     .string "おれは　てんさい　だからよ！$"
 
 CeruleanCity_Text_GruntIntro::
-    .string "Hey! Stay out!\n"
-    .string "It's not your yard!\p"
-    .string "…Huh?\n"
-    .string "Me?\p"
-    .string "I'm an innocent bystander!\n"
-    .string "Don't you believe me?{PLAY_BGM}{MUS_ENCOUNTER_ROCKET}$"
+    .string "Hey! Stay out of this!\p"
+    .string "Those people had more useful\n"
+    .string "stuff than they knew what to\p"
+    .string "do with.\n"
+    .string "TEAM ROCKET can put it to\p"
+    .string "better use.$"
 
 CeruleanCity_Text_GruntDefeat::
-    .string "GRUNT: Stop! I give up!\n"
-    .string "I'll leave quietly!$"
+    .string "You've got to be kidding me…$"
 
-CeruleanCity_Text_OkayIllReturnStolenTM::
-    .string "…Okay.\n"
-    .string "I'll return the TM I stole.$"
+CeruleanCity_Text_GruntDropsStolenGoods::
+    .string "Fine! Take it!\p"
+    .string "I'm not getting caught over\n"
+    .string "somebody else's junk!$"
 
-CeruleanCity_Text_RecoveredTM28FromGrunt::
-    .string "{PLAYER} recovered TM28 from\n"
-    .string "the TEAM ROCKET GRUNT.$"
-
-CeruleanCity_Text_BetterGetMovingBye::
-    .string "I better get moving!\n"
-    .string "Bye!$"
-
-CeruleanCity_Text_MakeRoomForThisCantRun::
-    .string "Make room for this!\n"
-    .string "I can't run until I give it to you!$"
+CeruleanCity_Text_ObtainedStolenGoods::
+    .string "{PLAYER} recovered the\n"
+    .string "STOLEN GOODS!$"
 
 CeruleanCity_Text_TrainerLifeIsToughIsntIt::
     .string "You're a TRAINER, too?\p"
