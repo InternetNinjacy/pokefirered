@@ -388,6 +388,24 @@
       "var": "VAR_MAP_SCENE_THREE_ISLAND",
       "var_value": "3",
       "script": "ThreeIsland_EventScript_BattleBikersTriggerRight"
+    },
+    {
+      "type": "trigger",
+      "x": 14,
+      "y": 31,
+      "elevation": 3,
+      "var": "VAR_MAP_SCENE_THREE_ISLAND",
+      "var_value": "4",
+      "script": "ThreeIsland_EventScript_GreenGateLeft"
+    },
+    {
+      "type": "trigger",
+      "x": 16,
+      "y": 31,
+      "elevation": 3,
+      "var": "VAR_MAP_SCENE_THREE_ISLAND",
+      "var_value": "4",
+      "script": "ThreeIsland_EventScript_GreenGateRight"
     }
   ],
   "bg_events": [
