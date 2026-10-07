@@ -355,8 +355,8 @@ const u32 gTrainerPalette_LeaderMisty[] = INCBIN_U32("graphics/trainers/palettes
 const u32 gTrainerFrontPic_LeaderLtSurge[] = INCBIN_U32("graphics/trainers/front_pics/leader_lt_surge_sam.4bpp.lz");
 const u32 gTrainerPalette_LeaderLtSurge[] = INCBIN_U32("graphics/trainers/palettes/leader_lt_surge_sam.gbapal.lz");
 
-const u32 gTrainerFrontPic_LeaderErika[] = INCBIN_U32("graphics/trainers/front_pics/leader_erika_front_pic.4bpp.lz");
-const u32 gTrainerPalette_LeaderErika[] = INCBIN_U32("graphics/trainers/palettes/leader_erika.gbapal.lz");
+const u32 gTrainerFrontPic_LeaderErika[] = INCBIN_U32("graphics/trainers/front_pics/leader_erika_sam.4bpp.lz");
+const u32 gTrainerPalette_LeaderErika[] = INCBIN_U32("graphics/trainers/palettes/leader_erika_sam.gbapal.lz");
 
 const u32 gTrainerFrontPic_LeaderKoga[] = INCBIN_U32("graphics/trainers/front_pics/leader_koga_front_pic.4bpp.lz");
 const u32 gTrainerPalette_LeaderKoga[] = INCBIN_U32("graphics/trainers/palettes/leader_koga.gbapal.lz");
