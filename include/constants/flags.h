@@ -931,8 +931,10 @@
 #define FLAG_0x366               FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE
 #define FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE              0x367
 #define FLAG_0x367               FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE
-#define FLAG_0x368               0x368
-#define FLAG_0x369               0x369
+#define FLAG_GYM4_FIELD_PUZZLE_COMPLETE 0x368
+#define FLAG_GYM4_LAB_PUZZLE_COMPLETE   0x369
+#define FLAG_0x368               FLAG_GYM4_FIELD_PUZZLE_COMPLETE
+#define FLAG_0x369               FLAG_GYM4_LAB_PUZZLE_COMPLETE
 #define FLAG_0x36A               0x36A
 #define FLAG_0x36B               0x36B
 #define FLAG_0x36C               0x36C

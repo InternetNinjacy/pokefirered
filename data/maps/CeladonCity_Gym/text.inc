@@ -96,95 +96,122 @@ CeladonCity_Gym_Text_NoraPostBattle::
     .string "powder, light response, special attacks...\l"
     .string "There is always another variable to study.$"
 
-CeladonCity_Gym_Text_KayIntro::
-    .string "I should tell you about this GYM.\p"
-    .string "Only real ladies are allowed in\n"
-    .string "here!$"
+CeladonCity_Gym_Text_GymRouteInfo::
+    .string "CELADON BUG RESEARCH GYM\p"
+    .string "FIELD RESEARCH is to the left.\n"
+    .string "LABORATORY RESEARCH is to the right.\p"
+    .string "Either route reaches ERIKA.\n"
+    .string "Each side has an optional observation\l"
+    .string "exercise that can open a bypass.\p"
+    .string "Battling the researchers is always valid.$"
 
-CeladonCity_Gym_Text_KayDefeat::
-    .string "You're too rough!$"
+CeladonCity_Gym_Text_FieldRouteSign::
+    .string "FIELD RESEARCH - PINSIR HABITAT\n"
+    .string "OBSERVATION\p"
+    .string "Route the resident PINSIR to its feeding\n"
+    .string "site. Observe the habitat notes.\p"
+    .string "Set all three environmental selectors,\n"
+    .string "then activate the OBSERVE switch.\p"
+    .string "Incorrect routes may be attempted again\n"
+    .string "without penalty.$"
 
-CeladonCity_Gym_Text_KayPostBattle::
-    .string "Bleaah!\n"
-    .string "I hope ERIKA wipes you out!$"
+CeladonCity_Gym_Text_LabRouteSign::
+    .string "LABORATORY RESEARCH - VENOMOTH\n"
+    .string "RESPONSE TRIAL\p"
+    .string "Route the resident VENOMOTH to its\n"
+    .string "observation perch. Review the notes.\p"
+    .string "Set all three environmental selectors,\n"
+    .string "then activate the OBSERVE switch.\p"
+    .string "Incorrect trials may be repeated without\n"
+    .string "penalty.$"
 
-CeladonCity_Gym_Text_BridgetIntro::
-    .string "Oh, welcome.\n"
-    .string "I was getting bored.$"
+CeladonCity_Gym_Text_PinsirSubject::
+    .string "A resident PINSIR waits for the habitat\n"
+    .string "observation route to be configured.$"
 
-CeladonCity_Gym_Text_BridgetDefeat::
-    .string "My makeup!$"
+CeladonCity_Gym_Text_VenomothSubject::
+    .string "A resident VENOMOTH waits for the\n"
+    .string "response trial to begin.$"
 
-CeladonCity_Gym_Text_BridgetPostBattle::
-    .string "GRASS-type POKéMON are tough\n"
-    .string "against the WATER type.\p"
-    .string "They also have an edge on ROCK-\n"
-    .string "and GROUND-type POKéMON.$"
+CeladonCity_Gym_Text_FieldNote1::
+    .string "FEEDING OBSERVATION\p"
+    .string "Pinsir frequently gathers around flowing\n"
+    .string "tree sap.$"
+CeladonCity_Gym_Text_FieldSelector1Off::
+    .string "Selector set to FLOWERS.$"
+CeladonCity_Gym_Text_FieldSelector1On::
+    .string "Selector set to SAP TREE.$"
 
-CeladonCity_Gym_Text_TinaIntro::
-    .string "…Weren't you peeking in here\n"
-    .string "earlier?$"
+CeladonCity_Gym_Text_FieldNote2::
+    .string "SHELTER OBSERVATION\p"
+    .string "Subjects consistently favor heavy timber\n"
+    .string "and protected wooded cover.$"
+CeladonCity_Gym_Text_FieldSelector2Off::
+    .string "Selector set to OPEN CLEARING.$"
+CeladonCity_Gym_Text_FieldSelector2On::
+    .string "Selector set to FALLEN LOG.$"
 
-CeladonCity_Gym_Text_TinaDefeat::
-    .string "You're an eye-opener!$"
+CeladonCity_Gym_Text_FieldNote3::
+    .string "LIGHTING OBSERVATION\p"
+    .string "Extended exposure to bright artificial\n"
+    .string "lighting causes agitation.$"
+CeladonCity_Gym_Text_FieldSelector3Off::
+    .string "Selector set to BRIGHT LAMP.$"
+CeladonCity_Gym_Text_FieldSelector3On::
+    .string "Selector set to SHADED TREES.$"
 
-CeladonCity_Gym_Text_TinaPostBattle::
-    .string "Oh, you were looking at ERIKA…\n"
-    .string "You weren't looking at me…$"
+CeladonCity_Gym_Text_LabNote1::
+    .string "PHOTOTAXIS TRIAL\p"
+    .string "Venomoth consistently approaches\n"
+    .string "illuminated targets.$"
+CeladonCity_Gym_Text_LabSelector1Off::
+    .string "Selector set to DARK CHAMBER.$"
+CeladonCity_Gym_Text_LabSelector1On::
+    .string "Selector set to LAMP.$"
 
-CeladonCity_Gym_Text_TamiaIntro::
-    .string "Look, look!\n"
-    .string "See my POKéMON!\p"
-    .string "I like the GRASS type.\n"
-    .string "I like how they're easy to raise.$"
+CeladonCity_Gym_Text_LabNote2::
+    .string "FEEDING TRIAL\p"
+    .string "Flowering plants produced the strongest\n"
+    .string "feeding response.$"
+CeladonCity_Gym_Text_LabSelector2Off::
+    .string "Selector set to BARE SOIL.$"
+CeladonCity_Gym_Text_LabSelector2On::
+    .string "Selector set to FLOWER BED.$"
 
-CeladonCity_Gym_Text_TamiaDefeat::
-    .string "No!$"
+CeladonCity_Gym_Text_LabNote3::
+    .string "FLIGHT TRIAL\p"
+    .string "Subjects strongly preferred unrestricted\n"
+    .string "air circulation.$"
+CeladonCity_Gym_Text_LabSelector3Off::
+    .string "Selector set to SEALED BOX.$"
+CeladonCity_Gym_Text_LabSelector3On::
+    .string "Selector set to OPEN AIR VENT.$"
 
-CeladonCity_Gym_Text_TamiaPostBattle::
-    .string "We only use GRASS-type POKéMON at\n"
-    .string "our GYM.\p"
-    .string "Why? We also use them for making\n"
-    .string "flower arrangements!$"
+CeladonCity_Gym_Text_FieldSuccess::
+    .string "The PINSIR follows the selected route.\n"
+    .string "It reaches the feeding tree!$"
+CeladonCity_Gym_Text_FieldAccessOpened::
+    .string "FIELD ACCESS has been opened.$"
+CeladonCity_Gym_Text_FieldFailure::
+    .string "The PINSIR stops.\p"
+    .string "This environment does not match its\n"
+    .string "preferred behavior.\p"
+    .string "It returns to the starting area.$"
 
-CeladonCity_Gym_Text_LisaIntro::
-    .string "Oh, hey!\p"
-    .string "We don't like BUG- or FIRE-type\n"
-    .string "POKéMON in here!$"
+CeladonCity_Gym_Text_LabSuccess::
+    .string "The VENOMOTH follows the selected route.\n"
+    .string "It settles on the observation perch!$"
+CeladonCity_Gym_Text_LabAccessOpened::
+    .string "LAB ACCESS has been opened.$"
+CeladonCity_Gym_Text_LabFailure::
+    .string "The VENOMOTH changes course.\p"
+    .string "The selected conditions do not match its\n"
+    .string "preferred behavior.\p"
+    .string "It returns to the starting area.$"
 
-CeladonCity_Gym_Text_LisaDefeat::
-    .string "Oh!\n"
-    .string "You!$"
-
-CeladonCity_Gym_Text_LisaPostBattle::
-    .string "Our LEADER ERIKA might be quiet,\n"
-    .string "but she's famous around here.$"
-
-CeladonCity_Gym_Text_LoriIntro::
-    .string "Pleased to meet you.\n"
-    .string "My hobby is POKéMON training.$"
-
-CeladonCity_Gym_Text_LoriDefeat::
-    .string "Oh!\n"
-    .string "Splendid!$"
-
-CeladonCity_Gym_Text_LoriPostBattle::
-    .string "I have a blind date coming up.\n"
-    .string "I have to learn to be polite,\l"
-    .string "especially if I have to battle.$"
-
-CeladonCity_Gym_Text_MaryIntro::
-    .string "Welcome to CELADON GYM!\p"
-    .string "You'd better not underestimate\n"
-    .string "the nice ladies here.$"
-
-CeladonCity_Gym_Text_MaryDefeat::
-    .string "Oh!\n"
-    .string "Beaten!$"
-
-CeladonCity_Gym_Text_MaryPostBattle::
-    .string "I didn't bring my best POKéMON.\n"
-    .string "Wait until next time!$"
+CeladonCity_Gym_Text_ObservationComplete::
+    .string "The observation has already been\n"
+    .string "completed.$"
 
 CeladonCity_Gym_Text_GymStatue::
     .string "CELADON POKéMON GYM\n"

@@ -142,6 +142,8 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Onix;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lickitung;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Hawthorne;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_TropiusHothouse;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_PinsirGym4;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_VenomothGym4;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lapras;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Zapdos;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Moltres;
@@ -333,4 +335,6 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_LICKITUNG]                = &gObjectEventGraphicsInfo_Lickitung,
     [OBJ_EVENT_GFX_HAWTHORNE]                = &gObjectEventGraphicsInfo_Hawthorne,
     [OBJ_EVENT_GFX_TROPIUS_HOTHOUSE]         = &gObjectEventGraphicsInfo_TropiusHothouse,
+    [OBJ_EVENT_GFX_PINSIR_GYM4]               = &gObjectEventGraphicsInfo_PinsirGym4,
+    [OBJ_EVENT_GFX_VENOMOTH_GYM4]             = &gObjectEventGraphicsInfo_VenomothGym4,
 };
