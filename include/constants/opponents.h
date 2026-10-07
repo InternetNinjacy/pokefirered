@@ -791,11 +791,14 @@
 #define TRAINER_LEADER_BAZ_REMATCH                768
 #define TRAINER_LEADER_SABRINA_REMATCH            769
 
+// Cinnabar Rock Gym postgame rematch allocation.
+#define TRAINER_LEADER_BLAINE_REMATCH              804
+
 // Sam Edition expands trainer defeat-flag capacity to 1024 records.
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             804
+#define NUM_TRAINERS                             805
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
