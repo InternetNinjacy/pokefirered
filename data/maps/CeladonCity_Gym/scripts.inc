@@ -34,6 +34,27 @@ CeladonCity_Gym_EventScript_NoRoomForTM19::
 	release
 	end
 
+
+CeladonCity_Gym_EventScript_Owen::
+	trainerbattle_single TRAINER_BUG_CATCHER_OWEN_CELADON, CeladonCity_Gym_Text_OwenIntro, CeladonCity_Gym_Text_OwenDefeat
+	msgbox CeladonCity_Gym_Text_OwenPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+CeladonCity_Gym_EventScript_Maya::
+	trainerbattle_single TRAINER_BUG_CATCHER_MAYA_CELADON, CeladonCity_Gym_Text_MayaIntro, CeladonCity_Gym_Text_MayaDefeat
+	msgbox CeladonCity_Gym_Text_MayaPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+CeladonCity_Gym_EventScript_Elias::
+	trainerbattle_single TRAINER_SCIENTIST_ELIAS_CELADON, CeladonCity_Gym_Text_EliasIntro, CeladonCity_Gym_Text_EliasDefeat
+	msgbox CeladonCity_Gym_Text_EliasPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+CeladonCity_Gym_EventScript_Nora::
+	trainerbattle_single TRAINER_SCIENTIST_NORA_CELADON, CeladonCity_Gym_Text_NoraIntro, CeladonCity_Gym_Text_NoraDefeat
+	msgbox CeladonCity_Gym_Text_NoraPostBattle, MSGBOX_AUTOCLOSE
+	end
+
 CeladonCity_Gym_EventScript_Kay::
 	trainerbattle_single TRAINER_LASS_KAY, CeladonCity_Gym_Text_KayIntro, CeladonCity_Gym_Text_KayDefeat
 	msgbox CeladonCity_Gym_Text_KayPostBattle, MSGBOX_AUTOCLOSE

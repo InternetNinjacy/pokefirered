@@ -791,6 +791,12 @@
 #define TRAINER_LEADER_BAZ_REMATCH                768
 #define TRAINER_LEADER_SABRINA_REMATCH            769
 
+// Celadon Bug Gym regular-trainer allocations: 770-773.
+#define TRAINER_BUG_CATCHER_OWEN_CELADON          770
+#define TRAINER_BUG_CATCHER_MAYA_CELADON          771
+#define TRAINER_SCIENTIST_ELIAS_CELADON            772
+#define TRAINER_SCIENTIST_NORA_CELADON             773
+
 // Cinnabar Rock Gym postgame rematch allocation.
 #define TRAINER_LEADER_BLAINE_REMATCH              804
 
