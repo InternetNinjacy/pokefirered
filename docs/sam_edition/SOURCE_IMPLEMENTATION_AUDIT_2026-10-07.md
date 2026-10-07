@@ -1,3 +1,15 @@
+# RIV-016E — Viridian Thomas fossil continuation
+
+New explicit authority reopens RIV-016 only for one narrow production delta after PR #302: the Seadra -> fossil substitution persists for the remainder of Thomas's battles, so trainer 789's normal-story Kingdra sixth slot must also resolve to the same stolen-fossil branch.
+
+Implementation branch `sam/riv-016e-viridian-fossil-continuation` preserves the merged Cinnabar behavior and adds a Viridian runtime replacement from durable Mt. Moon theft state:
+- state 3 -> Kabutops Lv52 @ Mystic Water, Rock Slide / Brick Break / Water Pulse / Protect;
+- state 4 -> Omastar Lv52 @ Mystic Water, Hydro Pump / Ice Beam / AncientPower / Protect.
+
+Trainer 789 remains Single; first five Viridian members, dialogue, Doll handoff, quit-Rocket transition and Giovanni routing are unchanged. No new trainer/flag/var/item/map/story allocation. Static Kingdra remains only as invalid/debug fallback. Full assembled-ROM testing remains deferred.
+
+---
+
 # RIV-016D final Cinnabar Thomas fossil battle — PR #302
 
 Current status superseding the Thread 02 blocked audit below: explicit authority is now complete and the remaining Mansion delta is implemented on production base `8e39d49b2a8ef505fc37e904e96e5b366be8461a`. Trainer 788 remains the existing Single Battle with no Gengar; only Cinnabar party slot 4 changes at runtime from Seadra to the evolved Mt. Moon stolen fossil. Scene3 selects Kabutops45 @ Mystic Water (Rock Slide / Brick Break / Water Pulse / Protect); scene4 selects Omastar45 @ Mystic Water (Surf / Ice Beam / AncientPower / Protect). The Lab preview remains optional, current Mansion dialogue and map content remain unchanged, and no new trainer/flag/var/item is allocated.
