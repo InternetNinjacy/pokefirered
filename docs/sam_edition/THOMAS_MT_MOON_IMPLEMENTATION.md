@@ -1,4 +1,6 @@
-# Thread 1B — Thomas Mt. Moon fossil encounter
+# RIV-016 / Thread 1B — Thomas Mt. Moon fossil encounter
+
+Concurrent documentation-only production PR #293 (5dca0d7c412ef5d6fe12598c38fe22faeffd934e) is reconciled; it changes no ROM source. Implementation PR: #294.
 
 Starting production: ca15b79af8aea55664fc190e03b5d4672d4de940 (Thread 1A / PR #292).
 
