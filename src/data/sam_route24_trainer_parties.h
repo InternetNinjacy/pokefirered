@@ -34,3 +34,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SamRoute24CamperShane[] 
 
 // ST-IMP-12 One Island first-visit ordinary trainers.
 #include "sam_batch12_one_island_trainer_remaps.h"
+
+// ST-IMP-13 Three Island / Bond Bridge ordinary trainers.
+#include "sam_batch13_three_island_trainer_remaps.h"
