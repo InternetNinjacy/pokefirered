@@ -172,7 +172,6 @@
 #define OBJ_EVENT_GFX_BUSHRANGER_M       157
 #define OBJ_EVENT_GFX_BUSHRANGER_F       158
 #define OBJ_EVENT_GFX_BOREAL             159
-#define OBJ_EVENT_GFX_BOREAL             159
 #define OBJ_EVENT_GFX_SCYTHER            160
 #define OBJ_EVENT_GFX_RHYHORN            161
 #define OBJ_EVENT_GFX_ABRA               162
