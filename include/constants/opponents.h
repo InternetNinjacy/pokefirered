@@ -844,7 +844,10 @@
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             847
+// New Mt. Moon record; preserved six Thomas records remain 784-789.
+#define TRAINER_THOMAS_MT_MOON 847
+
+#define NUM_TRAINERS                             848
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
