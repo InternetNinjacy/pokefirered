@@ -2959,8 +2959,8 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("JASON"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TamerJason),
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+        .party = ITEM_DEFAULT_MOVES(sParty_SamGym8Jason),
     },
     [TRAINER_TAMER_COLE] = {
         .trainerClass = TRAINER_CLASS_TAMER,
@@ -2969,8 +2969,8 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("COLE"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TamerCole),
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_SamGym8Cole),
     },
     [TRAINER_TAMER_VINCENT] = {
         .trainerClass = TRAINER_CLASS_TAMER,
@@ -3219,8 +3219,8 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("ATSUSHI"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = ITEM_DEFAULT_MOVES(sParty_BlackBeltAtsushi),
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_SamGym8Atsushi),
     },
     [TRAINER_BLACK_BELT_KIYO] = {
         .trainerClass = TRAINER_CLASS_BLACK_BELT,
@@ -3229,8 +3229,8 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("KIYO"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = ITEM_DEFAULT_MOVES(sParty_BlackBeltKiyo),
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+        .party = ITEM_DEFAULT_MOVES(sParty_SamGym8Kiyo),
     },
     [TRAINER_BLACK_BELT_TAKASHI] = {
         .trainerClass = TRAINER_CLASS_BLACK_BELT,
@@ -3239,8 +3239,8 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("TAKASHI"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = ITEM_DEFAULT_MOVES(sParty_BlackBeltTakashi),
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_SamGym8Takashi),
     },
     [TRAINER_BLACK_BELT_DAISUKE] = {
         .trainerClass = TRAINER_CLASS_BLACK_BELT,
@@ -3500,7 +3500,7 @@ const struct Trainer gTrainers[] = {
         .items = {ITEM_HYPER_POTION, ITEM_HYPER_POTION, ITEM_FULL_HEAL},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_LeaderGiovanni),
+        .party = ITEM_CUSTOM_MOVES(sParty_SamGym8Giovanni),
     },
     [TRAINER_TEAM_ROCKET_GRUNT] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
@@ -3920,7 +3920,7 @@ const struct Trainer gTrainers[] = {
         .items = {ITEM_SUPER_POTION},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_CooltrainerSamuel),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_SamGym8Samuel),
     },
     [TRAINER_COOLTRAINER_GEORGE] = {
         .trainerClass = TRAINER_CLASS_COOLTRAINER,
@@ -4000,7 +4000,7 @@ const struct Trainer gTrainers[] = {
         .items = {ITEM_HYPER_POTION},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_CooltrainerYuji),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_SamGym8Yuji),
     },
     [TRAINER_COOLTRAINER_WARREN] = {
         .trainerClass = TRAINER_CLASS_COOLTRAINER,
@@ -4010,7 +4010,7 @@ const struct Trainer gTrainers[] = {
         .items = {ITEM_HYPER_POTION},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_CooltrainerWarren),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_SamGym8Warren),
     },
     [TRAINER_COOLTRAINER_MARY] = {
         .trainerClass = TRAINER_CLASS_COOLTRAINER,
