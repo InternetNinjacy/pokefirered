@@ -120,6 +120,8 @@ assert b['coord_events'][:len(a['coord_events'])]==a['coord_events']
 for k in a:
  if k not in ('object_events','coord_events'):assert a[k]==b[k],k
 assert len(b['object_events'])==12
+# map_events.s does not import the operation header; use the numeric scene value.
+assert b['coord_events'][-1]['var_value']=='0'
 for path in ['src/data/trainers.h']:
  for name in re.findall(r'\[TRAINER_[A-Z0-9_]+\]',old(path)):
   pattern=re.escape(name)+r' = \{.*?\n    \},'

@@ -287,7 +287,7 @@
       "y": 25,
       "elevation": 3,
       "var": "VAR_SAM_ROCKET_VIRIDIAN",
-      "var_value": "ROCKET_VIRIDIAN_PENDING",
+      "var_value": "0",
       "script": "ViridianCity_EventScript_RocketOperation"
     }
   ],
