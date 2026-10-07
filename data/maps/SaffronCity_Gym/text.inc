@@ -287,23 +287,36 @@ SaffronCity_Gym_Text_SatoshiPostVictorySkipped::
     .string "both.$"
 
 SaffronCity_Gym_Text_SatoshiRematchOffer::
-    .string "Want another shot?$"
+    .string "Back again? Good.\p"
+    .string "Sabrina taught you how to keep\n"
+    .string "moving when you couldn't be sure\n"
+    .string "what came next.\p"
+    .string "I've got a full team this time.\n"
+    .string "They won't all look like Ghosts,\n"
+    .string "but they'll fight like this Gym:\n"
+    .string "sleep, strange matchups, and wasted\n"
+    .string "turns if you lose your head.\p"
+    .string "Want another battle?$"
 
 SaffronCity_Gym_Text_SatoshiRematchAccept::
-    .string "Good.\p"
-    .string "Watch every turn.$"
+    .string "Good. No tutorial this time.\p"
+    .string "Show me what you learned.$"
 
 SaffronCity_Gym_Text_SatoshiRematchDecline::
-    .string "Fair enough.\p"
-    .string "I'll be here.\p"
-    .string "Assuming this room stays where it\n"
-    .string "is.$"
+    .string "Fair enough. I'll be here.\p"
+    .string "Probably. Depends whether this room\n"
+    .string "stays put.$"
 
 SaffronCity_Gym_Text_SatoshiRematchBattle::
-    .string "Watch every turn.$"
+    .string "Keep your head clear.$"
 
 SaffronCity_Gym_Text_SatoshiRematchDefeat::
-    .string "Exactly.$"
+    .string "That's what I wanted to see.\p"
+    .string "You didn't chase every trick. You\n"
+    .string "kept making good decisions even\n"
+    .string "when I tried to throw you off.\p"
+    .string "Sabrina would approve.\p"
+    .string "Don't tell her I said that.$"
 
 SaffronCity_Gym_Text_GymStatue::
     .string "SAFFRON CITY POKéMON GYM\n"
