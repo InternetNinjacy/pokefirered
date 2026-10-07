@@ -17,7 +17,7 @@ project: &id002
 current_state:
   verified_at: '2026-10-07'
   production_branch: sam-edition-dev
-  production_head: 41d37d5a8e502d6fc15570add9050ee477675969
+  production_head: eeea5bbc23d4ca70614180552220f317a286bc89
   status_authority: Programming Readiness Registry / Backlog
   current_audit: docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-10-07.md
   runtime_policy: Full assembled-ROM playtesting deferred; do not reopen completed
@@ -30,7 +30,6 @@ current_state:
   open_owner_work:
   - 'GYM1-001: approved package integration'
   - 'GYM8-001: approved Dragon/Dominion/TM54 package restoration'
-  - 'RIV-016E: explicit post-#302 continuation requires the stolen fossil to replace the Viridian Kingdra slot as well; bounded follow-up branch sam/riv-016e-viridian-fossil-continuation'
   - 'ROCKET-002: remaining operation conversions/evidence consumers; ROCKET-001 shared framework complete in PR #297'
   - shared asset pipeline and League final assembly
   - final Thomas/Rocket closure (Five Island Thread 1E complete in PR #295)
@@ -61,7 +60,7 @@ thomas_cinnabar_fossil_checkpoint:
   runtime: assembled-ROM playtest deferred
 thomas_fossil_continuation_checkpoint:
   task: RIV-016E
-  status: IMPLEMENTATION IN PROGRESS
+  status: COMPLETE
   reopened_from: PR #302 / RIV-016D Cinnabar-only closure
   reconciled_production: 41d37d5a8e502d6fc15570add9050ee477675969
   working_branch: sam/riv-016e-viridian-fossil-continuation
@@ -70,9 +69,13 @@ thomas_fossil_continuation_checkpoint:
   viridian_delta: trainer 789 Single; replace normal-story Kingdra slot6 with same branch at Lv52/IV24; Kabutops keeps Rock Slide/Brick Break/Water Pulse/Protect; Omastar uses Hydro Pump/Ice Beam/AncientPower/Protect
   preserved: first five Viridian members; Doll handoff; quit-Rocket transition; Giovanni routing; IDs784-789; seven-battle cadence
   resources: no new trainer ID, flag, var, item, map object, or story event
-  blocker: NONE — authority locked; implementation/CI/merge pending
-  validation: host/static branch checks plus seven-variant PR CI; assembled-ROM playtest deferred
+  blocker: CLOSED — implementation merged
+  validation: host/static branch checks plus CI 37675450935 PASS all seven configured builds; assembled-ROM playtest deferred
   authority_record: docs/sam_edition/THOMAS_FOSSIL_CONTINUATION_AUTHORITY.md
+  pr: 303
+  feature_head: 3af4f344a10b6c0aceadcb5e0bcd0f58d14aa55f
+  production_merge: eeea5bbc23d4ca70614180552220f317a286bc89
+  synchronization: final repository and Drive/Registry closure sync
   runtime: assembled-ROM playtest deferred
 thomas_mansion_authority_audit_checkpoint:
   task: RIV-016
