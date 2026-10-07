@@ -937,7 +937,8 @@
 #define FLAG_0x374               0x374
 #define FLAG_0x375               0x375
 #define FLAG_0x376               0x376
-#define FLAG_0x377               0x377
+#define FLAG_CINNABAR_PROTECTOR_RECEIVED                      0x377
+#define FLAG_0x377               FLAG_CINNABAR_PROTECTOR_RECEIVED
 #define FLAG_0x378               0x378
 #define FLAG_0x379               0x379
 #define FLAG_0x37A               0x37A

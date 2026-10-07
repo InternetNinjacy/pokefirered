@@ -254,7 +254,8 @@
 #define ITEM_0F3 243
 #define ITEM_0F4 244
 #define ITEM_0F5 245
-#define ITEM_0F6 246
+#define ITEM_PROTECTOR 246
+#define ITEM_0F6 ITEM_PROTECTOR
 #define ITEM_0F7 247
 #define ITEM_0F8 248
 #define ITEM_0F9 249
