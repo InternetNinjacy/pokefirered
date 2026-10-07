@@ -5699,30 +5699,133 @@ static const struct TrainerMonNoItemCustomMoves sParty_LeaderBlaine[] = {
     },
 };
 
-static const struct TrainerMonNoItemCustomMoves sParty_LeaderSabrina[] = {
+static const struct TrainerMonItemCustomMoves sParty_LeaderSabrina[] = {
     {
-        .iv = 0,
+        .iv = 200,
         .lvl = 38,
-        .species = SPECIES_KADABRA,
-        .moves = {MOVE_PSYBEAM, MOVE_REFLECT, MOVE_FUTURE_SIGHT, MOVE_CALM_MIND},
+        .species = SPECIES_ECTOCEON,
+        .heldItem = ITEM_POISON_BARB,
+        .moves = {MOVE_POISON_FANG, MOVE_SHADOW_PUNCH, MOVE_PURSUIT, MOVE_QUICK_ATTACK},
     },
     {
-        .iv = 0,
-        .lvl = 37,
-        .species = SPECIES_MR_MIME,
-        .moves = {MOVE_BARRIER, MOVE_PSYBEAM, MOVE_BATON_PASS, MOVE_CALM_MIND},
+        .iv = 200,
+        .lvl = 39,
+        .species = SPECIES_BANETTE,
+        .heldItem = ITEM_SPELL_TAG,
+        .moves = {MOVE_SHADOW_BALL, MOVE_SHADOW_PUNCH, MOVE_KNOCK_OFF, MOVE_SCREECH},
     },
     {
-        .iv = 0,
-        .lvl = 38,
-        .species = SPECIES_VENOMOTH,
-        .moves = {MOVE_PSYBEAM, MOVE_GUST, MOVE_LEECH_LIFE, MOVE_SUPERSONIC},
+        .iv = 200,
+        .lvl = 40,
+        .species = SPECIES_DUSCLOPS,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_WILL_O_WISP, MOVE_SHADOW_PUNCH, MOVE_PAIN_SPLIT, MOVE_PROTECT},
     },
     {
-        .iv = 0,
-        .lvl = 43,
-        .species = SPECIES_ALAKAZAM,
-        .moves = {MOVE_PSYCHIC, MOVE_RECOVER, MOVE_FUTURE_SIGHT, MOVE_CALM_MIND},
+        .iv = 255,
+        .lvl = 42,
+        .species = SPECIES_GENGAR,
+        .heldItem = ITEM_SITRUS_BERRY,
+        .moves = {MOVE_GHOSTLY_WAIL, MOVE_HYPNOSIS, MOVE_DREAM_EATER, MOVE_GIGA_DRAIN},
+    },
+};
+
+static const struct TrainerMonItemCustomMoves sParty_LeaderSabrinaRematch[] = {
+    {
+        .iv = 255,
+        .lvl = 62,
+        .species = SPECIES_ECTOCEON,
+        .heldItem = ITEM_POISON_BARB,
+        .moves = {MOVE_POISON_FANG, MOVE_SHADOW_PUNCH, MOVE_PURSUIT, MOVE_QUICK_ATTACK},
+    },
+    {
+        .iv = 255,
+        .lvl = 63,
+        .species = SPECIES_BANETTE,
+        .heldItem = ITEM_SPELL_TAG,
+        .moves = {MOVE_SHADOW_BALL, MOVE_SHADOW_PUNCH, MOVE_KNOCK_OFF, MOVE_SCREECH},
+    },
+    {
+        .iv = 255,
+        .lvl = 63,
+        .species = SPECIES_LICKITUNG,
+        .heldItem = ITEM_SILK_SCARF,
+        .moves = {MOVE_BODY_SLAM, MOVE_SHADOW_PUNCH, MOVE_KNOCK_OFF, MOVE_DISABLE},
+    },
+    {
+        .iv = 255,
+        .lvl = 64,
+        .species = SPECIES_GENGAR,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_FIRE_PUNCH, MOVE_ICE_PUNCH, MOVE_THUNDER_PUNCH, MOVE_SHADOW_PUNCH},
+    },
+    {
+        .iv = 255,
+        .lvl = 65,
+        .species = SPECIES_DUSCLOPS,
+        .heldItem = ITEM_SITRUS_BERRY,
+        .moves = {MOVE_WILL_O_WISP, MOVE_SHADOW_PUNCH, MOVE_PAIN_SPLIT, MOVE_PROTECT},
+    },
+    {
+        .iv = 255,
+        .lvl = 67,
+        .species = SPECIES_GENGAR,
+        .heldItem = ITEM_LUM_BERRY,
+        .moves = {MOVE_GHOSTLY_WAIL, MOVE_HYPNOSIS, MOVE_DREAM_EATER, MOVE_GIGA_DRAIN},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_SatoshiSaffronPractice[] = {
+    {
+        .iv = 100,
+        .lvl = 33,
+        .species = SPECIES_HAUNTER,
+        .moves = {MOVE_NIGHT_SHADE, MOVE_CONFUSE_RAY, MOVE_HYPNOSIS, MOVE_LICK},
+    },
+};
+
+static const struct TrainerMonItemCustomMoves sParty_SatoshiSaffronRematch[] = {
+    {
+        .iv = 200,
+        .lvl = 59,
+        .species = SPECIES_HYPNO,
+        .heldItem = ITEM_TWISTED_SPOON,
+        .moves = {MOVE_PSYCHIC, MOVE_HYPNOSIS, MOVE_DREAM_EATER, MOVE_REFLECT},
+    },
+    {
+        .iv = 200,
+        .lvl = 60,
+        .species = SPECIES_MAROWAK,
+        .heldItem = ITEM_THICK_CLUB,
+        .moves = {MOVE_EARTHQUAKE, MOVE_SHADOW_PUNCH, MOVE_ROCK_SLIDE, MOVE_BRICK_BREAK},
+    },
+    {
+        .iv = 200,
+        .lvl = 61,
+        .species = SPECIES_CLEFABLE,
+        .heldItem = ITEM_LEFTOVERS,
+        .moves = {MOVE_SHADOW_BALL, MOVE_THUNDERBOLT, MOVE_ICE_BEAM, MOVE_SOFT_BOILED},
+    },
+    {
+        .iv = 200,
+        .lvl = 61,
+        .species = SPECIES_PORYGON,
+        .heldItem = ITEM_SILK_SCARF,
+        .moves = {MOVE_TRI_ATTACK, MOVE_PSYCHIC, MOVE_THUNDERBOLT, MOVE_RECOVER},
+    },
+    {
+        .iv = 200,
+        .lvl = 62,
+        .species = SPECIES_DITTO,
+        .heldItem = ITEM_QUICK_CLAW,
+        .moves = {MOVE_TRANSFORM, MOVE_NONE, MOVE_NONE, MOVE_NONE},
+    },
+    {
+        .iv = 255,
+        .lvl = 64,
+        .species = SPECIES_GENGAR,
+        .heldItem = ITEM_SPELL_TAG,
+        .moves = {MOVE_SHADOW_BALL, MOVE_HYPNOSIS, MOVE_DREAM_EATER, MOVE_THUNDERBOLT},
     },
 };
 
