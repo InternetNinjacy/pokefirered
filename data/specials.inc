@@ -363,6 +363,7 @@ gSpecials::
 	def_special CloseElevatorCurrentFloorWindow
 	def_special ForcePlayerToStartSurfing
 	def_special GetStarterSpecies
+	def_special MarkSamOriginalStarter
 	def_special SetSeenMon
 	def_special VsSeekerResetObjectMovementAfterChargeComplete
 	def_special ShouldShowBoxWasFullMessage
