@@ -1,20 +1,7 @@
 SSAnne_Exterior_MapScripts::
-	map_script MAP_SCRIPT_ON_RESUME, SSAnne_Exterior_OnResume
 	map_script MAP_SCRIPT_ON_TRANSITION, SSAnne_Exterior_OnTransition
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, SSAnne_Exterior_OnFrame
 	.byte 0
-
-SSAnne_Exterior_OnResume::
-	call_if_set FLAG_SYS_SPECIAL_WILD_BATTLE, SSAnne_Exterior_EventScript_TryFinishTruckMew
-	end
-
-SSAnne_Exterior_EventScript_TryFinishTruckMew::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, EventScript_Return
-	setflag FLAG_STATIC_SS_ANNE_TRUCK_MEW_COMPLETE
-	setflag FLAG_HIDE_STATIC_SS_ANNE_TRUCK_MEW
-	removeobject LOCALID_SS_ANNE_TRUCK_MEW
-	return
 
 SSAnne_Exterior_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_SSANNE_EXTERIOR
@@ -93,6 +80,7 @@ SSAnne_Exterior_Movement_WalkDown::
 SSAnne_Exterior_EventScript_Truck::
 	goto_if_questlog EventScript_ReleaseEnd
 	lockall
+	goto_if_ne VAR_MAP_SCENE_VERMILION_CITY, 3, SSAnne_Exterior_EventScript_TruckWontMove
 	goto_if_set FLAG_STATIC_SS_ANNE_TRUCK_MOVED, SSAnne_Exterior_EventScript_TruckAlreadyMoved
 	goto_if_unset FLAG_BADGE04_GET, SSAnne_Exterior_EventScript_TruckWontMove
 	goto_if_set FLAG_SYS_USE_STRENGTH, SSAnne_Exterior_EventScript_MoveTruck
@@ -132,26 +120,22 @@ SSAnne_Exterior_EventScript_DontMoveTruck::
 
 SSAnne_Exterior_EventScript_TruckMew::
 	goto_if_questlog EventScript_ReleaseEnd
-	special QuestLog_CutRecording
 	lock
 	faceplayer
+	setwildbattle SPECIES_MEW, 50
 	waitse
 	playmoncry SPECIES_MEW, CRY_MODE_ENCOUNTER
 	message SSAnne_Exterior_Text_MewCry
 	waitmessage
 	waitmoncry
 	delay 20
-	setwildbattle SPECIES_MEW, 50
 	setflag FLAG_SYS_SPECIAL_WILD_BATTLE
-	special StartLegendaryBattle
-	waitstate
+	dowildbattle
 	clearflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	special QuestLog_CutRecording
 	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, SSAnne_Exterior_EventScript_TruckMewFinished
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, SSAnne_Exterior_EventScript_TruckMewFinished
-	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SSAnne_Exterior_EventScript_TruckMewEscapedBattle
-	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, SSAnne_Exterior_EventScript_TruckMewEscapedBattle
-	setflag FLAG_STATIC_SS_ANNE_TRUCK_MEW_COMPLETE
-	setflag FLAG_HIDE_STATIC_SS_ANNE_TRUCK_MEW
 	release
 	end
 
@@ -159,10 +143,6 @@ SSAnne_Exterior_EventScript_TruckMewFinished::
 	setflag FLAG_STATIC_SS_ANNE_TRUCK_MEW_COMPLETE
 	setflag FLAG_HIDE_STATIC_SS_ANNE_TRUCK_MEW
 	removeobject LOCALID_SS_ANNE_TRUCK_MEW
-	release
-	end
-
-SSAnne_Exterior_EventScript_TruckMewEscapedBattle::
 	release
 	end
 
