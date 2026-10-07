@@ -2,6 +2,6 @@ SSAnne_B1F_Room2_MapScripts::
 	.byte 0
 
 SSAnne_B1F_Room2_EventScript_Huey::
-	trainerbattle_single TRAINER_SAILOR_HUEY, SSAnne_B1F_Room2_Text_HueyIntro, SSAnne_B1F_Room2_Text_HueyDefeat
+	trainerbattle_double TRAINER_SAILOR_HUEY, SSAnne_B1F_Room2_Text_HueyIntro, SSAnne_B1F_Room2_Text_HueyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SSAnne_B1F_Room2_Text_HueyPostBattle, MSGBOX_AUTOCLOSE
 	end
