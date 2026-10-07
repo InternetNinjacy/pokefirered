@@ -28,3 +28,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SamRoute24CamperShane[] 
 
 // Batch 9 Cinnabar / Seafoam reconciliation uses the same non-invasive overlay path.
 #include "sam_batch9_cinnabar_seafoam_trainer_remaps.h"
+
+// ST-IMP-07 Routes 16-18 / Cycling Road.
+#include "sam_batch7_cycling_road_trainer_remaps.h"
