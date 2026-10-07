@@ -7,7 +7,7 @@ RockTunnel_B1F_EventScript_Sofia::
 	end
 
 RockTunnel_B1F_EventScript_Martha::
-	trainerbattle_single TRAINER_PICNICKER_MARTHA, RockTunnel_B1F_Text_MarthaIntro, RockTunnel_B1F_Text_MarthaDefeat
+	trainerbattle_double TRAINER_PICNICKER_MARTHA, RockTunnel_B1F_Text_MarthaIntro, RockTunnel_B1F_Text_MarthaDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox RockTunnel_B1F_Text_MarthaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -22,17 +22,17 @@ RockTunnel_B1F_EventScript_Allen::
 	end
 
 RockTunnel_B1F_EventScript_Eric::
-	trainerbattle_single TRAINER_HIKER_ERIC, RockTunnel_B1F_Text_EricIntro, RockTunnel_B1F_Text_EricDefeat
+	trainerbattle_double TRAINER_HIKER_ERIC, RockTunnel_B1F_Text_EricIntro, RockTunnel_B1F_Text_EricDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox RockTunnel_B1F_Text_EricPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 RockTunnel_B1F_EventScript_Cooper::
-	trainerbattle_single TRAINER_POKEMANIAC_COOPER, RockTunnel_B1F_Text_CooperIntro, RockTunnel_B1F_Text_CooperDefeat
+	trainerbattle_double TRAINER_POKEMANIAC_COOPER, RockTunnel_B1F_Text_CooperIntro, RockTunnel_B1F_Text_CooperDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox RockTunnel_B1F_Text_CooperPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 RockTunnel_B1F_EventScript_Steve::
-	trainerbattle_single TRAINER_POKEMANIAC_STEVE, RockTunnel_B1F_Text_SteveIntro, RockTunnel_B1F_Text_SteveDefeat
+	trainerbattle_double TRAINER_POKEMANIAC_STEVE, RockTunnel_B1F_Text_SteveIntro, RockTunnel_B1F_Text_SteveDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox RockTunnel_B1F_Text_StevePostBattle, MSGBOX_AUTOCLOSE
 	end
 
