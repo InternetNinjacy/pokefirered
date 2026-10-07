@@ -1,5 +1,5 @@
 CeruleanCity_House2_MapScripts::
-	map_script MAP_SCRIPT_ON_FRAME, CeruleanCity_House2_OnFrame
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, CeruleanCity_House2_OnFrame
 	.byte 0
 
 CeruleanCity_House2_OnFrame::
