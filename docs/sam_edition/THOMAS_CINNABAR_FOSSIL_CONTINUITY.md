@@ -60,3 +60,10 @@ NG+ review: NewGameInitData clears SaveBlock1 and InitEventData resets ordinary 
 Existing Mt. Moon actual-helper tests pass; six trainer records, traits, unrelated maps, fossil scientist/researcher/Protector scripts and Mansion progression preserved. Map/local-ID generation, text preprocessing, text pixel-width checks, flag collision audit and `git diff --check` passed. Full compile/link/symbol checks passed in final seven-variant CI run `37663794925` before PR #298 merged at `aa3d3859d44aeb2b27334a5eda08b9b683733e82`. Assembled-ROM gameplay and real movement/save-load testing remain deferred.
 
 Current native records should carry the RIV-016 Cinnabar Lab partial-closure checkpoint and this precise remaining blocker. Older missing-Lab/missing-exact-fossil-set assertions are superseded by this audit, while prior dated production checkpoints remain provenance.
+
+
+## Thread 02 — Mansion authority re-audit (7933d29450eec22655e2a98821e28153733d2569)
+
+A fresh current-production and Drive-authority reconciliation found **no new gameplay-safe Mansion delta** after PR #299. The October 6 reopening still requires Thomas's evolved stolen fossil to debut in the Pokémon Mansion battle, while the current protected trainer 788 remains a full six-member Single roster with no fossil or Gengar. No newer specialist authority identifies the fossil replacement slot/separate package, current Gengar package, Single-versus-Double/starter architecture, or resulting Mansion dialogue/Lab-ordering rule.
+
+Classification remains **B, partially specified**. `BLK-THOMAS-FOSSIL` remains **PARTIAL / Mansion blocked**; the completed Lab slice is not reopened. No trainer, party, map, dialogue, flag, variable, fossil inventory, or battle code is changed by this audit. Exact handoff: [THOMAS_MANSION_FOSSIL_BATTLE_AUTHORITY_AUDIT.md](THOMAS_MANSION_FOSSIL_BATTLE_AUTHORITY_AUDIT.md).
