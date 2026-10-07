@@ -20,6 +20,8 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
+#include "constants/opponents.h"
+#include "constants/trainers.h"
 
 static void OpponentHandleGetMonData(void);
 static void OpponentHandleGetRawMonData(void);
@@ -30,6 +32,7 @@ static void OpponentHandleSwitchInAnim(void);
 static void OpponentHandleReturnMonToBall(void);
 static void OpponentHandleDrawTrainerPic(void);
 static void OpponentHandleTrainerSlide(void);
+static u32 GetGreenDefeatTrainerPic(u16 trainerId);
 static void OpponentHandleTrainerSlideBack(void);
 static void OpponentHandleFaintAnimation(void);
 static void OpponentHandlePaletteFade(void);
@@ -1146,6 +1149,23 @@ static void OpponentHandleDrawTrainerPic(void)
     gSprites[gBattlerSpriteIds[gActiveBattler]].oam.affineParam = trainerPicId;
     gSprites[gBattlerSpriteIds[gActiveBattler]].callback = SpriteCB_TrainerSlideIn;
     gBattlerControllerFuncs[gActiveBattler] = CompleteOnBattlerSpriteCallbackDummy;
+}
+
+
+static u32 GetGreenDefeatTrainerPic(u16 trainerId)
+{
+    switch (trainerId)
+    {
+    case TRAINER_GREEN_CHAMPION_DITTO:
+    case TRAINER_GREEN_CHAMPION_ESPEON:
+    case TRAINER_GREEN_CHAMPION_RAICHU:
+    case TRAINER_GREEN_POSTGAME_DITTO:
+    case TRAINER_GREEN_POSTGAME_ESPEON:
+    case TRAINER_GREEN_POSTGAME_RAICHU:
+        return TRAINER_PIC_GREEN_LEAGUE_DEFEAT;
+    default:
+        return gTrainers[trainerId].trainerPic;
+    }
 }
 
 static void OpponentHandleTrainerSlide(void)

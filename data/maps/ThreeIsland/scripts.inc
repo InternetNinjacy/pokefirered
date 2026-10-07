@@ -405,6 +405,7 @@ ThreeIsland_EventScript_Green::
 	lock
 	setvar VAR_LAST_TALKED, LOCALID_THREE_ISLAND_GREEN
 	faceplayer
+	msgbox ThreeIsland_Text_GreenOpening
 	playbgm MUS_ENCOUNTER_RIVAL, 0
 	goto_if_eq VAR_STARTER_MON, 0, ThreeIsland_EventScript_GreenRaichu
 	goto_if_eq VAR_STARTER_MON, 1, ThreeIsland_EventScript_GreenDitto
@@ -426,6 +427,16 @@ ThreeIsland_EventScript_GreenWon::
 	fadedefaultbgm
 	release
 	end
+
+ThreeIsland_Text_GreenOpening::
+	.string "I found the sixth one. Funny thing\n"
+	.string "is, I stopped looking for a sixth\l"
+	.string "POKéMON.\p"
+	.string "I started looking for one that\n"
+	.string "made the other five better. That\l"
+	.string "changed everything.\p"
+	.string "This is the first time the team\n"
+	.string "feels complete. See if you agree.$"
 
 ThreeIsland_Text_GreenDefeat::
 	.string "You still found one.$"

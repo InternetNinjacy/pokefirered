@@ -158,6 +158,7 @@ FuchsiaCity_EventScript_Green::
 	lock
 	faceplayer
 	goto_if_set FLAG_GREEN_FUCHSIA_ATTEMPTED, FuchsiaCity_EventScript_GreenRetryText
+	msgbox FuchsiaCity_Text_GreenOpening
 	goto FuchsiaCity_EventScript_GreenBattleEntry
 
 FuchsiaCity_EventScript_GreenRetryText::
@@ -180,16 +181,32 @@ FuchsiaCity_EventScript_GreenRaichu::
 	trainerbattle_no_intro TRAINER_GREEN_FUCHSIA_RAICHU, FuchsiaCity_Text_GreenDefeat
 	goto FuchsiaCity_EventScript_GreenWon
 FuchsiaCity_EventScript_GreenWon::
-	@ Opening/post prose is descriptive rather than verbatim in Green Decision Record v1.0.
-	@ Do not invent final dialogue; resolve the mandatory battle state only.
+	msgbox FuchsiaCity_Text_GreenPost
+	closemessage
 	setflag FLAG_TEMP_11
 	removeobject LOCALID_FUCHSIA_GREEN
 	fadedefaultbgm
 	release
 	end
 
+FuchsiaCity_Text_GreenOpening::
+	.string "Five feels different. I don't have\n"
+	.string "to leave a bad matchup in just\l"
+	.string "because it started there.\p"
+	.string "I can switch and make you answer\n"
+	.string "instead.\p"
+	.string "So catch me making the wrong\n"
+	.string "switch, {PLAYER}. I know you will\l"
+	.string "if I give you one.$"
+
 FuchsiaCity_Text_GreenDefeat::
 	.string "Yep. You caught me.$"
+
+FuchsiaCity_Text_GreenPost::
+	.string "Having an answer isn't enough if\n"
+	.string "I use it at the wrong time.\p"
+	.string "I had the matchups. You caught the\n"
+	.string "timing. That's what I need to fix.$"
 
 FuchsiaCity_Text_GreenRetry::
 	.string "Next time I want six. Then there\n"
