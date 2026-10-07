@@ -96,63 +96,6 @@ CeladonCity_Gym_Text_NoraPostBattle::
     .string "powder, light response, special attacks...\l"
     .string "There is always another variable to study.$"
 
-CeladonCity_Gym_Text_KayDefeat::
-    .string "You're too rough!$"
-
-CeladonCity_Gym_Text_KayPostBattle::
-    .string "Bleaah!\n"
-    .string "I hope ERIKA wipes you out!$"
-
-CeladonCity_Gym_Text_BridgetDefeat::
-    .string "My makeup!$"
-
-CeladonCity_Gym_Text_BridgetPostBattle::
-    .string "GRASS-type POKéMON are tough\n"
-    .string "against the WATER type.\p"
-    .string "They also have an edge on ROCK-\n"
-    .string "and GROUND-type POKéMON.$"
-
-CeladonCity_Gym_Text_TinaDefeat::
-    .string "You're an eye-opener!$"
-
-CeladonCity_Gym_Text_TinaPostBattle::
-    .string "Oh, you were looking at ERIKA…\n"
-    .string "You weren't looking at me…$"
-
-CeladonCity_Gym_Text_TamiaDefeat::
-    .string "No!$"
-
-CeladonCity_Gym_Text_TamiaPostBattle::
-    .string "We only use GRASS-type POKéMON at\n"
-    .string "our GYM.\p"
-    .string "Why? We also use them for making\n"
-    .string "flower arrangements!$"
-
-CeladonCity_Gym_Text_LisaDefeat::
-    .string "Oh!\n"
-    .string "You!$"
-
-CeladonCity_Gym_Text_LisaPostBattle::
-    .string "Our LEADER ERIKA might be quiet,\n"
-    .string "but she's famous around here.$"
-
-CeladonCity_Gym_Text_LoriDefeat::
-    .string "Oh!\n"
-    .string "Splendid!$"
-
-CeladonCity_Gym_Text_LoriPostBattle::
-    .string "I have a blind date coming up.\n"
-    .string "I have to learn to be polite,\l"
-    .string "especially if I have to battle.$"
-
-CeladonCity_Gym_Text_MaryDefeat::
-    .string "Oh!\n"
-    .string "Beaten!$"
-
-CeladonCity_Gym_Text_MaryPostBattle::
-    .string "I didn't bring my best POKéMON.\n"
-    .string "Wait until next time!$"
-
 CeladonCity_Gym_Text_GymRouteInfo::
     .string "CELADON BUG RESEARCH GYM\p"
     .string "FIELD RESEARCH is to the left.\n"
@@ -163,14 +106,24 @@ CeladonCity_Gym_Text_GymRouteInfo::
     .string "Battling the researchers is always valid.$"
 
 CeladonCity_Gym_Text_FieldRouteSign::
-    .string "FIELD RESEARCH\p"
-    .string "Physical behavior / Combat adaptation /\n"
-    .string "Natural habitat study.$"
+    .string "FIELD RESEARCH - PINSIR HABITAT\n"
+    .string "OBSERVATION\p"
+    .string "Route the resident PINSIR to its feeding\n"
+    .string "site. Observe the habitat notes.\p"
+    .string "Set all three environmental selectors,\n"
+    .string "then activate the OBSERVE switch.\p"
+    .string "Incorrect routes may be attempted again\n"
+    .string "without penalty.$"
 
 CeladonCity_Gym_Text_LabRouteSign::
-    .string "LABORATORY RESEARCH\p"
-    .string "Special adaptation / Behavioral response /\n"
-    .string "Controlled observation.$"
+    .string "LABORATORY RESEARCH - VENOMOTH\n"
+    .string "RESPONSE TRIAL\p"
+    .string "Route the resident VENOMOTH to its\n"
+    .string "observation perch. Review the notes.\p"
+    .string "Set all three environmental selectors,\n"
+    .string "then activate the OBSERVE switch.\p"
+    .string "Incorrect trials may be repeated without\n"
+    .string "penalty.$"
 
 CeladonCity_Gym_Text_PinsirSubject::
     .string "A resident PINSIR waits for the habitat\n"
