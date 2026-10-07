@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sam_thomas.h"
 #include "gflib.h"
 #include "battle.h"
 #include "battle_anim.h"
@@ -1813,6 +1814,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
             ApplyGreenCompetitiveData(&party[i], trainerNum, i);
         }
 
+        ApplyThomasMtMoonStarterBranch(party, trainerNum);
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
     }
 
@@ -2460,6 +2462,8 @@ static void BattleStartClearSetData(void)
     gBattleScripting.animTargetsHit = 0;
     gLeveledUpInBattle = 0;
     gAbsentBattlerFlags = 0;
+    if (IsThomasOneMonDoubleBattle())
+        gAbsentBattlerFlags = gBitTable[GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)];
     gBattleStruct->runTries = 0;
     gBattleStruct->safariRockThrowCounter = 0;
     gBattleStruct->safariBaitThrowCounter = 0;
@@ -2744,6 +2748,11 @@ static void BattleIntroDrawTrainersOrMonsSprites(void)
 
     for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
     {
+        if (gAbsentBattlerFlags & gBitTable[gActiveBattler])
+        {
+            memset(&gBattleMons[gActiveBattler], 0, sizeof(struct BattlePokemon));
+            continue;
+        }
         if ((gBattleTypeFlags & BATTLE_TYPE_SAFARI)
             && GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
         {

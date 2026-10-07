@@ -211,6 +211,20 @@ static const struct TrainerMonItemCustomMoves sParty_ThomasViridian[] = {
     },
 };
 
+// Mt. Moon uses stock trainer generation for unspecified IV/nature traits.
+static const struct TrainerMonItemCustomMoves sParty_ThomasMtMoon[] = {
+    {
+        .iv = 0, .lvl = 16, .species = SPECIES_GASTLY,
+        .heldItem = ITEM_NONE,
+        .moves = {MOVE_HYPNOSIS, MOVE_CURSE, MOVE_THIEF, MOVE_LICK},
+    },
+    {
+        .iv = 0, .lvl = 15, .species = SPECIES_CHANSEY,
+        .heldItem = ITEM_SITRUS_BERRY,
+        .moves = {MOVE_SEISMIC_TOSS, MOVE_SOFT_BOILED, MOVE_THUNDER_WAVE, MOVE_LIGHT_SCREEN},
+    },
+};
+
 #undef THOMAS_IV_TIER_22
 #undef THOMAS_IV_TIER_24
 #undef THOMAS_IV_TIER_31
