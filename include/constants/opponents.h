@@ -782,11 +782,41 @@
 #define TRAINER_LEADER_BAZ_REMATCH                768
 #define TRAINER_LEADER_SABRINA_REMATCH            769
 
+
+// Green rival central allocations: 820-846. 800-819 remains rival/Blue headroom.
+#define TRAINER_GREEN_OAK_DITTO                820
+#define TRAINER_GREEN_OAK_ESPEON               821
+#define TRAINER_GREEN_OAK_RAICHU               822
+#define TRAINER_GREEN_SS_ANNE_DITTO            823
+#define TRAINER_GREEN_SS_ANNE_ESPEON           824
+#define TRAINER_GREEN_SS_ANNE_RAICHU           825
+#define TRAINER_GREEN_CELADON_DITTO            826
+#define TRAINER_GREEN_CELADON_ESPEON           827
+#define TRAINER_GREEN_CELADON_RAICHU           828
+#define TRAINER_GREEN_FUCHSIA_DITTO            829
+#define TRAINER_GREEN_FUCHSIA_ESPEON           830
+#define TRAINER_GREEN_FUCHSIA_RAICHU           831
+#define TRAINER_GREEN_SAFFRON_DITTO            832
+#define TRAINER_GREEN_SAFFRON_ESPEON           833
+#define TRAINER_GREEN_SAFFRON_RAICHU           834
+#define TRAINER_GREEN_THREE_ISLAND_DITTO       835
+#define TRAINER_GREEN_THREE_ISLAND_ESPEON      836
+#define TRAINER_GREEN_THREE_ISLAND_RAICHU      837
+#define TRAINER_GREEN_VIRIDIAN_DITTO           838
+#define TRAINER_GREEN_VIRIDIAN_ESPEON          839
+#define TRAINER_GREEN_VIRIDIAN_RAICHU          840
+#define TRAINER_GREEN_CHAMPION_DITTO           841
+#define TRAINER_GREEN_CHAMPION_ESPEON          842
+#define TRAINER_GREEN_CHAMPION_RAICHU          843
+#define TRAINER_GREEN_POSTGAME_DITTO           844
+#define TRAINER_GREEN_POSTGAME_ESPEON          845
+#define TRAINER_GREEN_POSTGAME_RAICHU          846
+
 // Sam Edition expands trainer defeat-flag capacity to 1024 records.
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             770
+#define NUM_TRAINERS                             847
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H

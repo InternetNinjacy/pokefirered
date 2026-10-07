@@ -300,6 +300,7 @@ const union AnimCmd *const gAnims_MonPic[] =
 
 #include "data/trainer_parties.h"
 #include "data/sam_satoshi_trainer_parties.h"
+#include "data/sam_green_trainer_parties.h"
 #include "data/sam_hothouse_trainer_parties.h"
 #include "data/text/trainer_class_names.h"
 
