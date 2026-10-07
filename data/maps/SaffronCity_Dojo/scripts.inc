@@ -22,6 +22,9 @@ EventScript_Sam_Hothouse_EntryPlaque::
 	msgbox SaffronCity_Dojo_Text_HothousePlaque, MSGBOX_SIGN
 	end
 
+EventScript_Sam_Hothouse_Tropius::
+	end
+
 EventScript_Sam_Hothouse_Hawthorne::
 	lock
 	faceplayer
