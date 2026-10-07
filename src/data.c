@@ -305,6 +305,7 @@ const union AnimCmd *const gAnims_MonPic[] =
 #include "data/sam_hothouse_trainer_parties.h"
 #include "data/sam_green_trainer_parties.h"
 #include "data/sam_route4_blue_green_parties.h"
+#include "data/sam_thomas_trainer_parties.h"
 #include "data/text/trainer_class_names.h"
 
 // The Hothouse reuses five otherwise-dormant Ruby/Sapphire trainer slots.

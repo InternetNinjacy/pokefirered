@@ -129,4 +129,17 @@
 #define CONNECTION_DIVE     5
 #define CONNECTION_EMERGE   6
 
+// Sam Edition Thomas rival persistent-state contract.
+// Numeric slots are centrally allocated in the Programming Readiness Registry.
+#define VAR_THOMAS_ARC_STAGE          0x40A1
+
+#define THOMAS_ARC_UNSEEN             0
+#define THOMAS_ARC_RECRUITED          1
+#define THOMAS_ARC_CELADON_CLEARED    2
+#define THOMAS_ARC_LAVENDER_CLEARED   3
+#define THOMAS_ARC_SILPH_CLEARED      4
+#define THOMAS_ARC_CINNABAR_CLEARED   5
+#define THOMAS_ARC_QUIT_ROCKET        6
+#define THOMAS_ARC_EPILOGUE_COMPLETE  7
+
 #endif //GUARD_CONSTANTS_GLOBAL_H
