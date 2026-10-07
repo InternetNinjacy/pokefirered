@@ -2091,7 +2091,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                         toCpy = gStringVar4;
                     }
                     else if (gTrainerBattleOpponent_A >= TRAINER_GREEN_OAK_DITTO
-                          && gTrainerBattleOpponent_A <= TRAINER_GREEN_POSTGAME_RAICHU)
+                          && gTrainerBattleOpponent_A <= TRAINER_GREEN_VIRIDIAN_RAICHU)
                         toCpy = gSaveBlock1Ptr->samEdition.greenName;
                     else if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_EARLY
                           || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_LATE
