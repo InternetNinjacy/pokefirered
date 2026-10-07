@@ -1,3 +1,22 @@
+# RIV-016E — explicit continuation beyond the PR #302 Mansion closure
+
+PR #302 remains the authoritative Cinnabar implementation. A newer explicit instruction changes only the duration of the team substitution: the fossil replacement is not Cinnabar-only.
+
+From Cinnabar Mansion onward, Thomas's stolen fossil permanently replaces the Seadra lineage in his active battle team. Therefore the existing Viridian Kingdra sixth slot is also replaced on the normal story path by the same Mt. Moon branch.
+
+Viridian contract:
+- trainer 789 remains Single;
+- no Gengar;
+- first five current members unchanged;
+- state 3 / Dome stolen -> Kabutops Lv52 @ Mystic Water, Rock Slide / Brick Break / Water Pulse / Protect;
+- state 4 / Helix stolen -> Omastar Lv52 @ Mystic Water, Hydro Pump / Ice Beam / AncientPower / Protect;
+- preserve Lv52 / IV-tier-24 sixth-slot difficulty and generated identity;
+- preserve current Doll handoff, quit-Rocket transition, Giovanni routing and seven-battle cadence.
+
+This is a bounded follow-up to the completed Mansion work, not a reopening of the old Gengar/Double architecture.
+
+---
+
 # RIV-016D / Thread 03 — final Mansion fossil battle closure
 
 This section supersedes the Thread 02 blocked disposition below while retaining that audit as provenance.
