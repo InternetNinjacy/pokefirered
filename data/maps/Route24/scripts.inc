@@ -91,6 +91,8 @@ Route24_EventScript_ThomasBattle::
 	call Thomas_EventScript_NuggetPreBattle
 	trainerbattle_no_intro TRAINER_THOMAS_NUGGET_BRIDGE, Thomas_Text_NuggetDefeat
 	call EventScript_ThomasSetRecruited
+	setvar VAR_0x8004, ROCKET_EVIDENCE_DELIVERY_04
+	callnative Script_SamRocketRecordEvidence
 	removeobject LOCALID_ROUTE24_THOMAS
 	msgbox Route24_Text_YoudBecomeTopRocketLeader
 	setvar VAR_MAP_SCENE_ROUTE24, 1
