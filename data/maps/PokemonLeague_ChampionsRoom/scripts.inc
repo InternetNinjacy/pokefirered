@@ -224,3 +224,131 @@ PokemonLeague_ChampionsRoom_Movement_RivalWatchOakEnter::
 	delay_16
 	walk_in_place_faster_left
 	step_end
+
+@ Pokémon: Sam Edition — Green Champion-owned package.
+@ League room/order integration is intentionally left to the League placement chunk.
+PokemonLeague_ChampionsRoom_EventScript_GreenFirstBattle::
+	goto_if_set FLAG_GREEN_CHAMPION_REVEALED, PokemonLeague_ChampionsRoom_EventScript_GreenRepeatBattle
+	setflag FLAG_GREEN_CHAMPION_REVEALED
+	playbgm MUS_VS_CHAMPION, 0
+	msgbox PokemonLeague_ChampionsRoom_Text_GreenReveal
+	goto PokemonLeague_ChampionsRoom_EventScript_GreenChampionBranch
+
+PokemonLeague_ChampionsRoom_EventScript_GreenRepeatBattle::
+	playbgm MUS_VS_CHAMPION, 0
+	msgbox PokemonLeague_ChampionsRoom_Text_GreenRepeat
+	goto PokemonLeague_ChampionsRoom_EventScript_GreenChampionBranch
+
+PokemonLeague_ChampionsRoom_EventScript_GreenChampionBranch::
+	goto_if_eq VAR_STARTER_MON, 0, PokemonLeague_ChampionsRoom_EventScript_GreenChampionRaichu
+	goto_if_eq VAR_STARTER_MON, 1, PokemonLeague_ChampionsRoom_EventScript_GreenChampionDitto
+	goto PokemonLeague_ChampionsRoom_EventScript_GreenChampionEspeon
+
+PokemonLeague_ChampionsRoom_EventScript_GreenChampionDitto::
+	trainerbattle_no_intro TRAINER_GREEN_CHAMPION_DITTO, PokemonLeague_ChampionsRoom_Text_GreenDefeat
+	goto PokemonLeague_ChampionsRoom_EventScript_GreenChampionWon
+PokemonLeague_ChampionsRoom_EventScript_GreenChampionEspeon::
+	trainerbattle_no_intro TRAINER_GREEN_CHAMPION_ESPEON, PokemonLeague_ChampionsRoom_Text_GreenDefeat
+	goto PokemonLeague_ChampionsRoom_EventScript_GreenChampionWon
+PokemonLeague_ChampionsRoom_EventScript_GreenChampionRaichu::
+	trainerbattle_no_intro TRAINER_GREEN_CHAMPION_RAICHU, PokemonLeague_ChampionsRoom_Text_GreenDefeat
+	goto PokemonLeague_ChampionsRoom_EventScript_GreenChampionWon
+
+PokemonLeague_ChampionsRoom_EventScript_GreenChampionWon::
+	msgbox PokemonLeague_ChampionsRoom_Text_GreenPost
+	msgbox PokemonLeague_ChampionsRoom_Text_GreenFinal
+	return
+
+PokemonLeague_ChampionsRoom_EventScript_GreenTitleChallenge::
+	playbgm MUS_VS_CHAMPION, 0
+	goto_if_set FLAG_GREEN_TITLE_CHALLENGE_SEEN, PokemonLeague_ChampionsRoom_EventScript_GreenTitleRepeat
+	setflag FLAG_GREEN_TITLE_CHALLENGE_SEEN
+	msgbox PokemonLeague_ChampionsRoom_Text_GreenTitleFirst
+	goto PokemonLeague_ChampionsRoom_EventScript_GreenTitleBranch
+PokemonLeague_ChampionsRoom_EventScript_GreenTitleRepeat::
+	msgbox PokemonLeague_ChampionsRoom_Text_GreenTitleRepeat
+PokemonLeague_ChampionsRoom_EventScript_GreenTitleBranch::
+	goto_if_eq VAR_STARTER_MON, 0, PokemonLeague_ChampionsRoom_EventScript_GreenTitleRaichu
+	goto_if_eq VAR_STARTER_MON, 1, PokemonLeague_ChampionsRoom_EventScript_GreenTitleDitto
+	goto PokemonLeague_ChampionsRoom_EventScript_GreenTitleEspeon
+PokemonLeague_ChampionsRoom_EventScript_GreenTitleDitto::
+	trainerbattle_no_intro TRAINER_GREEN_POSTGAME_DITTO, PokemonLeague_ChampionsRoom_Text_GreenTitleDefeat
+	return
+PokemonLeague_ChampionsRoom_EventScript_GreenTitleEspeon::
+	trainerbattle_no_intro TRAINER_GREEN_POSTGAME_ESPEON, PokemonLeague_ChampionsRoom_Text_GreenTitleDefeat
+	return
+PokemonLeague_ChampionsRoom_EventScript_GreenTitleRaichu::
+	trainerbattle_no_intro TRAINER_GREEN_POSTGAME_RAICHU, PokemonLeague_ChampionsRoom_Text_GreenTitleDefeat
+	return
+
+PokemonLeague_ChampionsRoom_Text_GreenReveal::
+	.string "{PLAYER}?\p"
+	.string "You made it.\p"
+	.string "...Good. I was really hoping you\n"
+	.string "would.\p"
+	.string "I couldn't tell you what I was\n"
+	.string "doing. {RIVAL} couldn't either.\p"
+	.string "You've been helping me build this\n"
+	.string "team almost the whole way here,\l"
+	.string "whether you knew it or not.\p"
+	.string "Every time you found a weakness, I\n"
+	.string "fixed it. Every time you surprised\l"
+	.string "me, I learned something.\p"
+	.string "Eventually I stopped looking for\n"
+	.string "different POKéMON. I had the right\l"
+	.string "six. I just needed to get better\l"
+	.string "at using them.\p"
+	.string "And I got here first.\p"
+	.string "So if you want to be CHAMPION...\n"
+	.string "you have to beat the team you\l"
+	.string "helped me build.\p"
+	.string "No more tests, {PLAYER}.\p"
+	.string "This one counts.$"
+
+PokemonLeague_ChampionsRoom_Text_GreenRepeat::
+	.string "Back again. Good. Neither of us\n"
+	.string "needs another speech. Show me what\l"
+	.string "you changed.$"
+
+PokemonLeague_ChampionsRoom_Text_GreenDefeat::
+	.string "...You did it.$"
+
+PokemonLeague_ChampionsRoom_Text_GreenPost::
+	.string "I kept trying to build a team with\n"
+	.string "no weak points.\p"
+	.string "But there's always another decision.\n"
+	.string "Another switch. Another move you\l"
+	.string "could have made instead.\p"
+	.string "Today, you made the better ones.\p"
+	.string "And after everything we've thrown\n"
+	.string "at each other...\p"
+	.string "I think this is exactly how it\n"
+	.string "should end.\p"
+	.string "Congratulations, {PLAYER}.\p"
+	.string "You're the CHAMPION.$"
+
+PokemonLeague_ChampionsRoom_Text_GreenFinal::
+	.string "Go on. You earned this.$"
+
+PokemonLeague_ChampionsRoom_Text_GreenTitleFirst::
+	.string "There you are.\p"
+	.string "I was hoping you'd make another run\n"
+	.string "through the LEAGUE.\p"
+	.string "You're still the CHAMPION. I haven't\n"
+	.string "forgotten.\p"
+	.string "But I've had a lot of time to think\n"
+	.string "about our last battle.\p"
+	.string "And now that I finally caught you\n"
+	.string "here...\p"
+	.string "I want another shot at the title.\p"
+	.string "CHAMPION versus challenger.\p"
+	.string "Ready, {PLAYER}?$"
+
+PokemonLeague_ChampionsRoom_Text_GreenTitleRepeat::
+	.string "Back again? Good.\p"
+	.string "You know what I want.\p"
+	.string "Put the title on the line.$"
+
+PokemonLeague_ChampionsRoom_Text_GreenTitleDefeat::
+	.string "Still yours.\p"
+	.string "...I'm getting closer, though.$"
