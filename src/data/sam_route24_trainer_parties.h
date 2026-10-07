@@ -31,3 +31,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SamRoute24CamperShane[] 
 
 // ST-IMP-07 Routes 16-18 / Cycling Road.
 #include "sam_batch7_cycling_road_trainer_remaps.h"
+
+// ST-IMP-12 One Island first-visit ordinary trainers.
+#include "sam_batch12_one_island_trainer_remaps.h"
