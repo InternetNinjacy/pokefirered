@@ -292,14 +292,13 @@ SaffronCity_Gym_Text_SatoshiPostgamePending::
     .string "The rematch team itself is ready.$"
 
 SaffronCity_Gym_Text_GymStatue::
-    .string "SAFFRON POKéMON GYM\n"
+    .string "SAFFRON CITY POKéMON GYM\n"
     .string "LEADER: SABRINA\p"
-    .string "WINNING TRAINERS:\n"
-    .string "{RIVAL}$"
+    .string "Certified Trainers:$"
 
 SaffronCity_Gym_Text_GymStatuePlayerWon::
-    .string "SAFFRON POKéMON GYM\n"
+    .string "SAFFRON CITY POKéMON GYM\n"
     .string "LEADER: SABRINA\p"
-    .string "WINNING TRAINERS:\n"
-    .string "{RIVAL}, {PLAYER}$"
+    .string "Certified Trainers:\n"
+    .string "{PLAYER}$"
 
