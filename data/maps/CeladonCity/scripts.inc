@@ -103,7 +103,7 @@ CeladonCity_EventScript_GameCornerSign::
 	msgbox CeladonCity_Text_GameCornerSign, MSGBOX_SIGN
 	end
 
-@ Pokémon: Sam Edition — Green Celadon checkpoint.
+@ Pokémon: Sam Edition ,  Green Celadon checkpoint.
 CeladonCity_EventScript_UpdateGreen::
 	setflag FLAG_TEMP_11
 	goto_if_unset FLAG_DEFEATED_ERIKA, EventScript_Return
@@ -162,7 +162,7 @@ CeladonCity_Text_GreenOpening::
 	.string "were the answer. They're not.\p"
 	.string "What you teach them matters. What\n"
 	.string "you give them matters.\p"
-	.string "I changed a lot. Come on—tell me\n"
+	.string "I changed a lot. Come on, tell me\n"
 	.string "if I changed the right things.$"
 
 CeladonCity_Text_GreenDefeat::
