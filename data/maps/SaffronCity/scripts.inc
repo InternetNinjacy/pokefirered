@@ -143,6 +143,14 @@ SaffronCity_EventScript_ShowGreen::
 SaffronCity_EventScript_Green::
 	lock
 	faceplayer
+	goto_if_set FLAG_GREEN_SAFFRON_ATTEMPTED, SaffronCity_EventScript_GreenRetryText
+	goto SaffronCity_EventScript_GreenBattleEntry
+
+SaffronCity_EventScript_GreenRetryText::
+	msgbox SaffronCity_Text_GreenRetry
+
+SaffronCity_EventScript_GreenBattleEntry::
+	setflag FLAG_GREEN_SAFFRON_ATTEMPTED
 	setvar VAR_LAST_TALKED, LOCALID_SAFFRON_GREEN
 	playbgm MUS_ENCOUNTER_RIVAL, 0
 	goto_if_eq VAR_STARTER_MON, 0, SaffronCity_EventScript_GreenRaichu
@@ -168,3 +176,7 @@ SaffronCity_EventScript_GreenWon::
 
 SaffronCity_Text_GreenDefeat::
 	.string "There it is.$"
+
+SaffronCity_Text_GreenRetry::
+	.string "I'm not filling that sixth slot\n"
+	.string "until I'm sure.$"
