@@ -1,3 +1,31 @@
+# RIV-016D / Thread 03 — final Mansion fossil battle closure
+
+This section supersedes the Thread 02 blocked disposition below while retaining that audit as provenance.
+
+Explicit Thread 02 authority closed the four audited decisions:
+- **Roster:** preserve the current six-member Cinnabar package, replacing only Seadra for this battle with Thomas's evolved stolen fossil.
+- **Gengar:** absent.
+- **Format:** Single Battle, existing trainer 788.
+- **Lab/dialogue:** the PR #298 Lab preview remains optional; preserve the current Mansion dialogue without inventing a fossil callback.
+
+Implementation PR: **#302**.
+Reconciled production base: `8e39d49b2a8ef505fc37e904e96e5b366be8461a`.
+Working branch: `sam/riv-016d-cinnabar-fossil-battle`.
+
+The existing trainer record and static party remain registered exactly once. During enemy-party construction, trainer 788 alone replaces party slot 4 from durable `VAR_MAP_SCENE_MT_MOON_B2F` provenance:
+- state 3 / Dome stolen -> **Kabutops Lv45 @ Mystic Water**, Rock Slide / Brick Break / Water Pulse / Protect;
+- state 4 / Helix stolen -> **Omastar Lv45 @ Mystic Water**, Surf / Ice Beam / AncientPower / Protect.
+
+The replacement inherits the protected Seadra slot's IV tier (24); no fossil-specific nature, ability, new trainer ID, flag, variable, item grant, or inventory transaction is introduced. Invalid/debug theft states leave the protected baseline slot unchanged rather than inventing a branch.
+
+Existing Mansion event semantics are retained: Thomas is visible at arc stage 4, the Single Battle is retryable after loss because the stage is not advanced, and only victory falls through to `EventScript_ThomasSetCinnabarCleared`, hides the Mansion actor, advances to stage 5, and exposes the Viridian encounter. Lab completion is not checked by the Mansion battle.
+
+**Final RIV-016 status:** COMPLETE after PR #302 merges and required CI passes.  
+**BLK-THOMAS-FOSSIL:** CLOSED.  
+Full assembled-ROM gameplay testing remains deferred under project policy.
+
+---
+
 # RIV-016 / Thread 02 — Thomas Mansion fossil battle authority audit
 
 Starting production: `7933d29450eec22655e2a98821e28153733d2569`.
