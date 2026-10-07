@@ -1140,6 +1140,15 @@ static void Task_ShiftMon(u8 taskId)
     switch (gStorage->state)
     {
     case 0:
+        if (sInPartyMenu
+            && VarGet(VAR_SAM_GAME_MODE) == 1
+            && GetMonData(&gStorage->movingMon, MON_DATA_SAM_PERMANENT_DEAD))
+        {
+            PrintStorageMessage(MSG_PERMANENT_DEAD);
+            gStorage->state = 2;
+            break;
+        }
+
         SetPokeStorageQuestLogEvent(0);
         InitMonPlaceChange(CHANGE_SHIFT);
         gStorage->state++;
@@ -1148,6 +1157,13 @@ static void Task_ShiftMon(u8 taskId)
         if (!DoMonPlaceChange())
         {
             StartDisplayMonMosaic();
+            SetPokeStorageTask(Task_PokeStorageMain);
+        }
+        break;
+    case 2:
+        if (JOY_NEW(A_BUTTON | B_BUTTON | DPAD_ANY))
+        {
+            ClearBottomWindow();
             SetPokeStorageTask(Task_PokeStorageMain);
         }
         break;
