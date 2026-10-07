@@ -848,6 +848,7 @@
 #define FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON    0x317
 #define FLAG_0x317               FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON
 #define FLAG_0x318               0x318
+#define FLAG_GYM1_TM55_RECEIVED             0x318
 #define FLAG_0x319               0x319
 #define FLAG_0x31A               0x31A
 #define FLAG_0x31B               0x31B
