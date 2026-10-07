@@ -220,3 +220,5 @@ ViridianCity_Gym_EventScript_GymStatuePostVictory::
 	msgbox ViridianCity_Gym_Text_GymStatuePlayerWon
 	releaseall
 	end
+
+	.include "data/maps/ViridianCity_Gym/thomas_epilogue.inc"
