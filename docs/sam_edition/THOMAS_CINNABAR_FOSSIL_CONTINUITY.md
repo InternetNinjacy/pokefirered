@@ -1,3 +1,23 @@
+# RIV-016E final production closure — PR #303
+
+The explicit continuation authority is now implemented and merged.
+
+PR #303 merged to `sam-edition-dev` at `eeea5bbc23d4ca70614180552220f317a286bc89` after CI `37675450935` passed all seven configured build variants.
+
+Current normal-story Thomas fossil continuity is now complete:
+- Mt. Moon provenance remains state 3 = Dome stolen / Kabutops, state 4 = Helix stolen / Omastar.
+- Cinnabar trainer 788 remains Single/no Gengar; Seadra slot becomes the Lv45 branch fossil exactly as PR #302 established.
+- Viridian trainer 789 remains Single/no Gengar; the normal-story Kingdra sixth slot becomes the same branch fossil at Lv52/IV24.
+- Kabutops Viridian set: Mystic Water; Rock Slide / Brick Break / Water Pulse / Protect.
+- Omastar Viridian set: Mystic Water; Hydro Pump / Ice Beam / AncientPower / Protect.
+- Lab remains optional/non-gating.
+- Viridian dialogue, Doll handoff, quit-Rocket transition and Giovanni routing are unchanged.
+- No eighth Thomas battle or new persistent resource exists.
+
+RIV-016: **COMPLETE**. BLK-THOMAS-FOSSIL: **CLOSED**. Older Cinnabar-only duration language below is historical provenance.
+
+---
+
 # RIV-016E — fossil continuation through Viridian
 
 Explicit October 7 authority supersedes the PR #302 **Cinnabar-only** limitation while preserving the rest of that closure.
