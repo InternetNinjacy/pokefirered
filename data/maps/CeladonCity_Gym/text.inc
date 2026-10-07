@@ -1,3 +1,5 @@
+.include "data/maps/CeladonCity_Gym/satoshi_text.inc"
+
 CeladonCity_Gym_Text_ErikaIntro::
     .string "My research concerns adaptation.\p"
     .string "Strength, speed, toxins, spores,\n"

@@ -104,6 +104,76 @@ CeladonCity_Gym_EventScript_Mary::
 	msgbox CeladonCity_Gym_Text_MaryPostBattle, MSGBOX_AUTOCLOSE
 	end
 
+CeladonCity_Gym_EventScript_Satoshi::
+	lock
+	faceplayer
+	satoshi_route_by_state CeladonCity_Gym_EventScript_SatoshiPostgameOffer, FLAG_BADGE04_GET, CeladonCity_Gym_EventScript_SatoshiPostBadge, FLAG_SATOSHI_CELADON_PRACTICE_WON, CeladonCity_Gym_EventScript_SatoshiRepeatHint
+	checktrainerflag TRAINER_SATOSHI_CELADON_PRACTICE
+	goto_if_eq VAR_RESULT, TRUE, CeladonCity_Gym_EventScript_SatoshiRetryOffer
+	msgbox CeladonCity_Gym_Text_SatoshiFirst, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, CeladonCity_Gym_EventScript_SatoshiAccept
+	msgbox CeladonCity_Gym_Text_SatoshiDecline
+	release
+	end
+
+CeladonCity_Gym_EventScript_SatoshiAccept::
+	msgbox CeladonCity_Gym_Text_SatoshiYes
+	cleartrainerflag TRAINER_SATOSHI_CELADON_PRACTICE
+	trainerbattle_earlyrival TRAINER_SATOSHI_CELADON_PRACTICE, RIVAL_BATTLE_HEAL_AFTER, CeladonCity_Gym_Text_SatoshiBattleDefeatEmpty, CeladonCity_Gym_Text_SatoshiLoss
+	goto_if_eq VAR_RESULT, TRUE, CeladonCity_Gym_EventScript_SatoshiRetryOffer
+	setflag FLAG_SATOSHI_CELADON_PRACTICE_WON
+	msgbox CeladonCity_Gym_Text_SatoshiWin
+	release
+	end
+
+CeladonCity_Gym_EventScript_SatoshiRetryOffer::
+	msgbox CeladonCity_Gym_Text_SatoshiRetry, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, CeladonCity_Gym_EventScript_SatoshiRetryYes
+	msgbox CeladonCity_Gym_Text_SatoshiRetryNo
+	release
+	end
+
+CeladonCity_Gym_EventScript_SatoshiRetryYes::
+	msgbox CeladonCity_Gym_Text_SatoshiRetryYes
+	cleartrainerflag TRAINER_SATOSHI_CELADON_PRACTICE
+	trainerbattle_earlyrival TRAINER_SATOSHI_CELADON_PRACTICE, RIVAL_BATTLE_HEAL_AFTER, CeladonCity_Gym_Text_SatoshiBattleDefeatEmpty, CeladonCity_Gym_Text_SatoshiLoss
+	goto_if_eq VAR_RESULT, TRUE, CeladonCity_Gym_EventScript_SatoshiRetryOffer
+	setflag FLAG_SATOSHI_CELADON_PRACTICE_WON
+	msgbox CeladonCity_Gym_Text_SatoshiWin
+	release
+	end
+
+CeladonCity_Gym_EventScript_SatoshiRepeatHint::
+	msgbox CeladonCity_Gym_Text_SatoshiRepeat
+	release
+	end
+
+CeladonCity_Gym_EventScript_SatoshiPostBadge::
+	goto_if_set FLAG_SATOSHI_CELADON_PRACTICE_WON, CeladonCity_Gym_EventScript_SatoshiPostBadgePracticed
+	msgbox CeladonCity_Gym_Text_SatoshiAfterSkipped
+	release
+	end
+
+CeladonCity_Gym_EventScript_SatoshiPostBadgePracticed::
+	msgbox CeladonCity_Gym_Text_SatoshiAfterPracticed
+	release
+	end
+
+CeladonCity_Gym_EventScript_SatoshiPostgameOffer::
+	msgbox CeladonCity_Gym_Text_SatoshiRematchOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, CeladonCity_Gym_EventScript_SatoshiRematch
+	msgbox CeladonCity_Gym_Text_SatoshiRematchDecline
+	release
+	end
+
+CeladonCity_Gym_EventScript_SatoshiRematch::
+	cleartrainerflag TRAINER_SATOSHI_CELADON_REMATCH
+	trainerbattle_single TRAINER_SATOSHI_CELADON_REMATCH, CeladonCity_Gym_Text_SatoshiRematchStart, CeladonCity_Gym_Text_SatoshiRematchDefeat
+	msgbox CeladonCity_Gym_Text_SatoshiRematchAfter
+	release
+	end
+
+
 CeladonCity_Gym_EventScript_GymStatue::
 	lockall
 	goto_if_set FLAG_BADGE04_GET, CeladonCity_Gym_EventScript_GymStatuePostVictory
