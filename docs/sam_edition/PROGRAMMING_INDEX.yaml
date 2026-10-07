@@ -17,7 +17,7 @@ project: &id002
 current_state:
   verified_at: '2026-10-07'
   production_branch: sam-edition-dev
-  production_head: ca15b79af8aea55664fc190e03b5d4672d4de940
+  production_head: 3d4063a825b914cbc9d8b50f9c8a00dd4b43e341
   status_authority: Programming Readiness Registry / Backlog
   current_audit: docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-10-07.md
   runtime_policy: Full assembled-ROM playtesting deferred; do not reopen completed
@@ -33,7 +33,7 @@ current_state:
   - 'RIV-016: Mt. Moon slice in PR #294; Cinnabar fossil continuity requires specialist reconciliation'
   - 'ROCKET-001/002: organization/evidence and story conversion'
   - shared asset pipeline and League final assembly
-  - Five Island and final Thomas/Rocket closure
+  - final Thomas/Rocket closure (Five Island Thread 1E complete in PR #295)
   - recurring integration and deferred full-game QA
 thomas_mt_moon_checkpoint:
   task: RIV-016
@@ -43,6 +43,20 @@ thomas_mt_moon_checkpoint:
   preserved: original six Thomas records/data; fossil revival; opposite-fossil researcher
   closure_blocker: claimed Cinnabar Thomas Lab/fossil-dependent Mansion hooks are absent; preserve-six-data instruction prevents inventing a replacement roster
   validation: host helper and static preservation checks passed; ROM CI tracked on PR
+  runtime: assembled-ROM playtest deferred
+five_island_thread_1e_checkpoint:
+  task: ROCKET-002
+  status: COMPLETE (bounded Five Island slice only)
+  pr: 295
+  working_branch: sam/rocket-002-five-island-admins
+  production_merge: 3d4063a825b914cbc9d8b50f9c8a00dd4b43e341
+  accepted_content: docs/five-island-thread-1e-content-proposal.md
+  implementation: exact seven trainers/dialogue; ordinary aces last; one-time scripted demonstrations; shutdown and re-entry
+  safety: NPC showcases do not mutate player Pokemon; existing flags/vars and Gideon/Sapphire progression preserved
+  resources: Scientists 900/901; NUM_TRAINERS 902; reserved remainder 902-939
+  validation: all seven CI builds passed run 37657349808; static and actual-helper host checks passed
+  synchronization: SYNC-2026-10-07-1E-COMPLETE; specialist Addenda, Registry and current project-wide records verified
+  remaining: wider Rocket organization/story and Thomas fossil continuity remain separate
   runtime: assembled-ROM playtest deferred
 historical_index_provenance:
   framework: *id001
