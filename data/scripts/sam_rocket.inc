@@ -43,7 +43,8 @@ SamRocket_Text_Delivery01:
 
 SamRocket_Text_Delivery02:
 	.string "DELIVERY 02\n"
-	.string "MT. MOON ACQUISITION - COMPLETE\p"
+	.string "MT. MOON ACQUISITION -\n"
+	.string "COMPLETE\p"
 	.string "UNCHOSEN FOSSIL - SECURED\n"
 	.string "THOMAS RETAINS ASSET$"
 
