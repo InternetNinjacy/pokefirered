@@ -50,6 +50,7 @@ CinnabarIsland_Gym_EventScript_Blaine::
 	faceplayer
 	goto_if_unset FLAG_BADGE07_GET, CinnabarIsland_Gym_EventScript_BlaineFirst
 	goto_if_unset FLAG_GOT_TM38_FROM_BLAINE, CinnabarIsland_Gym_EventScript_GiveTM23
+	goto_if_set FLAG_SYS_GAME_CLEAR, CinnabarIsland_Gym_EventScript_BlaineRematch
 	msgbox CinnabarIsland_Gym_Text_BlainePostBattle
 	release
 	end
@@ -82,6 +83,16 @@ CinnabarIsland_Gym_EventScript_GiveTM23::
 
 CinnabarIsland_Gym_EventScript_NoRoomForTM23::
 	msgbox CinnabarIsland_Gym_Text_MakeSpaceForThis
+	release
+	end
+
+CinnabarIsland_Gym_EventScript_BlaineRematch::
+	cleartrainerflag TRAINER_LEADER_BLAINE_REMATCH
+	trainerbattle_single TRAINER_LEADER_BLAINE_REMATCH, CinnabarIsland_Gym_Text_BlaineRematchPre, CinnabarIsland_Gym_Text_BlaineRematchDefeat, CinnabarIsland_Gym_EventScript_BlaineRematchWon, NO_MUSIC
+	end
+
+CinnabarIsland_Gym_EventScript_BlaineRematchWon::
+	msgbox CinnabarIsland_Gym_Text_BlaineRematchAfter
 	release
 	end
 
