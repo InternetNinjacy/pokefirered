@@ -157,6 +157,14 @@ FuchsiaCity_EventScript_ShowGreen::
 FuchsiaCity_EventScript_Green::
 	lock
 	faceplayer
+	goto_if_set FLAG_GREEN_FUCHSIA_ATTEMPTED, FuchsiaCity_EventScript_GreenRetryText
+	goto FuchsiaCity_EventScript_GreenBattleEntry
+
+FuchsiaCity_EventScript_GreenRetryText::
+	msgbox FuchsiaCity_Text_GreenRetry
+
+FuchsiaCity_EventScript_GreenBattleEntry::
+	setflag FLAG_GREEN_FUCHSIA_ATTEMPTED
 	setvar VAR_LAST_TALKED, LOCALID_FUCHSIA_GREEN
 	playbgm MUS_ENCOUNTER_RIVAL, 0
 	goto_if_eq VAR_STARTER_MON, 0, FuchsiaCity_EventScript_GreenRaichu
@@ -182,3 +190,8 @@ FuchsiaCity_EventScript_GreenWon::
 
 FuchsiaCity_Text_GreenDefeat::
 	.string "Yep. You caught me.$"
+
+FuchsiaCity_Text_GreenRetry::
+	.string "Next time I want six. Then there\n"
+	.string "really won't be anywhere for a bad\l"
+	.string "matchup to hide.$"
