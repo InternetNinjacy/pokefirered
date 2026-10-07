@@ -130,7 +130,11 @@ for label in re.findall(r'^(\w+)::', old(MAP + 'scripts.inc'), re.M)[2:]:
     def block(s):
         return s.split(label + '::', 1)[1].split('\n\n', 1)[0]
     assert block(source) == block(old(MAP + 'scripts.inc')), label
-for path in ('src/data/trainers.h', 'src/data/sam_thomas_trainer_parties.h',
+trainers = (ROOT / 'src/data/trainers.h').read_text()
+for name in re.findall(r'\[TRAINER_THOMAS_[A-Z_]+\]', old('src/data/trainers.h')):
+    pattern = re.escape(name) + r' = \{.*?\n    \},'
+    assert re.search(pattern, trainers, re.S).group() == re.search(pattern, old('src/data/trainers.h'), re.S).group()
+for path in ('src/data/sam_thomas_trainer_parties.h',
              'src/sam_thomas_trainer_traits.c', 'data/maps/Route24/thomas_event_chain.inc',
              'data/maps/PokemonMansion_B1F/scripts.inc', 'data/maps/MtMoon_B2F/scripts.inc',
              'data/maps/CinnabarIsland_PokemonLab_ExperimentRoom/scripts.inc',

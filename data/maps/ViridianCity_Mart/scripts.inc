@@ -13,6 +13,7 @@ ViridianCity_Mart_EventScript_HideQuestionnaire::
 	end
 
 ViridianCity_Mart_OnFrame::
+	map_script_2 VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_GOODS_RECOVERED, ViridianCity_Mart_EventScript_ReturnRocketGoods
 	map_script_2 VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 0, ViridianCity_Mart_EventScript_ParcelScene
 	.2byte 0
 
@@ -54,6 +55,9 @@ ViridianCity_Mart_EventScript_Clerk::
 	faceplayer
 	goto_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 1, ViridianCity_Mart_EventScript_SayHiToOak
 	goto_if_questlog EventScript_ReleaseEnd
+	goto_if_eq VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_COMPLETE, ViridianCity_Mart_EventScript_RocketThanks
+	goto_if_ge VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_GOODS_RECOVERED, ViridianCity_Mart_EventScript_ReturnRocketGoods
+ViridianCity_Mart_EventScript_OpenShop::
 	message Text_MayIHelpYou
 	waitmessage
 	pokemart ViridianCity_Mart_Items
@@ -83,3 +87,50 @@ ViridianCity_Mart_EventScript_Woman::
 ViridianCity_Mart_EventScript_Youngster::
 	msgbox ViridianCity_Mart_Text_GotToBuySomePotions, MSGBOX_NPC
 	end
+
+ViridianCity_Mart_EventScript_ReturnRocketGoods::
+	lockall
+	textcolor NPC_TEXT_COLOR_MALE
+	applymovement LOCALID_VIRIDIAN_MART_CLERK, Common_Movement_WalkInPlaceFasterRight
+	waitmovement 0
+	goto_if_ge VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_BALLS_OWED, ViridianCity_Mart_EventScript_RocketRewards
+	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterLeft
+	waitmovement 0
+	msgbox ViridianCity_Mart_Text_ReturnRocketGoods
+@ The recovered-goods event state is consumed automatically; no keep choice.
+	setvar VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_BALLS_OWED
+ViridianCity_Mart_EventScript_RocketRewards::
+	goto_if_eq VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_DOSSIER_OWED, ViridianCity_Mart_EventScript_RocketDossier
+	checkitemspace ITEM_POKE_BALL, 5
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Mart_EventScript_RocketBagFull
+	giveitem ITEM_POKE_BALL, 5
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Mart_EventScript_RocketBagFull
+	setvar VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_DOSSIER_OWED
+ViridianCity_Mart_EventScript_RocketDossier::
+@ NG+ carries Key Items but resets run evidence and operation state.
+	checkitem ITEM_ROCKET_DOSSIER, 1
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Mart_EventScript_RocketComplete
+	checkitemspace ITEM_ROCKET_DOSSIER, 1
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Mart_EventScript_RocketBagFull
+	msgbox ViridianCity_Mart_Text_LoosePaper
+	giveitem ITEM_ROCKET_DOSSIER, 1
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Mart_EventScript_RocketBagFull
+ViridianCity_Mart_EventScript_RocketComplete::
+	setvar VAR_0x8004, ROCKET_EVIDENCE_DELIVERY_01
+	callnative Script_SamRocketRecordEvidence
+	setvar VAR_0x8004, ROCKET_OPERATION_VIRIDIAN_THEFT
+	callnative Script_SamRocketCompleteOperation
+	setvar VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_COMPLETE
+	releaseall
+	end
+
+ViridianCity_Mart_EventScript_RocketBagFull::
+	msgbox Text_BagIsFull
+@ Frame hook only runs for GOODS_RECOVERED. Stages 2/3 retry by talking to the
+@ clerk, so a full Bag cannot trap the player in a repeated automatic scene.
+	releaseall
+	end
+
+ViridianCity_Mart_EventScript_RocketThanks::
+	msgbox ViridianCity_Mart_Text_RocketThanks
+	goto ViridianCity_Mart_EventScript_OpenShop

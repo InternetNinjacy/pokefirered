@@ -17,7 +17,7 @@ project: &id002
 current_state:
   verified_at: '2026-10-07'
   production_branch: sam-edition-dev
-  production_head: 3d4063a825b914cbc9d8b50f9c8a00dd4b43e341
+  production_head: 53ef5073bda7ee7c7abca9e27310eab9f2ce2c36
   status_authority: Programming Readiness Registry / Backlog
   current_audit: docs/sam_edition/SOURCE_IMPLEMENTATION_AUDIT_2026-10-07.md
   runtime_policy: Full assembled-ROM playtesting deferred; do not reopen completed
@@ -30,8 +30,8 @@ current_state:
   open_owner_work:
   - 'GYM1-001: approved package integration'
   - 'GYM8-001: approved Dragon/Dominion/TM54 package restoration'
-  - 'RIV-016: Mt. Moon slice in PR #294; Cinnabar fossil continuity requires specialist reconciliation'
-  - 'ROCKET-001/002: organization/evidence and story conversion'
+  - 'RIV-016: Mt. Moon merged #294; Lab slice #298; Mansion fossil roster mapping requires specialist reconciliation'
+  - 'ROCKET-002: remaining operation conversions/evidence consumers; ROCKET-001 shared framework complete in PR #297'
   - shared asset pipeline and League final assembly
   - final Thomas/Rocket closure (Five Island Thread 1E complete in PR #295)
   - recurring integration and deferred full-game QA
@@ -63,10 +63,24 @@ five_island_thread_1e_checkpoint:
   accepted_content: docs/five-island-thread-1e-content-proposal.md
   implementation: exact seven trainers/dialogue; ordinary aces last; one-time scripted demonstrations; shutdown and re-entry
   safety: NPC showcases do not mutate player Pokemon; existing flags/vars and Gideon/Sapphire progression preserved
-  resources: Scientists 900/901; NUM_TRAINERS 902; reserved remainder 902-939
+  resources: Scientists 900/901 preserved; current NUM_TRAINERS 903 after Thread 1C fence 902; reserved remainder 903-939
   validation: all seven CI builds passed run 37657349808; static and actual-helper host checks passed
   synchronization: SYNC-2026-10-07-1E-COMPLETE; specialist Addenda, Registry and current project-wide records verified
   remaining: wider Rocket organization/story and Thomas fossil continuity remain separate
+  runtime: assembled-ROM playtest deferred
+rocket_thread_1c_checkpoint:
+  task: ROCKET-001
+  status: COMPLETE (shared framework and approved Viridian slice; PR merge tracked live)
+  pr: 297
+  working_branch: sam/rocket-001-state-current-production
+  reconciled_production: 8c3bbdaaae97ff1e4c446aca7dbbcf8209d7fdf2
+  handoff: docs/sam_edition/rocket-thread-1c-state-handoff.md
+  implementation: independent operation/evidence bitsets; real Dossier Key Item/text reader; approved Viridian theft/fence and automatic five-Ball reward
+  resources: item 247; trainer 902; vars 0x40A2-0x40A4; visibility flag 0x35D
+  safety: victory-only progress; Bag-capacity checkpoints; NG+ carried Dossier reused; vanilla and specialist progression preserved
+  validation: real-helper and script-path host checks, map/item generation, charmap/text width and whitespace passed; seven ROM variants required before merge
+  authority_gap: Delivery 02 older fossil-stock outcome conflicts with reopened Thomas theft; page remains unbound pending reconciled wording
+  remaining: Thread 1D event consumers/conversions; Thread 1F closure; Five Island and Mt Moon already integrated
   runtime: assembled-ROM playtest deferred
 historical_index_provenance:
   framework: *id001

@@ -2,6 +2,8 @@
 
 Starting production: `8c3bbdaaae97ff1e4c446aca7dbbcf8209d7fdf2`.
 Branch: `sam/thomas-cinnabar-fossil-continuity`.
+Integration refreshed after parallel PR #297 merged into production `53ef5073bda7ee7c7abca9e27310eab9f2ce2c36`. Only overlapping documentation required resolution; current Rocket source/allocations are preserved. PR #298.
+
 Classification: **B, partially specified**. BLK-THOMAS-FOSSIL remains **PARTIAL**.
 
 ## Authority reconciliation, before coding
