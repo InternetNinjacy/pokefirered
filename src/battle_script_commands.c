@@ -36,6 +36,7 @@
 #include "constants/abilities.h"
 #include "constants/pokemon.h"
 #include "constants/maps.h"
+#include "constants/opponents.h"
 
 extern const u8 *const gBattleScriptsForMoveEffects[];
 
@@ -68,6 +69,7 @@ static void Cmd_critcalc(void);
 static void Cmd_damagecalc(void);
 static bool8 BattlerIsOriginalDittoHoldingAdaptiveGene(u8 battler);
 static u32 ApplyAdaptiveGeneDamageModifier(u32 damage, u8 battler);
+static bool8 IsGreenTrainerBattle(void);
 static void Cmd_typecalc(void);
 static void Cmd_adjustnormaldamage(void);
 static void Cmd_adjustnormaldamage2(void);
@@ -1227,6 +1229,12 @@ static u32 ApplyAdaptiveGeneDamageModifier(u32 damage, u8 battler)
     if (BattlerIsOriginalDittoHoldingAdaptiveGene(battler))
         return damage * 6 / 5;
     return damage;
+}
+
+static bool8 IsGreenTrainerBattle(void)
+{
+    return gTrainerBattleOpponent_A >= TRAINER_GREEN_OAK_DITTO
+        && gTrainerBattleOpponent_A <= TRAINER_GREEN_POSTGAME_RAICHU;
 }
 
 static void Cmd_damagecalc(void)
