@@ -46,3 +46,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SamRoute24CamperShane[] 
 
 // Seven Island ordinary trainers; Trainer Tower remains separate.
 #include "sam_batch16_seven_island_trainer_remaps.h"
+
+// ST-IMP-11 Victory Road ordinary trainers.
+#include "sam_batch11_victory_road_trainer_remaps.h"
