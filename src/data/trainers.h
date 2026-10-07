@@ -3550,7 +3550,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGrunt5),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGrunt5),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_6] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
