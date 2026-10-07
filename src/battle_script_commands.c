@@ -36,6 +36,7 @@
 #include "constants/abilities.h"
 #include "constants/pokemon.h"
 #include "constants/maps.h"
+#include "constants/opponents.h"
 
 extern const u8 *const gBattleScriptsForMoveEffects[];
 
@@ -68,6 +69,7 @@ static void Cmd_critcalc(void);
 static void Cmd_damagecalc(void);
 static bool8 BattlerIsOriginalDittoHoldingAdaptiveGene(u8 battler);
 static u32 ApplyAdaptiveGeneDamageModifier(u32 damage, u8 battler);
+static bool8 IsGreenTrainerBattle(void);
 static void Cmd_typecalc(void);
 static void Cmd_adjustnormaldamage(void);
 static void Cmd_adjustnormaldamage2(void);
@@ -1229,6 +1231,12 @@ static u32 ApplyAdaptiveGeneDamageModifier(u32 damage, u8 battler)
     return damage;
 }
 
+static bool8 IsGreenTrainerBattle(void)
+{
+    return gTrainerBattleOpponent_A >= TRAINER_GREEN_OAK_DITTO
+        && gTrainerBattleOpponent_A <= TRAINER_GREEN_POSTGAME_RAICHU;
+}
+
 static void Cmd_damagecalc(void)
 {
     u16 sideStatus = gSideStatuses[GET_BATTLER_SIDE(gBattlerTarget)];
@@ -1259,6 +1267,7 @@ void AI_CalcDmg(u8 attacker, u8 defender)
         gBattleMoveDamage *= 2;
     if (gProtectStructs[attacker].helpingHand)
         gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
+    gBattleMoveDamage = ApplyAdaptiveGeneDamageModifier(gBattleMoveDamage, attacker);
 }
 
 static void ModulateDmgByType(u8 multiplier)
@@ -2633,6 +2642,15 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 break;
             case MOVE_EFFECT_STEAL_ITEM:
                 {
+                    if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+                        && IsGreenTrainerBattle()
+                        && GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER
+                        && GetBattlerSide(gBattlerTarget) == B_SIDE_OPPONENT)
+                    {
+                        gBattlescriptCurrInstr++;
+                        break;
+                    }
+
                     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER)
                     {
                         gBattlescriptCurrInstr++;
@@ -8823,6 +8841,10 @@ static void Cmd_tryswapitems(void)
 {
     // opponent can't swap items with player in regular battles
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_TOWER
+        || ((gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+            && IsGreenTrainerBattle()
+            && GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER
+            && GetBattlerSide(gBattlerTarget) == B_SIDE_OPPONENT)
         || (GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
             && !(gBattleTypeFlags & (BATTLE_TYPE_LINK
                                   | BATTLE_TYPE_BATTLE_TOWER

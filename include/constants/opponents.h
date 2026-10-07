@@ -747,6 +747,15 @@
 #define TRAINER_CHAMPION_REMATCH_CHARMANDER      741
 #define TRAINER_CUE_BALL_PAXTON                  742
 
+// Sam Edition League: Blue occupies Elite Four #2 / Bruno room.
+// Fire reuses legacy Bruno trainer IDs; Water/Electric use central Blue allocations 800-803.
+#define TRAINER_ELITE_FOUR_BLUE_FIRE             TRAINER_ELITE_FOUR_BRUNO
+#define TRAINER_ELITE_FOUR_BLUE_FIRE_2           TRAINER_ELITE_FOUR_BRUNO_2
+#define TRAINER_ELITE_FOUR_BLUE_WATER            800
+#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC         801
+#define TRAINER_ELITE_FOUR_BLUE_WATER_2          802
+#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2       803
+
 // Pokémon: Sam Edition — central Trainer ID registry.
 // Satoshi practice/rematch records: 743-758.
 #define TRAINER_SATOSHI_PEWTER_PRACTICE          743
@@ -782,38 +791,43 @@
 #define TRAINER_LEADER_BAZ_REMATCH                768
 #define TRAINER_LEADER_SABRINA_REMATCH            769
 
+// Celadon Bug Gym regular-trainer allocations: 770-773.
+#define TRAINER_BUG_CATCHER_OWEN_CELADON          770
+#define TRAINER_BUG_CATCHER_MAYA_CELADON          771
+#define TRAINER_SCIENTIST_ELIAS_CELADON            772
+#define TRAINER_SCIENTIST_NORA_CELADON             773
+
 // Cinnabar Rock Gym postgame rematch allocation.
 #define TRAINER_LEADER_BLAINE_REMATCH              804
 
-
 // Green rival central allocations: 820-846. 800-819 remains rival/Blue headroom.
-#define TRAINER_GREEN_OAK_DITTO                820
-#define TRAINER_GREEN_OAK_ESPEON               821
-#define TRAINER_GREEN_OAK_RAICHU               822
-#define TRAINER_GREEN_SS_ANNE_DITTO            823
-#define TRAINER_GREEN_SS_ANNE_ESPEON           824
-#define TRAINER_GREEN_SS_ANNE_RAICHU           825
-#define TRAINER_GREEN_CELADON_DITTO            826
-#define TRAINER_GREEN_CELADON_ESPEON           827
-#define TRAINER_GREEN_CELADON_RAICHU           828
-#define TRAINER_GREEN_FUCHSIA_DITTO            829
-#define TRAINER_GREEN_FUCHSIA_ESPEON           830
-#define TRAINER_GREEN_FUCHSIA_RAICHU           831
-#define TRAINER_GREEN_SAFFRON_DITTO            832
-#define TRAINER_GREEN_SAFFRON_ESPEON           833
-#define TRAINER_GREEN_SAFFRON_RAICHU           834
-#define TRAINER_GREEN_THREE_ISLAND_DITTO       835
-#define TRAINER_GREEN_THREE_ISLAND_ESPEON      836
-#define TRAINER_GREEN_THREE_ISLAND_RAICHU      837
-#define TRAINER_GREEN_VIRIDIAN_DITTO           838
-#define TRAINER_GREEN_VIRIDIAN_ESPEON          839
-#define TRAINER_GREEN_VIRIDIAN_RAICHU          840
-#define TRAINER_GREEN_CHAMPION_DITTO           841
-#define TRAINER_GREEN_CHAMPION_ESPEON          842
-#define TRAINER_GREEN_CHAMPION_RAICHU          843
-#define TRAINER_GREEN_POSTGAME_DITTO           844
-#define TRAINER_GREEN_POSTGAME_ESPEON          845
-#define TRAINER_GREEN_POSTGAME_RAICHU          846
+#define TRAINER_GREEN_OAK_DITTO                  820
+#define TRAINER_GREEN_OAK_ESPEON                 821
+#define TRAINER_GREEN_OAK_RAICHU                 822
+#define TRAINER_GREEN_SS_ANNE_DITTO              823
+#define TRAINER_GREEN_SS_ANNE_ESPEON             824
+#define TRAINER_GREEN_SS_ANNE_RAICHU             825
+#define TRAINER_GREEN_CELADON_DITTO              826
+#define TRAINER_GREEN_CELADON_ESPEON             827
+#define TRAINER_GREEN_CELADON_RAICHU             828
+#define TRAINER_GREEN_FUCHSIA_DITTO              829
+#define TRAINER_GREEN_FUCHSIA_ESPEON             830
+#define TRAINER_GREEN_FUCHSIA_RAICHU             831
+#define TRAINER_GREEN_SAFFRON_DITTO              832
+#define TRAINER_GREEN_SAFFRON_ESPEON             833
+#define TRAINER_GREEN_SAFFRON_RAICHU             834
+#define TRAINER_GREEN_THREE_ISLAND_DITTO         835
+#define TRAINER_GREEN_THREE_ISLAND_ESPEON        836
+#define TRAINER_GREEN_THREE_ISLAND_RAICHU        837
+#define TRAINER_GREEN_VIRIDIAN_DITTO             838
+#define TRAINER_GREEN_VIRIDIAN_ESPEON            839
+#define TRAINER_GREEN_VIRIDIAN_RAICHU            840
+#define TRAINER_GREEN_CHAMPION_DITTO             841
+#define TRAINER_GREEN_CHAMPION_ESPEON            842
+#define TRAINER_GREEN_CHAMPION_RAICHU            843
+#define TRAINER_GREEN_POSTGAME_DITTO             844
+#define TRAINER_GREEN_POSTGAME_ESPEON            845
+#define TRAINER_GREEN_POSTGAME_RAICHU            846
 
 // Sam Edition expands trainer defeat-flag capacity to 1024 records.
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;

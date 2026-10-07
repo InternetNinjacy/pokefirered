@@ -48,6 +48,63 @@ CeladonCity_Gym_Text_ExplainTM19::
 CeladonCity_Gym_Text_ShouldMakeRoomForThis::
     .string "You should make room for this.$"
 
+
+CeladonCity_Gym_Text_OwenIntro::
+    .string "Books are useful, but you learn what\n"
+    .string "Bug Pokémon can really do by getting\l"
+    .string "out there and watching them!\p"
+    .string "Let me show you!$"
+
+CeladonCity_Gym_Text_OwenDefeat::
+    .string "Okay... Maybe the books have a few\n"
+    .string "good ideas too.$"
+
+CeladonCity_Gym_Text_OwenPostBattle::
+    .string "Scyther doesn't need tricks. Speed,\n"
+    .string "sharp wings, and good instincts can\l"
+    .string "solve plenty of problems.$"
+
+CeladonCity_Gym_Text_MayaIntro::
+    .string "People see Bug Pokémon and expect\n"
+    .string "them to be fragile. Mine never got\l"
+    .string "that memo.$"
+
+CeladonCity_Gym_Text_MayaDefeat::
+    .string "Strong enough for you?$"
+
+CeladonCity_Gym_Text_MayaPostBattle::
+    .string "Pinsir doesn't waste much effort.\n"
+    .string "Find the opening, hit hard, and don't\l"
+    .string "let the opponent recover.\p"
+    .string "Professor Erika calls that efficient\n"
+    .string "adaptation.$"
+
+CeladonCity_Gym_Text_EliasIntro::
+    .string "Physical strength is only one form of\n"
+    .string "adaptation. Control the opponent, and\l"
+    .string "strength becomes much less important.$"
+
+CeladonCity_Gym_Text_EliasDefeat::
+    .string "A very inconvenient result.$"
+
+CeladonCity_Gym_Text_EliasPostBattle::
+    .string "Sleep. Paralysis. Poison.\n"
+    .string "A battle can be decided long before\l"
+    .string "the final attack is made.$"
+
+CeladonCity_Gym_Text_NoraIntro::
+    .string "Professor Erika taught me to observe\n"
+    .string "before acting. A tiny advantage becomes\l"
+    .string "decisive if you understand how to use it.$"
+
+CeladonCity_Gym_Text_NoraDefeat::
+    .string "You adapted faster than I did.$"
+
+CeladonCity_Gym_Text_NoraPostBattle::
+    .string "Venomoth is fascinating. Movement,\n"
+    .string "powder, light response, special attacks...\l"
+    .string "There is always another variable to study.$"
+
 CeladonCity_Gym_Text_KayIntro::
     .string "I should tell you about this GYM.\p"
     .string "Only real ladies are allowed in\n"
