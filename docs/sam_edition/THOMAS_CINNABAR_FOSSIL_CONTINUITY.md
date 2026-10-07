@@ -8,7 +8,7 @@ Ending gameplay production / merge: `aa3d3859d44aeb2b27334a5eda08b9b683733e82`.
 Final seven-variant CI: `37663794925` — PASS.
 Integration refreshed after parallel PR #297 merged into production `53ef5073bda7ee7c7abca9e27310eab9f2ce2c36`. Only overlapping documentation required resolution; current Rocket source/allocations were preserved. PR #298 then merged the independent Lab slice into `sam-edition-dev` at `aa3d3859d44aeb2b27334a5eda08b9b683733e82`.
 
-Classification: **B, partially specified**. BLK-THOMAS-FOSSIL remains **PARTIAL**.
+Classification: **A, battle authority closed / implementation pending**. BLK-THOMAS-FOSSIL is **DESIGN-CLOSED** as of Thread 02 on October 7, 2026. The Thread 01 blocker snapshot below is retained only as historical provenance.
 
 ## Authority reconciliation, before coding
 
@@ -40,16 +40,33 @@ Resources centrally allocated before coding:
 - Existing `VAR_MAP_SCENE_MT_MOON_B2F = 0x408B` and `VAR_THOMAS_ARC_STAGE = 0x40A1` are read, never changed by this scene.
 - No trainer ID allocated; 784–789 and 847 unchanged. Active PR #297 owns 902, 0x35D and 0x40A2–0x40A4; Five Island owns 900/901. These are not consumed here.
 
-## Remaining narrow authority blocker
+## Historical blocker snapshot — superseded by Thread 02
 
-Do not mark SYS-THOMAS complete or close BLK-THOMAS-FOSSIL.
-The exact fossil sets and Lab dialogue are **found**, not missing. Needed:
-1. Approve how fossil45 joins the current full six-member Mansion roster: replacement slot or an explicitly separate current battle package.
-2. Reconcile the older Gengar+fossil opening with the current roster lacking Gengar; exact Gengar data, other retained/changed slots and traits if required.
-3. Resolve Single vs Double for this current Mansion package and the corresponding starter/fossil branch architecture. Current six records remain protected until explicit authority changes them.
-4. Approve any Mansion dialogue change needed for that final package and whether to require the Lab scene before battle. Preserve loss/retry, Secret Key, ordinary Mansion traversal and current arc progression.
+This was the state when Thread 01 retired and is retained only as provenance. Thread 02 closes these questions in `THOMAS_CINNABAR_FOSSIL_BATTLE_AUTHORITY.md`.
 
-No older all-Double/Gastly lineage, Power Plant gate, Victory Road or postgame package is silently restored. No stale branch is merged.
+The exact fossil sets and Lab dialogue were **found**, not missing. Thread 01 still needed:
+1. approval for how fossil45 joined the current full six-member Mansion roster;
+2. reconciliation of the older Gengar+fossil opening with the current roster lacking Gengar;
+3. Single-versus-Double resolution for the current Mansion package; and
+4. Mansion dialogue / Lab-before-battle treatment.
+
+No older all-Double/Gastly lineage, Power Plant gate, Victory Road or postgame package was silently restored. No stale branch was merged.
+
+## Thread 02 authority closure — October 7, 2026
+
+Current explicit instruction closes the remaining party identity question: **Seadra is replaced by the stolen-fossil branch for the remainder of Thomas's battles from Cinnabar Mansion forward.** This is a permanent active-battle-team substitution, not a one-battle cameo. The current approved seven-battle cadence therefore ends with fossil participation at both Cinnabar Mansion and Viridian Gym; Kingdra no longer appears in Thomas's Viridian battle.
+
+The implementation-ready details are defined in `docs/sam_edition/THOMAS_CINNABAR_FOSSIL_BATTLE_AUTHORITY.md`. In summary:
+- Cinnabar Mansion remains the existing trainer 788 **Single Battle**.
+- Gengar is not reintroduced.
+- Seadra Lv45 is replaced by Kabutops Lv45 or Omastar Lv45 using the already-locked Mystic Water fossil package.
+- Viridian remains the existing trainer 789 **Single Battle**.
+- Kingdra Lv52 is replaced by the same branch fossil at the current production slot level/IV tier; fossil-specific item/moves come from the closed Thomas specialist progression.
+- The fossil branch is read from the Mt. Moon theft state directly. The Lab scene remains optional/non-gating.
+- Current Mansion/Viridian characterization and progression stay intact; no stale Gengar-dependent dialogue, all-Double rule, Power Plant, Victory Road, or postgame Thomas package returns.
+- Secret Key, Mansion traversal, loss/retry, Viridian Doll handoff, Giovanni routing, and seven-battle cadence remain unchanged.
+
+BLK-THOMAS-FOSSIL is **DESIGN-CLOSED / IMPLEMENTATION-PENDING**. The next thread may implement only this battle-data/script delta and its focused tests. SYS-THOMAS remains PARTIAL until that implementation is merged and the deferred assembled-ROM playtest is eventually performed.
 
 ## Validation and limits
 
@@ -59,4 +76,4 @@ NG+ review: NewGameInitData clears SaveBlock1 and InitEventData resets ordinary 
 
 Existing Mt. Moon actual-helper tests pass; six trainer records, traits, unrelated maps, fossil scientist/researcher/Protector scripts and Mansion progression preserved. Map/local-ID generation, text preprocessing, text pixel-width checks, flag collision audit and `git diff --check` passed. Full compile/link/symbol checks passed in final seven-variant CI run `37663794925` before PR #298 merged at `aa3d3859d44aeb2b27334a5eda08b9b683733e82`. Assembled-ROM gameplay and real movement/save-load testing remain deferred.
 
-Current native records should carry the RIV-016 Cinnabar Lab partial-closure checkpoint and this precise remaining blocker. Older missing-Lab/missing-exact-fossil-set assertions are superseded by this audit, while prior dated production checkpoints remain provenance.
+Current native records should now carry the Thread 02 design-closure checkpoint. Older missing-Lab/missing-exact-fossil-set and open-Mansion-mapping assertions are superseded by the October 7, 2026 closure; prior dated production checkpoints remain provenance.
