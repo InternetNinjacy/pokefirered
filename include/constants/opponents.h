@@ -797,6 +797,9 @@
 #define TRAINER_SCIENTIST_ELIAS_CELADON            772
 #define TRAINER_SCIENTIST_NORA_CELADON             773
 
+// Celadon Bug Gym postgame rematch allocation.
+#define TRAINER_LEADER_ERIKA_REMATCH               774
+
 // Cinnabar Rock Gym postgame rematch allocation.
 #define TRAINER_LEADER_BLAINE_REMATCH              804
 

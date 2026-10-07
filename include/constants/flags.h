@@ -682,6 +682,7 @@
 #define FLAG_PALLET_LADY_NOT_BLOCKING_SIGN               0x291
 #define FLAG_GOT_VS_SEEKER                               0x292
 #define FLAG_GOT_TM19_FROM_ERIKA                         0x293
+#define FLAG_GOT_TM26_FROM_ERIKA                         FLAG_GOT_TM19_FROM_ERIKA
 #define FLAG_GOT_TM33_FROM_THIRSTY_GIRL                  0x294
 #define FLAG_GOT_TM20_FROM_THIRSTY_GIRL                  0x295
 #define FLAG_GOT_TM16_FROM_THIRSTY_GIRL                  0x296
