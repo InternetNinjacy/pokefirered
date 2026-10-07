@@ -36,9 +36,9 @@ int main(void) {
  for(i=0;i<65536;i++) {gSpecialVar_0x8004=i;Script_SamRocketCompleteOperation();assert(ops==before);}
  for(i=0;i<16;i++) {
   gSpecialVar_0x8004=1u<<i; before=evidence;Script_SamRocketRecordEvidence();
-  assert(gSpecialVar_Result==(i==0||i==2||i==3));
-  assert(evidence==((i==0||i==2||i==3)?before|(1u<<i):before));
-  Script_SamRocketCheckEvidence();assert(gSpecialVar_Result==(i==0||i==2||i==3));
+  assert(gSpecialVar_Result==(i<4));
+  assert(evidence==(i<4?before|(1u<<i):before));
+  Script_SamRocketCheckEvidence();assert(gSpecialVar_Result==(i<4));
  }
  assert(evidence==ROCKET_EVIDENCE_BOUND_MASK);before=evidence;
  for(i=0;i<65536;i++) {gSpecialVar_0x8004=i;Script_SamRocketRecordEvidence();assert(evidence==before);}
