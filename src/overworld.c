@@ -46,6 +46,7 @@
 #include "start_menu.h"
 #include "tileset_anims.h"
 #include "trainer_pokemon_sprites.h"
+#include "title_screen.h"
 #include "vs_seeker.h"
 #include "wild_encounter.h"
 #include "constants/cable_club.h"
@@ -1578,8 +1579,15 @@ void CB2_NewGame(void)
 {
     FieldClearVBlankHBlankCallbacks();
     StopMapMusic();
+    if (!NewGameInitData())
+    {
+        // The introduction may have changed names/options in RAM. Returning
+        // through the title reloads the completed save before Continue/NG+.
+        SetMainCallback1(NULL);
+        SetMainCallback2(CB2_InitTitleScreen);
+        return;
+    }
     ResetSafariZoneFlag_();
-    NewGameInitData();
     ResetInitialPlayerAvatarState();
     PlayTimeCounter_Start();
     ScriptContext_Init();
