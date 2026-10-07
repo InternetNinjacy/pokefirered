@@ -747,6 +747,15 @@
 #define TRAINER_CHAMPION_REMATCH_CHARMANDER      741
 #define TRAINER_CUE_BALL_PAXTON                  742
 
+// Sam Edition League: Blue occupies Elite Four #2 / Bruno room.
+// Fire reuses legacy Bruno trainer IDs; Water/Electric use central Blue allocations 800-803.
+#define TRAINER_ELITE_FOUR_BLUE_FIRE             TRAINER_ELITE_FOUR_BRUNO
+#define TRAINER_ELITE_FOUR_BLUE_FIRE_2           TRAINER_ELITE_FOUR_BRUNO_2
+#define TRAINER_ELITE_FOUR_BLUE_WATER            800
+#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC         801
+#define TRAINER_ELITE_FOUR_BLUE_WATER_2          802
+#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2       803
+
 // Pokémon: Sam Edition — central Trainer ID registry.
 // Satoshi practice/rematch records: 743-758.
 #define TRAINER_SATOSHI_PEWTER_PRACTICE          743
@@ -786,7 +795,7 @@
 // NUM_TRAINERS continues to track the highest trainer record actually defined in data;
 // feature integrations must advance it as their trainer records are merged.
 
-#define NUM_TRAINERS                             770
+#define NUM_TRAINERS                             804
 #define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H
