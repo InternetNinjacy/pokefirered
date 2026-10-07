@@ -325,6 +325,7 @@
 #define TRAINER_CLASS_SAM_RESERVED_END   122
 #define TRAINER_CLASS_FIRE_DANCER        107
 #define TRAINER_CLASS_BUSHRANGER         108
+#define TRAINER_CLASS_TEACHING_ASSISTANT 112
 
 #if TRAINER_CLASS_PAINTER != 106
 #error "ARCH-006: vanilla trainer-class boundary drifted"
