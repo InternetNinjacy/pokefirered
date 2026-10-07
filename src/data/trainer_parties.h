@@ -1384,47 +1384,48 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SuperNerdErik[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_SuperNerdAvery[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_SuperNerdAvery[] = {
     {
         .iv = 0,
-        .lvl = 34,
-        .species = SPECIES_PONYTA,
+        .lvl = 39,
+        .species = SPECIES_ONIX,
+        .moves = {MOVE_ROCK_TOMB, MOVE_SAND_TOMB, MOVE_SCREECH, MOVE_SLAM},
     },
     {
         .iv = 0,
-        .lvl = 34,
-        .species = SPECIES_CHARMANDER,
-    },
-    {
-        .iv = 0,
-        .lvl = 34,
-        .species = SPECIES_VULPIX,
-    },
-    {
-        .iv = 0,
-        .lvl = 34,
-        .species = SPECIES_GROWLITHE,
+        .lvl = 39,
+        .species = SPECIES_GRAVELER,
+        .moves = {MOVE_ROCK_BLAST, MOVE_MAGNITUDE, MOVE_DEFENSE_CURL, MOVE_ROLLOUT},
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_SuperNerdDerek[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_SuperNerdDerek[] = {
+    {
+        .iv = 0,
+        .lvl = 40,
+        .species = SPECIES_GRAVELER,
+        .moves = {MOVE_ROCK_BLAST, MOVE_MAGNITUDE, MOVE_BRICK_BREAK, MOVE_SELF_DESTRUCT},
+    },
+    {
+        .iv = 0,
+        .lvl = 40,
+        .species = SPECIES_GOLEM,
+        .moves = {MOVE_ROCK_SLIDE, MOVE_MAGNITUDE, MOVE_BRICK_BREAK, MOVE_DEFENSE_CURL},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_SuperNerdZac[] = {
     {
         .iv = 0,
         .lvl = 41,
-        .species = SPECIES_RAPIDASH,
-    },
-};
-
-static const struct TrainerMonNoItemDefaultMoves sParty_SuperNerdZac[] = {
-    {
-        .iv = 0,
-        .lvl = 37,
-        .species = SPECIES_GROWLITHE,
+        .species = SPECIES_AERODACTYL,
+        .moves = {MOVE_ROCK_SLIDE, MOVE_WING_ATTACK, MOVE_BITE, MOVE_AGILITY},
     },
     {
         .iv = 0,
-        .lvl = 37,
-        .species = SPECIES_VULPIX,
+        .lvl = 42,
+        .species = SPECIES_GOLEM,
+        .moves = {MOVE_ROCK_SLIDE, MOVE_EARTHQUAKE, MOVE_BRICK_BREAK, MOVE_SELF_DESTRUCT},
     },
 };
 
@@ -1959,42 +1960,48 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Burglar3[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_BurglarQuinn[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_BurglarQuinn[] = {
     {
         .iv = 0,
-        .lvl = 36,
-        .species = SPECIES_GROWLITHE,
+        .lvl = 38,
+        .species = SPECIES_GRAVELER,
+        .moves = {MOVE_ROCK_BLAST, MOVE_MAGNITUDE, MOVE_ROLLOUT, MOVE_SELF_DESTRUCT},
     },
     {
         .iv = 0,
-        .lvl = 36,
-        .species = SPECIES_VULPIX,
-    },
-    {
-        .iv = 0,
-        .lvl = 36,
-        .species = SPECIES_NINETALES,
+        .lvl = 39,
+        .species = SPECIES_RHYDON,
+        .moves = {MOVE_ROCK_BLAST, MOVE_STOMP, MOVE_SCARY_FACE, MOVE_TAKE_DOWN},
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_BurglarRamon[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_BurglarRamon[] = {
+    {
+        .iv = 0,
+        .lvl = 39,
+        .species = SPECIES_OMANYTE,
+        .moves = {MOVE_WATER_GUN, MOVE_MUD_SHOT, MOVE_BITE, MOVE_PROTECT},
+    },
+    {
+        .iv = 0,
+        .lvl = 40,
+        .species = SPECIES_ONIX,
+        .moves = {MOVE_ROCK_SLIDE, MOVE_SAND_TOMB, MOVE_SCREECH, MOVE_SLAM},
+    },
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_BurglarDusty[] = {
+    {
+        .iv = 0,
+        .lvl = 40,
+        .species = SPECIES_KABUTOPS,
+        .moves = {MOVE_ROCK_TOMB, MOVE_WATER_PULSE, MOVE_SLASH, MOVE_AERIAL_ACE},
+    },
     {
         .iv = 0,
         .lvl = 41,
-        .species = SPECIES_PONYTA,
-    },
-};
-
-static const struct TrainerMonNoItemDefaultMoves sParty_BurglarDusty[] = {
-    {
-        .iv = 0,
-        .lvl = 37,
-        .species = SPECIES_VULPIX,
-    },
-    {
-        .iv = 0,
-        .lvl = 37,
-        .species = SPECIES_GROWLITHE,
+        .species = SPECIES_OMASTAR,
+        .moves = {MOVE_SURF, MOVE_ROCK_TOMB, MOVE_MUD_SHOT, MOVE_PROTECT},
     },
 };
 
