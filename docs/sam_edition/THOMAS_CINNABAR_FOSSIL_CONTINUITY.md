@@ -2,7 +2,11 @@
 
 Starting production: `8c3bbdaaae97ff1e4c446aca7dbbcf8209d7fdf2`.
 Branch: `sam/thomas-cinnabar-fossil-continuity`.
-Integration refreshed after parallel PR #297 merged into production `53ef5073bda7ee7c7abca9e27310eab9f2ce2c36`. Only overlapping documentation required resolution; current Rocket source/allocations are preserved. PR #298.
+PR: `#298`.
+Feature head: `c8dbc5abc890810e0a5b7db768c995ec928201c5`.
+Ending gameplay production / merge: `aa3d3859d44aeb2b27334a5eda08b9b683733e82`.
+Final seven-variant CI: `37663794925` — PASS.
+Integration refreshed after parallel PR #297 merged into production `53ef5073bda7ee7c7abca9e27310eab9f2ce2c36`. Only overlapping documentation required resolution; current Rocket source/allocations were preserved. PR #298 then merged the independent Lab slice into `sam-edition-dev` at `aa3d3859d44aeb2b27334a5eda08b9b683733e82`.
 
 Classification: **B, partially specified**. BLK-THOMAS-FOSSIL remains **PARTIAL**.
 
@@ -53,6 +57,6 @@ No older all-Double/Gastly lineage, Power Plant gate, Victory Road or postgame p
 
 NG+ review: NewGameInitData clears SaveBlock1 and InitEventData resets ordinary flags/vars; carryover restores Pokémon/items and specific allowed identities, not these event flags or theft/main-arc state. Carried fossils cannot trigger Thomas: theft must be completed anew. The independent university researcher remains unchanged.
 
-Existing Mt. Moon actual-helper tests pass; six trainer records, traits, unrelated maps, fossil scientist/researcher/Protector scripts and Mansion progression preserved. Map/local-ID generation, text preprocessing, text pixel-width checks, flag collision audit and `git diff --check` are required. Full compile/link/symbol checks are provided by current seven-variant PR CI. Assembled-ROM gameplay and real movement/save-load testing remain deferred.
+Existing Mt. Moon actual-helper tests pass; six trainer records, traits, unrelated maps, fossil scientist/researcher/Protector scripts and Mansion progression preserved. Map/local-ID generation, text preprocessing, text pixel-width checks, flag collision audit and `git diff --check` passed. Full compile/link/symbol checks passed in final seven-variant CI run `37663794925` before PR #298 merged at `aa3d3859d44aeb2b27334a5eda08b9b683733e82`. Assembled-ROM gameplay and real movement/save-load testing remain deferred.
 
 Current native records should carry the RIV-016 Cinnabar Lab partial-closure checkpoint and this precise remaining blocker. Older missing-Lab/missing-exact-fossil-set assertions are superseded by this audit, while prior dated production checkpoints remain provenance.
