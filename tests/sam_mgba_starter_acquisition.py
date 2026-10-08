@@ -270,6 +270,16 @@ def drive_opening(stub, win, case):
             case["checkpoints"].append({"stage": "new-game-world", **snap})
             return
 
+        if stub.save_ptr() is None:
+            # FireRed's title transition uses START (Return in mGBA's default
+            # keyboard map). The following A chooses NEW GAME from the default
+            # main-menu cursor once that menu is present. Repeating this pair
+            # before SaveBlock1 initialization is harmless and bounded.
+            sendkey(win, "Return", .20)
+            sendkey(win, "x", .24)
+            case["actions"] += 2
+            continue
+
         if task_present(snap, "Task_SamModeSelect_HandleInput"):
             if "mode" not in milestones:
                 case["checkpoints"].append({"stage": "mode-selector", **snap})
