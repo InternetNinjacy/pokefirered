@@ -143,6 +143,7 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Miltank;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Magneton;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Onix;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lickitung;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Satoshi;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Hawthorne;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_TropiusHothouse;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lapras;
@@ -323,7 +324,7 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_LEILANI]                  = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_LEHUA]                    = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_KEAHI]                    = &gObjectEventGraphicsInfo_ProfOak,
-    [OBJ_EVENT_GFX_SATOSHI]                  = &gObjectEventGraphicsInfo_ProfOak,
+    [OBJ_EVENT_GFX_SATOSHI]                  = &gObjectEventGraphicsInfo_Satoshi,
     [OBJ_EVENT_GFX_BAZ]                      = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_M]             = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_F]             = &gObjectEventGraphicsInfo_ProfOak,
