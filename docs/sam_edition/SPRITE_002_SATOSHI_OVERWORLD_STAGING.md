@@ -1,23 +1,23 @@
-# SPRITE-002 — Satoshi overworld asset integration checkpoint
+# SPRITE-002 — Satoshi Overworld Integration
 
-Status: **STAGED, NOT IMPLEMENTED / NOT MERGEABLE**.
+## Current production candidate
 
-The user approved a reconstructed Satoshi four-direction walking reference after the original September 27 source sheet could not be recovered. This is a **new implementation asset**, not the missing approved original. The accepted visual reference is `Satoshi_Overworld_Approved_Visual_Reference_v2.png` (conversation artifact). The pixel-refined 16-frame candidate is `Satoshi_Overworld_16x32_Refined_v2.png` (conversation artifact; 64x128 RGBA, 4x4 frames of 16x32, 14 opaque colors). Preview: `Satoshi_Overworld_Refined_Preview_v2.png`.
+Nine 16×32 four-direction overworld frames have been converted to native FireRed 4bpp graphics and a 16-entry BGR555 palette. Their raw binary resources live in:
 
-## Remaining integration gates
+- `graphics/object_events/pics/people/satoshi.4bpp` (2304 bytes, git blob `a866f160f0fe110497d1e925ea894ece87e5bbf8`)
+- `graphics/object_events/palettes/satoshi.gbapal` (32 bytes, git blob `27111675941d907c701cdfe5de022e05b5b81e91`)
 
-1. Transfer the **exact** native PNG bytes into this branch as `graphics/object_events/pics/people/satoshi.png`, without re-encoding via the GitHub UTF-8 contents endpoint. File bytes currently exist in conversation artifact storage, not the GitHub tree.
-2. Verify directional ordering, transparent pixel treatment, color indexing and walking animation frames against the project’s existing `Boreal` or `Hawthorne` overworld engine implementations.
-3. Add Satoshi-specific palette, object graphics declarations, event object graphics table binding, and registered `OBJ_EVENT_GFX_SATOSHI` **155**; do not change trainer portraits or Gym2.
-4. Run ROM build CI and verify no unresolved assets or link symbols; review in-game sprite clarity.
-5. Only then mark SPRITE-002 Satoshi slice complete and merge independently of GYM2.
+The two blobs are verified byte-identical to the local generated native artifacts. The repo's object graphics tables and event-movement palette table register `OBJ_EVENT_GFX_SATOSHI = 155` and `OBJ_EVENT_PAL_TAG_SATOSHI = 0x1123`; all nine frame entries use the existing standard 16×32 event animation semantics.
 
-No existing Satoshi story, trainer data, flags or map scripts may be modified by this asset-only work.
+User-approved character description: authentic Pokémon FireRed / Gen III GBA adult NPC, short dark hair, rectangular glasses, dark blazer, light shirt, khaki trousers, dark shoes. The lost historical directional source is not claimed recovered. This is newly reconstructed production art. Approved modern presentation references are not falsely described as proof of native pixels.
 
-## 2026-10-07 front-frame audit
+## Validation
 
-The user rejected the earlier oversized/non-FireRed visual presentation. A revised FireRed-style front-facing visual was provisionally accepted. The earlier v2 full walking sheet **must not be assumed approved** on that basis.
+- 16×32 × nine frames, 4bpp graphics byte count 2304, BGR555 palette 32 bytes.
+- GitHub Actions CI on implementation head `fbf82ee6500f7c8cff6b59ee3b533418b2771638` **passed** (run 37752832647).
+- No GYM2 runtime files or trainer portrait files changed.
+- Emulator-side appearance/animation QA remains for the assembled playtest, separate from ROM compile verification.
 
-A real 16x32 RGBA front-frame **staging** image has now been exported as conversation artifact `Satoshi_FireRed_Front_16x32_Staging.png`, with an exact nearest-neighbor comparison `Satoshi_FireRed_Front_Native_vs_16x_Preview.png`. Technical inspection: 16x32, 14 visible colors, only alpha 0/255, occupied pixel bounds (x=1..14, y=4..30). This extraction derives from the prior v2 candidate and requires comparison/approval against the newer front-facing FireRed visual reference; it is **not** a ROM graphics integration or proof of style approval. The newer preview alone is not a directly reusable 16x32 PNG.
+## Closure
 
-Do not merge until all 4 directions and animations are confirmed visually, exact native binary bytes are committed, ID 155 is bound, and a complete CI/build succeeds.
+The SPRITE-002 Satoshi overworld **implementation slice** may be merged after a clean CI check on this documentation-only update. This does not claim that all other SPRITE-002 characters or full-game playtest auditing are closed.
