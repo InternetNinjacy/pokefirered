@@ -520,6 +520,9 @@ def save_and_reload(stub, win, case, rom_path, home, expected_species, slot, riv
         case["actions"] += 1
     # mGBA commonly places the SRAM beside the ROM; allow HOME-specific
     # directories without accepting stale files from another starter case.
+    # Shutdown forces mGBA to flush battery-backed SRAM before inspection.
+    proc.terminate()
+    proc.wait(timeout=5)
     candidates = [p for p in Path(home).rglob("*.sav") if p.is_file()]
     candidates += [p for p in rom_path.parent.glob(rom_path.stem + "*.sav") if p.is_file()]
     candidates = [p for p in candidates if p.stat().st_size >= 0x10000]
@@ -528,9 +531,6 @@ def save_and_reload(stub, win, case, rom_path, home, expected_species, slot, riv
     save_path = candidates[0]
     case["save"] = {"sha256": hashlib.sha256(save_path.read_bytes()).hexdigest(),
                     "size": save_path.stat().st_size}
-    # Close the original mGBA before relaunching to avoid stale in-memory SRAM.
-    proc.terminate()
-    proc.wait(timeout=5)
     with open(Path(home) / "mgba-reload.log", "w") as reload_log:
         reopened = subprocess.Popen(["mgba-qt", "-g", str(rom_path)],
                                     env=env, stdout=reload_log,
