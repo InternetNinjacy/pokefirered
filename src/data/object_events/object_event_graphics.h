@@ -54,6 +54,7 @@ const u16 gObjectEventPal_Rhyhorn[] = {
     0x0000, 0x1083, 0x20E6, 0x2D49, 0x3DAC, 0x4A30, 0x5AB4, 0x6B38,
     0x77BC, 0x62F6, 0x41EE, 0x316A, 0x2138, 0x4F5C, 0x6F7B, 0x7FFF,
 };
+const u16 gObjectEventPal_Satoshi[] = INCBIN_U16("graphics/object_events/palettes/satoshi.gbapal");
 const u16 gObjectEventPal_Hawthorne[] = INCBIN_U16("graphics/object_events/palettes/hawthorne.gbapal");
 const u16 gObjectEventPal_TropiusHothouse[] = INCBIN_U16("graphics/object_events/palettes/tropius_hothouse.gbapal");
 const u16 gObjectEventPal_Pinsir[] = INCBIN_U16("graphics/object_events/palettes/pinsir.gbapal");
@@ -170,6 +171,7 @@ const u16 gObjectEventPic_Fearow[] = INCBIN_U16("graphics/object_events/pics/pok
 const u16 gObjectEventPic_Kabuto[] = INCBIN_U16("graphics/object_events/pics/pokemon/kabuto.4bpp");
 const u16 gObjectEventPic_Abra[] = INCBIN_U16("graphics/object_events/pics/pokemon/abra.4bpp");
 const u16 gObjectEventPic_Miltank[] = INCBIN_U16("graphics/object_events/pics/pokemon/miltank.4bpp");
+const u16 gObjectEventPic_Satoshi[] = INCBIN_U16("graphics/object_events/pics/people/satoshi.4bpp");
 const u16 gObjectEventPic_Hawthorne[] = INCBIN_U16("graphics/object_events/pics/people/hawthorne.4bpp");
 const u16 gObjectEventPic_TropiusHothouse[] = INCBIN_U16("graphics/object_events/pics/pokemon/tropius_hothouse.4bpp");
 const u32 gObjectEventPic_Rhyhorn[] = {
