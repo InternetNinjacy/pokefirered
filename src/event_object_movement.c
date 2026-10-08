@@ -471,6 +471,7 @@ static const u8 gInitialMovementTypeFacingDirections[MOVEMENT_TYPES_COUNT] = {
 #define OBJ_EVENT_PAL_TAG_SCYTHER                      0x111C
 #define OBJ_EVENT_PAL_TAG_RHYHORN                      0x111D
 #define OBJ_EVENT_PAL_TAG_ABRA                         0x111E
+#define OBJ_EVENT_PAL_TAG_SATOSHI                      0x1123
 #define OBJ_EVENT_PAL_TAG_HAWTHORNE                    0x111F
 #define OBJ_EVENT_PAL_TAG_TROPIUS_HOTHOUSE             0x1120
 #define OBJ_EVENT_PAL_TAG_PINSIR                        0x1121
@@ -492,6 +493,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_Scyther,                 OBJ_EVENT_PAL_TAG_SCYTHER},
     {gObjectEventPal_Rhyhorn,                 OBJ_EVENT_PAL_TAG_RHYHORN},
     {gObjectEventPal_Abra,                    OBJ_EVENT_PAL_TAG_ABRA},
+    {gObjectEventPal_Satoshi,                OBJ_EVENT_PAL_TAG_SATOSHI},
     {gObjectEventPal_Hawthorne,               OBJ_EVENT_PAL_TAG_HAWTHORNE},
     {gObjectEventPal_TropiusHothouse,         OBJ_EVENT_PAL_TAG_TROPIUS_HOTHOUSE},
     {gObjectEventPal_Pinsir,                   OBJ_EVENT_PAL_TAG_PINSIR},
