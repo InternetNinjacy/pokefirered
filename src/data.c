@@ -292,6 +292,7 @@ const union AnimCmd *const gAnims_MonPic[] =
 #include "data/pokemon_graphics/shiny_palette_table.h"
 
 #include "data/trainer_graphics/front_pic_anims.h"
+#include "data/sam_gym2_cerulean_graphics.h"
 #include "data/trainer_graphics/front_pic_tables.h"
 #include "data/trainer_graphics/back_pic_anims.h"
 #include "data/trainer_graphics/back_pic_tables.h"
@@ -358,6 +359,7 @@ const union AnimCmd *const gAnims_MonPic[] =
 #define NO_ITEM_DEFAULT_MOVES(party) \
     SAM_HOTHOUSE_NO_ITEM_DEFAULT_HAWTHORNE_SELECT(SAM_HOTHOUSE_IS_HAWTHORNE(party), party)
 
+#include "data/sam_gym2_cerulean_parties.h"
 #include "data/trainers.h"
 
 #undef NO_ITEM_DEFAULT_MOVES

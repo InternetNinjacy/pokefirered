@@ -144,6 +144,9 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Magneton;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Onix;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lickitung;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Satoshi;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Leilani;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lehua;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Keahi;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Hawthorne;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_TropiusHothouse;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lapras;
@@ -321,9 +324,9 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
 
     // ARCH-006 allocation-only placeholders. SPRITE tasks replace these safe
     // existing routes with approved Sam assets when those assets are integrated.
-    [OBJ_EVENT_GFX_LEILANI]                  = &gObjectEventGraphicsInfo_ProfOak,
-    [OBJ_EVENT_GFX_LEHUA]                    = &gObjectEventGraphicsInfo_ProfOak,
-    [OBJ_EVENT_GFX_KEAHI]                    = &gObjectEventGraphicsInfo_ProfOak,
+    [OBJ_EVENT_GFX_LEILANI]                  = &gObjectEventGraphicsInfo_Leilani,
+    [OBJ_EVENT_GFX_LEHUA]                    = &gObjectEventGraphicsInfo_Lehua,
+    [OBJ_EVENT_GFX_KEAHI]                    = &gObjectEventGraphicsInfo_Keahi,
     [OBJ_EVENT_GFX_SATOSHI]                  = &gObjectEventGraphicsInfo_Satoshi,
     [OBJ_EVENT_GFX_BAZ]                      = &gObjectEventGraphicsInfo_ProfOak,
     [OBJ_EVENT_GFX_BUSHRANGER_M]             = &gObjectEventGraphicsInfo_ProfOak,
