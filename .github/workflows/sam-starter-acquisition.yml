@@ -20,7 +20,7 @@ jobs:
       - name: Install compiler and mGBA
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev mgba-qt xvfb xauth xdotool
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev mgba-qt xvfb xauth xdotool openbox
       - name: Install agbcc
         working-directory: agbcc
         run: |
@@ -35,7 +35,8 @@ jobs:
           COMPARE: '0'
         run: make -j2 all
       - name: Three fresh-starter RAM assertions
-        run: xvfb-run -a -s '-screen 0 1024x768x24' python3 tests/sam_mgba_starter_acquisition.py pokefirered.gba pokefirered.elf
+        run: |
+          xvfb-run -a -s '-screen 0 1024x768x24' bash -c 'openbox --sm-disable >/tmp/sam-openbox.log 2>&1 & sleep 1; python3 tests/sam_mgba_starter_acquisition.py pokefirered.gba pokefirered.elf'
       - name: Upload hash and checkpoint evidence (no ROM or save)
         if: always()
         uses: actions/upload-artifact@v4
