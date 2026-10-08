@@ -25,7 +25,7 @@ nm=subprocess.check_output(["arm-none-eabi-nm",str(elf)],text=True)
 m=re.findall(r"^([0-9a-fA-F]+)\s+[A-Za-z]\s+gPlayerParty$",nm,re.M)
 assert len(m)==1, "Missing unique gPlayerParty in ELF"
 addr=int(m[0],16)
-svp=re.findall(r"^([0-9a-fA-F]+)\\s+[A-Za-z]\\s+gSaveBlock1Ptr$",nm,re.M)
+svp=re.findall(r"^([0-9a-fA-F]+)\s+[A-Za-z]\s+gSaveBlock1Ptr$",nm,re.M)
 assert len(svp)==1,"Missing SaveBlock1 pointer ELF symbol"
 saveptr_addr=int(svp[0],16)
 assert 0x02000000<=addr<0x03000000
