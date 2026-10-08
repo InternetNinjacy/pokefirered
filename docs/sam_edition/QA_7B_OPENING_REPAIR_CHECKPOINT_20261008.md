@@ -36,3 +36,15 @@ PRs #354 and #355 are deliberately independent and based on current production. 
 - PR #354 was merged into `sam-edition-dev` with merge SHA `5587e96bc067652f92d8eae6444aa982f14f875f`. Blue's locked BLUE/DEREK/PJ/DILLON presets are now production source.
 - PR #356 initially failed CI build due to malformed historical indexed PNG PLTE header/CRC, not invalid C portrait wiring. The recovered Blue and Green source images each declare a 768-byte palette despite containing a 696-byte PLTE followed by a valid 1-byte tRNS transparency chunk. Repair commit `e1f2f4520340a65b9b1a99a0e67bb237763895e9` changes only PLTE length fields and PLTE CRC32 in the two PNG blobs; all other PNG bytes, including indexed art, transparency and IDAT pixels, remain untouched. All five PNG chunk CRCs were reverified for both. Rebuild and actual emulator visual inspection remain required before merging.
 - Because production advanced with #354, reconcile/rebase #355 and #356 against new production before further integration. Keep all outstanding runtime test gates open.
+
+## POST-MERGE STATUS — 2026-10-08 (supersedes older pending wording above)
+
+Production `sam-edition-dev` now includes all three bounded opening repairs:
+
+- PR #354 merged, SHA `5587e96bc067652f92d8eae6444aa982f14f875f`: canonical Blue default names BLUE/DEREK/PJ/DILLON, separate from Green.
+- PR #355 merged, SHA `41f42abcb3ed4ffd46e91ace6258308eccce9ae3`: retains the independent Blue Lab object while Green is introduced, and adds this QA checkpoint.
+- PR #356 merged, SHA `128b9cc7232e722c791633f27ed5cbf4aad7ba8f`: binds approved historic Blue/Green opening portraits with minimal PNG container repairs; approved Sam player images remain intact.
+
+Before merge, each final PR head passed the six existing workflows: production build, CI, host regression, emulator boot smoke, scripted navigation probe and live party RAM capture. This is **not** evidence of an uninterrupted three-starter opening through the Green battle and battery save/reload.
+
+A combined-production-head CI was queued at first readback; retain **QA-7B OPEN / HUMAN EMULATOR GATE PENDING** until an exact-ROM SHA run genuinely verifies Eevee, Pichu and Ditto independently through first Green battle, battery SRAM save, full emulator restart/reload and Route 1. PR #353's failed acquisition test is not a passing result. Preserve separate defect classifications: corrected source defects vs unconfirmed freeze root cause.
