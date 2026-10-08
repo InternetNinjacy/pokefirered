@@ -270,7 +270,12 @@ def drive_opening(stub, win, case):
             case["checkpoints"].append({"stage": "new-game-world", **snap})
             return
 
-        if stub.save_ptr() is None:
+        if snap["world"].get("world") == "not initialized":
+            # Use the value captured while the GDB target was paused. Reading
+            # memory again after snapshot() resumes mGBA can block until the
+            # remote-stub socket timeout and turns opening navigation into a
+            # multi-minute false hang.
+            #
             # FireRed's title transition uses START (Return in mGBA's default
             # keyboard map). The following A chooses NEW GAME from the default
             # main-menu cursor once that menu is present. Repeating this pair
