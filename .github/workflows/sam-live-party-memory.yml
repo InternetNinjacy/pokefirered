@@ -1,0 +1,45 @@
+name: Sam Edition Live Party RAM Capture
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [sam-edition-dev]
+  push:
+    branches: [sam-edition-dev]
+
+jobs:
+  party-memory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: pret/agbcc
+          path: agbcc
+      - name: Install build and emulator debugger dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev mgba-qt xvfb xauth
+      - name: Install agbcc
+        working-directory: agbcc
+        run: |
+          ./build.sh
+          ./install.sh ../
+      - name: Build modified ROM and ELF
+        env:
+          GAME_VERSION: FIRERED
+          GAME_LANGUAGE: ENGLISH
+          GAME_REVISION: '0'
+          MODERN: '0'
+          COMPARE: '0'
+        run: make -j2 all
+      - name: Capture live party RAM from mGBA GDB stub
+        run: xvfb-run -a -s '-screen 0 1024x768x24' python3 tests/sam_mgba_live_party.py pokefirered.gba pokefirered.elf
+      - name: Upload non-ROM, non-save evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sam-live-party-evidence
+          path: sam-live-party-evidence.json
+          if-no-files-found: ignore
