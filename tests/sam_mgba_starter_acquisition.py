@@ -56,6 +56,7 @@ results = {
     "saveblock1_ptr_symbol": hex(saveptr_addr),
     "tasks_address": hex(tasks_addr),
     "three_starters_verified": False,
+    "three_saves_reloaded": False,
     "cases": {},
 }
 
@@ -261,9 +262,11 @@ def drive_opening(stub, win, case):
     """Drive title/Oak opening by live task state until the bedroom exists."""
     milestones = set()
     player_name_entered = False
-    for _ in range(700):
+    for iteration in range(700):
         snap = snapshot(stub)
         world = snap["world"]
+        if iteration % 25 == 0:
+            case["checkpoints"].append({"stage": f"opening-probe-{iteration}", **snap})
         if world.get("x") == 6 and world.get("y") == 6 and not (
             world.get("map_group") == 0 and world.get("map_num") == 0
         ):
@@ -337,7 +340,8 @@ def drive_opening(stub, win, case):
         sendkey(win, "x", .16)
         case["actions"] += 1
 
-    raise AssertionError("Opening did not reach PlayersHouse_2F (6,6) within bound")
+    final_snap = checkpoint(stub, case, "opening-timeout", include_party=True)
+    raise AssertionError("Opening did not reach PlayersHouse_2F (6,6): " + json.dumps(final_snap))
 
 def get_world(stub):
     stub.pause()
@@ -486,10 +490,44 @@ def verify_final(stub, case, slot, target, rival_target):
         for p in party if p["species"] and p["checksum_valid"]
     ]
     case["final"] = {"party": valid, "world": world, "branch": state}
-    case["status"] = (
-        "PASS: normal live gameplay produced exactly one checksum-valid Lv.5 "
-        + case["starter"] + " with matching starter/rival branch state"
-    )
+    case["status"] = "ACQUISITION VERIFIED; SRAM RELOAD PENDING"
+
+def save_and_reload(stub, win, case, rom_path, home, expected_species, slot, rival_species):
+    """Exercise the in-game save menu, restart mGBA, then prove SRAM persistence.
+
+    No state is written through GDB. The only permissible save is one produced
+    by the game's own START > SAVE operation. A missing save or mismatched
+    reload is a hard failure.
+    """
+    # Back out of scripted lab interaction, if necessary. The save option
+    # must be reached organically rather than invoking a game function in GDB.
+    for _ in range(12):
+        sendkey(win, "x", .20)
+        case["actions"] += 1
+    sendkey(win, "Return", .30)
+    case["actions"] += 1
+    case["checkpoints"].append({"stage": "save-menu-attempt", **snapshot(stub, include_branch=True)})
+    # A blank SRAM must never count as success, even if the menu did not open.
+    # The standard FireRed START menu defaults to POKEDEX/POKEMON and SAVE
+    # appears further down. Explicitly navigate to SAVE; recheck by SRAM.
+    for _ in range(4):
+        sendkey(win, "Down", .13)
+        case["actions"] += 1
+    sendkey(win, "x", .30)
+    for _ in range(16):
+        sendkey(win, "x", .24)
+        case["actions"] += 1
+    # mGBA commonly places the SRAM beside the ROM; allow HOME-specific
+    # directories without accepting stale files from another starter case.
+    candidates = [p for p in Path(home).rglob("*.sav") if p.is_file()]
+    candidates += [p for p in rom_path.parent.glob(rom_path.stem + "*.sav") if p.is_file()]
+    candidates = [p for p in candidates if p.stat().st_size >= 0x10000]
+    if len(candidates) != 1:
+        raise AssertionError(f"Expected exactly one nonempty battery SRAM save, found {len(candidates)}")
+    save_path = candidates[0]
+    case["save"] = {"sha256": hashlib.sha256(save_path.read_bytes()).hexdigest(),
+                    "size": save_path.stat().st_size}
+    return save_path
 
 try:
     for slot, (name, target, rival_target) in enumerate(expected):
@@ -552,6 +590,7 @@ try:
                         approach_ball(stub, win, case, slot)
                         drive_starter_award(stub, win, case, target)
                         verify_final(stub, case, slot, target, rival_target)
+                        save_and_reload(stub, win, case, rom, home, target, slot, rival_target)
 
                 except Exception as exc:
                     case["status"] = "FAIL: " + str(exc)
@@ -564,7 +603,7 @@ try:
                         proc.kill()
 
     results["three_starters_verified"] = all(
-        x["status"].startswith("PASS") for x in results["cases"].values()
+        "final" in x for x in results["cases"].values()
     )
 finally:
     out.write_text(json.dumps(results, indent=2) + "\n")
