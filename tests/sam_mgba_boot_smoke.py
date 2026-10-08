@@ -38,18 +38,36 @@ with tempfile.TemporaryDirectory() as tmp:
                             stdout=log, stderr=subprocess.STDOUT)
     try:
         window = None
+        # Qt exposes multiple X windows; the first matched surface can be
+        # only its 22-pixel menu bar. Select a visible full-sized viewport.
         for _ in range(40):
             if proc.poll() is not None:
                 raise RuntimeError("mGBA exited during boot; inspect the step logs")
-            ids = run("xdotool", "search", "--onlyvisible", "--class", "mgba").splitlines() if subprocess.run(
+            discovered = subprocess.run(
                 ["xdotool", "search", "--onlyvisible", "--class", "mgba"],
-                capture_output=True).returncode == 0 else []
-            if ids:
-                window = ids[-1]
-                break
+                capture_output=True, text=True
+            )
+            candidates = discovered.stdout.splitlines() if discovered.returncode == 0 else []
+            sized = []
+            for wid in candidates:
+                geo = subprocess.run(
+                    ["xdotool", "getwindowgeometry", "--shell", wid],
+                    capture_output=True, text=True
+                )
+                if geo.returncode:
+                    continue
+                values = dict(line.split("=", 1) for line in geo.stdout.splitlines() if "=" in line)
+                w, h = int(values.get("WIDTH", 0)), int(values.get("HEIGHT", 0))
+                sized.append((w * h, wid, w, h))
+            if sized:
+                print(f"visible mGBA X windows: {sized}", flush=True)
+                best = max(sized)
+                if best[2] >= 240 and best[3] >= 160:
+                    window = best[1]
+                    break
             time.sleep(0.25)
         if not window:
-            raise RuntimeError("mGBA game window did not appear")
+            raise RuntimeError("No full-sized mGBA video window found")
         # Xvfb runs without a window manager; windowactivate requires one.
         # Address the target X window directly for screenshots and key input.
         time.sleep(6)
