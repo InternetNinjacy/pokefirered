@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import re
+import struct
 import socket
 import subprocess
 import sys
@@ -24,6 +25,9 @@ nm=subprocess.check_output(["arm-none-eabi-nm",str(elf)],text=True)
 m=re.findall(r"^([0-9a-fA-F]+)\s+[A-Za-z]\s+gPlayerParty$",nm,re.M)
 assert len(m)==1, "Missing unique gPlayerParty in ELF"
 addr=int(m[0],16)
+svp=re.findall(r"^([0-9a-fA-F]+)\\s+[A-Za-z]\\s+gSaveBlock1Ptr$",nm,re.M)
+assert len(svp)==1,"Missing SaveBlock1 pointer ELF symbol"
+saveptr_addr=int(svp[0],16)
 assert 0x02000000<=addr<0x03000000
 out=Path("sam-starter-live-assertions.json")
 results={"commit":os.getenv("GITHUB_SHA","local"),
@@ -63,6 +67,24 @@ class Stub:
         # 'c' has no synchronous response until the target stops.
         self.s.sendall(gdb_packet("c"))
         return
+    def read_bytes(self,address,length):
+        chunks=[]
+        for offset in range(0,length,200):
+            size=min(200,length-offset)
+            r=self.send(f"m{address+offset:x},{size:x}")
+            if r.startswith("E"):raise RuntimeError("Memory read error "+r)
+            chunk=bytes.fromhex(r)
+            if len(chunk)!=size:raise RuntimeError("Short memory read")
+            chunks.append(chunk)
+        return b"".join(chunks)
+    def world(self):
+        ptr=struct.unpack("<I",self.read_bytes(saveptr_addr,4))[0]
+        if not 0x02000000<=ptr<0x02040000:
+            return {"saveblock_ptr":hex(ptr),"world":"not initialized"}
+        data=self.read_bytes(ptr,12)
+        x,y=struct.unpack_from("<hh",data,0)
+        group,num,warp=struct.unpack_from("<bbb",data,4)
+        return {"x":x,"y":y,"map_group":group,"map_num":num,"warp":warp}
     def read_party(self):
         chunks=[]
         for off in (0,200,400):
@@ -98,7 +120,7 @@ def inspect(stub,case,stage,target):
     party=stub.read_party()
     valid=[{"species":p["species"],"level":p["level"],"valid":p["checksum_valid"]}
            for p in party if p["species"] and p["checksum_valid"]]
-    case["checkpoints"].append({"stage":stage,"party":valid})
+    case["checkpoints"].append({"stage":stage,"party":valid,"world":stub.world()})
     try:
         validate_starter(party,target)
         case["status"]="PASS: live emulator RAM confirms one level-5 "+case["starter"]
@@ -133,7 +155,7 @@ try:
                         start=stub.read_party()
                         if any(p["species"] for p in start):
                             raise AssertionError("Not a fresh empty party")
-                        case["checkpoints"].append({"stage":"initial-empty-party","party":[]})
+                        case["checkpoints"].append({"stage":"initial-empty-party","party":[],"world":stub.world()})
                         win=window_for_mgba(proc)
                         stub.resume()
                         time.sleep(4)
