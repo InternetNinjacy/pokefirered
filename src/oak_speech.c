@@ -677,14 +677,17 @@ static const u8 *const sFemaleNameChoices[] =
 };
 
 static const u8 sNameChoice_BlueSam[] = _("BLUE");
+static const u8 sNameChoice_DerekSam[] = _("DEREK");
+static const u8 sNameChoice_PJSam[] = _("PJ");
+static const u8 sNameChoice_DillonSam[] = _("DILLON");
 
 static const u8 *const sBlueNameChoices[] =
 {
 #if defined(FIRERED)
     sNameChoice_BlueSam,
-    gNameChoice_Gary,
-    gNameChoice_Kaz,
-    gNameChoice_Toru
+    sNameChoice_DerekSam,
+    sNameChoice_PJSam,
+    sNameChoice_DillonSam
 #elif defined(LEAFGREEN)
     gNameChoice_Red,
     gNameChoice_Ash,
