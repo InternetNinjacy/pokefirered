@@ -27,3 +27,4 @@ jobs:
           python3 tests/test_thomas_cinnabar_lab.py
           python3 tests/test_thomas_cinnabar_fossil_battle.py
           python3 tests/sam_party_ram_oracle.py --self-test
+          python3 tests/test_sam_starter_lab_mapping.py
