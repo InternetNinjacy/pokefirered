@@ -73,13 +73,21 @@ try:
                     status=response()
                     if not status.startswith(("S","T")):
                         raise RuntimeError("Unexpected GDB initial status "+status[:80])
-                    sock.sendall(packet(f"m{address:x},258"))
-                    memory=response()
-                    if memory.startswith("E"):
-                        raise RuntimeError("GDB memory read failed: "+memory)
-                    data=bytes.fromhex(memory)
-                    if len(data)!=600:
-                        raise RuntimeError(f"Expected 600 live bytes, got {len(data)}")
+                    # mGBA's GDB stub rejects memory reads > 512 bytes
+                    # (E06 BAD_ARGUMENTS). Fetch the party in 3x200-byte
+                    # packets and keep a single paused debugger snapshot.
+                    pieces=[]
+                    for offset in (0, 200, 400):
+                        sock.sendall(packet(f"m{address + offset:x},c8"))
+                        memory=response()
+                        if memory.startswith("E"):
+                            raise RuntimeError(f"GDB memory read failed at offset {offset}: {memory}")
+                        chunk=bytes.fromhex(memory)
+                        if len(chunk)!=200:
+                            raise RuntimeError(f"Partial RAM read at offset {offset}: {len(chunk)} bytes")
+                        pieces.append(chunk)
+                    data=b"".join(pieces)
+                    assert len(data)==600
                     party=decode_party(data)
                     result["memory_capture"]="PASS: 600 live bytes from actual mGBA GDB RAM"
                     result["party"]=party
