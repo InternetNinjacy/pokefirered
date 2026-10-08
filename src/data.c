@@ -358,6 +358,7 @@ const union AnimCmd *const gAnims_MonPic[] =
 #define NO_ITEM_DEFAULT_MOVES(party) \
     SAM_HOTHOUSE_NO_ITEM_DEFAULT_HAWTHORNE_SELECT(SAM_HOTHOUSE_IS_HAWTHORNE(party), party)
 
+#include "data/sam_gym2_cerulean_parties.h"
 #include "data/trainers.h"
 
 #undef NO_ITEM_DEFAULT_MOVES

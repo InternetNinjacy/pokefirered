@@ -476,6 +476,9 @@ static const u8 gInitialMovementTypeFacingDirections[MOVEMENT_TYPES_COUNT] = {
 #define OBJ_EVENT_PAL_TAG_TROPIUS_HOTHOUSE             0x1120
 #define OBJ_EVENT_PAL_TAG_PINSIR                        0x1121
 #define OBJ_EVENT_PAL_TAG_VENOMOTH                      0x1122
+#define OBJ_EVENT_PAL_TAG_LEILANI 0x1124
+#define OBJ_EVENT_PAL_TAG_LEHUA 0x1125
+#define OBJ_EVENT_PAL_TAG_KEAHI 0x1126
 #define OBJ_EVENT_PAL_TAG_NONE                        0x11FF
 
 #include "data/object_events/object_event_graphics_info_pointers.h"
@@ -484,6 +487,7 @@ static const u8 gInitialMovementTypeFacingDirections[MOVEMENT_TYPES_COUNT] = {
 #include "data/object_events/object_event_anims.h"
 #include "data/object_events/base_oam.h"
 #include "data/object_events/object_event_subsprites.h"
+#include "data/sam_gym2_cerulean_object_graphics.h"
 #include "data/object_events/object_event_graphics_info.h"
 
 static const struct SpritePalette sObjectEventSpritePalettes[] = {
@@ -494,6 +498,9 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_Rhyhorn,                 OBJ_EVENT_PAL_TAG_RHYHORN},
     {gObjectEventPal_Abra,                    OBJ_EVENT_PAL_TAG_ABRA},
     {gObjectEventPal_Satoshi,                OBJ_EVENT_PAL_TAG_SATOSHI},
+    {gObjectEventPal_Leilani, OBJ_EVENT_PAL_TAG_LEILANI},
+    {gObjectEventPal_Lehua, OBJ_EVENT_PAL_TAG_LEHUA},
+    {gObjectEventPal_Keahi, OBJ_EVENT_PAL_TAG_KEAHI},
     {gObjectEventPal_Hawthorne,               OBJ_EVENT_PAL_TAG_HAWTHORNE},
     {gObjectEventPal_TropiusHothouse,         OBJ_EVENT_PAL_TAG_TROPIUS_HOTHOUSE},
     {gObjectEventPal_Pinsir,                   OBJ_EVENT_PAL_TAG_PINSIR},
