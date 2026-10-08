@@ -50,7 +50,8 @@ with tempfile.TemporaryDirectory() as tmp:
             time.sleep(0.25)
         if not window:
             raise RuntimeError("mGBA game window did not appear")
-        run("xdotool", "windowactivate", "--sync", window)
+        # Xvfb runs without a window manager; windowactivate requires one.
+        # Address the target X window directly for screenshots and key input.
         time.sleep(6)
         if proc.poll() is not None:
             raise RuntimeError("mGBA quit before initial frame sampling")
