@@ -8,6 +8,7 @@ mGBA through its GDB stub and verifies live RAM. No Pokemon or progression state
 is injected or edited by this test.
 """
 import hashlib
+import shutil
 import json
 import os
 from pathlib import Path
@@ -492,7 +493,7 @@ def verify_final(stub, case, slot, target, rival_target):
     case["final"] = {"party": valid, "world": world, "branch": state}
     case["status"] = "ACQUISITION VERIFIED; SRAM RELOAD PENDING"
 
-def save_and_reload(stub, win, case, rom_path, home, expected_species, slot, rival_species):
+def save_and_reload(stub, win, case, rom_path, home, expected_species, slot, rival_species, proc, env):
     """Exercise the in-game save menu, restart mGBA, then prove SRAM persistence.
 
     No state is written through GDB. The only permissible save is one produced
@@ -527,7 +528,58 @@ def save_and_reload(stub, win, case, rom_path, home, expected_species, slot, riv
     save_path = candidates[0]
     case["save"] = {"sha256": hashlib.sha256(save_path.read_bytes()).hexdigest(),
                     "size": save_path.stat().st_size}
-    return save_path
+    # Close the original mGBA before relaunching to avoid stale in-memory SRAM.
+    proc.terminate()
+    proc.wait(timeout=5)
+    with open(Path(home) / "mgba-reload.log", "w") as reload_log:
+        reopened = subprocess.Popen(["mgba-qt", "-g", str(rom_path)],
+                                    env=env, stdout=reload_log,
+                                    stderr=subprocess.STDOUT)
+        try:
+            new_sock = None
+            for _ in range(60):
+                try:
+                    new_sock = socket.create_connection(("127.0.0.1", 2345), timeout=1)
+                    break
+                except OSError:
+                    time.sleep(.25)
+            if new_sock is None:
+                raise AssertionError("Restarted emulator did not expose GDB")
+            with new_sock:
+                reload_stub = Stub(new_sock)
+                new_sock.sendall(b"+")
+                status = reload_stub.send("?")
+                assert status.startswith(("T", "S")), status
+                new_win = window_for_mgba(reopened)
+                cmd("xdotool", "windowactivate", "--sync", new_win)
+                reload_stub.resume()
+                time.sleep(3)
+                # Continue the in-game save; only keyboard input may select it.
+                for _ in range(30):
+                    sendkey(new_win, "Return", .16)
+                    sendkey(new_win, "x", .18)
+                    snap = snapshot(reload_stub, include_party=True, include_branch=True)
+                    case["checkpoints"].append({"stage": "reload-probe", **snap})
+                    if snap["party"]:
+                        reload_stub.pause()
+                        party = reload_stub.read_party()
+                        state = reload_stub.branch_state()
+                        reload_stub.resume()
+                        validate_starter(party, expected_species)
+                        assert state["starter_mon"] == slot, state
+                        assert state["rival_starter_species_temp"] == rival_species, state
+                        assert state["pokemon_get_flag"] is True, state
+                        case["reload"] = {"party": snap["party"], "branch": state,
+                                          "save_sha256": case["save"]["sha256"]}
+                        case["status"] = "PASS: starter acquired and battery SRAM reloaded"
+                        return
+                raise AssertionError("Restart did not reload a valid saved starter party")
+        finally:
+            reopened.terminate()
+            try:
+                reopened.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                reopened.kill()
 
 try:
     for slot, (name, target, rival_target) in enumerate(expected):
@@ -541,6 +593,8 @@ try:
         }
         results["cases"][name] = case
         with tempfile.TemporaryDirectory() as home:
+            isolated_rom = Path(home) / "sam-starter.gba"
+            shutil.copyfile(rom, isolated_rom)
             env = dict(
                 os.environ,
                 HOME=home,
@@ -550,7 +604,7 @@ try:
             )
             with open(Path(home) / "mgba.log", "w") as log:
                 proc = subprocess.Popen(
-                    ["mgba-qt", "-g", str(rom)],
+                    ["mgba-qt", "-g", str(isolated_rom)],
                     env=env, stdout=log, stderr=subprocess.STDOUT
                 )
                 try:
@@ -590,7 +644,7 @@ try:
                         approach_ball(stub, win, case, slot)
                         drive_starter_award(stub, win, case, target)
                         verify_final(stub, case, slot, target, rival_target)
-                        save_and_reload(stub, win, case, rom, home, target, slot, rival_target)
+                        save_and_reload(stub, win, case, isolated_rom, home, target, slot, rival_target, proc, env)
 
                 except Exception as exc:
                     case["status"] = "FAIL: " + str(exc)
@@ -605,9 +659,13 @@ try:
     results["three_starters_verified"] = all(
         "final" in x for x in results["cases"].values()
     )
+    results["three_saves_reloaded"] = all(
+        x.get("status", "").startswith("PASS:") and "reload" in x
+        for x in results["cases"].values()
+    )
 finally:
     out.write_text(json.dumps(results, indent=2) + "\n")
 
 print(json.dumps(results, indent=2))
-if not results["three_starters_verified"]:
-    sys.exit("FAIL CLOSED: actual three-starter acquisition not verified; see JSON evidence")
+if not results["three_starters_verified"] or not results["three_saves_reloaded"]:
+    sys.exit("FAIL CLOSED: three independently saved and reloaded starter openings not verified")
