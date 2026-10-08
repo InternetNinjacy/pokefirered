@@ -1,5 +1,10 @@
 PokemonTower_7F_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, PokemonTower_7F_OnLoad
 	.byte 0
+
+PokemonTower_7F_OnLoad::
+	call EventScript_ThomasSyncVisibility
+	end
 
 PokemonTower_7F_EventScript_MrFuji::
 	lock
@@ -16,8 +21,18 @@ PokemonTower_7F_EventScript_MrFuji::
 	end
 
 PokemonTower_7F_EventScript_Grunt1::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_19, PokemonTower_7F_Text_Grunt1Intro, PokemonTower_7F_Text_Grunt1Defeat, PokemonTower_7F_EventScript_DefeatedGrunt1
-	msgbox PokemonTower_7F_Text_Grunt1PostBattle, MSGBOX_AUTOCLOSE
+	lock
+	faceplayer
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_CELADON_CLEARED, PokemonTower_7F_EventScript_ThomasBattle
+	release
+	end
+
+PokemonTower_7F_EventScript_ThomasBattle::
+	call Thomas_EventScript_LavenderPreBattle
+	trainerbattle_no_intro TRAINER_THOMAS_POKEMON_TOWER, Thomas_Text_LavenderDefeat
+	call EventScript_ThomasSetLavenderCleared
+	removeobject VAR_LAST_TALKED
+	release
 	end
 
 PokemonTower_7F_EventScript_DefeatedGrunt1::

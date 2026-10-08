@@ -9,6 +9,42 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
+#include "constants/opponents.h"
+
+// These five warehouse demonstrations must send the forced-growth ace last.
+// Keep their normal send-out order; unrelated trainers retain stock switching.
+static bool8 IsFiveIslandShowcaseTrainer(void)
+{
+    if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+     || (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_LINK)))
+        return FALSE;
+
+    switch (gTrainerBattleOpponent_A)
+    {
+    case TRAINER_TEAM_ROCKET_GRUNT_42:
+    case TRAINER_TEAM_ROCKET_GRUNT_47:
+    case TRAINER_TEAM_ROCKET_GRUNT_48:
+    case TRAINER_FIVE_ISLAND_SCIENTIST_1:
+    case TRAINER_FIVE_ISLAND_SCIENTIST_2:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
+static u8 GetFiveIslandShowcaseNextMon(void)
+{
+    u8 i;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        u16 species = GetMonData(&gEnemyParty[i], MON_DATA_SPECIES_OR_EGG);
+        if (i != gBattlerPartyIndexes[gActiveBattler]
+         && species != SPECIES_NONE && species != SPECIES_EGG
+         && GetMonData(&gEnemyParty[i], MON_DATA_HP) != 0)
+            return i;
+    }
+    return PARTY_SIZE;
+}
 
 static bool8 HasSuperEffectiveMoveAgainstOpponents(bool8 noRng);
 static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent);
@@ -305,6 +341,9 @@ static bool8 ShouldSwitch(void)
     s32 i;
     s32 availableToSwitch;
 
+    if (IsFiveIslandShowcaseTrainer())
+        return FALSE;
+
     if ((gBattleMons[gActiveBattler].status2 & (STATUS2_WRAPPED | STATUS2_ESCAPE_PREVENTION))
      || (gStatuses3[gActiveBattler] & STATUS3_ROOTED)
      || AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gActiveBattler, ABILITY_SHADOW_TAG, 0, 0)
@@ -434,6 +473,9 @@ u8 GetMostSuitableMonToSwitchInto(void)
     s32 i, j;
     u8 invalidMons;
     u16 move;
+
+    if (IsFiveIslandShowcaseTrainer())
+        return GetFiveIslandShowcaseNextMon();
 
     if (*(gBattleStruct->monToSwitchIntoId + gActiveBattler) != PARTY_SIZE)
         return *(gBattleStruct->monToSwitchIntoId + gActiveBattler);

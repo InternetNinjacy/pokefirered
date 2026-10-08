@@ -18,6 +18,7 @@ static u8 CopySaveSlotData(u16 sectorId, const struct SaveSectorLocation *locati
 static u8 GetSaveValidStatus(const struct SaveSectorLocation *locations);
 static u8 ReadFlashSector(u8 sectorId, struct SaveSector *sector);
 static u16 CalculateChecksum(void *data, u16 size);
+static u16 GetSaveSectorChecksumSize(u16 sectorId, const struct SaveSectorLocation *locations, const u8 *sectorData);
 
 /*
  * Sector Layout:
@@ -74,8 +75,11 @@ struct
 // These will produce an error if a save struct is larger than the space
 // alloted for it in the flash.
 STATIC_ASSERT(sizeof(struct SaveBlock2) <= SECTOR_DATA_SIZE, SaveBlock2FreeSpace);
+STATIC_ASSERT(sizeof(struct SamEditionSaveData) == 0xF0, SamEditionSaveDataSize);
+STATIC_ASSERT(sizeof(struct SaveBlock1) == 0x3D68, SamEditionSaveBlock1Layout);
 STATIC_ASSERT(sizeof(struct SaveBlock1) <= SECTOR_DATA_SIZE * (SECTOR_ID_SAVEBLOCK1_END - SECTOR_ID_SAVEBLOCK1_START + 1), SaveBlock1FreeSpace);
 STATIC_ASSERT(sizeof(struct PokemonStorage) <= SECTOR_DATA_SIZE * (SECTOR_ID_PKMN_STORAGE_END - SECTOR_ID_PKMN_STORAGE_START + 1), PokemonStorageFreeSpace);
+STATIC_ASSERT((sizeof(struct PokemonStorage) - (8 * SECTOR_DATA_SIZE)) + sizeof(struct NewGamePlusStorageReserve) <= SECTOR_DATA_SIZE, NewGamePlusReserveFitsStorageTail);
 
 // Sector num to begin writing save data. Sectors are rotated each time the game is saved. (possibly to avoid wear on flash memory?)
 COMMON_DATA u16 gLastWrittenSector = 0;
@@ -190,7 +194,14 @@ static u8 HandleWriteSector(u16 sectorId, const struct SaveSectorLocation *locat
     for (i = 0; i < size; i++)
         gSaveDataBufferPtr->data[i] = data[i];
 
-    gSaveDataBufferPtr->checksum = CalculateChecksum(data, size);
+    if (sectorId == SECTOR_ID_PKMN_STORAGE_END && IsNewGamePlusStorageActive())
+    {
+        struct NewGamePlusStorageReserve *reserve = GetNewGamePlusStorageReserve();
+        memcpy(&gSaveDataBufferPtr->data[size], reserve, sizeof(*reserve));
+        size += sizeof(*reserve);
+    }
+
+    gSaveDataBufferPtr->checksum = CalculateChecksum(gSaveDataBufferPtr->data, size);
     return TryWriteSector(sectorNum, gSaveDataBufferPtr->data);
 }
 
@@ -317,7 +328,14 @@ static u8 HandleReplaceSector(u16 sectorId, const struct SaveSectorLocation *loc
     for (i = 0; i < size; i++)
         gSaveDataBufferPtr->data[i] = data[i];
 
-    gSaveDataBufferPtr->checksum = CalculateChecksum(data, size);
+    if (sectorId == SECTOR_ID_PKMN_STORAGE_END && IsNewGamePlusStorageActive())
+    {
+        struct NewGamePlusStorageReserve *reserve = GetNewGamePlusStorageReserve();
+        memcpy(&gSaveDataBufferPtr->data[size], reserve, sizeof(*reserve));
+        size += sizeof(*reserve);
+    }
+
+    gSaveDataBufferPtr->checksum = CalculateChecksum(gSaveDataBufferPtr->data, size);
 
 #if REVISION >= 0xA
     svc_ReplaceSector(sectorNum, (u8*)gSaveDataBufferPtr);
@@ -451,12 +469,23 @@ static u8 CopySaveSlotData(u16 sectorId, const struct SaveSectorLocation *locati
         if (id == 0)
             gLastWrittenSector = i;
 
-        checksum = CalculateChecksum(gSaveDataBufferPtr->data, locations[id].size);
+        checksum = CalculateChecksum(gSaveDataBufferPtr->data, GetSaveSectorChecksumSize(id, locations, gSaveDataBufferPtr->data));
         if (gSaveDataBufferPtr->signature == SECTOR_SIGNATURE && gSaveDataBufferPtr->checksum == checksum)
         {
             u16 j;
             for (j = 0; j < locations[id].size; j++)
                 locations[id].data[j] = gSaveDataBufferPtr->data[j];
+
+            if (id == SECTOR_ID_PKMN_STORAGE_END)
+            {
+                const struct NewGamePlusStorageReserve *savedReserve =
+                    (const struct NewGamePlusStorageReserve *)&gSaveDataBufferPtr->data[locations[id].size];
+
+                if (savedReserve->magic == NG_PLUS_STORAGE_MAGIC)
+                    *GetNewGamePlusStorageReserve() = *savedReserve;
+                else
+                    ClearNewGamePlusStorageReserve();
+            }
         }
     }
 
@@ -484,7 +513,7 @@ static u8 GetSaveValidStatus(const struct SaveSectorLocation *locations)
         if (gSaveDataBufferPtr->signature == SECTOR_SIGNATURE)
         {
             signatureValid = TRUE;
-            checksum = CalculateChecksum(gSaveDataBufferPtr->data, locations[gSaveDataBufferPtr->id].size);
+            checksum = CalculateChecksum(gSaveDataBufferPtr->data, GetSaveSectorChecksumSize(gSaveDataBufferPtr->id, locations, gSaveDataBufferPtr->data));
             if (gSaveDataBufferPtr->checksum == checksum)
             {
                 slot1saveCounter = gSaveDataBufferPtr->counter;
@@ -512,7 +541,7 @@ static u8 GetSaveValidStatus(const struct SaveSectorLocation *locations)
         if (gSaveDataBufferPtr->signature == SECTOR_SIGNATURE)
         {
             signatureValid = TRUE;
-            checksum = CalculateChecksum(gSaveDataBufferPtr->data, locations[gSaveDataBufferPtr->id].size);
+            checksum = CalculateChecksum(gSaveDataBufferPtr->data, GetSaveSectorChecksumSize(gSaveDataBufferPtr->id, locations, gSaveDataBufferPtr->data));
             if (gSaveDataBufferPtr->checksum == checksum)
             {
                 slot2saveCounter = gSaveDataBufferPtr->counter;
@@ -625,6 +654,22 @@ static u16 CalculateChecksum(void *data, u16 size)
     }
 
     return ((checksum >> 16) + checksum);
+}
+
+static u16 GetSaveSectorChecksumSize(u16 sectorId, const struct SaveSectorLocation *locations, const u8 *sectorData)
+{
+    u16 size = locations[sectorId].size;
+
+    if (sectorId == SECTOR_ID_PKMN_STORAGE_END)
+    {
+        const struct NewGamePlusStorageReserve *savedReserve =
+            (const struct NewGamePlusStorageReserve *)&sectorData[size];
+
+        if (savedReserve->magic == NG_PLUS_STORAGE_MAGIC)
+            size += sizeof(*savedReserve);
+    }
+
+    return size;
 }
 
 static void UpdateSaveAddresses(void)

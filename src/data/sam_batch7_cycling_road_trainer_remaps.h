@@ -1,0 +1,24 @@
+// Pokémon: Sam Edition — ST-IMP-07 Routes 16-18 party remaps.
+#include "sam_batch7_cycling_road_trainer_parties.h"
+
+#define sParty_BikerLao sParty_SamB7BikerLao
+#define sParty_CueBallKoji sParty_SamB7CueBallKoji
+#define sParty_CueBallLuke sParty_SamB7CueBallLuke
+#define sParty_BikerRuben sParty_SamB7BikerRuben
+#define sParty_CueBallCamron sParty_SamB7CueBallCamron
+#define sParty_BikerHideo sParty_SamB7BikerHideo
+
+#define sParty_BikerVirgil sParty_SamB7BikerVirgil
+#define sParty_CueBallIsaiah sParty_SamB7CueBallIsaiah
+#define sParty_CueBallRaul sParty_SamB7CueBallRaul
+#define sParty_BikerNikolas sParty_SamB7BikerNikolas
+#define sParty_BikerBilly sParty_SamB7BikerBilly
+#define sParty_CueBallJamal sParty_SamB7CueBallJamal
+#define sParty_CueBallZeek sParty_SamB7CueBallZeek
+#define sParty_CueBallCorey sParty_SamB7CueBallCorey
+#define sParty_BikerWilliam sParty_SamB7BikerWilliam
+#define sParty_BikerJaxon sParty_SamB7BikerJaxon
+
+#define sParty_BirdKeeperJacob sParty_SamB7BirdKeeperJacob
+#define sParty_BirdKeeperRamiro sParty_SamB7BirdKeeperRamiro
+#define sParty_BirdKeeperWilton sParty_SamB7BirdKeeperWilton

@@ -4,3 +4,8 @@ SevenIsland_SevaultCanyon_MapScripts::
 SevenIsland_SevaultCanyon_EventScript_RouteSign::
 	msgbox SevenIsland_SevaultCanyon_Text_RouteSign, MSGBOX_SIGN
 	end
+
+SevenIsland_SevaultCanyon_EventScript_Larry::
+	trainerbattle_single TRAINER_RUIN_MANIAC_LARRY, SixIsland_RuinValley_Text_LarryIntro, SixIsland_RuinValley_Text_LarryDefeat
+	msgbox SixIsland_RuinValley_Text_LarryPostBattle, MSGBOX_AUTOCLOSE
+	end

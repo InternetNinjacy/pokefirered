@@ -412,5 +412,9 @@ const u8 *const gMonFootprintTable[] =
     [SPECIES_JIRACHI] = gMonFootprint_Jirachi,
     [SPECIES_DEOXYS] = gMonFootprint_Deoxys,
     [SPECIES_CHIMECHO] = gMonFootprint_Chimecho,
+    // ARCH-004 placeholders; SPEC-009 supplies final custom species footprints.
+    [SPECIES_LEAFEON] = gMonFootprint_Bulbasaur,
+    [SPECIES_ECTOCEON] = gMonFootprint_Bulbasaur,
+    [SPECIES_RHYPERIOR] = gMonFootprint_Bulbasaur,
     [SPECIES_EGG] = gMonFootprint_Bulbasaur,
 };

@@ -6,6 +6,7 @@ ThreeIsland_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_THREE_ISLAND
 	call_if_set FLAG_RESCUED_LOSTELLE, ThreeIsland_EventScript_HideAntiBikers
 	call_if_eq VAR_MAP_SCENE_THREE_ISLAND, 4, ThreeIsland_EventScript_SetAntiBikersMovementAfterBikers
+	call ThreeIsland_EventScript_UpdateGreen
 	end
 
 ThreeIsland_EventScript_HideAntiBikers::
@@ -226,9 +227,8 @@ ThreeIsland_EventScript_BattleBikersScene::
 	applymovement LOCALID_THREE_ISLAND_BIKER3, ThreeIsland_Movement_BikerApproach
 	waitmovement 0
 	playbgm MUS_ENCOUNTER_BOY, 0
-	msgbox ThreeIsland_Text_Biker3Intro
 	setvar VAR_LAST_TALKED, LOCALID_THREE_ISLAND_BIKER3
-	trainerbattle_no_intro TRAINER_BIKER_GOON_3, ThreeIsland_Text_Biker3Defeat
+	trainerbattle_double TRAINER_BIKER_GOON_3, ThreeIsland_Text_Biker3Intro, ThreeIsland_Text_Biker3Defeat, MtMoon_1F_Text_KentNotEnoughMons
 	applymovement LOCALID_THREE_ISLAND_BIKER3, Common_Movement_WalkInPlaceFasterLeft
 	waitmovement 0
 	applymovement LOCALID_THREE_ISLAND_BIKER4, Common_Movement_WalkInPlaceFasterDown
@@ -384,3 +384,73 @@ ThreeIsland_EventScript_IslandSign::
 ThreeIsland_EventScript_Biker6::
 	msgbox ThreeIsland_Text_IslandBelongsToUs, MSGBOX_NPC
 	end
+
+@ Pokémon: Sam Edition — Green rival checkpoint.
+ThreeIsland_EventScript_UpdateGreen::
+	setflag FLAG_TEMP_11
+	goto_if_unset FLAG_RESCUED_LOSTELLE, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_SAFFRON_DITTO, ThreeIsland_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_SAFFRON_ESPEON, ThreeIsland_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_SAFFRON_RAICHU, ThreeIsland_EventScript_ShowGreen
+	return
+
+ThreeIsland_EventScript_ShowGreen::
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_DITTO, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_ESPEON, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_RAICHU, EventScript_Return
+	clearflag FLAG_TEMP_11
+	return
+
+ThreeIsland_EventScript_Green::
+	lock
+	setvar VAR_LAST_TALKED, LOCALID_THREE_ISLAND_GREEN
+	faceplayer
+	msgbox ThreeIsland_Text_GreenOpening
+	playbgm MUS_ENCOUNTER_RIVAL, 0
+	goto_if_eq VAR_STARTER_MON, 0, ThreeIsland_EventScript_GreenRaichu
+	goto_if_eq VAR_STARTER_MON, 1, ThreeIsland_EventScript_GreenDitto
+	goto ThreeIsland_EventScript_GreenEspeon
+ThreeIsland_EventScript_GreenDitto::
+	trainerbattle_no_intro TRAINER_GREEN_THREE_ISLAND_DITTO, ThreeIsland_Text_GreenDefeat
+	goto ThreeIsland_EventScript_GreenWon
+ThreeIsland_EventScript_GreenEspeon::
+	trainerbattle_no_intro TRAINER_GREEN_THREE_ISLAND_ESPEON, ThreeIsland_Text_GreenDefeat
+	goto ThreeIsland_EventScript_GreenWon
+ThreeIsland_EventScript_GreenRaichu::
+	trainerbattle_no_intro TRAINER_GREEN_THREE_ISLAND_RAICHU, ThreeIsland_Text_GreenDefeat
+	goto ThreeIsland_EventScript_GreenWon
+ThreeIsland_EventScript_GreenWon::
+	msgbox ThreeIsland_Text_GreenPost
+	closemessage
+	setflag FLAG_TEMP_11
+	removeobject LOCALID_THREE_ISLAND_GREEN
+	fadedefaultbgm
+	release
+	end
+
+ThreeIsland_Text_GreenOpening::
+	.string "I found the sixth one. Funny thing\n"
+	.string "is, I stopped looking for a sixth\l"
+	.string "POKéMON.\p"
+	.string "I started looking for one that\n"
+	.string "made the other five better. That\l"
+	.string "changed everything.\p"
+	.string "This is the first time the team\n"
+	.string "feels complete. See if you agree.$"
+
+ThreeIsland_Text_GreenDefeat::
+	.string "You still found one.$"
+ThreeIsland_Text_GreenPost::
+	.string "I don't think I need a different\n"
+	.string "team anymore. Now I need to make\l"
+	.string "this team better.$"
+
+ThreeIsland_EventScript_GreenGateLeft::
+	goto_if_unset FLAG_RESCUED_LOSTELLE, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_DITTO, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_ESPEON, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_RAICHU, EventScript_Return
+	goto ThreeIsland_EventScript_Green
+
+ThreeIsland_EventScript_GreenGateRight::
+	goto ThreeIsland_EventScript_GreenGateLeft

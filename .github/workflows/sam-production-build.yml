@@ -1,0 +1,61 @@
+name: Sam Edition Production Build
+
+on:
+  push:
+    branches: [sam-edition-dev]
+  pull_request:
+    branches: [sam-edition-dev]
+  workflow_dispatch:
+
+jobs:
+  build-sam:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Checkout agbcc
+        uses: actions/checkout@v4
+        with:
+          path: agbcc
+          repository: pret/agbcc
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev
+      - name: Install agbcc
+        working-directory: agbcc
+        run: |
+          ./build.sh
+          ./install.sh ../
+      - name: Build modified FireRed ROM (no vanilla checksum comparison)
+        env:
+          GAME_VERSION: FIRERED
+          GAME_LANGUAGE: ENGLISH
+          GAME_REVISION: '0'
+          MODERN: '0'
+          COMPARE: '0'
+        run: make -j2 all
+      - name: Verify ROM and write candidate evidence
+        run: |
+          test -s pokefirered.gba
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          rom=Path('pokefirered.gba')
+          b=rom.read_bytes()
+          assert 0xC0 < len(b) <= 32*1024*1024, f"Invalid ROM size: {len(b)}"
+          assert b[0xAC:0xB0] == b'BPRE', f"Unexpected game code: {b[0xAC:0xB0]!r}"
+          lines=[
+            'commit='+__import__('os').environ['GITHUB_SHA'],
+            'sha256='+hashlib.sha256(b).hexdigest(),
+            'size_bytes='+str(len(b)),
+            'game_code='+b[0xAC:0xB0].decode('ascii')
+          ]
+          Path('sam-build-evidence.txt').write_text('\n'.join(lines)+'\n')
+          print('\n'.join(lines))
+          PY
+      - name: Upload build evidence only (no copyrighted ROM)
+        uses: actions/upload-artifact@v4
+        with:
+          name: sam-build-evidence
+          path: sam-build-evidence.txt

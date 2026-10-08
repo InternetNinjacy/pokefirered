@@ -8,6 +8,8 @@ ViridianCity_OnTransition::
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 1, ViridianCity_EventScript_SetOldManStandingByRoad
 	call_if_ge VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 2, ViridianCity_EventScript_SetOldManNormal
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_GYM_DOOR, 0, ViridianCity_EventScript_TryUnlockGym
+	call ViridianCity_EventScript_UpdateGreen
+	call ViridianCity_EventScript_UpdateRocketOperation
 	end
 
 ViridianCity_EventScript_SetOldManNormal::
@@ -235,3 +237,129 @@ ViridianCity_EventScript_DoTutorialBattle::
 	giveitem ITEM_TEACHY_TV
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
 	return
+
+@ Pokémon: Sam Edition ,  Green rival checkpoint.
+ViridianCity_EventScript_UpdateGreen::
+	setflag FLAG_TEMP_13
+	goto_if_ne VAR_MAP_SCENE_VIRIDIAN_CITY_GYM_DOOR, 1, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_DITTO, ViridianCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_ESPEON, ViridianCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_THREE_ISLAND_RAICHU, ViridianCity_EventScript_ShowGreen
+	return
+
+ViridianCity_EventScript_ShowGreen::
+	goto_if_defeated TRAINER_GREEN_VIRIDIAN_DITTO, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_VIRIDIAN_ESPEON, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_VIRIDIAN_RAICHU, EventScript_Return
+	clearflag FLAG_TEMP_13
+	return
+
+ViridianCity_EventScript_Green::
+	lock
+	faceplayer
+	goto_if_set FLAG_GREEN_VIRIDIAN_ATTEMPTED, ViridianCity_EventScript_GreenRetryText
+	msgbox ViridianCity_Text_GreenOpening
+	goto ViridianCity_EventScript_GreenBattleEntry
+
+ViridianCity_EventScript_GreenRetryText::
+	msgbox ViridianCity_Text_GreenRetry
+
+ViridianCity_EventScript_GreenBattleEntry::
+	setflag FLAG_GREEN_VIRIDIAN_ATTEMPTED
+	setvar VAR_LAST_TALKED, LOCALID_VIRIDIAN_GREEN
+	playbgm MUS_ENCOUNTER_RIVAL, 0
+	goto_if_eq VAR_STARTER_MON, 0, ViridianCity_EventScript_GreenRaichu
+	goto_if_eq VAR_STARTER_MON, 1, ViridianCity_EventScript_GreenDitto
+	goto ViridianCity_EventScript_GreenEspeon
+ViridianCity_EventScript_GreenDitto::
+	trainerbattle_no_intro TRAINER_GREEN_VIRIDIAN_DITTO, ViridianCity_Text_GreenDefeat
+	goto ViridianCity_EventScript_GreenWon
+ViridianCity_EventScript_GreenEspeon::
+	trainerbattle_no_intro TRAINER_GREEN_VIRIDIAN_ESPEON, ViridianCity_Text_GreenDefeat
+	goto ViridianCity_EventScript_GreenWon
+ViridianCity_EventScript_GreenRaichu::
+	trainerbattle_no_intro TRAINER_GREEN_VIRIDIAN_RAICHU, ViridianCity_Text_GreenDefeat
+	goto ViridianCity_EventScript_GreenWon
+ViridianCity_EventScript_GreenWon::
+	msgbox ViridianCity_Text_GreenPost
+	closemessage
+	setflag FLAG_TEMP_13
+	removeobject LOCALID_VIRIDIAN_GREEN
+	fadedefaultbgm
+	release
+	end
+
+ViridianCity_Text_GreenOpening::
+	.string "I'm done changing the six. Now I'm\n"
+	.string "changing the details, what they do,\l"
+	.string "what they carry, when I switch,\l"
+	.string "when I stay in.\p"
+	.string "I don't think there's a big answer\n"
+	.string "left. So find the little one,\l"
+	.string "{PLAYER}.$"
+
+ViridianCity_Text_GreenDefeat::
+	.string "Found it.$"
+ViridianCity_Text_GreenPost::
+	.string "There aren't any big holes left.\n"
+	.string "Now it's little decisions...\p"
+	.string "You're really good at finding\n"
+	.string "those. Thanks, {PLAYER}.$"
+
+ViridianCity_Text_GreenRetry::
+	.string "I know what I'm changing. Not the\n"
+	.string "POKéMON. Just the details.$"
+
+@ Separate parallel operation: the parcel, old man, Green and Gym states retain
+@ their own authority. Victory persists before the automatic goods return.
+ViridianCity_EventScript_UpdateRocketOperation::
+	setflag FLAG_HIDE_ROCKET_VIRIDIAN_OPERATION
+	goto_if_unset FLAG_SYS_POKEDEX_GET, EventScript_Return
+	goto_if_ne VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_PENDING, EventScript_Return
+	clearflag FLAG_HIDE_ROCKET_VIRIDIAN_OPERATION
+	return
+
+ViridianCity_EventScript_RocketOperation::
+	goto_if_questlog EventScript_ReleaseEnd
+	goto_if_unset FLAG_SYS_POKEDEX_GET, EventScript_ReleaseEnd
+	goto_if_ne VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_PENDING, EventScript_ReleaseEnd
+	lockall
+	textcolor NPC_TEXT_COLOR_MALE
+	msgbox ViridianCity_Text_ThiefDelivery
+	msgbox ViridianCity_Text_FenceDelivery
+	msgbox ViridianCity_Text_ThiefSpottedPlayer
+	msgbox ViridianCity_Text_FenceDismissThief
+	closemessage
+	applymovement LOCALID_VIRIDIAN_THIEF, ViridianCity_Movement_ThiefFlee
+	waitmovement 0
+	removeobject LOCALID_VIRIDIAN_THIEF
+	setvar VAR_LAST_TALKED, LOCALID_VIRIDIAN_ROCKET_FENCE
+	faceplayer
+	msgbox ViridianCity_Text_FenceChallenge
+	setvar VAR_LAST_TALKED, LOCALID_VIRIDIAN_ROCKET_FENCE
+	trainerbattle_no_intro TRAINER_ROCKET_VIRIDIAN_FENCE, ViridianCity_Text_FenceDefeat
+@ Loss does not return: no persistent state, reward or evidence changes above.
+	setvar VAR_SAM_ROCKET_VIRIDIAN, ROCKET_VIRIDIAN_GOODS_RECOVERED
+	setflag FLAG_HIDE_ROCKET_VIRIDIAN_OPERATION
+	msgbox ViridianCity_Text_FenceFlee
+	closemessage
+	applymovement LOCALID_VIRIDIAN_ROCKET_FENCE, ViridianCity_Movement_FenceFlee
+	waitmovement 0
+	removeobject LOCALID_VIRIDIAN_ROCKET_FENCE
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	msgbox ViridianCity_Text_RecoveredGoods
+	closemessage
+	warp MAP_VIRIDIAN_CITY_MART, 3, 3
+	waitstate
+	releaseall
+	end
+
+ViridianCity_Movement_ThiefFlee::
+	walk_fast_up
+	walk_fast_up
+	step_end
+
+ViridianCity_Movement_FenceFlee::
+	walk_fast_right
+	walk_fast_right
+	step_end

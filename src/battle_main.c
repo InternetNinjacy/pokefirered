@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sam_thomas.h"
 #include "gflib.h"
 #include "battle.h"
 #include "battle_anim.h"
@@ -1536,6 +1537,183 @@ static void SpriteCB_UnusedDebugSprite_Step(struct Sprite *sprite)
     }
 }
 
+static bool8 IsRoute4GreenPartySlot(u16 trainerNum, s32 partyIndex)
+{
+    if ((partyIndex & 1) == 0)
+        return FALSE;
+
+    return trainerNum == TRAINER_RIVAL_CERULEAN_SQUIRTLE
+        || trainerNum == TRAINER_RIVAL_CERULEAN_BULBASAUR
+        || trainerNum == TRAINER_RIVAL_CERULEAN_CHARMANDER;
+}
+
+static bool8 IsGreenTrainerPartySlot(u16 trainerNum, s32 partyIndex)
+{
+    return (trainerNum >= TRAINER_GREEN_OAK_DITTO && trainerNum <= TRAINER_GREEN_POSTGAME_RAICHU)
+        || IsRoute4GreenPartySlot(trainerNum, partyIndex);
+}
+
+static u8 GetGreenNature(u16 species)
+{
+    switch (species)
+    {
+    case SPECIES_DITTO: return NATURE_BOLD;
+    case SPECIES_GROWLITHE:
+    case SPECIES_ARCANINE: return NATURE_NAIVE;
+    case SPECIES_NIDORINO:
+    case SPECIES_NIDOKING: return NATURE_ADAMANT;
+    case SPECIES_PINSIR: return NATURE_JOLLY;
+    case SPECIES_SHELLDER:
+    case SPECIES_CLOYSTER: return NATURE_RELAXED;
+    case SPECIES_HAUNTER:
+    case SPECIES_GENGAR: return NATURE_TIMID;
+    case SPECIES_EEVEE:
+    case SPECIES_ESPEON: return NATURE_TIMID;
+    case SPECIES_MAGIKARP:
+    case SPECIES_GYARADOS: return NATURE_ADAMANT;
+    case SPECIES_ZUBAT:
+    case SPECIES_GOLBAT:
+    case SPECIES_CROBAT: return NATURE_JOLLY;
+    case SPECIES_ONIX:
+    case SPECIES_STEELIX: return NATURE_IMPISH;
+    case SPECIES_SNORLAX: return NATURE_CAREFUL;
+    case SPECIES_CHARIZARD: return NATURE_JOLLY;
+    case SPECIES_PICHU:
+    case SPECIES_PIKACHU:
+    case SPECIES_RAICHU: return NATURE_TIMID;
+    case SPECIES_IVYSAUR:
+    case SPECIES_VENUSAUR: return NATURE_SASSY;
+    case SPECIES_MACHOP:
+    case SPECIES_MACHOKE:
+    case SPECIES_MACHAMP: return NATURE_ADAMANT;
+    case SPECIES_PORYGON:
+    case SPECIES_PORYGON2: return NATURE_BOLD;
+    case SPECIES_DRATINI:
+    case SPECIES_DRAGONAIR:
+    case SPECIES_DRAGONITE: return NATURE_ADAMANT;
+    case SPECIES_STARMIE: return NATURE_TIMID;
+    default: return NATURE_HARDY;
+    }
+}
+
+static u8 GetGreenEvPercent(u16 trainerNum, s32 partyIndex)
+{
+    if (IsRoute4GreenPartySlot(trainerNum, partyIndex)) return 10;
+    if (trainerNum <= TRAINER_GREEN_OAK_RAICHU) return 0;
+    if (trainerNum <= TRAINER_GREEN_SS_ANNE_RAICHU) return 20;
+    if (trainerNum <= TRAINER_GREEN_CELADON_RAICHU) return 40;
+    if (trainerNum <= TRAINER_GREEN_FUCHSIA_RAICHU) return 60;
+    if (trainerNum <= TRAINER_GREEN_SAFFRON_RAICHU) return 75;
+    if (trainerNum <= TRAINER_GREEN_THREE_ISLAND_RAICHU) return 85;
+    if (trainerNum <= TRAINER_GREEN_VIRIDIAN_RAICHU) return 95;
+    return 100;
+}
+
+static void SetScaledGreenEv(struct Pokemon *mon, s32 stat, u16 finalEv, u8 percent)
+{
+    u8 ev = (finalEv * percent + 50) / 100;
+    SetMonData(mon, MON_DATA_HP_EV + stat, &ev);
+}
+
+static void ApplyGreenCompetitiveData(struct Pokemon *mon, u16 trainerNum, s32 partyIndex)
+{
+    u16 species = GetMonData(mon, MON_DATA_SPECIES);
+    u8 percent = GetGreenEvPercent(trainerNum, partyIndex);
+    u8 abilityNum = 0;
+    u8 iv = 31;
+    u16 hp = 0, atk = 0, def = 0, spe = 0, spa = 0, spd = 0;
+
+    if (!IsGreenTrainerPartySlot(trainerNum, partyIndex))
+        return;
+
+    // Locked ability choices that require the second Gen III ability slot.
+    if (species == SPECIES_ONIX || species == SPECIES_STEELIX
+     || species == SPECIES_SNORLAX || species == SPECIES_STARMIE)
+        abilityNum = 1;
+    SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNum);
+
+    // Locked Hidden Power spreads. Apply through the evolutionary line so the
+    // move has the intended type whenever Green already knows Hidden Power.
+    if (species == SPECIES_RAICHU)
+    {
+        iv = 30; SetMonData(mon, MON_DATA_HP_IV, &iv);
+        iv = 30; SetMonData(mon, MON_DATA_ATK_IV, &iv);
+        iv = 30; SetMonData(mon, MON_DATA_DEF_IV, &iv);
+        iv = 31; SetMonData(mon, MON_DATA_SPEED_IV, &iv);
+        iv = 31; SetMonData(mon, MON_DATA_SPATK_IV, &iv);
+        iv = 31; SetMonData(mon, MON_DATA_SPDEF_IV, &iv);
+    }
+    else if (species == SPECIES_MACHOP || species == SPECIES_MACHOKE || species == SPECIES_MACHAMP)
+    {
+        iv = 31; SetMonData(mon, MON_DATA_HP_IV, &iv);
+        iv = 31; SetMonData(mon, MON_DATA_ATK_IV, &iv);
+        iv = 30; SetMonData(mon, MON_DATA_DEF_IV, &iv);
+        iv = 31; SetMonData(mon, MON_DATA_SPEED_IV, &iv);
+        iv = 31; SetMonData(mon, MON_DATA_SPATK_IV, &iv);
+        iv = 30; SetMonData(mon, MON_DATA_SPDEF_IV, &iv);
+    }
+
+    switch (species)
+    {
+    case SPECIES_DITTO: hp=252; def=252; spd=4; break;
+    case SPECIES_GROWLITHE:
+    case SPECIES_ARCANINE: atk=128; spa=128; spe=252; break;
+    case SPECIES_NIDORINO:
+    case SPECIES_NIDOKING:
+    case SPECIES_PINSIR:
+    case SPECIES_ZUBAT:
+    case SPECIES_GOLBAT:
+    case SPECIES_CROBAT:
+    case SPECIES_CHARIZARD:
+    case SPECIES_DRATINI:
+    case SPECIES_DRAGONAIR:
+    case SPECIES_DRAGONITE: hp=4; atk=252; spe=252; break;
+    case SPECIES_SHELLDER:
+    case SPECIES_CLOYSTER: hp=252; atk=4; def=252; break;
+    case SPECIES_HAUNTER:
+    case SPECIES_GENGAR:
+    case SPECIES_EEVEE:
+    case SPECIES_ESPEON:
+    case SPECIES_STARMIE:
+    case SPECIES_PICHU:
+    case SPECIES_PIKACHU:
+    case SPECIES_RAICHU: hp=4; spa=252; spe=252; break;
+    case SPECIES_MAGIKARP:
+    case SPECIES_GYARADOS: hp=4; atk=252; spe=252; break;
+    case SPECIES_ONIX:
+    case SPECIES_STEELIX: hp=252; atk=4; def=252; break;
+    case SPECIES_SNORLAX: hp=252; atk=4; spd=252; break;
+    case SPECIES_IVYSAUR:
+    case SPECIES_VENUSAUR: hp=252; def=128; spd=128; break;
+    case SPECIES_MACHOP:
+    case SPECIES_MACHOKE:
+    case SPECIES_MACHAMP: hp=252; atk=252; spd=4; break;
+    case SPECIES_PORYGON:
+    case SPECIES_PORYGON2: hp=252; def=252; spa=4; break;
+    }
+
+    SetScaledGreenEv(mon, STAT_HP, hp, percent);
+    SetScaledGreenEv(mon, STAT_ATK, atk, percent);
+    SetScaledGreenEv(mon, STAT_DEF, def, percent);
+    SetScaledGreenEv(mon, STAT_SPEED, spe, percent);
+    SetScaledGreenEv(mon, STAT_SPATK, spa, percent);
+    SetScaledGreenEv(mon, STAT_SPDEF, spd, percent);
+    CalculateMonStats(mon);
+}
+
+static u32 ApplyGreenNatureToPersonality(u16 trainerNum, s32 partyIndex, u16 species, u32 personality)
+{
+    u8 nature;
+
+    if (!IsGreenTrainerPartySlot(trainerNum, partyIndex))
+        return personality;
+
+    nature = GetGreenNature(species);
+    while (personality % NUM_NATURES != nature)
+        personality++;
+    return personality;
+}
+
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 {
     u32 nameHash = 0;
@@ -1574,6 +1752,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
+                personalityValue = ApplyGreenNatureToPersonality(trainerNum, i, partyData[i].species, personalityValue);
                 CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 break;
             }
@@ -1586,6 +1765,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
+                personalityValue = ApplyGreenNatureToPersonality(trainerNum, i, partyData[i].species, personalityValue);
                 CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
 
                 for (j = 0; j < MAX_MON_MOVES; j++)
@@ -1604,6 +1784,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
+                personalityValue = ApplyGreenNatureToPersonality(trainerNum, i, partyData[i].species, personalityValue);
                 CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
 
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
@@ -1618,6 +1799,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
+                personalityValue = ApplyGreenNatureToPersonality(trainerNum, i, partyData[i].species, personalityValue);
                 CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 
@@ -1629,8 +1811,12 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 break;
             }
             }
+            ApplyGreenCompetitiveData(&party[i], trainerNum, i);
         }
 
+        ApplyThomasMtMoonStarterBranch(party, trainerNum);
+        ApplyThomasCinnabarFossilBranch(party, trainerNum);
+        ApplyThomasViridianFossilBranch(party, trainerNum);
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
     }
 
@@ -2254,6 +2440,24 @@ static void BattleStartClearSetData(void)
     for (i = 0; i < sizeof(struct WishFutureKnock); i++)
         dataPtr[i] = 0;
 
+    // Pewter Endurance Gym battles begin in normal-duration Hail.
+    // FireRed has no permanent Hail bit, so this uses the authority-approved fallback.
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+    {
+        switch (gTrainerBattleOpponent_A)
+        {
+        case TRAINER_SATOSHI_PEWTER_PRACTICE:
+        case TRAINER_SATOSHI_PEWTER_REMATCH:
+        case TRAINER_HIKER_CLIFF_PEWTER:
+        case TRAINER_HIKER_MILES_PEWTER:
+        case TRAINER_LEADER_BOREAL_PEWTER:
+        case TRAINER_LEADER_BOREAL_REMATCH_PEWTER:
+            gBattleWeather = B_WEATHER_HAIL;
+            gWishFutureKnock.weatherDuration = 5;
+            break;
+        }
+    }
+
     gHitMarker = 0;
 
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_POKEDUDE)) && gSaveBlock2Ptr->optionsBattleSceneOff)
@@ -2278,6 +2482,8 @@ static void BattleStartClearSetData(void)
     gBattleScripting.animTargetsHit = 0;
     gLeveledUpInBattle = 0;
     gAbsentBattlerFlags = 0;
+    if (IsThomasOneMonDoubleBattle())
+        gAbsentBattlerFlags = gBitTable[GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)];
     gBattleStruct->runTries = 0;
     gBattleStruct->safariRockThrowCounter = 0;
     gBattleStruct->safariBaitThrowCounter = 0;
@@ -2562,6 +2768,11 @@ static void BattleIntroDrawTrainersOrMonsSprites(void)
 
     for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
     {
+        if (gAbsentBattlerFlags & gBitTable[gActiveBattler])
+        {
+            memset(&gBattleMons[gActiveBattler], 0, sizeof(struct BattlePokemon));
+            continue;
+        }
         if ((gBattleTypeFlags & BATTLE_TYPE_SAFARI)
             && GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
         {

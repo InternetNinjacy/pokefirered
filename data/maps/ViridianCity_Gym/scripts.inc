@@ -1,16 +1,59 @@
 ViridianCity_Gym_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, ViridianCity_Gym_OnLoad
 	.byte 0
+
+ViridianCity_Gym_OnLoad::
+	call EventScript_ThomasSyncVisibility
+	end
+
+ViridianCity_Gym_EventScript_Thomas::
+	lock
+	faceplayer
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_CINNABAR_CLEARED, ViridianCity_Gym_EventScript_ThomasCheckBattle
+	release
+	end
+
+ViridianCity_Gym_EventScript_ThomasCheckBattle::
+	checktrainerflag TRAINER_THOMAS_VIRIDIAN_GYM
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Gym_EventScript_ThomasDollHandoff
+	goto ViridianCity_Gym_EventScript_ThomasBattle
+	end
+
+ViridianCity_Gym_EventScript_ThomasBattle::
+	call Thomas_EventScript_ViridianPreBattle
+	trainerbattle_no_intro TRAINER_THOMAS_VIRIDIAN_GYM, Thomas_Text_ViridianDefeat
+	goto ViridianCity_Gym_EventScript_ThomasDollHandoff
+	end
+
+ViridianCity_Gym_EventScript_ThomasDollHandoff::
+	checkitem ITEM_15B
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Gym_EventScript_ThomasFinishDeparture
+	checkitemspace ITEM_15B
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_ThomasDollNoRoom
+	additem ITEM_15B
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_ThomasDollNoRoom
+	msgbox Thomas_Text_ViridianDollReceived
+	msgbox Thomas_Text_ViridianDollHandoff
+	goto ViridianCity_Gym_EventScript_ThomasFinishDeparture
+	end
+
+ViridianCity_Gym_EventScript_ThomasFinishDeparture::
+	call EventScript_ThomasSetQuitRocket
+	removeobject VAR_LAST_TALKED
+	release
+	end
+
+ViridianCity_Gym_EventScript_ThomasDollNoRoom::
+	msgbox Thomas_Text_ViridianDollNoRoom
+	release
+	end
 
 ViridianCity_Gym_EventScript_Giovanni::
 	famechecker FAMECHECKER_GIOVANNI, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	trainerbattle_single TRAINER_LEADER_GIOVANNI, ViridianCity_Gym_Text_GiovanniIntro, ViridianCity_Gym_Text_GiovanniDefeat, ViridianCity_Gym_EventScript_DefeatedGiovanni, NO_MUSIC
-	goto_if_unset FLAG_GOT_TM26_FROM_GIOVANNI, ViridianCity_Gym_EventScript_GiveTM26
+	goto_if_unset FLAG_GOT_TM26_FROM_GIOVANNI, ViridianCity_Gym_EventScript_GiveTM54
 	msgbox ViridianCity_Gym_Text_GiovanniPostBattle
-	closemessage
-	fadescreen FADE_TO_BLACK
-	removeobject LOCALID_VIRIDIAN_GIOVANNI
-	fadescreen FADE_FROM_BLACK
-	release
+	goto ViridianCity_Gym_EventScript_GiovanniLeave
 	end
 
 ViridianCity_Gym_EventScript_DefeatedGiovanni::
@@ -20,21 +63,32 @@ ViridianCity_Gym_EventScript_DefeatedGiovanni::
 	setflag FLAG_BADGE08_GET
 	setvar VAR_MAP_SCENE_ROUTE22, 3
 	set_gym_trainers 8
-	goto ViridianCity_Gym_EventScript_GiveTM26
+	goto ViridianCity_Gym_EventScript_GiveTM54
 	end
 
-ViridianCity_Gym_EventScript_GiveTM26::
-	msgbox ViridianCity_Gym_Text_ExplainEarthBadgeTakeThis
-	checkitemspace ITEM_TM26
-	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_NoRoomForTM26
-	giveitem_msg ViridianCity_Gym_Text_ReceivedTM26FromGiovanni, ITEM_TM26
+ViridianCity_Gym_EventScript_GiveTM54::
+	msgbox ViridianCity_Gym_Text_DominionBadgeTakeThis
+	checkitemspace ITEM_TM54_PSYCHIC
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_NoRoomForTM54
+	giveitem_msg ViridianCity_Gym_Text_ReceivedTM54FromGiovanni, ITEM_TM54_PSYCHIC
+	@ Preserve the vanilla Giovanni reward-state save slot as a compatibility alias.
 	setflag FLAG_GOT_TM26_FROM_GIOVANNI
-	msgbox ViridianCity_Gym_Text_ExplainTM26
+	msgbox ViridianCity_Gym_Text_ExplainTM54
+	msgbox ViridianCity_Gym_Text_GiovanniPostBattle
+	goto ViridianCity_Gym_EventScript_GiovanniLeave
+	end
+
+ViridianCity_Gym_EventScript_NoRoomForTM54::
+	msgbox ViridianCity_Gym_Text_YouDoNotHaveSpace
 	release
 	end
 
-ViridianCity_Gym_EventScript_NoRoomForTM26::
-	msgbox ViridianCity_Gym_Text_YouDoNotHaveSpace
+ViridianCity_Gym_EventScript_GiovanniLeave::
+	closemessage
+	fadescreen FADE_TO_BLACK
+	removeobject LOCALID_VIRIDIAN_GIOVANNI
+	setflag FLAG_HIDE_VIRIDIAN_GIOVANNI
+	fadescreen FADE_FROM_BLACK
 	release
 	end
 
@@ -78,17 +132,80 @@ ViridianCity_Gym_EventScript_Warren::
 	msgbox ViridianCity_Gym_Text_WarrenPostBattle, MSGBOX_AUTOCLOSE
 	end
 
-ViridianCity_Gym_EventScript_GymGuy::
+ViridianCity_Gym_EventScript_Satoshi::
 	lock
 	faceplayer
-	goto_if_set FLAG_DEFEATED_LEADER_GIOVANNI, ViridianCity_Gym_EventScript_GymGuyPostVictory
-	msgbox ViridianCity_Gym_Text_GymGuyAdvice
+	satoshi_route_by_state ViridianCity_Gym_EventScript_SatoshiPostgameOffer, FLAG_BADGE08_GET, ViridianCity_Gym_EventScript_SatoshiPostBadge, FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON, ViridianCity_Gym_EventScript_SatoshiRepeatHint
+	checktrainerflag TRAINER_SATOSHI_VIRIDIAN_PRACTICE
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Gym_EventScript_SatoshiRetryOffer
+	msgbox ViridianCity_Gym_Text_SatoshiFirstApproach, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, ViridianCity_Gym_EventScript_SatoshiAccept
+	goto ViridianCity_Gym_EventScript_SatoshiDecline
+	end
+
+ViridianCity_Gym_EventScript_SatoshiAccept::
+	msgbox ViridianCity_Gym_Text_SatoshiAccept
+	cleartrainerflag TRAINER_SATOSHI_VIRIDIAN_PRACTICE
+	trainerbattle_earlyrival TRAINER_SATOSHI_VIRIDIAN_PRACTICE, RIVAL_BATTLE_HEAL_AFTER, ViridianCity_Gym_Text_SatoshiBattleDefeatEmpty, ViridianCity_Gym_Text_SatoshiLoss
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Gym_EventScript_SatoshiRetryOffer
+	setflag FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON
+	msgbox ViridianCity_Gym_Text_SatoshiWin
 	release
 	end
 
-ViridianCity_Gym_EventScript_GymGuyPostVictory::
-	famechecker FAMECHECKER_GIOVANNI, 4
-	msgbox ViridianCity_Gym_Text_GymGuyPostVictory
+ViridianCity_Gym_EventScript_SatoshiRetryOffer::
+	msgbox ViridianCity_Gym_Text_SatoshiRetryOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, ViridianCity_Gym_EventScript_SatoshiRetryYes
+	goto ViridianCity_Gym_EventScript_SatoshiRetryNo
+	end
+
+ViridianCity_Gym_EventScript_SatoshiRetryYes::
+	msgbox ViridianCity_Gym_Text_SatoshiRetryYes
+	cleartrainerflag TRAINER_SATOSHI_VIRIDIAN_PRACTICE
+	trainerbattle_earlyrival TRAINER_SATOSHI_VIRIDIAN_PRACTICE, RIVAL_BATTLE_HEAL_AFTER, ViridianCity_Gym_Text_SatoshiBattleDefeatEmpty, ViridianCity_Gym_Text_SatoshiLoss
+	goto_if_eq VAR_RESULT, TRUE, ViridianCity_Gym_EventScript_SatoshiRetryOffer
+	setflag FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON
+	msgbox ViridianCity_Gym_Text_SatoshiWin
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiRetryNo::
+	msgbox ViridianCity_Gym_Text_SatoshiRetryNo
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiDecline::
+	msgbox ViridianCity_Gym_Text_SatoshiDecline
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiRepeatHint::
+	msgbox ViridianCity_Gym_Text_SatoshiRepeatHint
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiPostBadge::
+	goto_if_set FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON, ViridianCity_Gym_EventScript_SatoshiPostBadgePracticed
+	msgbox ViridianCity_Gym_Text_SatoshiPostBadgeSkipped
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiPostBadgePracticed::
+	msgbox ViridianCity_Gym_Text_SatoshiPostBadgePracticed
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiPostgameOffer::
+	msgbox ViridianCity_Gym_Text_SatoshiRematchOffer, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, ViridianCity_Gym_EventScript_SatoshiPostgameRematch
+	msgbox ViridianCity_Gym_Text_SatoshiRematchDecline
+	release
+	end
+
+ViridianCity_Gym_EventScript_SatoshiPostgameRematch::
+	cleartrainerflag TRAINER_SATOSHI_VIRIDIAN_REMATCH
+	trainerbattle_single TRAINER_SATOSHI_VIRIDIAN_REMATCH, ViridianCity_Gym_Text_SatoshiRematchStart, ViridianCity_Gym_Text_SatoshiRematchDefeat
+	msgbox ViridianCity_Gym_Text_SatoshiRematchAfter
 	release
 	end
 
@@ -103,3 +220,5 @@ ViridianCity_Gym_EventScript_GymStatuePostVictory::
 	msgbox ViridianCity_Gym_Text_GymStatuePlayerWon
 	releaseall
 	end
+
+	.include "data/maps/ViridianCity_Gym/thomas_epilogue.inc"

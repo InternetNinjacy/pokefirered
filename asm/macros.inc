@@ -6,6 +6,16 @@
 	.include "asm/macros/m4a.inc"
 	.include "asm/macros/trainer_tower.inc"
 
+	@ Shared Satoshi interaction router.
+	@ Priority is canonically fixed: POSTGAME -> LEADER -> PRACTICE -> INITIAL.
+	@ The caller owns text, trainer records, battle hooks, and the fall-through
+	@ initial practice offer. This macro only centralizes state precedence.
+	.macro satoshi_route_by_state postgame_target:req, leader_flag:req, leader_target:req, practice_flag:req, practice_target:req
+	goto_if_set FLAG_SYS_GAME_CLEAR, \postgame_target
+	goto_if_set \leader_flag, \leader_target
+	goto_if_set \practice_flag, \practice_target
+	.endm
+
 	.macro region_map_location x, y, width, height, name
 	.byte \x
 	.byte \y

@@ -756,6 +756,20 @@ struct ExternalEventFlags
 
 } __attribute__((packed));/*size = 0x15*/
 
+// Sam Edition structured save reserve. The trainer-flag expansion grows the
+// main flag array and four Quest Log snapshots by 160 bytes total. Replacing
+// the stock 400-byte unused block with this 240-byte structure preserves the
+// ramScript offset and the overall SaveBlock1 size.
+struct SamEditionSaveData
+{
+    u8 coreMetadata[0x10];                    // 0x00-0x0F
+    u8 globalMechanicAux[0x40];               // 0x10-0x4F
+    u8 greenName[PLAYER_NAME_LENGTH + 1];     // 0x50-0x57
+    u8 rivalRocketAux[0x38];                  // 0x58-0x8F
+    u8 gymSatoshiPostgameAux[0x30];           // 0x90-0xBF
+    u8 futureExpansion[0x30];                 // 0xC0-0xEF
+};
+
 struct SaveBlock1
 {
     /*0x0000*/ struct Coords16 pos;
@@ -779,26 +793,28 @@ struct SaveBlock1
     /*0x03b8*/ struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
     /*0x0430*/ struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
     /*0x0464*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
-    /*0x054c*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
-    /*0x05F8*/ u8 seen1[DEX_FLAGS_NO];
-    /*0x062C*/ u16 berryBlenderRecords[3]; // unused
-    /*0x0632*/ u8 unused_632[6];
-    /*0x0638*/ u16 trainerRematchStepCounter;
-    /*0x063A*/ u8 ALIGNED(2) trainerRematches[MAX_REMATCH_ENTRIES];
-    /*0x06A0*/ struct ObjectEvent objectEvents[OBJECT_EVENTS_COUNT];
-    /*0x08E0*/ struct ObjectEventTemplate objectEventTemplates[OBJECT_EVENT_TEMPLATES_COUNT];
-    /*0x0EE0*/ u8 flags[NUM_FLAG_BYTES];
-    /*0x1000*/ u16 vars[VARS_COUNT];
-    /*0x1200*/ u32 gameStats[NUM_GAME_STATS];
-    /*0x1300*/ struct QuestLogScene questLog[QUEST_LOG_SCENE_COUNT];
-    /*0x2CA0*/ u16 easyChatProfile[EASY_CHAT_BATTLE_WORDS_COUNT];
-    /*0x2CAC*/ u16 easyChatBattleStart[EASY_CHAT_BATTLE_WORDS_COUNT];
-    /*0x2CB8*/ u16 easyChatBattleWon[EASY_CHAT_BATTLE_WORDS_COUNT];
-    /*0x2CC4*/ u16 easyChatBattleLost[EASY_CHAT_BATTLE_WORDS_COUNT];
-    /*0x2CD0*/ struct Mail mail[MAIL_COUNT];
-    /*0x2F10*/ u8 additionalPhrases[NUM_ADDITIONAL_PHRASE_BYTES];
-    /*0x2F18*/ OldMan oldMan; // unused
-    /*0x2F54*/ struct DewfordTrend dewfordTrends[5]; // unused
+    /*0x0594*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
+    /*0x0640*/ u8 seen1[DEX_FLAGS_NO];
+    // Sam Edition: the expanded TM/HM pocket consumes the 12 bytes that were
+    // previously occupied here by unused berryBlenderRecords and unused_632.
+    /*0x0674*/ u16 trainerRematchStepCounter;
+    /*0x0676*/ u8 ALIGNED(2) trainerRematches[MAX_REMATCH_ENTRIES];
+    /*0x06DC*/ struct ObjectEvent objectEvents[OBJECT_EVENTS_COUNT];
+    /*0x091C*/ struct ObjectEventTemplate objectEventTemplates[OBJECT_EVENT_TEMPLATES_COUNT];
+    /*0x0F1C*/ u8 flags[NUM_FLAG_BYTES];
+    /*0x103C*/ u16 vars[VARS_COUNT];
+    /*0x123C*/ u32 gameStats[NUM_GAME_STATS];
+    /*0x133C*/ struct QuestLogScene questLog[QUEST_LOG_SCENE_COUNT];
+    /*0x2CDC*/ u16 easyChatProfile[EASY_CHAT_BATTLE_WORDS_COUNT];
+    /*0x2CE8*/ u16 easyChatBattleStart[EASY_CHAT_BATTLE_WORDS_COUNT];
+    /*0x2CF4*/ u16 easyChatBattleWon[EASY_CHAT_BATTLE_WORDS_COUNT];
+    /*0x2D00*/ u16 easyChatBattleLost[EASY_CHAT_BATTLE_WORDS_COUNT];
+    /*0x2D0C*/ struct Mail mail[MAIL_COUNT];
+    /*0x2F4C*/ u8 additionalPhrases[NUM_ADDITIONAL_PHRASE_BYTES];
+    // Sam Edition: reclaim 60 of the unused OldMan union's 64 bytes for the
+    // expanded TM/HM pocket. Keep 4 bytes so all following save offsets stay fixed.
+    /*0x2F54*/ u8 tmHmSaveCompensationPadding[4];
+    /*0x2F58*/ struct DewfordTrend dewfordTrends[5]; // unused
     /*0x2F80*/ struct DayCare daycare;
     /*0x309C*/ u8 giftRibbons[GIFT_RIBBONS_COUNT];
     /*0x30A7*/ struct ExternalEventData externalEventData;
@@ -806,7 +822,7 @@ struct SaveBlock1
     /*0x30D0*/ struct Roamer roamer;
     /*0x30EC*/ struct EnigmaBerry enigmaBerry;
     /*0x3120*/ struct MysteryGiftSave mysteryGift;
-    /*0x348C*/ u8 unused_348C[400];
+    /*0x352C*/ struct SamEditionSaveData samEdition;
     /*0x361C*/ struct RamScript ramScript;
     /*0x3A08*/ struct RecordMixingGift recordMixingGift; // unused
     /*0x3A18*/ u8 seen2[DEX_FLAGS_NO];

@@ -1,0 +1,17 @@
+// Pokemon Sam Edition - Six Island party remaps.
+#include "sam_batch15_six_island_trainer_parties.h"
+#define sParty_SwimmerMaleSamir sParty_Sam6Samir
+#define sParty_JugglerEdward sParty_Sam6Edward
+#define sParty_AromaLadyRose sParty_Sam6Rose
+#define sParty_SwimmerFemaleDenise sParty_Sam6Denise
+#define sParty_PsychicJaclyn sParty_Sam6Jaclyn
+#define sParty_PkmnBreederBethany sParty_Sam6Bethany
+#define sParty_CamperRiley sParty_Sam6Riley
+#define sParty_BugCatcherGarret sParty_Sam6Garret
+#define sParty_BugCatcherJonah sParty_Sam6Jonah
+#define sParty_BugCatcherVance sParty_Sam6Vance
+#define sParty_FishermanTylor sParty_Sam6Tylor
+#define sParty_SwimmerMaleMymo sParty_Sam6Mymo
+#define sParty_RuinManiacStanly sParty_Sam6Stanly
+#define sParty_RuinManiacFoster sParty_Sam6Foster
+#define sParty_PokemaniacHector sParty_Sam6Hector

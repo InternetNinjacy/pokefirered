@@ -29,6 +29,7 @@
 #include "trade.h"
 #include "constants/daycare.h"
 #include "constants/region_map_sections.h"
+#include "constants/vars.h"
 
 // Combination of RSE's Day-Care (re-used on Four Island), FRLG's Day-Care, and egg_hatch.c
 
@@ -1556,6 +1557,20 @@ void ChooseSendDaycareMon(void)
 {
     ChooseMonForDaycare();
     gMain.savedCallback = CB2_ReturnToField;
+}
+
+bool8 CanSelectedMonEnterDaycare(void)
+{
+    u8 monIdx = GetCursorSelectionMonId();
+
+    if (monIdx >= PARTY_SIZE)
+        return FALSE;
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1
+        && GetMonData(&gPlayerParty[monIdx], MON_DATA_SAM_PERMANENT_DEAD))
+        return FALSE;
+
+    return TRUE;
 }
 
 // Route 5 Daycare

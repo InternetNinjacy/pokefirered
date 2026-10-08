@@ -13,6 +13,7 @@ PalletTown_ProfessorOaksLab_MapScripts::
 
 PalletTown_ProfessorOaksLab_OnTransition::
 	setflag FLAG_VISITED_OAKS_LAB
+	call PalletTown_ProfessorOaksLab_OnTransition_GreenOak
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 1, PalletTown_ProfessorOaksLab_EventScript_ReadyOakForStarterScene
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 7, PalletTown_ProfessorOaksLab_EventScript_ReadyOakForNationalDexScene
 	call_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 8, PalletTown_ProfessorOaksLab_EventScript_SetNationalDexSceneFinished
@@ -1070,8 +1071,8 @@ PalletTown_ProfessorOaksLab_EventScript_BulbasaurBall::
 	lock
 	faceplayer
 	setvar PLAYER_STARTER_NUM, 0
-	setvar PLAYER_STARTER_SPECIES, SPECIES_BULBASAUR
-	setvar RIVAL_STARTER_SPECIES, SPECIES_CHARMANDER
+	setvar PLAYER_STARTER_SPECIES, SPECIES_EEVEE
+	setvar RIVAL_STARTER_SPECIES, SPECIES_DITTO
 	setvar RIVAL_STARTER_ID, LOCALID_CHARMANDER_BALL
 	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
 	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
@@ -1120,6 +1121,7 @@ PalletTown_ProfessorOaksLab_EventScript_ChoseStarter::
 	setflag FLAG_SYS_POKEMON_GET
 	setflag FLAG_PALLET_LADY_NOT_BLOCKING_SIGN
 	givemon PLAYER_STARTER_SPECIES, 5
+	special MarkSamOriginalStarter
 	copyvar VAR_STARTER_MON, PLAYER_STARTER_NUM
 	bufferspeciesname STR_VAR_1, PLAYER_STARTER_SPECIES
 	message PalletTown_ProfessorOaksLab_Text_ReceivedMonFromOak
@@ -1172,6 +1174,10 @@ PalletTown_ProfessorOaksLab_EventScript_RivalTakesStarter::
 	waitmessage
 	playfanfare MUS_OBTAIN_KEY_ITEM
 	waitfanfare
+	@ Keep Blue's independent Lab object present after he selects his starter.
+	@ Green is added separately for the approved follow-up encounter.
+	clearflag FLAG_TEMP_15
+	addobject LOCALID_OAKS_LAB_GREEN
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3
 	call_if_set FLAG_OPENED_START_MENU, PalletTown_ProfessorOaksLab_EventScript_ReadyEndSignLadyScene
 	release
@@ -1213,8 +1219,8 @@ PalletTown_ProfessorOaksLab_EventScript_SquirtleBall::
 	lock
 	faceplayer
 	setvar PLAYER_STARTER_NUM, 1
-	setvar PLAYER_STARTER_SPECIES, SPECIES_SQUIRTLE
-	setvar RIVAL_STARTER_SPECIES, SPECIES_BULBASAUR
+	setvar PLAYER_STARTER_SPECIES, SPECIES_PICHU
+	setvar RIVAL_STARTER_SPECIES, SPECIES_EEVEE
 	setvar RIVAL_STARTER_ID, LOCALID_BULBASAUR_BALL
 	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
 	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
@@ -1226,8 +1232,8 @@ PalletTown_ProfessorOaksLab_EventScript_CharmanderBall::
 	lock
 	faceplayer
 	setvar PLAYER_STARTER_NUM, 2
-	setvar PLAYER_STARTER_SPECIES, SPECIES_CHARMANDER
-	setvar RIVAL_STARTER_SPECIES, SPECIES_SQUIRTLE
+	setvar PLAYER_STARTER_SPECIES, SPECIES_DITTO
+	setvar RIVAL_STARTER_SPECIES, SPECIES_PICHU
 	setvar RIVAL_STARTER_ID, LOCALID_SQUIRTLE_BALL
 	goto_if_ge VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_LastPokeBall
 	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 2, PalletTown_ProfessorOaksLab_EventScript_ConfirmStarterChoice
@@ -1299,3 +1305,89 @@ PalletTown_ProfessorOaksLab_EventScript_RightSignAlt::
 	msgbox PalletTown_ProfessorOaksLab_Text_AllMonTypesHaveStrongAndWeakPoints
 	releaseall
 	end
+
+@ Pokémon: Sam Edition — Green's opening rival battle.
+@ Visibility is reconstructed from the existing Lab scene state; no new persistent flag is consumed.
+PalletTown_ProfessorOaksLab_OnTransition_GreenOak::
+	setflag FLAG_TEMP_15
+	goto_if_eq VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3, PalletTown_ProfessorOaksLab_EventScript_ShowGreenOak
+	return
+
+PalletTown_ProfessorOaksLab_EventScript_ShowGreenOak::
+	clearflag FLAG_TEMP_15
+	return
+
+PalletTown_ProfessorOaksLab_EventScript_GreenBattleTriggerLeft::
+	lockall
+	setvar VAR_TEMP_2, 1
+	goto PalletTown_ProfessorOaksLab_EventScript_GreenBattle
+
+PalletTown_ProfessorOaksLab_EventScript_GreenBattleTriggerMid::
+	lockall
+	setvar VAR_TEMP_2, 2
+	goto PalletTown_ProfessorOaksLab_EventScript_GreenBattle
+
+PalletTown_ProfessorOaksLab_EventScript_GreenBattleTriggerRight::
+	lockall
+	setvar VAR_TEMP_2, 3
+	goto PalletTown_ProfessorOaksLab_EventScript_GreenBattle
+
+PalletTown_ProfessorOaksLab_EventScript_GreenBattle::
+	textcolor NPC_TEXT_COLOR_FEMALE
+	playbgm MUS_ENCOUNTER_RIVAL, 0
+	applymovement LOCALID_OAKS_LAB_GREEN, Common_Movement_WalkInPlaceFasterDown
+	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterUp
+	waitmovement 0
+	msgbox PalletTown_ProfessorOaksLab_Text_GreenOakOpening
+	closemessage
+	goto_if_eq VAR_STARTER_MON, 0, PalletTown_ProfessorOaksLab_EventScript_GreenOakRaichu
+	goto_if_eq VAR_STARTER_MON, 1, PalletTown_ProfessorOaksLab_EventScript_GreenOakDitto
+	goto PalletTown_ProfessorOaksLab_EventScript_GreenOakEspeon
+
+PalletTown_ProfessorOaksLab_EventScript_GreenOakDitto::
+	trainerbattle_earlyrival TRAINER_GREEN_OAK_DITTO, RIVAL_BATTLE_TUTORIAL, PalletTown_ProfessorOaksLab_Text_GreenOakDefeat, PalletTown_ProfessorOaksLab_Text_GreenOakVictory
+	goto PalletTown_ProfessorOaksLab_EventScript_EndGreenOakBattle
+
+PalletTown_ProfessorOaksLab_EventScript_GreenOakEspeon::
+	trainerbattle_earlyrival TRAINER_GREEN_OAK_ESPEON, RIVAL_BATTLE_TUTORIAL, PalletTown_ProfessorOaksLab_Text_GreenOakDefeat, PalletTown_ProfessorOaksLab_Text_GreenOakVictory
+	goto PalletTown_ProfessorOaksLab_EventScript_EndGreenOakBattle
+
+PalletTown_ProfessorOaksLab_EventScript_GreenOakRaichu::
+	trainerbattle_earlyrival TRAINER_GREEN_OAK_RAICHU, RIVAL_BATTLE_TUTORIAL, PalletTown_ProfessorOaksLab_Text_GreenOakDefeat, PalletTown_ProfessorOaksLab_Text_GreenOakVictory
+	goto PalletTown_ProfessorOaksLab_EventScript_EndGreenOakBattle
+
+PalletTown_ProfessorOaksLab_EventScript_EndGreenOakBattle::
+	special HealPlayerParty
+	msgbox PalletTown_ProfessorOaksLab_Text_GreenOakPost
+	closemessage
+	@ Leave Green present for the locked repeat interaction; transition logic hides her on reload.
+	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 4
+	fadedefaultbgm
+	releaseall
+	end
+
+PalletTown_ProfessorOaksLab_EventScript_GreenOakRepeat::
+	msgbox PalletTown_ProfessorOaksLab_Text_GreenOakRepeat, MSGBOX_NPC
+	end
+
+PalletTown_ProfessorOaksLab_Text_GreenOakOpening::
+	.string "Wait, {PLAYER}! We just got them.\n"
+	.string "We have to see what they can do,\l"
+	.string "right? Come on--one battle before\l"
+	.string "we leave!$"
+
+PalletTown_ProfessorOaksLab_Text_GreenOakDefeat::
+	.string "Oh! Okay, you got me. I guess one\n"
+	.string "POKéMON doesn't give me much to\l"
+	.string "work with yet.$"
+
+PalletTown_ProfessorOaksLab_Text_GreenOakVictory::
+	.string "Yes! Okay, that was fun.$"
+
+PalletTown_ProfessorOaksLab_Text_GreenOakPost::
+	.string "Next time we battle, I'm bringing\n"
+	.string "more than one.$"
+
+PalletTown_ProfessorOaksLab_Text_GreenOakRepeat::
+	.string "I'm already wondering what I should\n"
+	.string "catch first.$"

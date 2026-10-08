@@ -1,3 +1,41 @@
+static const u32 gTrainerFrontPic_Thomas[] = INCBIN_U32("graphics/trainers/front_pics/thomas.4bpp.lz");
+static const u32 gTrainerPalette_Thomas[] = INCBIN_U32("graphics/trainers/palettes/thomas.gbapal.lz");
+static const u32 gTrainerFrontPic_MayaCeladon[] = INCBIN_U32("graphics/trainers/front_pics/maya_celadon.4bpp.lz");
+static const u32 gTrainerPalette_MayaCeladon[] = INCBIN_U32("graphics/trainers/palettes/maya_celadon.gbapal.lz");
+static const u32 gTrainerFrontPic_NoraCeladon[] = INCBIN_U32("graphics/trainers/front_pics/nora_celadon.4bpp.lz");
+static const u32 gTrainerPalette_NoraCeladon[] = INCBIN_U32("graphics/trainers/palettes/nora_celadon.gbapal.lz");
+static const u32 gTrainerFrontPic_BlueLeagueOpening[] = INCBIN_U32("graphics/trainers/front_pics/blue_league_opening.4bpp.lz");
+static const u32 gTrainerFrontPic_BlueLeagueDefeat[] = INCBIN_U32("graphics/trainers/front_pics/blue_league_defeat.4bpp.lz");
+static const u32 gTrainerPalette_BlueLeague[] = INCBIN_U32("graphics/trainers/palettes/blue_league.gbapal.lz");
+static const u32 gTrainerFrontPic_LoreleiLeagueOpening[] = INCBIN_U32("graphics/trainers/front_pics/lorelei_league_opening.4bpp.lz");
+static const u32 gTrainerFrontPic_LoreleiLeagueDefeat[] = INCBIN_U32("graphics/trainers/front_pics/lorelei_league_defeat.4bpp.lz");
+static const u32 gTrainerPalette_LoreleiLeague[] = INCBIN_U32("graphics/trainers/palettes/lorelei_league.gbapal.lz");
+static const u32 gTrainerFrontPic_AgathaLeagueOpening[] = INCBIN_U32("graphics/trainers/front_pics/agatha_league_opening.4bpp.lz");
+static const u32 gTrainerFrontPic_AgathaLeagueDefeat[] = INCBIN_U32("graphics/trainers/front_pics/agatha_league_defeat.4bpp.lz");
+static const u32 gTrainerPalette_AgathaLeague[] = INCBIN_U32("graphics/trainers/palettes/agatha_league.gbapal.lz");
+static const u32 gTrainerFrontPic_LanceLeagueOpening[] = INCBIN_U32("graphics/trainers/front_pics/lance_league_opening.4bpp.lz");
+static const u32 gTrainerFrontPic_LanceLeagueDefeat[] = INCBIN_U32("graphics/trainers/front_pics/lance_league_defeat.4bpp.lz");
+static const u32 gTrainerPalette_LanceLeague[] = INCBIN_U32("graphics/trainers/palettes/lance_league.gbapal.lz");
+static const u32 gTrainerFrontPic_Leilani[] = INCBIN_U32("graphics/trainers/front_pics/leilani.4bpp.lz");
+static const u32 gTrainerPalette_Leilani[] = INCBIN_U32("graphics/trainers/palettes/leilani.gbapal.lz");
+static const u32 gTrainerFrontPic_Lehua[] = INCBIN_U32("graphics/trainers/front_pics/lehua.4bpp.lz");
+static const u32 gTrainerPalette_Lehua[] = INCBIN_U32("graphics/trainers/palettes/lehua.gbapal.lz");
+// Keahi compressed output is 2302 bytes; keep the approved bytes unchanged and
+// use a 16-bit incbin so scaninc does not impose artificial u32 padding.
+static const u16 gTrainerFrontPic_Keahi[] = INCBIN_U16("graphics/trainers/front_pics/keahi.4bpp.lz");
+static const u32 gTrainerPalette_Keahi[] = INCBIN_U32("graphics/trainers/palettes/keahi.gbapal.lz");
+static const u32 gTrainerFrontPic_Satoshi[] = INCBIN_U32("graphics/trainers/front_pics/satoshi.4bpp.lz");
+static const u32 gTrainerPalette_Satoshi[] = INCBIN_U32("graphics/trainers/palettes/satoshi.gbapal.lz");
+static const u32 gTrainerFrontPic_Hawthorne[] = INCBIN_U32("graphics/trainers/front_pics/hawthorne.4bpp.lz");
+static const u32 gTrainerPalette_Hawthorne[] = INCBIN_U32("graphics/trainers/palettes/hawthorne.gbapal.lz");
+static const u32 gTrainerFrontPic_Green[] = INCBIN_U32("graphics/trainers/front_pics/green.4bpp.lz");
+static const u32 gTrainerPalette_Green[] = INCBIN_U32("graphics/trainers/palettes/green.gbapal.lz");
+static const u32 gTrainerFrontPic_BlueGreen[] = INCBIN_U32("graphics/trainers/front_pics/blue_green.4bpp.lz");
+static const u32 gTrainerPalette_BlueGreen[] = INCBIN_U32("graphics/trainers/palettes/blue_green.gbapal.lz");
+static const u32 gTrainerFrontPic_GreenLeagueOpening[] = INCBIN_U32("graphics/trainers/front_pics/green_league_opening.4bpp.lz");
+static const u32 gTrainerFrontPic_GreenLeagueDefeat[] = INCBIN_U32("graphics/trainers/front_pics/green_league_defeat.4bpp.lz");
+static const u32 gTrainerPalette_GreenLeague[] = INCBIN_U32("graphics/trainers/palettes/green_league.gbapal.lz");
+
 const struct MonCoords gTrainerFrontPicCoords[] =
 {
     {.size = 8, .y_offset = 1},
@@ -141,6 +179,22 @@ const struct MonCoords gTrainerFrontPicCoords[] =
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    // ARCH-006 allocation-only trainer-picture placeholders (148-154).
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    {.size = 8, .y_offset = 1},
+    // 155-160 remain Boreal/Hawthorne/Green/Blue+Green/Green League; 161 is Thomas.
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
     {.size = 8, .y_offset = 1},
@@ -300,6 +354,32 @@ const struct CompressedSpriteSheet gTrainerFrontPicTable[] =
     TRAINER_SPRITE(RUIN_MANIAC, gTrainerFrontPic_RuinManiac, 0x800),
     TRAINER_SPRITE(LADY, gTrainerFrontPic_Lady, 0x800),
     TRAINER_SPRITE(PAINTER, gTrainerFrontPic_Painter, 0x800),
+    // ARCH-006 allocation-only placeholders. Final approved art is integrated
+    // by the owning SPRITE tasks; Satoshi remains one shared identity.
+    TRAINER_SPRITE(LEILANI, gTrainerFrontPic_Leilani, 0x800),
+    TRAINER_SPRITE(LEHUA, gTrainerFrontPic_Lehua, 0x800),
+    TRAINER_SPRITE(KEAHI, (const u32 *)gTrainerFrontPic_Keahi, 0x800),
+    TRAINER_SPRITE(SATOSHI, gTrainerFrontPic_Satoshi, 0x800),
+    TRAINER_SPRITE(BAZ, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(BUSHRANGER_M, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(BUSHRANGER_F, gTrainerFrontPic_ProfessorOak, 0x800),
+    TRAINER_SPRITE(BOREAL, gTrainerFrontPic_Boreal, 0x800),
+    TRAINER_SPRITE(HAWTHORNE, gTrainerFrontPic_Hawthorne, 0x800),
+    TRAINER_SPRITE(GREEN, gTrainerFrontPic_Green, 0x800),
+    TRAINER_SPRITE(BLUE_GREEN, gTrainerFrontPic_BlueGreen, 0x800),
+    TRAINER_SPRITE(GREEN_LEAGUE_OPENING, gTrainerFrontPic_GreenLeagueOpening, 0x800),
+    TRAINER_SPRITE(GREEN_LEAGUE_DEFEAT, gTrainerFrontPic_GreenLeagueDefeat, 0x800),
+    TRAINER_SPRITE(THOMAS, gTrainerFrontPic_Thomas, 0x800),
+    TRAINER_SPRITE(MAYA_CELADON, gTrainerFrontPic_MayaCeladon, 0x800),
+    TRAINER_SPRITE(NORA_CELADON, gTrainerFrontPic_NoraCeladon, 0x800),
+    TRAINER_SPRITE(BLUE_LEAGUE_OPENING, gTrainerFrontPic_BlueLeagueOpening, 0x800),
+    TRAINER_SPRITE(BLUE_LEAGUE_DEFEAT, gTrainerFrontPic_BlueLeagueDefeat, 0x800),
+    TRAINER_SPRITE(LORELEI_LEAGUE_OPENING, gTrainerFrontPic_LoreleiLeagueOpening, 0x800),
+    TRAINER_SPRITE(LORELEI_LEAGUE_DEFEAT, gTrainerFrontPic_LoreleiLeagueDefeat, 0x800),
+    TRAINER_SPRITE(AGATHA_LEAGUE_OPENING, gTrainerFrontPic_AgathaLeagueOpening, 0x800),
+    TRAINER_SPRITE(AGATHA_LEAGUE_DEFEAT, gTrainerFrontPic_AgathaLeagueDefeat, 0x800),
+    TRAINER_SPRITE(LANCE_LEAGUE_OPENING, gTrainerFrontPic_LanceLeagueOpening, 0x800),
+    TRAINER_SPRITE(LANCE_LEAGUE_DEFEAT, gTrainerFrontPic_LanceLeagueDefeat, 0x800),
 };
 
 const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
@@ -452,4 +532,29 @@ const struct CompressedSpritePalette gTrainerFrontPicPaletteTable[] =
     TRAINER_PAL(RUIN_MANIAC, gTrainerPalette_RuinManiac),
     TRAINER_PAL(LADY, gTrainerPalette_Lady),
     TRAINER_PAL(PAINTER, gTrainerPalette_Painter),
+    // Match the allocation-only graphics routes above with a safe existing palette.
+    TRAINER_PAL(LEILANI, gTrainerPalette_Leilani),
+    TRAINER_PAL(LEHUA, gTrainerPalette_Lehua),
+    TRAINER_PAL(KEAHI, gTrainerPalette_Keahi),
+    TRAINER_PAL(SATOSHI, gTrainerPalette_Satoshi),
+    TRAINER_PAL(BAZ, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(BUSHRANGER_M, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(BUSHRANGER_F, gTrainerPalette_ProfessorOak),
+    TRAINER_PAL(BOREAL, gTrainerPalette_Boreal),
+    TRAINER_PAL(HAWTHORNE, gTrainerPalette_Hawthorne),
+    TRAINER_PAL(GREEN, gTrainerPalette_Green),
+    TRAINER_PAL(BLUE_GREEN, gTrainerPalette_BlueGreen),
+    TRAINER_PAL(GREEN_LEAGUE_OPENING, gTrainerPalette_GreenLeague),
+    TRAINER_PAL(GREEN_LEAGUE_DEFEAT, gTrainerPalette_GreenLeague),
+    TRAINER_PAL(THOMAS, gTrainerPalette_Thomas),
+    TRAINER_PAL(MAYA_CELADON, gTrainerPalette_MayaCeladon),
+    TRAINER_PAL(NORA_CELADON, gTrainerPalette_NoraCeladon),
+    TRAINER_PAL(BLUE_LEAGUE_OPENING, gTrainerPalette_BlueLeague),
+    TRAINER_PAL(BLUE_LEAGUE_DEFEAT, gTrainerPalette_BlueLeague),
+    TRAINER_PAL(LORELEI_LEAGUE_OPENING, gTrainerPalette_LoreleiLeague),
+    TRAINER_PAL(LORELEI_LEAGUE_DEFEAT, gTrainerPalette_LoreleiLeague),
+    TRAINER_PAL(AGATHA_LEAGUE_OPENING, gTrainerPalette_AgathaLeague),
+    TRAINER_PAL(AGATHA_LEAGUE_DEFEAT, gTrainerPalette_AgathaLeague),
+    TRAINER_PAL(LANCE_LEAGUE_OPENING, gTrainerPalette_LanceLeague),
+    TRAINER_PAL(LANCE_LEAGUE_DEFEAT, gTrainerPalette_LanceLeague),
 };

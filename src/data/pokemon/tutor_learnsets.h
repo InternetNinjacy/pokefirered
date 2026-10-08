@@ -2810,4 +2810,9 @@ static const u16 sTutorLearnsets[] =
                        | TUTOR(MOVE_MIMIC)
                        | TUTOR(MOVE_DREAM_EATER)
                        | TUTOR(MOVE_SUBSTITUTE),
+
+    // ARCH-004 structural placeholders only. SPEC-009 owns final tutor compatibility.
+    [SPECIES_LEAFEON] = 0,
+    [SPECIES_ECTOCEON] = 0,
+    [SPECIES_RHYPERIOR] = 0,
 };

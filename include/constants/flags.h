@@ -3,6 +3,22 @@
 
 #include "constants/trainers.h"
 
+// Sam Edition Thomas state/visibility; centrally allocated 0x350-0x35A.
+#define FLAG_THOMAS_QUIT_ROCKET       0x350
+#define FLAG_THOMAS_MARA_AVAILABLE    0x351
+#define FLAG_THOMAS_DOLL_DELIVERED    0x352
+#define FLAG_THOMAS_TAUROS_RECEIVED   0x353
+#define FLAG_HIDE_THOMAS_ROUTE24      0x354
+#define FLAG_HIDE_THOMAS_CELADON      0x355
+#define FLAG_HIDE_THOMAS_LAVENDER     0x356
+#define FLAG_HIDE_THOMAS_SILPH        0x357
+#define FLAG_HIDE_THOMAS_CINNABAR     0x358
+#define FLAG_HIDE_THOMAS_VIRIDIAN     0x359
+#define FLAG_HIDE_THOMAS_MARA         0x35A
+#define FLAG_THOMAS_CINNABAR_LAB_COMPLETE 0x35E
+#define FLAG_HIDE_THOMAS_CINNABAR_LAB     0x35F
+
+
 // Temporary Flags
 // These temporary flags are are cleared every time a map is loaded. They are used
 // for things like shortening an NPCs introduction text if the player already spoke
@@ -682,13 +698,16 @@
 #define FLAG_PALLET_LADY_NOT_BLOCKING_SIGN               0x291
 #define FLAG_GOT_VS_SEEKER                               0x292
 #define FLAG_GOT_TM19_FROM_ERIKA                         0x293
+#define FLAG_GOT_TM26_FROM_ERIKA                         FLAG_GOT_TM19_FROM_ERIKA
 #define FLAG_GOT_TM33_FROM_THIRSTY_GIRL                  0x294
 #define FLAG_GOT_TM20_FROM_THIRSTY_GIRL                  0x295
 #define FLAG_GOT_TM16_FROM_THIRSTY_GIRL                  0x296
+#define FLAG_GOT_TM39_FROM_LEILANI FLAG_GOT_TM03_FROM_MISTY
 #define FLAG_GOT_TM03_FROM_MISTY                         0x297
 #define FLAG_GOT_TM26_FROM_GIOVANNI                      0x298
 #define FLAG_0x299                                       0x299
 #define FLAG_GOT_TM04_FROM_SABRINA                       0x29A
+#define FLAG_GOT_TM30_FROM_SABRINA                       FLAG_GOT_TM04_FROM_SABRINA
 #define FLAG_GOT_FAME_CHECKER                            0x29B
 #define FLAG_GOT_RECORD_SETTING_MAGIKARP                 0x29C
 #define FLAG_TWO_ISLAND_SHOP_INTRODUCED                  0x29D
@@ -794,7 +813,10 @@
 #define FLAG_OAKS_RATING_IS_VIA_PC                       0x2FF
 
 // Unused?
-#define FLAG_0x300               0x300
+// Sam Edition central persistent-flag namespace.
+#define FLAG_SAM_START             0x300
+#define FLAG_SAM_END               0x37F
+#define FLAG_0x300                 FLAG_SAM_START
 #define FLAG_0x301               0x301
 #define FLAG_0x302               0x302
 #define FLAG_0x303               0x303
@@ -810,15 +832,24 @@
 #define FLAG_0x30D               0x30D
 #define FLAG_0x30E               0x30E
 #define FLAG_0x30F               0x30F
-#define FLAG_0x310               0x310
-#define FLAG_0x311               0x311
-#define FLAG_0x312               0x312
-#define FLAG_0x313               0x313
-#define FLAG_0x314               0x314
-#define FLAG_0x315               0x315
-#define FLAG_0x316               0x316
-#define FLAG_0x317               0x317
-#define FLAG_0x318               0x318
+#define FLAG_SATOSHI_PEWTER_PRACTICE_WON    0x310
+#define FLAG_0x310               FLAG_SATOSHI_PEWTER_PRACTICE_WON
+#define FLAG_SATOSHI_CERULEAN_PRACTICE_WON    0x311
+#define FLAG_0x311               FLAG_SATOSHI_CERULEAN_PRACTICE_WON
+#define FLAG_SATOSHI_VERMILION_PRACTICE_WON    0x312
+#define FLAG_0x312               FLAG_SATOSHI_VERMILION_PRACTICE_WON
+#define FLAG_SATOSHI_CELADON_PRACTICE_WON    0x313
+#define FLAG_0x313               FLAG_SATOSHI_CELADON_PRACTICE_WON
+#define FLAG_SATOSHI_FUCHSIA_PRACTICE_WON    0x314
+#define FLAG_0x314               FLAG_SATOSHI_FUCHSIA_PRACTICE_WON
+#define FLAG_SATOSHI_SAFFRON_PRACTICE_WON    0x315
+#define FLAG_0x315               FLAG_SATOSHI_SAFFRON_PRACTICE_WON
+#define FLAG_SATOSHI_CINNABAR_PRACTICE_WON    0x316
+#define FLAG_0x316               FLAG_SATOSHI_CINNABAR_PRACTICE_WON
+#define FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON    0x317
+#define FLAG_0x317               FLAG_SATOSHI_VIRIDIAN_PRACTICE_WON
+#define FLAG_GYM1_TM55_RECEIVED          0x318
+#define FLAG_0x318               FLAG_GYM1_TM55_RECEIVED
 #define FLAG_0x319               0x319
 #define FLAG_0x31A               0x31A
 #define FLAG_0x31B               0x31B
@@ -838,10 +869,14 @@
 #define FLAG_0x329               0x329
 #define FLAG_0x32A               0x32A
 #define FLAG_0x32B               0x32B
-#define FLAG_0x32C               0x32C
-#define FLAG_0x32D               0x32D
-#define FLAG_0x32E               0x32E
-#define FLAG_0x32F               0x32F
+#define FLAG_SAM_HOTHOUSE_STARTED             0x32C
+#define FLAG_SAM_HOTHOUSE_SOLVED              0x32D
+#define FLAG_SAM_HOTHOUSE_HAWTHORNE_DEFEATED 0x32E
+#define FLAG_SAM_HOTHOUSE_TROPIUS_CLAIMED    0x32F
+#define FLAG_0x32C                            FLAG_SAM_HOTHOUSE_STARTED
+#define FLAG_0x32D                            FLAG_SAM_HOTHOUSE_SOLVED
+#define FLAG_0x32E                            FLAG_SAM_HOTHOUSE_HAWTHORNE_DEFEATED
+#define FLAG_0x32F                            FLAG_SAM_HOTHOUSE_TROPIUS_CLAIMED
 #define FLAG_0x330               0x330
 #define FLAG_0x331               0x331
 #define FLAG_0x332               0x332
@@ -858,12 +893,20 @@
 #define FLAG_0x33D               0x33D
 #define FLAG_0x33E               0x33E
 #define FLAG_0x33F               0x33F
-#define FLAG_0x340               0x340
-#define FLAG_0x341               0x341
-#define FLAG_0x342               0x342
-#define FLAG_0x343               0x343
-#define FLAG_0x344               0x344
-#define FLAG_0x345               0x345
+// Sam Edition centrally allocated rival-state flags.
+#define FLAG_GREEN_CHAMPION_REVEALED      0x340
+#define FLAG_GREEN_TITLE_CHALLENGE_SEEN   0x341
+// Preserve vanilla placeholder aliases for source compatibility.
+#define FLAG_0x340               FLAG_GREEN_CHAMPION_REVEALED
+#define FLAG_0x341               FLAG_GREEN_TITLE_CHALLENGE_SEEN
+#define FLAG_GREEN_CELADON_ATTEMPTED       0x342
+#define FLAG_0x342               FLAG_GREEN_CELADON_ATTEMPTED
+#define FLAG_GREEN_FUCHSIA_ATTEMPTED       0x343
+#define FLAG_0x343               FLAG_GREEN_FUCHSIA_ATTEMPTED
+#define FLAG_GREEN_SAFFRON_ATTEMPTED       0x344
+#define FLAG_0x344               FLAG_GREEN_SAFFRON_ATTEMPTED
+#define FLAG_GREEN_VIRIDIAN_ATTEMPTED      0x345
+#define FLAG_0x345               FLAG_GREEN_VIRIDIAN_ATTEMPTED
 #define FLAG_0x346               0x346
 #define FLAG_0x347               0x347
 #define FLAG_0x348               0x348
@@ -885,26 +928,42 @@
 #define FLAG_0x358               0x358
 #define FLAG_0x359               0x359
 #define FLAG_0x35A               0x35A
-#define FLAG_0x35B               0x35B
-#define FLAG_0x35C               0x35C
-#define FLAG_0x35D               0x35D
+#define FLAG_HIDE_THOMAS_MT_MOON 0x35B
+#define FLAG_HIDE_ROCKET_MT_MOON_ACCOMPLICE 0x35C
+#define FLAG_HIDE_ROCKET_VIRIDIAN_OPERATION 0x35D
+#define FLAG_0x35D               FLAG_HIDE_ROCKET_VIRIDIAN_OPERATION
 #define FLAG_0x35E               0x35E
 #define FLAG_0x35F               0x35F
-#define FLAG_0x360               0x360
-#define FLAG_0x361               0x361
-#define FLAG_0x362               0x362
-#define FLAG_0x363               0x363
-#define FLAG_0x364               0x364
-#define FLAG_0x365               0x365
-#define FLAG_0x366               0x366
-#define FLAG_0x367               0x367
-#define FLAG_0x368               0x368
-#define FLAG_0x369               0x369
-#define FLAG_0x36A               0x36A
-#define FLAG_0x36B               0x36B
-#define FLAG_0x36C               0x36C
-#define FLAG_0x36D               0x36D
-#define FLAG_0x36E               0x36E
+#define FLAG_STATIC_VIRIDIAN_FOREST_SCYTHER_COMPLETE          0x360
+#define FLAG_0x360               FLAG_STATIC_VIRIDIAN_FOREST_SCYTHER_COMPLETE
+#define FLAG_STATIC_MT_MOON_RHYHORN_COMPLETE                  0x361
+#define FLAG_0x361               FLAG_STATIC_MT_MOON_RHYHORN_COMPLETE
+#define FLAG_STATIC_ROUTE24_ABRA_COMPLETE                     0x362
+#define FLAG_0x362               FLAG_STATIC_ROUTE24_ABRA_COMPLETE
+#define FLAG_STATIC_ROUTE5_MILTANK_COMPLETE                   0x363
+#define FLAG_0x363               FLAG_STATIC_ROUTE5_MILTANK_COMPLETE
+#define FLAG_STATIC_SS_ANNE_LICKITUNG_COMPLETE         0x364
+#define FLAG_0x364               FLAG_STATIC_SS_ANNE_LICKITUNG_COMPLETE
+#define FLAG_STATIC_ROUTE11_ONIX_COMPLETE                     0x365
+#define FLAG_0x365               FLAG_STATIC_ROUTE11_ONIX_COMPLETE
+#define FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE                  0x366
+#define FLAG_0x366               FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE
+#define FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE              0x367
+#define FLAG_0x367               FLAG_STATIC_ROCK_TUNNEL_MACHOKE_COMPLETE
+#define FLAG_GYM4_FIELD_PUZZLE_COMPLETE                   0x368
+#define FLAG_GYM4_LAB_PUZZLE_COMPLETE                     0x369
+#define FLAG_0x368               FLAG_GYM4_FIELD_PUZZLE_COMPLETE
+#define FLAG_0x369               FLAG_GYM4_LAB_PUZZLE_COMPLETE
+#define FLAG_STATIC_SS_ANNE_TRUCK_MEW_COMPLETE             0x36A
+#define FLAG_STATIC_SS_ANNE_TRUCK_MOVED                    0x36B
+#define FLAG_HIDE_STATIC_SS_ANNE_TRUCK_MEW                 0x36C
+#define FLAG_HIDE_VERMILION_SS_ANNE_GUARD                  0x36D
+#define FLAG_HIDE_VERMILION_SEAGALLOP_SAILOR               0x36E
+#define FLAG_0x36A               FLAG_STATIC_SS_ANNE_TRUCK_MEW_COMPLETE
+#define FLAG_0x36B               FLAG_STATIC_SS_ANNE_TRUCK_MOVED
+#define FLAG_0x36C               FLAG_HIDE_STATIC_SS_ANNE_TRUCK_MEW
+#define FLAG_0x36D               FLAG_HIDE_VERMILION_SS_ANNE_GUARD
+#define FLAG_0x36E               FLAG_HIDE_VERMILION_SEAGALLOP_SAILOR
 #define FLAG_0x36F               0x36F
 #define FLAG_0x370               0x370
 #define FLAG_0x371               0x371
@@ -912,8 +971,10 @@
 #define FLAG_0x373               0x373
 #define FLAG_0x374               0x374
 #define FLAG_0x375               0x375
+#define FLAG_ROCK_TUNNEL_PORYGON_RECEIVED 0x376
 #define FLAG_0x376               0x376
-#define FLAG_0x377               0x377
+#define FLAG_CINNABAR_PROTECTOR_RECEIVED                      0x377
+#define FLAG_0x377               FLAG_CINNABAR_PROTECTOR_RECEIVED
 #define FLAG_0x378               0x378
 #define FLAG_0x379               0x379
 #define FLAG_0x37A               0x37A
@@ -1234,6 +1295,7 @@
 
 // Boss clear flags, 1200
 #define FLAG_DEFEATED_BROCK           0x4B0
+#define FLAG_DEFEATED_LEILANI FLAG_DEFEATED_MISTY
 #define FLAG_DEFEATED_MISTY           0x4B1
 #define FLAG_DEFEATED_LT_SURGE        0x4B2
 #define FLAG_DEFEATED_ERIKA           0x4B3
@@ -1317,11 +1379,11 @@
 #define FLAG_0x4FF               0x4FF
 
 #define TRAINER_FLAGS_START      (FLAG_0x4FF + 1)
-#define TRAINER_FLAGS_END        (TRAINER_FLAGS_START + MAX_TRAINERS_COUNT - 1) // 0x7FF
+#define TRAINER_FLAGS_END        (TRAINER_FLAGS_START + MAX_TRAINERS_COUNT - 1) // 0x8FF
 
 // SYSTEM FLAGS
 
-#define SYS_FLAGS (TRAINER_FLAGS_END + 1) // 0x800
+#define SYS_FLAGS (TRAINER_FLAGS_END + 1) // 0x900
 
 // Temporary system flags
 #define FLAG_SYS_SAFARI_MODE                                        (SYS_FLAGS + 0x0)
@@ -1523,7 +1585,9 @@
 #define FLAG_0x8FE                                                  (SYS_FLAGS + 0xFE)
 #define FLAG_0x8FF                                                  (SYS_FLAGS + 0xFF)
 
-#define FLAGS_COUNT (FLAG_0x8FF + 1)
+// FLAG_0x8FF is a legacy symbolic name; after trainer-capacity expansion it
+// resolves to SYS_FLAGS + 0xFF = 0x9FF.
+#define FLAGS_COUNT (FLAG_0x8FF + 1) // 0xA00
 
 // Special Flags (Stored in EWRAM (sSpecialFlags, not in the SaveBlock)
 #define SPECIAL_FLAGS_START           0x4000

@@ -1,0 +1,30 @@
+name: Sam Edition Host Regression
+
+on:
+  push:
+    branches: [sam-edition-dev]
+  pull_request:
+    branches: [sam-edition-dev]
+  workflow_dispatch:
+
+jobs:
+  host-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history for baseline-preservation tests
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install host compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc
+      - name: Run Rocket and Thomas host regressions
+        run: |
+          set -euo pipefail
+          python3 tests/test_sam_rocket_state.py
+          python3 tests/test_thomas_mt_moon.py
+          python3 tests/test_thomas_cinnabar_lab.py
+          python3 tests/test_thomas_cinnabar_fossil_battle.py
+          python3 tests/sam_party_ram_oracle.py --self-test
+          python3 tests/test_sam_starter_lab_mapping.py

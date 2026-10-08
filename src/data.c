@@ -299,7 +299,70 @@ const union AnimCmd *const gAnims_MonPic[] =
 #include "data/pokemon_graphics/enemy_mon_elevation.h"
 
 #include "data/trainer_parties.h"
+#include "data/sam_gym8_viridian_parties.h"
+#include "data/sam_satoshi_trainer_parties.h"
+#include "data/sam_route3_trainer_parties.h"
+#include "data/sam_route24_trainer_parties.h"
+#include "data/sam_hothouse_trainer_parties.h"
+#include "data/sam_green_trainer_parties.h"
+#include "data/sam_route4_blue_green_parties.h"
+#include "data/sam_thomas_trainer_parties.h"
 #include "data/text/trainer_class_names.h"
+
+// The Hothouse reuses five otherwise-dormant Ruby/Sapphire trainer slots.
+// Redirect only those party pointers; all ordinary FireRed trainer data remains
+// untouched.
+#define SAM_HOTHOUSE_CAT_INNER(a, b) a##b
+#define SAM_HOTHOUSE_CAT(a, b) SAM_HOTHOUSE_CAT_INNER(a, b)
+#define SAM_HOTHOUSE_SECOND(a, b, ...) b
+#define SAM_HOTHOUSE_IS_PROBE(...) SAM_HOTHOUSE_SECOND(__VA_ARGS__, 0)
+#define SAM_HOTHOUSE_PROBE() ~, 1
+
+#define SAM_HOTHOUSE_GARDENER_sParty_RSAromaLady SAM_HOTHOUSE_PROBE()
+#define SAM_HOTHOUSE_GARDENER_sParty_RSLady SAM_HOTHOUSE_PROBE()
+#define SAM_HOTHOUSE_GARDENER_sParty_RSBeauty SAM_HOTHOUSE_PROBE()
+#define SAM_HOTHOUSE_GARDENER_sParty_RSPkmnBreederM SAM_HOTHOUSE_PROBE()
+#define SAM_HOTHOUSE_HAWTHORNE_sParty_RSCooltrainerM SAM_HOTHOUSE_PROBE()
+
+#define SAM_HOTHOUSE_IS_GARDENER(party) SAM_HOTHOUSE_IS_PROBE(SAM_HOTHOUSE_CAT(SAM_HOTHOUSE_GARDENER_, party))
+#define SAM_HOTHOUSE_IS_HAWTHORNE(party) SAM_HOTHOUSE_IS_PROBE(SAM_HOTHOUSE_CAT(SAM_HOTHOUSE_HAWTHORNE_, party))
+
+#define SAM_HOTHOUSE_GARDENER_PARTY_sParty_RSAromaLady sParty_SamHothouseIrrigation
+#define SAM_HOTHOUSE_GARDENER_PARTY_sParty_RSLady sParty_SamHothouseSun
+#define SAM_HOTHOUSE_GARDENER_PARTY_sParty_RSBeauty sParty_SamHothouseClimate
+#define SAM_HOTHOUSE_GARDENER_PARTY_sParty_RSPkmnBreederM sParty_SamHothouseSoil
+#define SAM_HOTHOUSE_GARDENER_PARTY(party) SAM_HOTHOUSE_CAT(SAM_HOTHOUSE_GARDENER_PARTY_, party)
+
+#define SAM_HOTHOUSE_NO_ITEM_DEFAULT_NORMAL(party) \
+    { .NoItemDefaultMoves = party }, .partySize = ARRAY_COUNT(party), .partyFlags = 0
+#define SAM_HOTHOUSE_NO_ITEM_DEFAULT_GARDENER(party) \
+    { .NoItemCustomMoves = SAM_HOTHOUSE_GARDENER_PARTY(party) }, \
+    .partySize = ARRAY_COUNT(SAM_HOTHOUSE_GARDENER_PARTY(party)), \
+    .partyFlags = F_TRAINER_PARTY_CUSTOM_MOVESET
+#define SAM_HOTHOUSE_NO_ITEM_DEFAULT_HAWTHORNE(party) \
+    { .ItemCustomMoves = sParty_SamHothouseHawthorne }, \
+    .partySize = ARRAY_COUNT(sParty_SamHothouseHawthorne), \
+    .partyFlags = F_TRAINER_PARTY_CUSTOM_MOVESET | F_TRAINER_PARTY_HELD_ITEM
+
+#define SAM_HOTHOUSE_NO_ITEM_DEFAULT_GARDENER_SELECT_0(party) SAM_HOTHOUSE_NO_ITEM_DEFAULT_NORMAL(party)
+#define SAM_HOTHOUSE_NO_ITEM_DEFAULT_GARDENER_SELECT_1(party) SAM_HOTHOUSE_NO_ITEM_DEFAULT_GARDENER(party)
+#define SAM_HOTHOUSE_NO_ITEM_DEFAULT_GARDENER_SELECT(flag, party) \
+    SAM_HOTHOUSE_CAT(SAM_HOTHOUSE_NO_ITEM_DEFAULT_GARDENER_SELECT_, flag)(party)
+#define SAM_HOTHOUSE_NO_ITEM_DEFAULT_HAWTHORNE_SELECT_0(party) \
+    SAM_HOTHOUSE_NO_ITEM_DEFAULT_GARDENER_SELECT(SAM_HOTHOUSE_IS_GARDENER(party), party)
+#define SAM_HOTHOUSE_NO_ITEM_DEFAULT_HAWTHORNE_SELECT_1(party) SAM_HOTHOUSE_NO_ITEM_DEFAULT_HAWTHORNE(party)
+#define SAM_HOTHOUSE_NO_ITEM_DEFAULT_HAWTHORNE_SELECT(flag, party) \
+    SAM_HOTHOUSE_CAT(SAM_HOTHOUSE_NO_ITEM_DEFAULT_HAWTHORNE_SELECT_, flag)(party)
+
+#undef NO_ITEM_DEFAULT_MOVES
+#define NO_ITEM_DEFAULT_MOVES(party) \
+    SAM_HOTHOUSE_NO_ITEM_DEFAULT_HAWTHORNE_SELECT(SAM_HOTHOUSE_IS_HAWTHORNE(party), party)
+
+#include "data/sam_gym2_cerulean_parties.h"
 #include "data/trainers.h"
+
+#undef NO_ITEM_DEFAULT_MOVES
+#define NO_ITEM_DEFAULT_MOVES(party) { .NoItemDefaultMoves = party }, .partySize = ARRAY_COUNT(party), .partyFlags = 0
+
 #include "data/text/species_names.h"
 #include "data/text/move_names.h"

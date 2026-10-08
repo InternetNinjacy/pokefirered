@@ -123,3 +123,35 @@ ViridianCity_Text_GymSign::
 ViridianCity_Text_GymDoorsAreLocked::
     .string "VIRIDIAN GYM's doors are locked…$"
 
+
+ViridianCity_Text_ThiefDelivery:
+	.string "Here. Everything they had.\n"
+	.string "Balls, medicine… all of it.$"
+
+ViridianCity_Text_FenceDelivery:
+	.string "Good. Keep your voice down.\p"
+	.string "You'll get paid when I know\n"
+	.string "it's all here.$"
+
+ViridianCity_Text_ThiefSpottedPlayer:
+	.string "Hey-someone's coming.$"
+
+ViridianCity_Text_FenceDismissThief:
+	.string "Then get lost.\n"
+	.string "I'll deal with the kid.$"
+
+ViridianCity_Text_FenceChallenge:
+	.string "Wrong place, kid.\n"
+	.string "Walk away.$"
+
+ViridianCity_Text_FenceDefeat:
+	.string "Tch… not worth getting\n"
+	.string "caught over.$"
+
+ViridianCity_Text_FenceFlee:
+	.string "Keep the bag.\n"
+	.string "I'm gone!$"
+
+ViridianCity_Text_RecoveredGoods:
+	.string "{PLAYER} obtained\n"
+	.string "RECOVERED GOODS!$"

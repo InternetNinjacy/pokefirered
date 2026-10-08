@@ -69,6 +69,7 @@ gSpecials::
 	def_special IsTrainerReadyForRematch
 	def_special StartRematchBattle
 	def_special ShowPokemonStorageSystemPC
+	def_special IsNewGamePlusStorageActive
 	def_special HasEnoughMonsForDoubleBattle
 	def_special NullFieldSpecial  @ Hoenn TV specials
 	def_special NullFieldSpecial
@@ -360,9 +361,11 @@ gSpecials::
 	def_special SampleResortGorgeousMonAndReward
 	def_special CheckAddCoins
 	def_special GetDaycarePokemonCount
+	def_special CanSelectedMonEnterDaycare
 	def_special CloseElevatorCurrentFloorWindow
 	def_special ForcePlayerToStartSurfing
 	def_special GetStarterSpecies
+	def_special MarkSamOriginalStarter
 	def_special SetSeenMon
 	def_special VsSeekerResetObjectMovementAfterChargeComplete
 	def_special ShouldShowBoxWasFullMessage
@@ -452,4 +455,6 @@ gSpecials::
 	def_special UpdateLoreleiDollCollection
 	def_special LoopWingFlapSound
 	def_special CreateEnemyEventMon
+	def_special SetEnemyEventMonMoveSlot
+	def_special SetEnemyEventMonMagnetonHiddenPowerIVs
 gSpecialsEnd::

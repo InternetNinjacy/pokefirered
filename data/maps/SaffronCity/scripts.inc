@@ -5,6 +5,7 @@ SaffronCity_MapScripts::
 SaffronCity_OnTransition::
 	setworldmapflag FLAG_WORLD_MAP_SAFFRON_CITY
 	call_if_unset FLAG_RESCUED_MR_FUJI, SaffronCity_EventScript_MoveDoorGuardGrunt
+	call SaffronCity_EventScript_UpdateGreen
 	end
 
 SaffronCity_EventScript_MoveDoorGuardGrunt::
@@ -122,3 +123,79 @@ SaffronCity_EventScript_SilphProductSign::
 SaffronCity_EventScript_TrainerFanClubSign::
 	msgbox SaffronCity_Text_TrainerFanClubSign, MSGBOX_SIGN
 	end
+
+@ Pokémon: Sam Edition — Green rival checkpoint.
+SaffronCity_EventScript_UpdateGreen::
+	setflag FLAG_TEMP_11
+	goto_if_unset FLAG_DEFEATED_SABRINA, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_DITTO, SaffronCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_ESPEON, SaffronCity_EventScript_ShowGreen
+	goto_if_defeated TRAINER_GREEN_FUCHSIA_RAICHU, SaffronCity_EventScript_ShowGreen
+	return
+
+SaffronCity_EventScript_ShowGreen::
+	goto_if_defeated TRAINER_GREEN_SAFFRON_DITTO, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_SAFFRON_ESPEON, EventScript_Return
+	goto_if_defeated TRAINER_GREEN_SAFFRON_RAICHU, EventScript_Return
+	clearflag FLAG_TEMP_11
+	return
+
+SaffronCity_EventScript_Green::
+	lock
+	faceplayer
+	goto_if_set FLAG_GREEN_SAFFRON_ATTEMPTED, SaffronCity_EventScript_GreenRetryText
+	msgbox SaffronCity_Text_GreenOpening
+	goto SaffronCity_EventScript_GreenBattleEntry
+
+SaffronCity_EventScript_GreenRetryText::
+	msgbox SaffronCity_Text_GreenRetry
+
+SaffronCity_EventScript_GreenBattleEntry::
+	setflag FLAG_GREEN_SAFFRON_ATTEMPTED
+	setvar VAR_LAST_TALKED, LOCALID_SAFFRON_GREEN
+	playbgm MUS_ENCOUNTER_RIVAL, 0
+	goto_if_eq VAR_STARTER_MON, 0, SaffronCity_EventScript_GreenRaichu
+	goto_if_eq VAR_STARTER_MON, 1, SaffronCity_EventScript_GreenDitto
+	goto SaffronCity_EventScript_GreenEspeon
+SaffronCity_EventScript_GreenDitto::
+	trainerbattle_no_intro TRAINER_GREEN_SAFFRON_DITTO, SaffronCity_Text_GreenDefeat
+	goto SaffronCity_EventScript_GreenWon
+SaffronCity_EventScript_GreenEspeon::
+	trainerbattle_no_intro TRAINER_GREEN_SAFFRON_ESPEON, SaffronCity_Text_GreenDefeat
+	goto SaffronCity_EventScript_GreenWon
+SaffronCity_EventScript_GreenRaichu::
+	trainerbattle_no_intro TRAINER_GREEN_SAFFRON_RAICHU, SaffronCity_Text_GreenDefeat
+	goto SaffronCity_EventScript_GreenWon
+SaffronCity_EventScript_GreenWon::
+	msgbox SaffronCity_Text_GreenPost
+	closemessage
+	setflag FLAG_TEMP_11
+	removeobject LOCALID_SAFFRON_GREEN
+	fadedefaultbgm
+	release
+	end
+
+SaffronCity_Text_GreenOpening::
+	.string "I still only have five. I could\n"
+	.string "fill the sixth slot right now,\l"
+	.string "but that's not the point.\p"
+	.string "If the next POKéMON doesn't make\n"
+	.string "the team better, I don't want it\l"
+	.string "there just to say I have six.\p"
+	.string "Come on. Show me where these five\n"
+	.string "still slip.$"
+
+SaffronCity_Text_GreenDefeat::
+	.string "There it is.$"
+
+SaffronCity_Text_GreenPost::
+	.string "The mistakes are getting smaller.\n"
+	.string "That's good. It means I'm getting\l"
+	.string "better.\p"
+	.string "But you're getting better too, and\n"
+	.string "now you're finding things I almost\l"
+	.string "got right. I need to be that exact.$"
+
+SaffronCity_Text_GreenRetry::
+	.string "I'm not filling that sixth slot\n"
+	.string "until I'm sure.$"
