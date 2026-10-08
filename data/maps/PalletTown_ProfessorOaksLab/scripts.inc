@@ -1174,7 +1174,8 @@ PalletTown_ProfessorOaksLab_EventScript_RivalTakesStarter::
 	waitmessage
 	playfanfare MUS_OBTAIN_KEY_ITEM
 	waitfanfare
-	removeobject LOCALID_OAKS_LAB_RIVAL
+	@ Keep Blue's independent Lab object present after he selects his starter.
+	@ Green is added separately for the approved follow-up encounter.
 	clearflag FLAG_TEMP_15
 	addobject LOCALID_OAKS_LAB_GREEN
 	setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 3
