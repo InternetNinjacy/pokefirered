@@ -3,10 +3,10 @@
 Production inspected: `sam-edition-dev` at PR base `3d4e5462288363f71b67c6f13eb5958156dd4300`. This is a **partial repair checkpoint**, not an emulator sign-off.
 
 ## Confirmed directly in production source
-- `src/oak_speech.c`: FireRed `sBlueNameChoices[0]` points to `gNameChoice_Green`, while Green independently has presets GREEN/SUSAN/AMY/JESS and `SaveBlock1.samEdition.greenName`. Scoped fix in PR #354 replaces only that Blue preset with BLUE.
+- `src/oak_speech.c`: FireRed `sBlueNameChoices[0]` points to `gNameChoice_Green`, while Green independently has presets GREEN/SUSAN/AMY/JESS and `SaveBlock1.samEdition.greenName`. Scoped fix in PR #354 replaces the complete Blue preset list with the locked BLUE/DEREK/PJ/DILLON, preserving Green's independent GREEN/SUSAN/AMY/JESS list.
 - `data/maps/PalletTown_ProfessorOaksLab/scripts.inc`: `EventScript_RivalTakesStarter` removes `LOCALID_OAKS_LAB_RIVAL` immediately before adding independent `LOCALID_OAKS_LAB_GREEN`. Scoped fix in PR #355 keeps Blue's map object while adding Green.
 - `data/maps/PalletTown_ProfessorOaksLab/map.json` already declares separate Blue and Green local IDs, with Green's map visibility controlled by `FLAG_TEMP_15`.
-- `src/oak_speech.c` currently still references stock Oak-speech `graphics/oak_speech/rival` for Blue and the female player portrait as a temporary Green display. Portrait changes require checking the current Sprite/Art Asset Registry and locating exact approved source binaries; do not substitute stock or generate replacement art.
+- `src/oak_speech.c` currently still references stock Oak-speech `graphics/oak_speech/rival` for Blue and the female player portrait as a temporary Green display. PR #356 independently extracts the exact approved historical `sam/opening-intro` Blue and Green PNG + JASC palette blobs (64x96 indexed PNG; 32-color palettes) and binds their initial and naming-return display paths. Build/visual palette and transparency QA remain outstanding; do not substitute stock or generate replacement art.
 
 ## Applicable Blue/Green authority verified
 - Green Decision Record v1.0: the mandatory, non-victory-gated Oak's Lab battle belongs to Green immediately after starter selection; her opening repeat and post-battle lines are locked.
@@ -26,3 +26,8 @@ Production inspected: `sam-edition-dev` at PR base `3d4e5462288363f71b67c6f13eb5
 
 ## Integration boundaries
 PRs #354 and #355 are deliberately independent and based on current production. Validate CI and affected runtime behavior before merging; do not cherry-pick historical opening branches wholesale.
+
+## Scoped repair PRs and validation checkpoint
+- #354: full approved Blue preset correction; production ROM build, host regression, emulator boot smoke and RAM capture checks passed at the recorded head; broader CI/navigation jobs must still settle before merge.
+- #355: retain Blue object when Green is introduced; production build, CI, host regression, generic boot smoke, RAM capture and scripted navigation check all passed at commit `73937d0289150c06e434fe32fc447ae2c86e1697`. These generic tests do not prove the Green battle cannot freeze, Blue's collision/movement is correct, or save/reload/Route 1 functionality.
+- #356: exact four historical approved opening Blue/Green asset binaries + scoped loader bindings; awaiting full CI and emulator visual inspection, and not yet merged.
