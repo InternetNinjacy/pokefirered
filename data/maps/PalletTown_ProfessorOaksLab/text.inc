@@ -101,18 +101,18 @@ PalletTown_ProfessorOaksLab_Text_OakHeyDontGoAwayYet::
     .string "Don't go away yet!$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingCharmander::
-    .string "Ah! DITTO is your choice.\\p"
-    .string "So, {PLAYER}, you want to go with\\n"
+    .string "Ah! DITTO is your choice.\p"
+    .string "So, {PLAYER}, you want to go with\n"
     .string "the Transform POKéMON?$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingSquirtle::
-    .string "Hm! PICHU is your choice.\\p"
-    .string "So, {PLAYER}, you want to go with\\n"
+    .string "Hm! PICHU is your choice.\p"
+    .string "So, {PLAYER}, you want to go with\n"
     .string "the tiny Electric POKéMON?$"
 
 PalletTown_ProfessorOaksLab_Text_OakChoosingBulbasaur::
-    .string "I see! EEVEE is your choice.\\p"
-    .string "So, {PLAYER}, you want to go with\\n"
+    .string "I see! EEVEE is your choice.\p"
+    .string "So, {PLAYER}, you want to go with\n"
     .string "the EEVEE POKéMON?$"
 
 PalletTown_ProfessorOaksLab_Text_OakThisMonIsEnergetic::
