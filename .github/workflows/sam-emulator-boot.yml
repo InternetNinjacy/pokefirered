@@ -1,0 +1,46 @@
+name: Sam Edition Emulator Boot Smoke
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [sam-edition-dev]
+  push:
+    branches: [sam-edition-dev]
+
+jobs:
+  mgba-boot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: pret/agbcc
+          path: agbcc
+      - name: Install toolchain, mGBA and virtual display
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev mgba-qt xvfb xauth xdotool imagemagick python3-pil
+      - name: Install agbcc
+        working-directory: agbcc
+        run: |
+          ./build.sh
+          ./install.sh ../
+      - name: Build modified ROM
+        env:
+          GAME_VERSION: FIRERED
+          GAME_LANGUAGE: ENGLISH
+          GAME_REVISION: '0'
+          MODERN: '0'
+          COMPARE: '0'
+        run: make -j2 all
+      - name: Run actual mGBA boot / rendered-frame smoke
+        run: |
+          xvfb-run -a -s '-screen 0 1024x768x24' python3 tests/sam_mgba_boot_smoke.py pokefirered.gba
+      - name: Upload non-ROM evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sam-emulator-boot-evidence
+          path: sam-emulator-boot-evidence.json
+          if-no-files-found: ignore
