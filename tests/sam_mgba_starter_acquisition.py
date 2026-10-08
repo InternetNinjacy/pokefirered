@@ -157,6 +157,8 @@ try:
                             raise AssertionError("Not a fresh empty party")
                         case["checkpoints"].append({"stage":"initial-empty-party","party":[],"world":stub.world()})
                         win=window_for_mgba(proc)
+                        # A running window manager supplies true input focus.
+                        cmd("xdotool","windowactivate","--sync",win)
                         stub.resume()
                         time.sleep(4)
                         # UI-only exploratory replay. x = mGBA default A, z = B.
@@ -181,6 +183,11 @@ try:
                                 case["actions"]+=1
                             if inspect(stub,case,label,target):
                                 acquired=True;break
+                            if label=="intro-name-confirm":
+                                pos=case["checkpoints"][-1]["world"]
+                                if pos.get("map_group")==0 and pos.get("map_num")==0 and pos.get("x")==0:
+                                    case["status"]="NOT VERIFIED: new-game world never initialized; input focus/intro navigation"
+                                    break
                         if not acquired:
                             case["status"]="NOT VERIFIED: bounded UI replay never produced expected party"
                 finally:
