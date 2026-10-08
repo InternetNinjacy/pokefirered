@@ -292,7 +292,6 @@ const union AnimCmd *const gAnims_MonPic[] =
 #include "data/pokemon_graphics/shiny_palette_table.h"
 
 #include "data/trainer_graphics/front_pic_anims.h"
-#include "data/sam_gym2_cerulean_graphics.h"
 #include "data/trainer_graphics/front_pic_tables.h"
 #include "data/trainer_graphics/back_pic_anims.h"
 #include "data/trainer_graphics/back_pic_tables.h"
