@@ -66,8 +66,14 @@ expected = (
     ("ditto", 132, 172),
 )
 
-VARS_OFFSET = 0x103C
 FLAGS_OFFSET = 0x0F1C
+# Trainer capacity is 1024 in Sam Edition: trainer flags end at 0x8FF,
+# SYS_FLAGS occupy 0x900-0x9FF, so FLAGS_COUNT is 0xA00 and the live flags
+# array is 0x140 bytes. The legacy 0x103C vars comment in global.h is stale.
+FLAGS_COUNT = 0x0A00
+NUM_FLAG_BYTES = (FLAGS_COUNT + 7) // 8
+VARS_OFFSET = FLAGS_OFFSET + NUM_FLAG_BYTES
+assert VARS_OFFSET == 0x105C
 VAR_STARTER_MON = 0x4031
 VAR_LAB_SCENE = 0x4055
 VAR_SAM_GAME_MODE = 0x408C
@@ -220,13 +226,14 @@ def window_for_mgba(proc):
         time.sleep(.2)
     raise RuntimeError("mGBA viewport not visible")
 
-def snapshot(stub, include_party=False):
+def snapshot(stub, include_party=False, include_branch=False):
     stub.pause()
     snap = {
         "world": stub.world(),
-        "branch": stub.branch_state(),
         "tasks": stub.active_tasks(),
     }
+    if include_branch:
+        snap["branch"] = stub.branch_state()
     if include_party:
         party = stub.read_party()
         snap["party"] = [
@@ -237,7 +244,7 @@ def snapshot(stub, include_party=False):
     return snap
 
 def checkpoint(stub, case, stage, include_party=False):
-    snap = snapshot(stub, include_party)
+    snap = snapshot(stub, include_party, include_branch=True)
     case["checkpoints"].append({"stage": stage, **snap})
     return snap
 
