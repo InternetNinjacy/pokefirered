@@ -415,11 +415,14 @@ def drive_oak_to_starter_scene(stub, win, case):
     raise AssertionError("Oak escort/lab starter scene did not reach scene 2")
 
 def approach_ball(stub, win, case, slot):
-    w = get_world(stub)
-    if w.get("y") != 4:
-        walk_axis(stub, win, case, "y", 4)
-    # Balls are at x 8/9/10,y4. Stand immediately to the left.
-    walk_axis(stub, win, case, "x", 7 + slot)
+    # Balls occupy x 8/9/10,y4, so use the clear row immediately below
+    # them. Stand at the matching x,y5, tap Up to face the occupied ball
+    # without moving into it, then interact with A.
+    if get_world(stub).get("y") != 5:
+        walk_axis(stub, win, case, "y", 5)
+    walk_axis(stub, win, case, "x", 8 + slot)
+    sendkey(win, "Up", .12)
+    case["actions"] += 1
     checkpoint(stub, case, "starter-ball-approach")
     sendkey(win, "x", .25)
     case["actions"] += 1
