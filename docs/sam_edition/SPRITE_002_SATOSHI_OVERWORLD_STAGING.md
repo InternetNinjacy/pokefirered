@@ -13,3 +13,11 @@ The user approved a reconstructed Satoshi four-direction walking reference after
 5. Only then mark SPRITE-002 Satoshi slice complete and merge independently of GYM2.
 
 No existing Satoshi story, trainer data, flags or map scripts may be modified by this asset-only work.
+
+## 2026-10-07 front-frame audit
+
+The user rejected the earlier oversized/non-FireRed visual presentation. A revised FireRed-style front-facing visual was provisionally accepted. The earlier v2 full walking sheet **must not be assumed approved** on that basis.
+
+A real 16x32 RGBA front-frame **staging** image has now been exported as conversation artifact `Satoshi_FireRed_Front_16x32_Staging.png`, with an exact nearest-neighbor comparison `Satoshi_FireRed_Front_Native_vs_16x_Preview.png`. Technical inspection: 16x32, 14 visible colors, only alpha 0/255, occupied pixel bounds (x=1..14, y=4..30). This extraction derives from the prior v2 candidate and requires comparison/approval against the newer front-facing FireRed visual reference; it is **not** a ROM graphics integration or proof of style approval. The newer preview alone is not a directly reusable 16x32 PNG.
+
+Do not merge until all 4 directions and animations are confirmed visually, exact native binary bytes are committed, ID 155 is bound, and a complete CI/build succeeds.
