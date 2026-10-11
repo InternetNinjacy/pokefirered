@@ -18,7 +18,7 @@ SixIsland_PatternBush_EventScript_SetEscapeLeftExit::
 	return
 
 SixIsland_PatternBush_EventScript_Bethany::
-	trainerbattle_single TRAINER_PKMN_BREEDER_BETHANY, SixIsland_PatternBush_Text_BethanyIntro, SixIsland_PatternBush_Text_BethanyDefeat
+	trainerbattle_double TRAINER_PKMN_BREEDER_BETHANY, SixIsland_PatternBush_Text_BethanyIntro, SixIsland_PatternBush_Text_BethanyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SixIsland_PatternBush_Text_BethanyPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -28,7 +28,7 @@ SixIsland_PatternBush_EventScript_Allison::
 	end
 
 SixIsland_PatternBush_EventScript_Garret::
-	trainerbattle_single TRAINER_BUG_CATCHER_GARRET, SixIsland_PatternBush_Text_GarretIntro, SixIsland_PatternBush_Text_GarretDefeat
+	trainerbattle_double TRAINER_BUG_CATCHER_GARRET, SixIsland_PatternBush_Text_GarretIntro, SixIsland_PatternBush_Text_GarretDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SixIsland_PatternBush_Text_GarretPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -38,7 +38,7 @@ SixIsland_PatternBush_EventScript_Jonah::
 	end
 
 SixIsland_PatternBush_EventScript_Vance::
-	trainerbattle_single TRAINER_BUG_CATCHER_VANCE, SixIsland_PatternBush_Text_VanceIntro, SixIsland_PatternBush_Text_VanceDefeat
+	trainerbattle_double TRAINER_BUG_CATCHER_VANCE, SixIsland_PatternBush_Text_VanceIntro, SixIsland_PatternBush_Text_VanceDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SixIsland_PatternBush_Text_VancePostBattle, MSGBOX_AUTOCLOSE
 	end
 

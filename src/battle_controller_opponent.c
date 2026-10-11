@@ -20,6 +20,8 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
+#include "constants/opponents.h"
+#include "constants/trainers.h"
 
 static void OpponentHandleGetMonData(void);
 static void OpponentHandleGetRawMonData(void);
@@ -30,6 +32,7 @@ static void OpponentHandleSwitchInAnim(void);
 static void OpponentHandleReturnMonToBall(void);
 static void OpponentHandleDrawTrainerPic(void);
 static void OpponentHandleTrainerSlide(void);
+static u32 GetLeagueDefeatTrainerPic(u16 trainerId);
 static void OpponentHandleTrainerSlideBack(void);
 static void OpponentHandleFaintAnimation(void);
 static void OpponentHandlePaletteFade(void);
@@ -1148,6 +1151,35 @@ static void OpponentHandleDrawTrainerPic(void)
     gBattlerControllerFuncs[gActiveBattler] = CompleteOnBattlerSpriteCallbackDummy;
 }
 
+
+static u32 GetLeagueDefeatTrainerPic(u16 trainerId)
+{
+    switch (trainerId)
+    {
+    case TRAINER_ELITE_FOUR_LORELEI:
+    case TRAINER_ELITE_FOUR_LORELEI_2:
+        return TRAINER_PIC_LORELEI_LEAGUE_DEFEAT;
+    case TRAINER_ELITE_FOUR_BRUNO:
+    case TRAINER_ELITE_FOUR_BRUNO_2:
+        return TRAINER_PIC_BLUE_LEAGUE_DEFEAT;
+    case TRAINER_ELITE_FOUR_AGATHA:
+    case TRAINER_ELITE_FOUR_AGATHA_2:
+        return TRAINER_PIC_AGATHA_LEAGUE_DEFEAT;
+    case TRAINER_ELITE_FOUR_LANCE:
+    case TRAINER_ELITE_FOUR_LANCE_2:
+        return TRAINER_PIC_LANCE_LEAGUE_DEFEAT;
+    case TRAINER_GREEN_CHAMPION_DITTO:
+    case TRAINER_GREEN_CHAMPION_ESPEON:
+    case TRAINER_GREEN_CHAMPION_RAICHU:
+    case TRAINER_GREEN_POSTGAME_DITTO:
+    case TRAINER_GREEN_POSTGAME_ESPEON:
+    case TRAINER_GREEN_POSTGAME_RAICHU:
+        return TRAINER_PIC_GREEN_LEAGUE_DEFEAT;
+    default:
+        return gTrainers[trainerId].trainerPic;
+    }
+}
+
 static void OpponentHandleTrainerSlide(void)
 {
     u32 trainerPicId;
@@ -1161,7 +1193,7 @@ static void OpponentHandleTrainerSlide(void)
     else if (gBattleTypeFlags & BATTLE_TYPE_EREADER_TRAINER)
         trainerPicId = GetEreaderTrainerFrontSpriteId();
     else
-        trainerPicId = gTrainers[gTrainerBattleOpponent_A].trainerPic;
+        trainerPicId = GetLeagueDefeatTrainerPic(gTrainerBattleOpponent_A);
     DecompressTrainerFrontPic(trainerPicId, gActiveBattler);
     SetMultiuseSpriteTemplateToTrainerBack(trainerPicId, GetBattlerPosition(gActiveBattler));
     gBattlerSpriteIds[gActiveBattler] = CreateSprite(&gMultiuseSpriteTemplate,

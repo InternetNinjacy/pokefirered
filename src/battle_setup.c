@@ -33,6 +33,7 @@
 #include "constants/songs.h"
 #include "constants/pokemon.h"
 #include "constants/trainers.h"
+#include "constants/opponents.h"
 
 enum {
     TRANSITION_TYPE_NORMAL,
@@ -70,6 +71,7 @@ static bool32 IsPlayerDefeated(u32 battleOutcome);
 static void CB2_EndTrainerBattle(void);
 static const u8 *GetIntroSpeechOfApproachingTrainer(void);
 static const u8 *GetTrainerCantBattleSpeech(void);
+static bool32 IsGreenLeagueTrainer(u16 trainerId);
 
 static EWRAM_DATA u16 sTrainerBattleMode = 0;
 EWRAM_DATA u16 gTrainerBattleOpponent_A = 0;
@@ -291,9 +293,20 @@ static void DoGhostBattle(void)
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
 }
 
+static bool32 IsGreenLeagueTrainer(u16 trainerId)
+{
+    return trainerId >= TRAINER_GREEN_CHAMPION_DITTO
+        && trainerId <= TRAINER_GREEN_POSTGAME_RAICHU;
+}
+
 static void DoTrainerBattle(void)
 {
-    CreateBattleStartTask(GetTrainerBattleTransition(), 0);
+    u16 song = 0;
+
+    if (IsGreenLeagueTrainer(gTrainerBattleOpponent_A))
+        song = MUS_VS_CHAMPION;
+
+    CreateBattleStartTask(GetTrainerBattleTransition(), song);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_TRAINER_BATTLES);
 }
@@ -917,6 +930,9 @@ static void CB2_EndTrainerBattle(void)
             else
             {
                 SetMainCallback2(CB2_WhiteOut);
+                if (!IsGreenLeagueTrainer(gTrainerBattleOpponent_A))
+                    SetBattledTrainerFlag();
+                QuestLogEvents_HandleEndTrainerBattle();
                 return;
             }
             SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);

@@ -1,6 +1,7 @@
 #ifndef GUARD_BATTLE_MAIN_H
 #define GUARD_BATTLE_MAIN_H
 
+#include "pokemon.h"
 #include "constants/abilities.h"
 
 struct TrainerMoney
@@ -94,5 +95,15 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves);
 void RunBattleScriptCommands_PopCallbacksStack(void);
 void RunBattleScriptCommands(void);
 bool8 TryRunFromBattle(u8 battler);
+
+// Sam Edition Thomas recurring-rival party identity hook.
+// Every call remains stock unless it is creating a fixed-personality mon directly
+// into gEnemyParty for one of Thomas's trainer records.
+void CreateMonWithThomasTrainerTraits(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId);
+
+#if !defined(IS_POKEMON_C) && !defined(SAM_THOMAS_TRAINER_TRAITS_C)
+#define CreateMon(mon, species, level, fixedIV, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId) \
+    CreateMonWithThomasTrainerTraits((mon), (species), (level), (fixedIV), (hasFixedPersonality), (fixedPersonality), (otIdType), (fixedOtId))
+#endif
 
 #endif // GUARD_BATTLE_MAIN_H

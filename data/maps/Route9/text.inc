@@ -104,3 +104,6 @@ Route9_Text_RouteSign::
     .string "ROUTE 9\n"
     .string "CERULEAN CITY - ROCK TUNNEL$"
 
+Route9_Text_NoRoomForMetalCoat::
+    .string "There's no room in the BAG for the\n"
+    .string "METAL COAT.$"

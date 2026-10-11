@@ -1,102 +1,386 @@
-SaffronCity_Dojo_Text_MasterKoichiIntro::
-    .string "Grunt!\p"
-    .string "I am the KARATE MASTER!\n"
-    .string "I am the LEADER here!\p"
-    .string "You wish to challenge us?\n"
-    .string "Expect no mercy!\p"
-    .string "Fwaaa!$"
+SaffronCity_Dojo_Text_HothousePlaque::
+    .string "SAFFRON HOTHOUSE\n"
+    .string "Controlled Growing Facility$"
 
-SaffronCity_Dojo_Text_MasterKoichiDefeat::
-    .string "Hwa!\n"
-    .string "Arrgh! Beaten!$"
+SaffronCity_Dojo_Text_WorkAreaLocked::
+    .string "HAWTHORNE hasn't opened the\n"
+    .string "TROPIUS project to you yet.$"
 
-SaffronCity_Dojo_Text_ChoosePrizedFightingMon::
-    .string "Indeed, I have lost!\p"
-    .string "But, I beseech you, do not take\n"
-    .string "our emblem as your trophy!\p"
-    .string "In return, I will give you a prized\n"
-    .string "FIGHTING POKéMON!\p"
-    .string "Choose whichever one you like!$"
+SaffronCity_Dojo_Text_ControlLocked::
+    .string "This control is locked.\p"
+    .string "The gardener responsible for this\n"
+    .string "system still has work to show you.$"
 
-SaffronCity_Dojo_Text_StayAndTrainWithUs::
-    .string "Grunt!\n"
-    .string "Stay and train at karate with us!$"
+SaffronCity_Dojo_Text_HawthornePreReferral::
+    .string "Hold it, kid.\p"
+    .string "You can look around.\n"
+    .string "You can admire the plants.\p"
+    .string "You keep your hands OUTTA the\n"
+    .string "work areas.\p"
+    .string "We got a POKéMON under observation\n"
+    .string "and I don't need another variable\n"
+    .string "wanderin' around touchin' things.\p"
+    .string "You wanna help?\p"
+    .string "Come back when somebody I trust\n"
+    .string "tells me you're useful.$"
 
-SaffronCity_Dojo_Text_MikeIntro::
-    .string "Hoargh!\n"
-    .string "Take your shoes off!$"
+SaffronCity_Dojo_Text_HawthorneIntroduction::
+    .string "Ah.\p"
+    .string "You're the kid from the gate.\n"
+    .string "My buddy says you helped him out.\p"
+    .string "Says you're alright.\p"
+    .string "That buys you five minutes and\n"
+    .string "exactly ZERO permission to wreck\n"
+    .string "my greenhouse.\p"
+    .string "We got a TROPIUS in the central\n"
+    .string "chamber.\p"
+    .string "Came here from some foreign land.\n"
+    .string "Where exactly? Beats me.\p"
+    .string "Nobody here knows.\p"
+    .string "What we DO know is the thing's\n"
+    .string "alive, but it ain't thriving.\p"
+    .string "Water. Sunlight. Temperature. Soil.\n"
+    .string "Four systems. Four gardeners.\p"
+    .string "Everybody's learned one piece of\n"
+    .string "the problem and, naturally, nobody\n"
+    .string "can agree on the whole thing.\p"
+    .string "So congratulations.\n"
+    .string "You're the outside opinion.\p"
+    .string "Talk to my people. Battle 'em if\n"
+    .string "they insist--and trust me, they're\n"
+    .string "gonna insist.\p"
+    .string "Listen to what they learned.\n"
+    .string "Then set that chamber right.\p"
+    .string "And please, for the love of healthy\n"
+    .string "roots, don't just start pushin'\n"
+    .string "buttons.$"
 
-SaffronCity_Dojo_Text_MikeDefeat::
-    .string "I give up!$"
+SaffronCity_Dojo_Text_HawthornePuzzleRepeat::
+    .string "Water.\nSunlight.\nTemperature.\nSoil.\p"
+    .string "Four systems, kid.\p"
+    .string "My people already did the hard\n"
+    .string "part.\p"
+    .string "All you gotta do is LISTEN to 'em.\p"
+    .string "Apparently I'm askin' for miracles\n"
+    .string "today.$"
 
-SaffronCity_Dojo_Text_MikePostBattle::
-    .string "You wait 'til you see our MASTER!\n"
-    .string "I'm a small fry compared to him!$"
+SaffronCity_Dojo_Text_HawthorneSolved::
+    .string "Well, would ya look at that.\p"
+    .string "The chamber's thriving.\n"
+    .string "Vines pulled back.\n"
+    .string "New growth everywhere.\p"
+    .string "TROPIUS looks better than it has\n"
+    .string "in weeks.\p"
+    .string "You actually listened.\n"
+    .string "I owe somebody money.\p"
+    .string "But don't start celebratin' yet.\p"
+    .string "Anybody can memorize four settings.\p"
+    .string "Real care ain't about deciding\n"
+    .string "there's one perfect answer and\n"
+    .string "forcing every POKéMON into it.\p"
+    .string "You watch the individual.\n"
+    .string "You see what it needs.\p"
+    .string "And when its needs change?\n"
+    .string "YOU change.\p"
+    .string "You wanna convince me you\n"
+    .string "understand that?\p"
+    .string "Then battle me.\p"
+    .string "Let's see how good you are when the\n"
+    .string "problem starts fightin' back.$"
 
-SaffronCity_Dojo_Text_HidekiIntro::
-    .string "I hear you're good!\n"
-    .string "Show me!$"
+SaffronCity_Dojo_Text_HawthorneBattleStart::
+    .string "Alright, kid.\p"
+    .string "Show me you can adapt.$"
 
-SaffronCity_Dojo_Text_HidekiDefeat::
-    .string "Judge!\n"
-    .string "One point!$"
+SaffronCity_Dojo_Text_HawthorneRetry::
+    .string "Back already?\p"
+    .string "Good.\p"
+    .string "No lecture this time.\p"
+    .string "Show me you can adapt.$"
 
-SaffronCity_Dojo_Text_HidekiPostBattle::
-    .string "Our MASTER is a pro fighter.\n"
-    .string "Be prepared to lose!$"
+SaffronCity_Dojo_Text_HawthorneDefeat::
+    .string "...Huh.\p"
+    .string "Alright.\p"
+    .string "That'll do.$"
 
-SaffronCity_Dojo_Text_AaronIntro::
-    .string "Hiyah!\n"
-    .string "I have no fear for anything tough!\p"
-    .string "I shatter boulders for training\n"
-    .string "every day!$"
+SaffronCity_Dojo_Text_HawthorneAfterBattle::
+    .string "You had a plan.\p"
+    .string "Then I pushed back, and you\n"
+    .string "changed it.\p"
+    .string "That's the part people forget.\p"
+    .string "You don't take care of something by\n"
+    .string "deciding what it oughta need.\p"
+    .string "You pay attention to what's\n"
+    .string "actually in front of you.\p"
+    .string "C'mon.\p"
+    .string "There's one more thing you need to\n"
+    .string "see.$"
 
-SaffronCity_Dojo_Text_AaronDefeat::
-    .string "Yow!\n"
-    .string "Stubbed fingers!$"
+SaffronCity_Dojo_Text_HawthorneRewardPending::
+    .string "Look at her.\nHealthy.\nStrong.\p"
+    .string "Everything we've been workin'\n"
+    .string "toward.\p"
+    .string "We spent all this time askin' one\n"
+    .string "question:\p"
+    .string "'How do we make TROPIUS happy\n"
+    .string "here?'\p"
+    .string "Water. Light. Heat. Soil.\p"
+    .string "We finally got every piece right.\p"
+    .string "And then I realized we'd been\n"
+    .string "askin' the wrong question.\p"
+    .string "This greenhouse ain't home.\n"
+    .string "It's a greenhouse.\p"
+    .string "A good one, thank you very much,\n"
+    .string "but still.\p"
+    .string "She's healthy enough now that she\n"
+    .string "doesn't need us deciding where she\n"
+    .string "belongs.\p"
+    .string "Alright, big girl. Here's the deal.\p"
+    .string "You wanna stay? You stay.\n"
+    .string "You wanna go? You go.\p"
+    .string "Nobody's makin' that decision for\n"
+    .string "ya.\p"
+    .string "...Oh, sure. Of COURSE.\p"
+    .string "We give you perfect soil, perfect\n"
+    .string "climate, months of work--\p"
+    .string "And you pick the kid with the\n"
+    .string "backpack. Beautiful.\p"
+    .string "She picked you.\p"
+    .string "If you can't take her right now,\n"
+    .string "make some room and come back.\p"
+    .string "I'm not stuffing her into a bad\n"
+    .string "situation just to make your life\n"
+    .string "easier.$"
 
-SaffronCity_Dojo_Text_AaronPostBattle::
-    .string "The only thing that frightens us is\n"
-    .string "psychic power!$"
+SaffronCity_Dojo_Text_HawthorneCompleted::
+    .string "Quiet in here without her.\n"
+    .string "Still catches me off guard.\p"
+    .string "But look around.\n"
+    .string "Plants are healthy.\n"
+    .string "Greenhouse is healthy.\p"
+    .string "She's out there doin' whatever she\n"
+    .string "decided to do.\p"
+    .string "That's the job.\p"
+    .string "Sometimes good care means keepin'\n"
+    .string "something alive.\p"
+    .string "Sometimes it means helpin' it grow.\p"
+    .string "And sometimes?\p"
+    .string "It means knowin' when to open the\n"
+    .string "door.\p"
+    .string "Now quit standin' around.\n"
+    .string "I got work to do.$"
 
-SaffronCity_Dojo_Text_HitoshiIntro::
-    .string "Hwaah!\p"
-    .string "You're trespassing in our\n"
-    .string "FIGHTING DOJO!$"
+SaffronCity_Dojo_Text_IrrigationIntro::
+    .string "HEY! Watch the hose, genius!\n"
+    .string "I'm waterin' here!\p"
+    .string "Hawthorne says you're the hotshot\n"
+    .string "who's gonna fix our TROPIUS\n"
+    .string "problem?\p"
+    .string "Yeah? Then quit gawkin' at the\n"
+    .string "plants and show me what you got!$"
 
-SaffronCity_Dojo_Text_HitoshiDefeat::
-    .string "Oof!\n"
-    .string "I give up!$"
+SaffronCity_Dojo_Text_IrrigationDefeat::
+    .string "Aw, COME ON!\p"
+    .string "I turn my back for two seconds and\n"
+    .string "suddenly everybody's a POKéMON\n"
+    .string "expert!$"
 
-SaffronCity_Dojo_Text_HitoshiPostBattle::
-    .string "The prime fighters across the land\n"
-    .string "train here.$"
+SaffronCity_Dojo_Text_IrrigationClue::
+    .string "Alright, wise guy, listen up.\p"
+    .string "We barely water the big lug?\n"
+    .string "It droops like somebody canceled\n"
+    .string "lunch.\p"
+    .string "We open the valves all the way?\n"
+    .string "Roots are swimmin'! Practically\n"
+    .string "need little life preservers!\p"
+    .string "So what does that tell ya?\p"
+    .string "Not LOW. Not HIGH.\n"
+    .string "Keep it in the MIDDLE!\p"
+    .string "Medium! Nice and steady!\p"
+    .string "I gotta draw you a diagram too, or\n"
+    .string "we good here?$"
 
-SaffronCity_Dojo_Text_YouWantHitmonlee::
-    .string "You want the hard-kicking\n"
-    .string "HITMONLEE?$"
+SaffronCity_Dojo_Text_IrrigationRepeat::
+    .string "MEDIUM, pal!\p"
+    .string "Not LOW.\nNot HIGH.\p"
+    .string "Medium!\p"
+    .string "What, you want me to come turn the\n"
+    .string "valve for ya too?$"
 
-SaffronCity_Dojo_Text_ReceivedMonFromKarateMaster::
-    .string "{PLAYER} received the {STR_VAR_1}\n"
-    .string "from the KARATE MASTER.$"
+SaffronCity_Dojo_Text_SunIntro::
+    .string "Whoa, whoa, whoa!\n"
+    .string "You're the kid Hawthorne sent over?\p"
+    .string "YOU?\p"
+    .string "Fantastic. Beautiful.\n"
+    .string "We're savin' horticulture today.\p"
+    .string "Lemme guess--you think plants need\n"
+    .string "sunshine?\p"
+    .string "Congratulations, professor!\p"
+    .string "C'mon. Let's see if you're actually\n"
+    .string "useful.$"
 
-SaffronCity_Dojo_Text_YouWantHitmonchan::
-    .string "You want the piston-punching\n"
-    .string "HITMONCHAN?$"
+SaffronCity_Dojo_Text_SunDefeat::
+    .string "You gotta be kiddin' me!\p"
+    .string "I lose one battle and suddenly\n"
+    .string "you're the authority around here?\p"
+    .string "Unbelievable.$"
 
-SaffronCity_Dojo_Text_ReceivedMonFromKarateMaster2::
-    .string "{PLAYER}は　カラテ　だいおう　から\n"
-    .string "{STR_VAR_1}を　もらった！$"
+SaffronCity_Dojo_Text_SunClue::
+    .string "Alright, Einstein, here's your big\n"
+    .string "scientific breakthrough.\p"
+    .string "We tried shade. TROPIUS kept\n"
+    .string "leanin' toward the windows.\p"
+    .string "We gave it partial sun.\n"
+    .string "Still leanin' toward the windows.\p"
+    .string "Open the glass all the way? Boom!\p"
+    .string "Head up, leaves spread, happy as\n"
+    .string "can be.\p"
+    .string "The thing practically climbs over\n"
+    .string "the other plants tryin' to get the\n"
+    .string "brightest spot in the room!\p"
+    .string "So what setting do you use?\p"
+    .string "FULL SUNLIGHT! Full!\n"
+    .string "Not shade. Not partial.\p"
+    .string "The SUN, genius!\n"
+    .string "Try to contain your amazement.$"
 
-SaffronCity_Dojo_Text_BetterNotGetGreedy::
-    .string "Better not get greedy…$"
+SaffronCity_Dojo_Text_SunRepeat::
+    .string "FULL SUNLIGHT!\p"
+    .string "What part's givin' you trouble?\p"
+    .string "The 'full'?\p"
+    .string "Or the 'sunlight'?\p"
+    .string "Open the glass!$"
 
-SaffronCity_Dojo_Text_EnemiesOnEverySide::
-    .string "Enemies on every side!$"
+SaffronCity_Dojo_Text_ClimateIntro::
+    .string "Oh, terrific.\n"
+    .string "Another body in here.\p"
+    .string "Like it ain't hot enough already!\p"
+    .string "You feel this place?\p"
+    .string "I got vents fightin' heaters,\n"
+    .string "heaters fightin' windows, windows\n"
+    .string "fightin' the SUN--\p"
+    .string "And now I got YOU standin' here\n"
+    .string "breathin' on everything!\p"
+    .string "Hawthorne sent ya? Fine!\p"
+    .string "Let's get this over with before the\n"
+    .string "temperature changes again!$"
 
-SaffronCity_Dojo_Text_GoesAroundComesAround::
-    .string "What goes around comes around.$"
+SaffronCity_Dojo_Text_ClimateDefeat::
+    .string "Oh, PERFECT!\n"
+    .string "Now I'm losin' battles too!\p"
+    .string "What else you got for me today,\n"
+    .string "huh?\p"
+    .string "Pipe burst? Glass crack? SUN fall\n"
+    .string "outta the sky?$"
 
-SaffronCity_Dojo_Text_FightingDojo::
-    .string "FIGHTING DOJO$"
+SaffronCity_Dojo_Text_ClimateClue::
+    .string "Alright, listen, 'cause I am NOT\n"
+    .string "explainin' this twice.\p"
+    .string "We cranked the heat up?\n"
+    .string "TROPIUS looked miserable.\p"
+    .string "Leaves saggin'. Breathin' heavy.\n"
+    .string "Whole thing looked like it wanted\n"
+    .string "to file a complaint.\p"
+    .string "So I dropped the temperature.\n"
+    .string "Started recoverin' almost\n"
+    .string "immediately.\p"
+    .string "But COOL? Nah.\p"
+    .string "Then it gets sluggish and starts\n"
+    .string "lookin' for the warm side of the\n"
+    .string "room!\p"
+    .string "So what does it want? WARM!\p"
+    .string "Not HOT. Not COOL. WARM!\p"
+    .string "Nice, comfortable, middle-of-the-\n"
+    .string "road WARM.\p"
+    .string "Apparently that's too much to ask\n"
+    .string "around here!$"
 
+SaffronCity_Dojo_Text_ClimateRepeat::
+    .string "WARM!\p"
+    .string "Not HOT!\nNot COOL!\p"
+    .string "WARM!\p"
+    .string "And close the door when ya leave!\p"
+    .string "You tryin' to heat the whole city?!$"
+
+SaffronCity_Dojo_Text_SoilIntro::
+    .string "Whoa, whoa. Hold it right there,\n"
+    .string "kid.\p"
+    .string "Don't step in that bed!\p"
+    .string "You see dirt, right?\n"
+    .string "'Oh, it's dirt! Who cares?'\p"
+    .string "Yeah, that's why I'm workin' here\n"
+    .string "and you're standin' there with mud\n"
+    .string "on your shoes.\p"
+    .string "I been workin' soil longer than\n"
+    .string "you been dressin' yourself!\p"
+    .string "Hawthorne says you're here to help?\n"
+    .string "Fine.\p"
+    .string "Show me you know somethin' besides\n"
+    .string "how to walk on my compost.$"
+
+SaffronCity_Dojo_Text_SoilDefeat::
+    .string "Ah, get outta here!\p"
+    .string "Thirty years workin' with POKéMON\n"
+    .string "and plants, and now some kid comes\n"
+    .string "in and makes me look stupid before\n"
+    .string "lunch.\p"
+    .string "Beautiful.\nLove that for me.$"
+
+SaffronCity_Dojo_Text_SoilClue::
+    .string "Alright, hotshot. Here's what we\n"
+    .string "learned.\p"
+    .string "Regular soil? TROPIUS lived.\n"
+    .string "Didn't complain. Didn't keel over.\p"
+    .string "But that was about it.\p"
+    .string "Then I worked in the good compost.\n"
+    .string "Real nutrient-rich stuff.\p"
+    .string "And lemme tell ya--\n"
+    .string "New growth. Stronger leaves.\p"
+    .string "Thing perked up like somebody told\n"
+    .string "it rent was free!\p"
+    .string "So don't give me DRY.\n"
+    .string "And don't give me that plain\n"
+    .string "BALANCED stuff either.\p"
+    .string "You want TROPIUS to THRIVE?\n"
+    .string "RICH SOIL! Rich!\p"
+    .string "Give the roots somethin' worth\n"
+    .string "eatin'!$"
+
+SaffronCity_Dojo_Text_SoilRepeat::
+    .string "RICH SOIL, kid!\p"
+    .string "RICH!\p"
+    .string "Not dry.\nNot ordinary.\p"
+    .string "The good stuff!\p"
+    .string "I got compost older than you that\n"
+    .string "understands this!$"
+
+SaffronCity_Dojo_Text_IrrigationLow::
+    .string "IRRIGATION set to LOW.$"
+SaffronCity_Dojo_Text_IrrigationMedium::
+    .string "IRRIGATION set to MEDIUM.$"
+SaffronCity_Dojo_Text_IrrigationHigh::
+    .string "IRRIGATION set to HIGH.$"
+SaffronCity_Dojo_Text_SunShade::
+    .string "SUNLIGHT set to SHADE.$"
+SaffronCity_Dojo_Text_SunPartial::
+    .string "SUNLIGHT set to PARTIAL.$"
+SaffronCity_Dojo_Text_SunFull::
+    .string "SUNLIGHT set to FULL.$"
+SaffronCity_Dojo_Text_TempCool::
+    .string "TEMPERATURE set to COOL.$"
+SaffronCity_Dojo_Text_TempWarm::
+    .string "TEMPERATURE set to WARM.$"
+SaffronCity_Dojo_Text_TempHot::
+    .string "TEMPERATURE set to HOT.$"
+SaffronCity_Dojo_Text_SoilDry::
+    .string "SOIL set to DRY.$"
+SaffronCity_Dojo_Text_SoilBalanced::
+    .string "SOIL set to BALANCED.$"
+SaffronCity_Dojo_Text_SoilRich::
+    .string "SOIL set to RICH.$"
+
+SaffronCity_Dojo_Text_HothouseSolved::
+    .string "The four systems settle into\n"
+    .string "balance.\p"
+    .string "The central chamber flourishes.\n"
+    .string "The vines retract.$"

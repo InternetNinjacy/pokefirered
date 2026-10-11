@@ -20,6 +20,12 @@
 #define INGAME_TRADE_TANGELA   7
 #define INGAME_TRADE_SEEL      8
 
+// Sam Edition authored Gift Pokémon OT IDs.
+#define OTID_GIFT_HAWTHORNE 52014
+
+// Authored pre-owned Gift profiles used by event delivery helpers.
+#define SAM_PREOWNED_OT_HAWTHORNE 4
+
 // Return values for CanTradeSelectedMon and CanSpinTradeMon
 #define CAN_TRADE_MON              0
 #define CANT_TRADE_LAST_MON        1

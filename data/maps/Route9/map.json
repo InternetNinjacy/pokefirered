@@ -51,7 +51,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "4",
-      "script": "Route9_EventScript_Jeremy",
+      "script": "Route9_EventScript_JeremyBatch5",
       "flag": "0"
     },
     {
@@ -65,7 +65,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "1",
-      "script": "Route9_EventScript_Alan",
+      "script": "Route9_EventScript_AlanBatch5",
       "flag": "0"
     },
     {
@@ -149,7 +149,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "5",
-      "script": "Route9_EventScript_Drew",
+      "script": "Route9_EventScript_DrewBatch5",
       "flag": "0"
     },
     {
@@ -194,6 +194,20 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route9_EventScript_ItemBurnHeal",
       "flag": "FLAG_HIDE_ROUTE9_BURN_HEAL"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_MAGNETON",
+      "x": 67,
+      "y": 17,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Route9_EventScript_StaticMagneton",
+      "flag": "FLAG_STATIC_ROUTE9_MAGNETON_COMPLETE"
     }
   ],
   "warp_events": [],

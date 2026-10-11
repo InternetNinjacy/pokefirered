@@ -556,6 +556,8 @@ static void CreateShedinja(u16 preEvoSpecies, struct Pokemon* mon)
         struct Pokemon* shedinja = &gPlayerParty[gPlayerPartyCount];
 
         CopyMon(&gPlayerParty[gPlayerPartyCount], mon, sizeof(struct Pokemon));
+        SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_SAM_PERMANENT_DEAD, &data);
+        SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_SAM_ORIGINAL_STARTER, &data);
         SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_SPECIES, &gEvolutionTable[preEvoSpecies][1].targetSpecies);
         SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_NICKNAME, gSpeciesNames[gEvolutionTable[preEvoSpecies][1].targetSpecies]);
         SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_HELD_ITEM, &data);

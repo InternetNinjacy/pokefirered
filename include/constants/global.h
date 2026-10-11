@@ -30,13 +30,17 @@
 #define GAME_LANGUAGE (LANGUAGE_ENGLISH)
 #endif
 
+// Sam Edition final machine counts; needed by SaveBlock1 layout.
+#define NUM_TECHNICAL_MACHINES 68
+#define NUM_HIDDEN_MACHINES     8
+
 // capacities of various saveblock objects
 #define DAYCARE_MON_COUNT   2
 #define PC_ITEMS_COUNT      30
 #define BAG_ITEMS_COUNT     42
 #define BAG_KEYITEMS_COUNT  30
 #define BAG_POKEBALLS_COUNT 13
-#define BAG_TMHM_COUNT      58
+#define BAG_TMHM_COUNT      (NUM_TECHNICAL_MACHINES + NUM_HIDDEN_MACHINES)
 #define BAG_BERRIES_COUNT   43
 #define OBJECT_EVENTS_COUNT 16
 #define OBJECT_EVENT_TEMPLATES_COUNT 64
@@ -124,5 +128,18 @@
 #define CONNECTION_EAST     4
 #define CONNECTION_DIVE     5
 #define CONNECTION_EMERGE   6
+
+// Sam Edition Thomas rival persistent-state contract.
+// Numeric slots are centrally allocated in the Programming Readiness Registry.
+#define VAR_THOMAS_ARC_STAGE          0x40A1
+
+#define THOMAS_ARC_UNSEEN             0
+#define THOMAS_ARC_RECRUITED          1
+#define THOMAS_ARC_CELADON_CLEARED    2
+#define THOMAS_ARC_LAVENDER_CLEARED   3
+#define THOMAS_ARC_SILPH_CLEARED      4
+#define THOMAS_ARC_CINNABAR_CLEARED   5
+#define THOMAS_ARC_QUIT_ROCKET        6
+#define THOMAS_ARC_EPILOGUE_COMPLETE  7
 
 #endif //GUARD_CONSTANTS_GLOBAL_H

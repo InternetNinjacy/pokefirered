@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sam_thomas.h"
 #include "battle.h"
 #include "battle_ai_script_commands.h"
 #include "battle_anim.h"
@@ -350,6 +351,8 @@ static void SetBattlePartyIds(void)
                     }
                 }
             }
+            if (j == PARTY_SIZE && i == 2 && IsThomasOneMonDoubleBattle())
+                gBattlerPartyIndexes[i] = (gBattlerPartyIndexes[0] == 0) ? 1 : 0;
         }
     }
 }

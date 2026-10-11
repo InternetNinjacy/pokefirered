@@ -36,6 +36,7 @@
 #include "constants/hold_effects.h"
 #include "constants/battle_move_effects.h"
 #include "constants/union_room.h"
+#include "constants/vars.h"
 
 #define SPECIES_TO_HOENN(name)      [SPECIES_##name - 1] = HOENN_DEX_##name
 #define SPECIES_TO_NATIONAL(name)   [SPECIES_##name - 1] = NATIONAL_DEX_##name
@@ -2169,6 +2170,18 @@ void CalculateMonStats(struct Pokemon *mon)
     SetMonData(mon, MON_DATA_HP, &currentHP);
 }
 
+void TryMarkMonPermanentDead(struct Pokemon *mon)
+{
+    bool8 isPermanentDead = TRUE;
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1
+        && GetMonData(mon, MON_DATA_HP) == 0
+        && !GetMonData(mon, MON_DATA_SAM_ORIGINAL_STARTER))
+    {
+        SetMonData(mon, MON_DATA_SAM_PERMANENT_DEAD, &isPermanentDead);
+    }
+}
+
 void BoxMonToMon(struct BoxPokemon *src, struct Pokemon *dest)
 {
     u32 value = 0;
@@ -2452,7 +2465,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         if (attackerHoldEffect == sHoldEffectToType[i][0]
             && type == sHoldEffectToType[i][1])
         {
-            if (IS_TYPE_PHYSICAL(type))
+            if (IS_TYPE_PHYSICAL(type) && move != MOVE_GHOSTLY_WAIL && move != MOVE_SIGNAL_BEAM)
                 attack = (attack * (attackerHoldEffectParam + 100)) / 100;
             else
                 spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
@@ -2506,7 +2519,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (gBattleMoves[gCurrentMove].effect == EFFECT_EXPLOSION)
         defense /= 2;
 
-    if (IS_TYPE_PHYSICAL(type))
+    if (IS_TYPE_PHYSICAL(type) && move != MOVE_GHOSTLY_WAIL && move != MOVE_SIGNAL_BEAM)
     {
         if (gCritMultiplier == 2)
         {
@@ -2561,7 +2574,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (type == TYPE_MYSTERY)
         damage = 0; // is ??? type. does 0 damage.
 
-    if (IS_TYPE_SPECIAL(type))
+    if (IS_TYPE_SPECIAL(type) || move == MOVE_GHOSTLY_WAIL || move == MOVE_SIGNAL_BEAM)
     {
         if (gCritMultiplier == 2)
         {
@@ -2982,7 +2995,9 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
     struct PokemonSubstruct2 *substruct2 = NULL;
     struct PokemonSubstruct3 *substruct3 = NULL;
 
-    if (field > MON_DATA_ENCRYPT_SEPARATOR)
+    if (field > MON_DATA_ENCRYPT_SEPARATOR
+        && field != MON_DATA_SAM_PERMANENT_DEAD
+        && field != MON_DATA_SAM_ORIGINAL_STARTER)
     {
         substruct0 = &(GetSubstruct(boxMon, boxMon->personality, 0)->type0);
         substruct1 = &(GetSubstruct(boxMon, boxMon->personality, 1)->type1);
@@ -3057,6 +3072,12 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         break;
     case MON_DATA_SANITY_IS_EGG:
         retVal = boxMon->isEgg;
+        break;
+    case MON_DATA_SAM_PERMANENT_DEAD:
+        retVal = boxMon->isSamPermanentDead;
+        break;
+    case MON_DATA_SAM_ORIGINAL_STARTER:
+        retVal = boxMon->isSamOriginalStarter;
         break;
     case MON_DATA_OT_NAME:
     {
@@ -3323,7 +3344,9 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         break;
     }
 
-    if (field > MON_DATA_ENCRYPT_SEPARATOR)
+    if (field > MON_DATA_ENCRYPT_SEPARATOR
+        && field != MON_DATA_SAM_PERMANENT_DEAD
+        && field != MON_DATA_SAM_ORIGINAL_STARTER)
         EncryptBoxMon(boxMon);
 
     return retVal;
@@ -3412,7 +3435,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
     struct PokemonSubstruct2 *substruct2 = NULL;
     struct PokemonSubstruct3 *substruct3 = NULL;
 
-    if (field > MON_DATA_ENCRYPT_SEPARATOR)
+    if (field > MON_DATA_ENCRYPT_SEPARATOR
+        && field != MON_DATA_SAM_PERMANENT_DEAD
+        && field != MON_DATA_SAM_ORIGINAL_STARTER)
     {
         substruct0 = &(GetSubstruct(boxMon, boxMon->personality, 0)->type0);
         substruct1 = &(GetSubstruct(boxMon, boxMon->personality, 1)->type1);
@@ -3457,6 +3482,12 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     case MON_DATA_SANITY_IS_EGG:
         SET8(boxMon->isEgg);
+        break;
+    case MON_DATA_SAM_PERMANENT_DEAD:
+        SET8(boxMon->isSamPermanentDead);
+        break;
+    case MON_DATA_SAM_ORIGINAL_STARTER:
+        SET8(boxMon->isSamOriginalStarter);
         break;
     case MON_DATA_OT_NAME:
     {
@@ -3671,7 +3702,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     }
 
-    if (field > MON_DATA_ENCRYPT_SEPARATOR)
+    if (field > MON_DATA_ENCRYPT_SEPARATOR
+        && field != MON_DATA_SAM_PERMANENT_DEAD
+        && field != MON_DATA_SAM_ORIGINAL_STARTER)
     {
         boxMon->checksum = CalculateBoxMonChecksum(boxMon);
         EncryptBoxMon(boxMon);
@@ -3683,13 +3716,9 @@ void CopyMon(void *dest, void *src, size_t size)
     memcpy(dest, src, size);
 }
 
-u8 GiveMonToPlayer(struct Pokemon *mon)
+static u8 TryGiveMonToPlayer(struct Pokemon *mon)
 {
     s32 i;
-
-    SetMonData(mon, MON_DATA_OT_NAME, gSaveBlock2Ptr->playerName);
-    SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
-    SetMonData(mon, MON_DATA_OT_ID, gSaveBlock2Ptr->playerTrainerId);
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -3703,6 +3732,20 @@ u8 GiveMonToPlayer(struct Pokemon *mon)
     CopyMon(&gPlayerParty[i], mon, sizeof(*mon));
     gPlayerPartyCount = i + 1;
     return MON_GIVEN_TO_PARTY;
+}
+
+u8 GiveMonToPlayer(struct Pokemon *mon)
+{
+    SetMonData(mon, MON_DATA_OT_NAME, gSaveBlock2Ptr->playerName);
+    SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
+    SetMonData(mon, MON_DATA_OT_ID, gSaveBlock2Ptr->playerTrainerId);
+
+    return TryGiveMonToPlayer(mon);
+}
+
+u8 GivePreOwnedMonToPlayer(struct Pokemon *mon)
+{
+    return TryGiveMonToPlayer(mon);
 }
 
 static u8 SendMonToPC(struct Pokemon* mon)
@@ -4068,6 +4111,11 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
     {
         itemEffect = gItemEffectTable[item - ITEM_POTION];
     }
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1
+        && GetMonData(mon, MON_DATA_SAM_PERMANENT_DEAD)
+        && (itemEffect[4] & ITEM4_REVIVE))
+        return TRUE;
 
     // Do item effect
     for (cmdIndex = 0; cmdIndex < ITEM_EFFECT_ARG_START; cmdIndex++)
@@ -4596,6 +4644,11 @@ bool8 PokemonItemUseNoEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mo
     {
         itemEffect = gItemEffectTable[item - ITEM_POTION];
     }
+
+    if (VarGet(VAR_SAM_GAME_MODE) == 1
+        && GetMonData(mon, MON_DATA_SAM_PERMANENT_DEAD)
+        && (itemEffect[4] & ITEM4_REVIVE))
+        return TRUE;
 
     for (cmdIndex = 0; cmdIndex < ITEM_EFFECT_ARG_START; cmdIndex++)
     {
@@ -5722,20 +5775,15 @@ bool8 TryIncrementMonLevel(struct Pokemon *mon)
 u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm)
 {
     u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, NULL);
-    if (species == SPECIES_EGG)
-    {
+    u8 word;
+    u32 mask;
+
+    if (species == SPECIES_EGG || tm >= NUM_TECHNICAL_MACHINES + NUM_HIDDEN_MACHINES)
         return 0;
-    }
-    else if (tm < 32)
-    {
-        u32 mask = 1 << tm;
-        return sTMHMLearnsets[species][0] & mask;
-    }
-    else
-    {
-        u32 mask = 1 << (tm - 32);
-        return sTMHMLearnsets[species][1] & mask;
-    }
+
+    word = tm / 32;
+    mask = 1u << (tm % 32);
+    return sTMHMLearnsets[species][word] & mask;
 }
 
 u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
@@ -6228,6 +6276,15 @@ void CreateEnemyEventMon(void)
         heldItem[1] = itemId >> 8;
         SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, heldItem);
     }
+}
+
+void SetEnemyEventMonMoveSlot(void)
+{
+    u8 slot = gSpecialVar_0x8005;
+    u16 move = gSpecialVar_0x8004;
+
+    if (slot < MAX_MON_MOVES)
+        SetMonMoveSlot(&gEnemyParty[0], move, slot);
 }
 
 void HandleSetPokedexFlag(u16 nationalNum, u8 caseId, u32 personality)

@@ -1,2 +1,26 @@
 Route21_South_MapScripts::
 	.byte 0
+
+Route21_South_EventScript_NolanBatch9::
+	trainerbattle_double TRAINER_FISHERMAN_NOLAN, Route21_South_Text_NolanIntro, Route21_South_Text_NolanDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route21_South_EventScript_NolanBatch9Rematch
+	msgbox Route21_South_Text_NolanPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route21_South_EventScript_NolanBatch9Rematch::
+	trainerbattle_rematch_double TRAINER_FISHERMAN_NOLAN, Route21_South_Text_NolanRematchIntro, Route21_South_Text_NolanDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	msgbox Route21_South_Text_NolanPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route21_South_EventScript_JeromeBatch9::
+	trainerbattle_double TRAINER_SWIMMER_MALE_JEROME, Route21_South_Text_JeromeIntro, Route21_South_Text_JeromeDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route21_South_EventScript_JeromeBatch9Rematch
+	msgbox Route21_South_Text_JeromePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route21_South_EventScript_JeromeBatch9Rematch::
+	trainerbattle_rematch_double TRAINER_SWIMMER_MALE_JEROME, Route21_South_Text_JeromeRematchIntro, Route21_South_Text_JeromeDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	msgbox Route21_South_Text_JeromePostBattle, MSGBOX_AUTOCLOSE
+	end

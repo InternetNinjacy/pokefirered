@@ -38,7 +38,7 @@ PokemonTower_6F_EventScript_Angelica::
 	end
 
 PokemonTower_6F_EventScript_Emilia::
-	trainerbattle_single TRAINER_CHANNELER_EMILIA, PokemonTower_6F_Text_EmiliaIntro, PokemonTower_6F_Text_EmiliaDefeat
+	trainerbattle_double TRAINER_CHANNELER_EMILIA, PokemonTower_6F_Text_EmiliaIntro, PokemonTower_6F_Text_EmiliaDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox PokemonTower_6F_Text_EmiliaPostBattle, MSGBOX_AUTOCLOSE
 	end
 

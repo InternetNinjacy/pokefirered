@@ -334,6 +334,20 @@ void ItemUseOutOfBattle_Itemfinder(u8 taskId)
     SetUpItemUseOnFieldCallback(taskId);
 }
 
+extern const u8 EventScript_Sam_RocketDossier[];
+
+static void ItemUseOnFieldCB_RocketDossier(u8 taskId)
+{
+    DestroyTask(taskId);
+    ScriptContext_SetupScript(EventScript_Sam_RocketDossier);
+}
+
+void FieldUseFunc_RocketDossier(u8 taskId)
+{
+    sItemUseOnFieldCB = ItemUseOnFieldCB_RocketDossier;
+    SetUpItemUseOnFieldCallback(taskId);
+}
+
 void FieldUseFunc_CoinCase(u8 taskId)
 {
     ConvertIntToDecimalStringN(gStringVar1, GetCoins(), STR_CONV_MODE_LEFT_ALIGN, 4);

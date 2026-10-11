@@ -1,0 +1,19 @@
+// Pokemon Sam Edition - Seven Island party remaps.
+#include "sam_batch16_seven_island_trainer_parties.h"
+#define sParty_AromaLadyMiah sParty_Sam7IMiah
+#define sParty_JugglerMason sParty_Sam7IMason
+#define sParty_PkmnRangerNicolas sParty_Sam7INicolas
+#define sParty_PkmnRangerMadeline sParty_Sam7IMadeline
+#define sParty_YoungCoupleEveJon sParty_Sam7IEveJon
+#define sParty_CoolCoupleLexNya sParty_Sam7ILexNya
+#define sParty_TamerEvan sParty_Sam7IEvan
+#define sParty_PkmnRangerJackson sParty_Sam7IJackson
+#define sParty_PkmnRangerKatelyn sParty_Sam7IKatelyn
+#define sParty_CrushGirlCyndy sParty_Sam7ICyndy
+#define sParty_CooltrainerLeroy sParty_Sam7ILeroy
+#define sParty_CooltrainerMichelle sParty_Sam7IMichelle
+#define sParty_RuinManiacLarry sParty_Sam7ILarry
+#define sParty_RuinManiacBrandon sParty_Sam7IBrandon
+#define sParty_GentlemanClifford sParty_Sam7IClifford
+#define sParty_PainterEdna sParty_Sam7IEdna
+#define sParty_RuinManiacBenjamin sParty_Sam7IBenjamin

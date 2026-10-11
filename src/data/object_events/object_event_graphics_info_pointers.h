@@ -79,6 +79,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lorelei;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MrFuji;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Bruno;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Brock;
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Boreal;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Misty;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_LtSurge;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Erika;
@@ -133,6 +134,21 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Wigglytuff;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Doduo;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Fearow;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Machoke;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Scyther;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Pinsir;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Venomoth;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Rhyhorn;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Abra;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Miltank;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Magneton;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Onix;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lickitung;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Satoshi;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Leilani;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lehua;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Keahi;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Hawthorne;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_TropiusHothouse;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lapras;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Zapdos;
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Moltres;
@@ -305,4 +321,26 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_DEOXYS_A]                 = &gObjectEventGraphicsInfo_DeoxysA,
     [OBJ_EVENT_GFX_DEOXYS_N]                 = &gObjectEventGraphicsInfo_DeoxysN,
     [OBJ_EVENT_GFX_SS_ANNE]                  = &gObjectEventGraphicsInfo_SSAnne,
+
+    // ARCH-006 allocation-only placeholders. SPRITE tasks replace these safe
+    // existing routes with approved Sam assets when those assets are integrated.
+    [OBJ_EVENT_GFX_LEILANI]                  = &gObjectEventGraphicsInfo_Leilani,
+    [OBJ_EVENT_GFX_LEHUA]                    = &gObjectEventGraphicsInfo_Lehua,
+    [OBJ_EVENT_GFX_KEAHI]                    = &gObjectEventGraphicsInfo_Keahi,
+    [OBJ_EVENT_GFX_SATOSHI]                  = &gObjectEventGraphicsInfo_Satoshi,
+    [OBJ_EVENT_GFX_BAZ]                      = &gObjectEventGraphicsInfo_ProfOak,
+    [OBJ_EVENT_GFX_BUSHRANGER_M]             = &gObjectEventGraphicsInfo_ProfOak,
+    [OBJ_EVENT_GFX_BUSHRANGER_F]             = &gObjectEventGraphicsInfo_ProfOak,
+    [OBJ_EVENT_GFX_BOREAL]                   = &gObjectEventGraphicsInfo_Boreal,
+    [OBJ_EVENT_GFX_SCYTHER] = &gObjectEventGraphicsInfo_Scyther,
+    [OBJ_EVENT_GFX_RHYHORN] = &gObjectEventGraphicsInfo_Rhyhorn,
+    [OBJ_EVENT_GFX_ABRA] = &gObjectEventGraphicsInfo_Abra,
+    [OBJ_EVENT_GFX_MILTANK] = &gObjectEventGraphicsInfo_Miltank,
+    [OBJ_EVENT_GFX_MAGNETON] = &gObjectEventGraphicsInfo_Magneton,
+    [OBJ_EVENT_GFX_ONIX] = &gObjectEventGraphicsInfo_Onix,
+    [OBJ_EVENT_GFX_LICKITUNG]                = &gObjectEventGraphicsInfo_Lickitung,
+    [OBJ_EVENT_GFX_HAWTHORNE]                = &gObjectEventGraphicsInfo_Hawthorne,
+    [OBJ_EVENT_GFX_TROPIUS_HOTHOUSE]         = &gObjectEventGraphicsInfo_TropiusHothouse,
+    [OBJ_EVENT_GFX_PINSIR]                    = &gObjectEventGraphicsInfo_Pinsir,
+    [OBJ_EVENT_GFX_VENOMOTH]                  = &gObjectEventGraphicsInfo_Venomoth,
 };

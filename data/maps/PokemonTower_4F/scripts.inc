@@ -2,12 +2,12 @@ PokemonTower_4F_MapScripts::
 	.byte 0
 
 PokemonTower_4F_EventScript_Paula::
-	trainerbattle_single TRAINER_CHANNELER_PAULA, PokemonTower_4F_Text_PaulaIntro, PokemonTower_4F_Text_PaulaDefeat
+	trainerbattle_double TRAINER_CHANNELER_PAULA, PokemonTower_4F_Text_PaulaIntro, PokemonTower_4F_Text_PaulaDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox PokemonTower_4F_Text_PaulaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 PokemonTower_4F_EventScript_Laurel::
-	trainerbattle_single TRAINER_CHANNELER_LAUREL, PokemonTower_4F_Text_LaurelIntro, PokemonTower_4F_Text_LaurelDefeat
+	trainerbattle_double TRAINER_CHANNELER_LAUREL, PokemonTower_4F_Text_LaurelIntro, PokemonTower_4F_Text_LaurelDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox PokemonTower_4F_Text_LaurelPostBattle, MSGBOX_AUTOCLOSE
 	end
 

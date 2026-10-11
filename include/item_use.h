@@ -10,6 +10,7 @@ void FieldUseFunc_Mail(u8 taskId);
 void FieldUseFunc_Bike(u8 taskId);
 void FieldUseFunc_Rod(u8 taskId);
 void FieldUseFunc_CoinCase(u8 taskId);
+void FieldUseFunc_RocketDossier(u8 taskId);
 void FieldUseFunc_PowderJar(u8 taskId);
 void FieldUseFunc_PokeFlute(u8 taskId);
 void FieldUseFunc_Medicine(u8 taskId);

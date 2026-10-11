@@ -1,4 +1,5 @@
 #include "global.h"
+#include "util.h"
 #include "gflib.h"
 #include "battle.h"
 #include "battle_anim.h"
@@ -43,6 +44,8 @@ static void ChooseTypeOfMoveUsedString(u8 *textPtr);
 static void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst);
 
 static const u8 sText_Empty1[] = _("");
+static const u8 sText_SamPkmnTrainers[] = _("PKMN TRAINERS");
+static const u8 sText_SamRivalNameSeparator[] = _(" & ");
 static const u8 sText_Trainer1LoseText[] = _("{B_TRAINER1_LOSE_TEXT}");
 static const u8 sText_Trainer2LoseText[] = _("{B_TRAINER2_LOSE_TEXT}");
 static const u8 sText_Trainer1RecallPkmn1[] = _("{B_TRAINER1_NAME}: {B_OPPONENT_MON1_NAME}, come back!");
@@ -397,6 +400,7 @@ static const u8 sText_TwoLinkTrainersSentOutPkmn[] = _("{B_LINK_OPPONENT1_NAME} 
 static const u8 sText_LinkTrainerSentOutPkmn2[] = _("{B_LINK_OPPONENT1_NAME} sent out\n{B_BUFF1}!");
 static const u8 sText_LinkTrainerMultiSentOutPkmn[] = _("{B_LINK_SCR_TRAINER_NAME} sent out\n{B_BUFF1}!");
 static const u8 sText_GoPkmn[] = _("Go! {B_PLAYER_MON1_NAME}!");
+static const u8 sText_ThomasRocketGrunt[] = _("ROCKET GRUNT");
 static const u8 sText_GoTwoPkmn[] = _("Go! {B_PLAYER_MON1_NAME} and\n{B_PLAYER_MON2_NAME}!");
 static const u8 sText_GoPkmn2[] = _("Go! {B_BUFF1}!");
 static const u8 sText_DoItPkmn[] = _("Do it! {B_BUFF1}!");
@@ -1591,7 +1595,8 @@ void BufferStringBattle(u16 stringId)
     case STRINGID_INTROSENDOUT: // poke first send-out
         if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
         {
-            if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+            if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+             && !(gAbsentBattlerFlags & gBitTable[GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)]))
             {
                 if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
                     stringPtr = sText_LinkPartnerSentOutPkmnGoPkmn;
@@ -2034,7 +2039,9 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                 toCpy = gAbilityNames[sBattlerAbilities[gEffectBattler]];
                 break;
             case B_TXT_TRAINER1_CLASS: // trainer class name
-                if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
+                if (gTrainerBattleOpponent_A == TRAINER_THOMAS_MT_MOON)
+                    toCpy = sText_ThomasRocketGrunt;
+                else if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
                     toCpy = gTrainerClassNames[GetSecretBaseTrainerNameIndex()];
                 else if (gTrainerBattleOpponent_A == TRAINER_UNION_ROOM)
                     toCpy = gTrainerClassNames[GetUnionRoomTrainerClass()];
@@ -2044,6 +2051,10 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                     toCpy = gTrainerClassNames[GetTrainerTowerOpponentClass()];
                 else if (gBattleTypeFlags & BATTLE_TYPE_EREADER_TRAINER)
                     toCpy = gTrainerClassNames[GetEreaderTrainerClassId()];
+                else if (gTrainerBattleOpponent_A == TRAINER_RIVAL_CERULEAN_SQUIRTLE
+                      || gTrainerBattleOpponent_A == TRAINER_RIVAL_CERULEAN_BULBASAUR
+                      || gTrainerBattleOpponent_A == TRAINER_RIVAL_CERULEAN_CHARMANDER)
+                    toCpy = sText_SamPkmnTrainers;
                 else
                     toCpy = gTrainerClassNames[gTrainers[gTrainerBattleOpponent_A].trainerClass];
                 break;
@@ -2075,9 +2086,21 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                 }
                 else
                 {
-                    if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_EARLY
-                     || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_LATE
-                     || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION)
+                    if (gTrainerBattleOpponent_A == TRAINER_RIVAL_CERULEAN_SQUIRTLE
+                     || gTrainerBattleOpponent_A == TRAINER_RIVAL_CERULEAN_BULBASAUR
+                     || gTrainerBattleOpponent_A == TRAINER_RIVAL_CERULEAN_CHARMANDER)
+                    {
+                        StringCopy(gStringVar4, GetExpandedPlaceholder(PLACEHOLDER_ID_RIVAL));
+                        StringAppend(gStringVar4, sText_SamRivalNameSeparator);
+                        StringAppend(gStringVar4, gSaveBlock1Ptr->samEdition.greenName);
+                        toCpy = gStringVar4;
+                    }
+                    else if (gTrainerBattleOpponent_A >= TRAINER_GREEN_OAK_DITTO
+                          && gTrainerBattleOpponent_A <= TRAINER_GREEN_POSTGAME_RAICHU)
+                        toCpy = gSaveBlock1Ptr->samEdition.greenName;
+                    else if (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_EARLY
+                          || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_RIVAL_LATE
+                          || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION)
                         toCpy = GetExpandedPlaceholder(PLACEHOLDER_ID_RIVAL);
                     else
                         toCpy = gTrainers[gTrainerBattleOpponent_A].trainerName;

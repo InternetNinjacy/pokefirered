@@ -39,6 +39,6 @@ VictoryRoad_1F_EventScript_Naomi::
 	end
 
 VictoryRoad_1F_EventScript_Rolando::
-	trainerbattle_single TRAINER_COOLTRAINER_ROLANDO, VictoryRoad_1F_Text_RolandoIntro, VictoryRoad_1F_Text_RolandoDefeat
+	trainerbattle_double TRAINER_COOLTRAINER_ROLANDO, VictoryRoad_1F_Text_RolandoIntro, VictoryRoad_1F_Text_RolandoDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox VictoryRoad_1F_Text_RolandoPostBattle, MSGBOX_AUTOCLOSE
 	end

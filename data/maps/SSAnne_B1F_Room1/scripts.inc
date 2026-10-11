@@ -2,7 +2,7 @@ SSAnne_B1F_Room1_MapScripts::
 	.byte 0
 
 SSAnne_B1F_Room1_EventScript_Barny::
-	trainerbattle_single TRAINER_FISHERMAN_BARNY, SSAnne_B1F_Room1_Text_BarnyIntro, SSAnne_B1F_Room1_Text_BarnyDefeat
+	trainerbattle_double TRAINER_FISHERMAN_BARNY, SSAnne_B1F_Room1_Text_BarnyIntro, SSAnne_B1F_Room1_Text_BarnyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SSAnne_B1F_Room1_Text_BarnyPostBattle, MSGBOX_AUTOCLOSE
 	end
 

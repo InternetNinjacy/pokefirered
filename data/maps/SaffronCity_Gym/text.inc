@@ -1,160 +1,331 @@
 SaffronCity_Gym_Text_SabrinaIntro::
-    .string "I had a vision of your arrival.\p"
-    .string "I have had psychic powers since\n"
-    .string "I was a child.\p"
-    .string "It started when a spoon I\n"
-    .string "carelessly tossed, bent.\p"
-    .string "I dislike battling, but if you wish,\n"
-    .string "I will show you my powers!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
+    .string "You made it here.\p"
+    .string "That is more impressive than you\n"
+    .string "may realize.\p"
+    .string "People call this house a maze. It\n"
+    .string "isn't. A maze has an answer.\p"
+    .string "Here, a hallway may lead somewhere\n"
+    .string "different simply because something\n"
+    .string "decided that it should.\p"
+    .string "Most people become frightened when\n"
+    .string "they cannot explain what is\n"
+    .string "happening. They hesitate.\p"
+    .string "They second-guess every choice.\p"
+    .string "Ghost POKéMON are very good at\n"
+    .string "creating that feeling.\p"
+    .string "You cannot always know what comes\n"
+    .string "next. But you can still choose\n"
+    .string "what to do.\p"
+    .string "Show me how you battle when\n"
+    .string "certainty disappears.{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
 
 SaffronCity_Gym_Text_SabrinaDefeat::
-    .string "This loss shocks me!\n"
-    .string "But, a loss is a loss.\p"
-    .string "I admit, I didn't work hard enough\n"
-    .string "to win.\p"
-    .string "Your victory has earned you the\n"
-    .string "MARSHBADGE.$"
+    .string "I see.\p"
+    .string "You did not need to understand\n"
+    .string "everything I was doing.\p"
+    .string "You watched what mattered, adapted\n"
+    .string "when you were wrong, and kept\n"
+    .string "moving.\p"
+    .string "The spirits of this house do the\n"
+    .string "same thing to every visitor.\p"
+    .string "You handled them well.$"
 
-SaffronCity_Gym_Text_SabrinaPostBattle::
-    .string "Psychic power isn't something that\n"
-    .string "only a few people have.\p"
-    .string "Everyone has psychic power.\n"
-    .string "People just don't realize it.$"
+SaffronCity_Gym_Text_PhantomBadgeHandoff::
+    .string "You have earned the PHANTOM BADGE.\p"
+    .string "Keep it as proof that uncertainty\n"
+    .string "does not have to become fear.\p"
+    .string "Take this as well.$"
 
-SaffronCity_Gym_Text_ExplainMarshBadgeTakeThis::
-    .string "The MARSHBADGE makes POKéMON up\n"
-    .string "to Lv. 70 obey you.\p"
-    .string "Stronger POKéMON will become wild,\n"
-    .string "ignoring your orders in battle.\p"
-    .string "Just don't raise your POKéMON too\n"
-    .string "much to avoid that problem.\p"
-    .string "Wait, please take this TM with you.$"
-
-SaffronCity_Gym_Text_ReceivedTM04FromSabrina::
-    .string "{PLAYER} received TM04 from\n"
+SaffronCity_Gym_Text_ReceivedTM30FromSabrina::
+    .string "{PLAYER} received TM30 from\n"
     .string "SABRINA.$"
 
-SaffronCity_Gym_Text_ExplainTM04::
-    .string "TM04 is CALM MIND.\p"
-    .string "It makes the POKéMON concentrate\n"
-    .string "to raise both SP. ATK and SP. DEF.$"
+SaffronCity_Gym_Text_ExplainTM30::
+    .string "TM30 contains GHOSTLY WAIL.\p"
+    .string "It is a powerful Ghost-type attack,\n"
+    .string "but its effects are unpredictable.\p"
+    .string "It may burn, freeze, or paralyze\n"
+    .string "the opponent.\p"
+    .string "You cannot choose what will happen.\n"
+    .string "You can only decide whether the\n"
+    .string "uncertainty is worth accepting.$"
+
+SaffronCity_Gym_Text_SabrinaPostBattle::
+    .string "The house is still changing.\p"
+    .string "It did not become easier because\n"
+    .string "you defeated me.\p"
+    .string "You simply learned that you do not\n"
+    .string "need everything to make sense\n"
+    .string "before you move forward.$"
+
+SaffronCity_Gym_Text_SabrinaRematchIntro::
+    .string "You came back.\p"
+    .string "Most people are relieved to leave\n"
+    .string "this house. You chose to enter it\n"
+    .string "again. Good.\p"
+    .string "Last time, you proved that\n"
+    .string "uncertainty does not have to stop\n"
+    .string "you.\p"
+    .string "This time, I will not teach you\n"
+    .string "that lesson. I will assume you\n"
+    .string "remember it.\p"
+    .string "My POKéMON have changed since we\n"
+    .string "last fought. So have you.\p"
+    .string "Let us see which changes matter.{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
+
+SaffronCity_Gym_Text_SabrinaRematchDefeat::
+    .string "Yes.\p"
+    .string "You are much harder to mislead now.$"
+
+SaffronCity_Gym_Text_SabrinaRematchPostBattle::
+    .string "The first time you came here, the\n"
+    .string "house confused you.\p"
+    .string "Now you move through it without\n"
+    .string "needing to understand every turn.\p"
+    .string "That is not because the house has\n"
+    .string "become predictable.\p"
+    .string "You have simply become comfortable\n"
+    .string "acting without certainty.\p"
+    .string "There is a difference.$"
 
 SaffronCity_Gym_Text_BagFullOfOtherItems::
     .string "Your BAG is full of other items.$"
 
 SaffronCity_Gym_Text_AmandaIntro::
-    .string "SABRINA is far younger than I,\n"
-    .string "but she has earned my respect.$"
+    .string "Quiet. There's someone standing\n"
+    .string "behind you. ... No. Never mind.\n"
+    .string "It moved.$"
 
 SaffronCity_Gym_Text_AmandaDefeat::
-    .string "Not good enough!$"
+    .string "So did you.$"
 
 SaffronCity_Gym_Text_AmandaPostBattle::
-    .string "In a battle of equals, the one\n"
-    .string "with the stronger will wins.\p"
-    .string "If you wish to beat SABRINA, focus\n"
-    .string "and will yourself to victory.$"
+    .string "The spirits aren't all dangerous.\p"
+    .string "Some are lonely. Some are angry.\n"
+    .string "Some just like doors.$"
 
 SaffronCity_Gym_Text_JohanIntro::
-    .string "Does our unseen power scare you?$"
+    .string "I tried mapping the Gym once.\n"
+    .string "The map changed. I drew another.\p"
+    .string "That one changed too. Then the\n"
+    .string "first map changed back.$"
 
 SaffronCity_Gym_Text_JohanDefeat::
-    .string "I never foresaw this!$"
+    .string "I should have predicted that.$"
 
 SaffronCity_Gym_Text_JohanPostBattle::
-    .string "PSYCHIC POKéMON fear only ghosts\n"
-    .string "and bugs!$"
+    .string "Sabrina told me to stop trying to\n"
+    .string "solve the house. She was right.\p"
+    .string "I still hate that she was right.$"
 
 SaffronCity_Gym_Text_StacyIntro::
-    .string "POKéMON take on the appearance of\n"
-    .string "their TRAINERS.\p"
-    .string "Your POKéMON must be tough, then!$"
+    .string "The room behind you was smaller a\n"
+    .string "moment ago. Don't look back.\p"
+    .string "They like it when you look back.$"
 
 SaffronCity_Gym_Text_StacyDefeat::
-    .string "I knew it!$"
+    .string "Oh. They stopped whispering.$"
 
 SaffronCity_Gym_Text_StacyPostBattle::
-    .string "I have much to learn still…\p"
-    .string "I must master PSYCHIC and teach it\n"
-    .string "to my POKéMON…$"
+    .string "Sometimes the house changes because\n"
+    .string "the spirits are restless.\p"
+    .string "Sometimes it changes because they\n"
+    .string "think it's funny. I'm not sure\n"
+    .string "which is worse.$"
 
 SaffronCity_Gym_Text_TyronIntro::
-    .string "You understand, don't you?\p"
-    .string "That power alone isn't enough to\n"
-    .string "win in the world of POKéMON?$"
+    .string "I can usually sense where people\n"
+    .string "are. In this house, that doesn't\n"
+    .string "help.\p"
+    .string "You can be ten feet away and\n"
+    .string "somehow three rooms over.$"
 
 SaffronCity_Gym_Text_TyronDefeat::
-    .string "I don't believe this!$"
+    .string "I saw that coming. Just not from\n"
+    .string "that direction.$"
 
 SaffronCity_Gym_Text_TyronPostBattle::
-    .string "SABRINA just wiped out the KARATE\n"
-    .string "MASTER next door.$"
+    .string "Don't trust distance in here.\p"
+    .string "The house has never been especially\n"
+    .string "interested in geometry.$"
 
 SaffronCity_Gym_Text_TashaIntro::
-    .string "You and I, our POKéMON shall\n"
-    .string "battle!$"
+    .string "You hear footsteps in these halls\n"
+    .string "all night. Sometimes they follow\n"
+    .string "you. Sometimes they walk ahead of\n"
+    .string "you.\p"
+    .string "The ones walking ahead are the ones\n"
+    .string "I worry about.$"
 
 SaffronCity_Gym_Text_TashaDefeat::
-    .string "I lost after all!$"
+    .string "They went quiet again.$"
 
 SaffronCity_Gym_Text_TashaPostBattle::
-    .string "I knew that this was going to take\n"
-    .string "place.$"
+    .string "If you hear knocking from inside a\n"
+    .string "wall... Well... Knock back if you\n"
+    .string "want. I wouldn't.$"
 
 SaffronCity_Gym_Text_CameronIntro::
-    .string "SABRINA is young, but she's also\n"
-    .string "our highly skilled LEADER.\p"
-    .string "You won't reach her easily!$"
+    .string "Ah! A challenger. Mind the\n"
+    .string "floorboards, the walls, the\n"
+    .string "stairways, the doors, and anything\n"
+    .string "that appears to be perfectly\n"
+    .string "ordinary.$"
 
 SaffronCity_Gym_Text_CameronDefeat::
-    .string "Ow!\n"
-    .string "Down and out!$"
+    .string "Excellent! Nothing collapsed.$"
 
 SaffronCity_Gym_Text_CameronPostBattle::
-    .string "There used to be two POKéMON GYMS\n"
-    .string "in SAFFRON.\p"
-    .string "The FIGHTING DOJO next door lost\n"
-    .string "its GYM status, though.\p"
-    .string "We simply creamed them when we\n"
-    .string "decided to have just one GYM.$"
+    .string "I have looked after this house for\n"
+    .string "many years.\p"
+    .string "I stopped trying to count the rooms\n"
+    .string "after I reached a different number\n"
+    .string "three days in a row.$"
 
 SaffronCity_Gym_Text_PrestonIntro::
-    .string "SAFFRON POKéMON GYM is famous for\n"
-    .string "training psychics.\p"
-    .string "You want to see SABRINA, don't\n"
-    .string "you? I can tell!$"
+    .string "You've made it farther than most\n"
+    .string "challengers. The house knows that.\p"
+    .string "It has been paying attention.$"
 
 SaffronCity_Gym_Text_PrestonDefeat::
-    .string "Arrrgh!$"
+    .string "So have you.$"
 
 SaffronCity_Gym_Text_PrestonPostBattle::
-    .string "That's right! I used telepathy to\n"
-    .string "read your mind!$"
+    .string "Sabrina is close. At least... I\n"
+    .string "think she is.\p"
+    .string "That doorway led to her room this\n"
+    .string "morning.$"
 
-SaffronCity_Gym_Text_GymGuyAdvice::
-    .string "Yo!\n"
-    .string "Champ in the making!\p"
-    .string "SABRINA's POKéMON use psychic\n"
-    .string "power instead of force.\p"
-    .string "FIGHTING POKéMON are especially\n"
-    .string "weak against PSYCHIC POKéMON.\p"
-    .string "They'll get destroyed before they\n"
-    .string "can even aim a punch!$"
+SaffronCity_Gym_Text_SatoshiFirstApproach::
+    .string "Sabrina trains GHOST POKéMON.\p"
+    .string "And before you ask... No, the\n"
+    .string "building isn't supposed to make\n"
+    .string "sense.\p"
+    .string "The teleporters work. It's the rooms\n"
+    .string "that don't always seem to agree on\n"
+    .string "where they are.\p"
+    .string "The Ghosts here like making people\n"
+    .string "lose their bearings. Don't fight\n"
+    .string "that. Keep your head clear.\p"
+    .string "NORMAL and FIGHTING attacks can't\n"
+    .string "touch Ghost-types. Not reduced\n"
+    .string "damage. Nothing.\p"
+    .string "GHOST and DARK attacks work well\n"
+    .string "against them. But Ghost POKéMON\n"
+    .string "rarely make things that simple.\p"
+    .string "Sleep. Confusion. Burns. Turns that\n"
+    .string "disappear before you realize you\n"
+    .string "wasted them.\p"
+    .string "Want Haunter to show you?$"
 
-SaffronCity_Gym_Text_GymGuyPostVictory::
-    .string "Psychic power, huh?\p"
-    .string "If I had that, I'd make a bundle\n"
-    .string "at the slots!$"
+SaffronCity_Gym_Text_SatoshiPracticeYes::
+    .string "Good. Pay attention to what works...\n"
+    .string "and what doesn't.$"
+
+SaffronCity_Gym_Text_SatoshiPracticeBattle::
+    .string "Watch every turn.$"
+
+SaffronCity_Gym_Text_SatoshiPracticeLoss::
+    .string "Ghosts punish hesitation.\p"
+    .string "Sleep. Confusion. Attacks that don't\n"
+    .string "connect. A few wasted turns can\n"
+    .string "decide the whole battle.\p"
+    .string "If this building gets you turned\n"
+    .string "around, don't panic. Figure out\n"
+    .string "where you are. Then move.$"
+
+SaffronCity_Gym_Text_SatoshiPracticeWin::
+    .string "Exactly. Against Ghost POKéMON, a\n"
+    .string "wasted turn can hurt more than a\n"
+    .string "weak attack.\p"
+    .string "NORMAL and FIGHTING moves won't\n"
+    .string "touch them. GHOST and DARK can.\p"
+    .string "But remember: Ghost can hit Ghost,\n"
+    .string "too. Sometimes the right answer\n"
+    .string "puts you in danger as well.\p"
+    .string "Sabrina understands this place\n"
+    .string "better than anyone. She doesn't\n"
+    .string "control it. She stays calm.\p"
+    .string "You'll need to do the same.$"
+
+SaffronCity_Gym_Text_SatoshiDecline::
+    .string "All right. Remember: NORMAL and\n"
+    .string "FIGHTING can't hit GHOST.\p"
+    .string "GHOST and DARK can. And don't assume\n"
+    .string "the next teleporter will take you\n"
+    .string "where you expect. Stay calm.$"
+
+SaffronCity_Gym_Text_SatoshiPreSabrinaRepeat::
+    .string "Short version? NORMAL and FIGHTING\n"
+    .string "don't hit Ghost. GHOST and DARK do.\p"
+    .string "The teleporters are real. The layout\n"
+    .string "is... less cooperative.\p"
+    .string "And don't give Sabrina free turns.$"
+
+SaffronCity_Gym_Text_SatoshiPostVictoryPracticed::
+    .string "You kept your head. That's the\n"
+    .string "difference.\p"
+    .string "The Gym tried to confuse you. Her\n"
+    .string "Ghosts tried to waste your turns.\p"
+    .string "Sabrina waited for mistakes. You\n"
+    .string "didn't give her enough.\p"
+    .string "That's what the PHANTOM BADGE proves.\n"
+    .string "And TM30 is GHOSTLY WAIL.\p"
+    .string "Power only matters if you use the\n"
+    .string "right move at the right time.$"
+
+SaffronCity_Gym_Text_SatoshiPostVictorySkipped::
+    .string "You skipped Haunter and made it\n"
+    .string "through anyway?\p"
+    .string "Then you learned Sabrina's lesson\n"
+    .string "the hard way. Stay calm. Notice\n"
+    .string "what's actually happening.\p"
+    .string "Don't waste turns fighting what you\n"
+    .string "expected to happen.\p"
+    .string "The PHANTOM BADGE is yours. And TM30\n"
+    .string "is GHOSTLY WAIL. I'd say you earned\n"
+    .string "both.$"
+
+SaffronCity_Gym_Text_SatoshiRematchOffer::
+    .string "Back again? Good.\p"
+    .string "Sabrina taught you how to keep\n"
+    .string "moving when you couldn't be sure\n"
+    .string "what came next.\p"
+    .string "I've got a full team this time.\n"
+    .string "They won't all look like Ghosts,\n"
+    .string "but they'll fight like this Gym:\n"
+    .string "sleep, strange matchups, and wasted\n"
+    .string "turns if you lose your head.\p"
+    .string "Want another battle?$"
+
+SaffronCity_Gym_Text_SatoshiRematchAccept::
+    .string "Good. No tutorial this time.\p"
+    .string "Show me what you learned.$"
+
+SaffronCity_Gym_Text_SatoshiRematchDecline::
+    .string "Fair enough. I'll be here.\p"
+    .string "Probably. Depends whether this room\n"
+    .string "stays put.$"
+
+SaffronCity_Gym_Text_SatoshiRematchBattle::
+    .string "Keep your head clear.$"
+
+SaffronCity_Gym_Text_SatoshiRematchDefeat::
+    .string "That's what I wanted to see.\p"
+    .string "You didn't chase every trick. You\n"
+    .string "kept making good decisions even\n"
+    .string "when I tried to throw you off.\p"
+    .string "Sabrina would approve.\p"
+    .string "Don't tell her I said that.$"
 
 SaffronCity_Gym_Text_GymStatue::
-    .string "SAFFRON POKéMON GYM\n"
+    .string "SAFFRON CITY POKéMON GYM\n"
     .string "LEADER: SABRINA\p"
-    .string "WINNING TRAINERS:\n"
-    .string "{RIVAL}$"
+    .string "Certified Trainers:$"
 
 SaffronCity_Gym_Text_GymStatuePlayerWon::
-    .string "SAFFRON POKéMON GYM\n"
+    .string "SAFFRON CITY POKéMON GYM\n"
     .string "LEADER: SABRINA\p"
-    .string "WINNING TRAINERS:\n"
-    .string "{RIVAL}, {PLAYER}$"
+    .string "Certified Trainers:\n"
+    .string "{PLAYER}$"
 

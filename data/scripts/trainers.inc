@@ -107,7 +107,7 @@ Route4_EventScript_CrissyRematch::
 	end
 
 Route24_EventScript_Timmy::
-	trainerbattle_single TRAINER_YOUNGSTER_TIMMY, Route24_Text_TimmyIntro, Route24_Text_TimmyDefeat
+	trainerbattle_double TRAINER_YOUNGSTER_TIMMY, Route24_Text_TimmyIntro, Route24_Text_TimmyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route24_EventScript_TimmyRematch
 	msgbox Route24_Text_TimmyPostBattle, MSGBOX_AUTOCLOSE
@@ -167,7 +167,7 @@ Route24_EventScript_ShaneRematch::
 	end
 
 Route24_EventScript_Ethan::
-	trainerbattle_single TRAINER_CAMPER_ETHAN, Route24_Text_EthanIntro, Route24_Text_EthanDefeat
+	trainerbattle_double TRAINER_CAMPER_ETHAN, Route24_Text_EthanIntro, Route24_Text_EthanDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route24_EventScript_EthanRematch
 	msgbox Route24_Text_EthanPostBattle, MSGBOX_AUTOCLOSE
@@ -179,7 +179,7 @@ Route24_EventScript_EthanRematch::
 	end
 
 Route25_EventScript_Joey::
-	trainerbattle_single TRAINER_YOUNGSTER_JOEY, Route25_Text_JoeyIntro, Route25_Text_JoeyDefeat
+	trainerbattle_double TRAINER_YOUNGSTER_JOEY, Route25_Text_JoeyIntro, Route25_Text_JoeyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_JoeyRematch
 	msgbox Route25_Text_JoeyPostBattle, MSGBOX_AUTOCLOSE
@@ -191,7 +191,7 @@ Route25_EventScript_JoeyRematch::
 	end
 
 Route25_EventScript_Dan::
-	trainerbattle_single TRAINER_YOUNGSTER_DAN, Route25_Text_DanIntro, Route25_Text_DanDefeat
+	trainerbattle_double TRAINER_YOUNGSTER_DAN, Route25_Text_DanIntro, Route25_Text_DanDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_DanRematch
 	msgbox Route25_Text_DanPostBattle, MSGBOX_AUTOCLOSE
@@ -203,7 +203,7 @@ Route25_EventScript_DanRematch::
 	end
 
 Route25_EventScript_Chad::
-	trainerbattle_single TRAINER_YOUNGSTER_CHAD, Route25_Text_ChadIntro, Route25_Text_ChadDefeat
+	trainerbattle_double TRAINER_YOUNGSTER_CHAD, Route25_Text_ChadIntro, Route25_Text_ChadDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_ChadRematch
 	msgbox Route25_Text_ChadPostBattle, MSGBOX_AUTOCLOSE
@@ -215,7 +215,7 @@ Route25_EventScript_ChadRematch::
 	end
 
 Route25_EventScript_Kelsey::
-	trainerbattle_single TRAINER_PICNICKER_KELSEY, Route25_Text_KelseyIntro, Route25_Text_KelseyDefeat
+	trainerbattle_double TRAINER_PICNICKER_KELSEY, Route25_Text_KelseyIntro, Route25_Text_KelseyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_KelseyRematch
 	msgbox Route25_Text_KelseyPostBattle, MSGBOX_AUTOCLOSE
@@ -227,7 +227,7 @@ Route25_EventScript_KelseyRematch::
 	end
 
 Route25_EventScript_Haley::
-	trainerbattle_single TRAINER_LASS_HALEY, Route25_Text_HaleyIntro, Route25_Text_HaleyDefeat
+	trainerbattle_double TRAINER_LASS_HALEY, Route25_Text_HaleyIntro, Route25_Text_HaleyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_HaleyRematch
 	msgbox Route25_Text_HaleyPostBattle, MSGBOX_AUTOCLOSE
@@ -239,7 +239,7 @@ Route25_EventScript_HaleyRematch::
 	end
 
 Route25_EventScript_Franklin::
-	trainerbattle_single TRAINER_HIKER_FRANKLIN, Route25_Text_FranklinIntro, Route25_Text_FranklinDefeat
+	trainerbattle_double TRAINER_HIKER_FRANKLIN, Route25_Text_FranklinIntro, Route25_Text_FranklinDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_FranklinRematch
 	msgbox Route25_Text_FranklinPostBattle, MSGBOX_AUTOCLOSE
@@ -251,7 +251,7 @@ Route25_EventScript_FranklinRematch::
 	end
 
 Route25_EventScript_Nob::
-	trainerbattle_single TRAINER_HIKER_NOB, Route25_Text_NobIntro, Route25_Text_NobDefeat
+	trainerbattle_double TRAINER_HIKER_NOB, Route25_Text_NobIntro, Route25_Text_NobDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_NobRematch
 	msgbox Route25_Text_NobPostBattle, MSGBOX_AUTOCLOSE
@@ -263,7 +263,7 @@ Route25_EventScript_NobRematch::
 	end
 
 Route25_EventScript_Wayne::
-	trainerbattle_single TRAINER_HIKER_WAYNE, Route25_Text_WayneIntro, Route25_Text_WayneDefeat
+	trainerbattle_double TRAINER_HIKER_WAYNE, Route25_Text_WayneIntro, Route25_Text_WayneDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_WayneRematch
 	msgbox Route25_Text_WaynePostBattle, MSGBOX_AUTOCLOSE
@@ -275,7 +275,7 @@ Route25_EventScript_WayneRematch::
 	end
 
 Route25_EventScript_Flint::
-	trainerbattle_single TRAINER_CAMPER_FLINT, Route25_Text_FlintIntro, Route25_Text_FlintDefeat
+	trainerbattle_double TRAINER_CAMPER_FLINT, Route25_Text_FlintIntro, Route25_Text_FlintDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route25_EventScript_FlintRematch
 	msgbox Route25_Text_FlintPostBattle, MSGBOX_AUTOCLOSE
@@ -323,7 +323,7 @@ Route6_EventScript_RickyRematch::
 	end
 
 Route6_EventScript_Jeff::
-	trainerbattle_single TRAINER_CAMPER_JEFF, Route6_Text_JeffIntro, Route6_Text_JeffDefeat
+	trainerbattle_double TRAINER_CAMPER_JEFF, Route6_Text_JeffIntro, Route6_Text_JeffDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route6_EventScript_JeffRematch
 	msgbox Route6_Text_JeffPostBattle, MSGBOX_AUTOCLOSE
@@ -335,7 +335,7 @@ Route6_EventScript_JeffRematch::
 	end
 
 Route6_EventScript_Nancy::
-	trainerbattle_single TRAINER_PICNICKER_NANCY, Route6_Text_NancyIntro, Route6_Text_NancyDefeat
+	trainerbattle_double TRAINER_PICNICKER_NANCY, Route6_Text_NancyIntro, Route6_Text_NancyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route6_EventScript_NancyRematch
 	msgbox Route6_Text_NancyPostBattle, MSGBOX_AUTOCLOSE
@@ -371,7 +371,7 @@ Route11_EventScript_EddieRematch::
 	end
 
 Route11_EventScript_Dillon::
-	trainerbattle_single TRAINER_YOUNGSTER_DILLON, Route11_Text_DillonIntro, Route11_Text_DillonDefeat
+	trainerbattle_double TRAINER_YOUNGSTER_DILLON, Route11_Text_DillonIntro, Route11_Text_DillonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_DillonRematch
 	msgbox Route11_Text_DillonPostBattle, MSGBOX_AUTOCLOSE
@@ -419,7 +419,7 @@ Route11_EventScript_BraxtonRematch::
 	end
 
 Route11_EventScript_Bernie::
-	trainerbattle_single TRAINER_ENGINEER_BERNIE, Route11_Text_BernieIntro, Route11_Text_BernieDefeat
+	trainerbattle_double TRAINER_ENGINEER_BERNIE, Route11_Text_BernieIntro, Route11_Text_BernieDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_BernieRematch
 	msgbox Route11_Text_BerniePostBattle, MSGBOX_AUTOCLOSE
@@ -431,7 +431,7 @@ Route11_EventScript_BernieRematch::
 	end
 
 Route11_EventScript_Hugo::
-	trainerbattle_single TRAINER_GAMER_HUGO, Route11_Text_HugoIntro, Route11_Text_HugoDefeat
+	trainerbattle_double TRAINER_GAMER_HUGO, Route11_Text_HugoIntro, Route11_Text_HugoDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_HugoRematch
 	msgbox Route11_Text_HugoPostBattle, MSGBOX_AUTOCLOSE
@@ -455,7 +455,7 @@ Route11_EventScript_JasperRematch::
 	end
 
 Route11_EventScript_Dirk::
-	trainerbattle_single TRAINER_GAMER_DIRK, Route11_Text_DirkIntro, Route11_Text_DirkDefeat
+	trainerbattle_double TRAINER_GAMER_DIRK, Route11_Text_DirkIntro, Route11_Text_DirkDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route11_EventScript_DirkRematch
 	msgbox Route11_Text_DirkPostBattle, MSGBOX_AUTOCLOSE
@@ -1355,26 +1355,26 @@ Route16_EventScript_HideoRematch::
 	end
 
 Route16_EventScript_Ruben::
-	trainerbattle_single TRAINER_BIKER_RUBEN, Route16_Text_RubenIntro, Route16_Text_RubenDefeat
+	trainerbattle_double TRAINER_BIKER_RUBEN, Route16_Text_RubenIntro, Route16_Text_RubenDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route16_EventScript_RubenRematch
 	msgbox Route16_Text_RubenPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route16_EventScript_RubenRematch::
-	trainerbattle_rematch TRAINER_BIKER_RUBEN, Route16_Text_RubenRematchIntro, Route16_Text_RubenDefeat
+	trainerbattle_rematch_double TRAINER_BIKER_RUBEN, Route16_Text_RubenRematchIntro, Route16_Text_RubenDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route16_Text_RubenPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route16_EventScript_Koji::
-	trainerbattle_single TRAINER_CUE_BALL_KOJI, Route16_Text_KojiIntro, Route16_Text_KojiDefeat
+	trainerbattle_double TRAINER_CUE_BALL_KOJI, Route16_Text_KojiIntro, Route16_Text_KojiDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route16_EventScript_KojiRematch
 	msgbox Route16_Text_KojiPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route16_EventScript_KojiRematch::
-	trainerbattle_rematch TRAINER_CUE_BALL_KOJI, Route16_Text_KojiRematchIntro, Route16_Text_KojiDefeat
+	trainerbattle_rematch_double TRAINER_CUE_BALL_KOJI, Route16_Text_KojiRematchIntro, Route16_Text_KojiDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route16_Text_KojiPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1427,14 +1427,14 @@ Route16_EventScript_LeaRematch::
 	end
 
 Route17_EventScript_Billy::
-	trainerbattle_single TRAINER_BIKER_BILLY, Route17_Text_BillyIntro, Route17_Text_BillyDefeat
+	trainerbattle_double TRAINER_BIKER_BILLY, Route17_Text_BillyIntro, Route17_Text_BillyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route17_EventScript_BillyRematch
 	msgbox Route17_Text_BillyPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route17_EventScript_BillyRematch::
-	trainerbattle_rematch TRAINER_BIKER_BILLY, Route17_Text_BillyRematchIntro, Route17_Text_BillyDefeat
+	trainerbattle_rematch_double TRAINER_BIKER_BILLY, Route17_Text_BillyRematchIntro, Route17_Text_BillyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route17_Text_BillyPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1451,14 +1451,14 @@ Route17_EventScript_NikolasRematch::
 	end
 
 Route17_EventScript_Jaxon::
-	trainerbattle_single TRAINER_BIKER_JAXON, Route17_Text_JaxonIntro, Route17_Text_JaxonDefeat
+	trainerbattle_double TRAINER_BIKER_JAXON, Route17_Text_JaxonIntro, Route17_Text_JaxonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route17_EventScript_JaxonRematch
 	msgbox Route17_Text_JaxonPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route17_EventScript_JaxonRematch::
-	trainerbattle_rematch TRAINER_BIKER_JAXON, Route17_Text_JaxonRematchIntro, Route17_Text_JaxonDefeat
+	trainerbattle_rematch_double TRAINER_BIKER_JAXON, Route17_Text_JaxonRematchIntro, Route17_Text_JaxonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route17_Text_JaxonPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1475,14 +1475,14 @@ Route17_EventScript_WilliamRematch::
 	end
 
 Route17_EventScript_Raul::
-	trainerbattle_single TRAINER_CUE_BALL_RAUL, Route17_Text_RaulIntro, Route17_Text_RaulDefeat
+	trainerbattle_double TRAINER_CUE_BALL_RAUL, Route17_Text_RaulIntro, Route17_Text_RaulDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route17_EventScript_RaulRematch
 	msgbox Route17_Text_RaulPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route17_EventScript_RaulRematch::
-	trainerbattle_rematch TRAINER_CUE_BALL_RAUL, Route17_Text_RaulRematchIntro, Route17_Text_RaulDefeat
+	trainerbattle_rematch_double TRAINER_CUE_BALL_RAUL, Route17_Text_RaulRematchIntro, Route17_Text_RaulDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route17_Text_RaulPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1499,14 +1499,14 @@ Route17_EventScript_IsaiahRematch::
 	end
 
 Route17_EventScript_Zeek::
-	trainerbattle_single TRAINER_CUE_BALL_ZEEK, Route17_Text_ZeekIntro, Route17_Text_ZeekDefeat
+	trainerbattle_double TRAINER_CUE_BALL_ZEEK, Route17_Text_ZeekIntro, Route17_Text_ZeekDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route17_EventScript_ZeekRematch
 	msgbox Route17_Text_ZeekPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route17_EventScript_ZeekRematch::
-	trainerbattle_rematch TRAINER_CUE_BALL_ZEEK, Route17_Text_ZeekRematchIntro, Route17_Text_ZeekDefeat
+	trainerbattle_rematch_double TRAINER_CUE_BALL_ZEEK, Route17_Text_ZeekRematchIntro, Route17_Text_ZeekDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route17_Text_ZeekPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1535,14 +1535,14 @@ Route17_EventScript_CoreyRematch::
 	end
 
 Route17_EventScript_Virgil::
-	trainerbattle_single TRAINER_BIKER_VIRGIL, Route17_Text_VirgilIntro, Route17_Text_VirgilDefeat
+	trainerbattle_double TRAINER_BIKER_VIRGIL, Route17_Text_VirgilIntro, Route17_Text_VirgilDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route17_EventScript_VirgilRematch
 	msgbox Route17_Text_VirgilPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route17_EventScript_VirgilRematch::
-	trainerbattle_rematch TRAINER_BIKER_VIRGIL, Route17_Text_VirgilRematchIntro, Route17_Text_VirgilDefeat
+	trainerbattle_rematch_double TRAINER_BIKER_VIRGIL, Route17_Text_VirgilRematchIntro, Route17_Text_VirgilDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route17_Text_VirgilPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1559,26 +1559,26 @@ Route18_EventScript_WiltonRematch::
 	end
 
 Route18_EventScript_Ramiro::
-	trainerbattle_single TRAINER_BIRD_KEEPER_RAMIRO, Route18_Text_RamiroIntro, Route18_Text_RamiroDefeat
+	trainerbattle_double TRAINER_BIRD_KEEPER_RAMIRO, Route18_Text_RamiroIntro, Route18_Text_RamiroDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route18_EventScript_RamiroRematch
 	msgbox Route18_Text_RamiroPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route18_EventScript_RamiroRematch::
-	trainerbattle_rematch TRAINER_BIRD_KEEPER_RAMIRO, Route18_Text_RamiroRematchIntro, Route18_Text_RamiroDefeat
+	trainerbattle_rematch_double TRAINER_BIRD_KEEPER_RAMIRO, Route18_Text_RamiroRematchIntro, Route18_Text_RamiroDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route18_Text_RamiroPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route18_EventScript_Jacob::
-	trainerbattle_single TRAINER_BIRD_KEEPER_JACOB, Route18_Text_JacobIntro, Route18_Text_JacobDefeat
+	trainerbattle_double TRAINER_BIRD_KEEPER_JACOB, Route18_Text_JacobIntro, Route18_Text_JacobDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, Route18_EventScript_JacobRematch
 	msgbox Route18_Text_JacobPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route18_EventScript_JacobRematch::
-	trainerbattle_rematch TRAINER_BIRD_KEEPER_JACOB, Route18_Text_JacobRematchIntro, Route18_Text_JacobDefeat
+	trainerbattle_rematch_double TRAINER_BIRD_KEEPER_JACOB, Route18_Text_JacobRematchIntro, Route18_Text_JacobDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox Route18_Text_JacobPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -1967,14 +1967,14 @@ Route21_North_EventScript_IanRematch::
 	end
 
 OneIsland_KindleRoad_EventScript_Maria::
-	trainerbattle_single TRAINER_SWIMMER_FEMALE_MARIA, OneIsland_KindleRoad_Text_MariaIntro, OneIsland_KindleRoad_Text_MariaDefeat
+	trainerbattle_double TRAINER_SWIMMER_FEMALE_MARIA, OneIsland_KindleRoad_Text_MariaIntro, OneIsland_KindleRoad_Text_MariaDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, OneIsland_KindleRoad_EventScript_MariaRematch
 	msgbox OneIsland_KindleRoad_Text_MariaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 OneIsland_KindleRoad_EventScript_MariaRematch::
-	trainerbattle_rematch TRAINER_SWIMMER_FEMALE_MARIA, OneIsland_KindleRoad_Text_MariaRematchIntro, OneIsland_KindleRoad_Text_MariaDefeat
+	trainerbattle_rematch_double TRAINER_SWIMMER_FEMALE_MARIA, OneIsland_KindleRoad_Text_MariaRematchIntro, OneIsland_KindleRoad_Text_MariaDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox OneIsland_KindleRoad_Text_MariaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2051,14 +2051,14 @@ OneIsland_KindleRoad_EventScript_TanyaRematch::
 	end
 
 OneIsland_KindleRoad_EventScript_Shea::
-	trainerbattle_single TRAINER_BLACK_BELT_SHEA, OneIsland_KindleRoad_Text_SheaIntro, OneIsland_KindleRoad_Text_SheaDefeat
+	trainerbattle_double TRAINER_BLACK_BELT_SHEA, OneIsland_KindleRoad_Text_SheaIntro, OneIsland_KindleRoad_Text_SheaDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, OneIsland_KindleRoad_EventScript_SheaRematch
 	msgbox OneIsland_KindleRoad_Text_SheaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 OneIsland_KindleRoad_EventScript_SheaRematch::
-	trainerbattle_rematch TRAINER_BLACK_BELT_SHEA, OneIsland_KindleRoad_Text_SheaRematchIntro, OneIsland_KindleRoad_Text_SheaDefeat
+	trainerbattle_rematch_double TRAINER_BLACK_BELT_SHEA, OneIsland_KindleRoad_Text_SheaRematchIntro, OneIsland_KindleRoad_Text_SheaDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox OneIsland_KindleRoad_Text_SheaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2075,26 +2075,26 @@ OneIsland_KindleRoad_EventScript_HughRematch::
 	end
 
 OneIsland_KindleRoad_EventScript_Bryce::
-	trainerbattle_single TRAINER_CAMPER_BRYCE, OneIsland_KindleRoad_Text_BryceIntro, OneIsland_KindleRoad_Text_BryceDefeat
+	trainerbattle_double TRAINER_CAMPER_BRYCE, OneIsland_KindleRoad_Text_BryceIntro, OneIsland_KindleRoad_Text_BryceDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, OneIsland_KindleRoad_EventScript_BryceRematch
 	msgbox OneIsland_KindleRoad_Text_BrycePostBattle, MSGBOX_AUTOCLOSE
 	end
 
 OneIsland_KindleRoad_EventScript_BryceRematch::
-	trainerbattle_rematch TRAINER_CAMPER_BRYCE, OneIsland_KindleRoad_Text_BryceRematchIntro, OneIsland_KindleRoad_Text_BryceDefeat
+	trainerbattle_rematch_double TRAINER_CAMPER_BRYCE, OneIsland_KindleRoad_Text_BryceRematchIntro, OneIsland_KindleRoad_Text_BryceDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox OneIsland_KindleRoad_Text_BrycePostBattle, MSGBOX_AUTOCLOSE
 	end
 
 OneIsland_KindleRoad_EventScript_Claire::
-	trainerbattle_single TRAINER_PICNICKER_CLAIRE, OneIsland_KindleRoad_Text_ClaireIntro, OneIsland_KindleRoad_Text_ClaireDefeat
+	trainerbattle_double TRAINER_PICNICKER_CLAIRE, OneIsland_KindleRoad_Text_ClaireIntro, OneIsland_KindleRoad_Text_ClaireDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, OneIsland_KindleRoad_EventScript_ClaireRematch
 	msgbox OneIsland_KindleRoad_Text_ClairePostBattle, MSGBOX_AUTOCLOSE
 	end
 
 OneIsland_KindleRoad_EventScript_ClaireRematch::
-	trainerbattle_rematch TRAINER_PICNICKER_CLAIRE, OneIsland_KindleRoad_Text_ClaireRematchIntro, OneIsland_KindleRoad_Text_ClaireDefeat
+	trainerbattle_rematch_double TRAINER_PICNICKER_CLAIRE, OneIsland_KindleRoad_Text_ClaireRematchIntro, OneIsland_KindleRoad_Text_ClaireDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox OneIsland_KindleRoad_Text_ClairePostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2147,14 +2147,14 @@ ThreeIsland_BondBridge_EventScript_NikkiRematch::
 	end
 
 ThreeIsland_BondBridge_EventScript_Violet::
-	trainerbattle_single TRAINER_AROMA_LADY_VIOLET, ThreeIsland_BondBridge_Text_VioletIntro, ThreeIsland_BondBridge_Text_VioletDefeat
+	trainerbattle_double TRAINER_AROMA_LADY_VIOLET, ThreeIsland_BondBridge_Text_VioletIntro, ThreeIsland_BondBridge_Text_VioletDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, ThreeIsland_BondBridge_EventScript_VioletRematch
 	msgbox ThreeIsland_BondBridge_Text_VioletPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 ThreeIsland_BondBridge_EventScript_VioletRematch::
-	trainerbattle_rematch TRAINER_AROMA_LADY_VIOLET, ThreeIsland_BondBridge_Text_VioletRematchIntro, ThreeIsland_BondBridge_Text_VioletDefeat
+	trainerbattle_rematch_double TRAINER_AROMA_LADY_VIOLET, ThreeIsland_BondBridge_Text_VioletRematchIntro, ThreeIsland_BondBridge_Text_VioletDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox ThreeIsland_BondBridge_Text_VioletPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2171,14 +2171,14 @@ ThreeIsland_BondBridge_EventScript_AmiraRematch::
 	end
 
 ThreeIsland_BondBridge_EventScript_Alexis::
-	trainerbattle_single TRAINER_TUBER_ALEXIS, ThreeIsland_BondBridge_Text_AlexisIntro, ThreeIsland_BondBridge_Text_AlexisDefeat
+	trainerbattle_double TRAINER_TUBER_ALEXIS, ThreeIsland_BondBridge_Text_AlexisIntro, ThreeIsland_BondBridge_Text_AlexisDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, ThreeIsland_BondBridge_EventScript_AlexisRematch
 	msgbox ThreeIsland_BondBridge_Text_AlexisPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 ThreeIsland_BondBridge_EventScript_AlexisRematch::
-	trainerbattle_rematch TRAINER_TUBER_ALEXIS, ThreeIsland_BondBridge_Text_AlexisRematchIntro, ThreeIsland_BondBridge_Text_AlexisDefeat
+	trainerbattle_rematch_double TRAINER_TUBER_ALEXIS, ThreeIsland_BondBridge_Text_AlexisRematchIntro, ThreeIsland_BondBridge_Text_AlexisDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox ThreeIsland_BondBridge_Text_AlexisPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2255,26 +2255,26 @@ FiveIsland_ResortGorgeous_EventScript_RaynaRematch::
 	end
 
 FiveIsland_ResortGorgeous_EventScript_Jacki::
-	trainerbattle_single TRAINER_LADY_JACKI, FiveIsland_ResortGorgeous_Text_JackiIntro, FiveIsland_ResortGorgeous_Text_JackiDefeat
+	trainerbattle_double TRAINER_LADY_JACKI, FiveIsland_ResortGorgeous_Text_JackiIntro, FiveIsland_ResortGorgeous_Text_JackiDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, FiveIsland_ResortGorgeous_EventScript_JackiRematch
 	msgbox FiveIsland_ResortGorgeous_Text_JackiPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 FiveIsland_ResortGorgeous_EventScript_JackiRematch::
-	trainerbattle_rematch TRAINER_LADY_JACKI, FiveIsland_ResortGorgeous_Text_JackiRematchIntro, FiveIsland_ResortGorgeous_Text_JackiDefeat
+	trainerbattle_rematch_double TRAINER_LADY_JACKI, FiveIsland_ResortGorgeous_Text_JackiRematchIntro, FiveIsland_ResortGorgeous_Text_JackiDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox FiveIsland_ResortGorgeous_Text_JackiPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 FiveIsland_ResortGorgeous_EventScript_Gillian::
-	trainerbattle_single TRAINER_LADY_GILLIAN, FiveIsland_ResortGorgeous_Text_GillianIntro, FiveIsland_ResortGorgeous_Text_GillianDefeat
+	trainerbattle_double TRAINER_LADY_GILLIAN, FiveIsland_ResortGorgeous_Text_GillianIntro, FiveIsland_ResortGorgeous_Text_GillianDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, FiveIsland_ResortGorgeous_EventScript_GillianRematch
 	msgbox FiveIsland_ResortGorgeous_Text_GillianPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 FiveIsland_ResortGorgeous_EventScript_GillianRematch::
-	trainerbattle_rematch TRAINER_LADY_GILLIAN, FiveIsland_ResortGorgeous_Text_GillianRematchIntro, FiveIsland_ResortGorgeous_Text_GillianDefeat
+	trainerbattle_rematch_double TRAINER_LADY_GILLIAN, FiveIsland_ResortGorgeous_Text_GillianRematchIntro, FiveIsland_ResortGorgeous_Text_GillianDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox FiveIsland_ResortGorgeous_Text_GillianPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2303,14 +2303,14 @@ FiveIsland_ResortGorgeous_EventScript_TobyRematch::
 	end
 
 FiveIsland_WaterLabyrinth_EventScript_Alize::
-	trainerbattle_single TRAINER_PKMN_BREEDER_ALIZE, FiveIsland_WaterLabyrinth_Text_AlizeIntro, FiveIsland_WaterLabyrinth_Text_AlizeDefeat
+	trainerbattle_double TRAINER_PKMN_BREEDER_ALIZE, FiveIsland_WaterLabyrinth_Text_AlizeIntro, FiveIsland_WaterLabyrinth_Text_AlizeDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, FiveIsland_WaterLabyrinth_EventScript_AlizeRematch
 	msgbox FiveIsland_WaterLabyrinth_Text_AlizePostBattle, MSGBOX_AUTOCLOSE
 	end
 
 FiveIsland_WaterLabyrinth_EventScript_AlizeRematch::
-	trainerbattle_rematch TRAINER_PKMN_BREEDER_ALIZE, FiveIsland_WaterLabyrinth_Text_AlizeRematchIntro, FiveIsland_WaterLabyrinth_Text_AlizeDefeat
+	trainerbattle_rematch_double TRAINER_PKMN_BREEDER_ALIZE, FiveIsland_WaterLabyrinth_Text_AlizeRematchIntro, FiveIsland_WaterLabyrinth_Text_AlizeDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox FiveIsland_WaterLabyrinth_Text_AlizePostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2327,14 +2327,14 @@ FiveIsland_MemorialPillar_EventScript_MiloRematch::
 	end
 
 FiveIsland_MemorialPillar_EventScript_Chaz::
-	trainerbattle_single TRAINER_BIRD_KEEPER_CHAZ, FiveIsland_MemorialPillar_Text_ChazIntro, FiveIsland_MemorialPillar_Text_ChazDefeat
+	trainerbattle_double TRAINER_BIRD_KEEPER_CHAZ, FiveIsland_MemorialPillar_Text_ChazIntro, FiveIsland_MemorialPillar_Text_ChazDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, FiveIsland_MemorialPillar_EventScript_ChazRematch
 	msgbox FiveIsland_MemorialPillar_Text_ChazPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 FiveIsland_MemorialPillar_EventScript_ChazRematch::
-	trainerbattle_rematch TRAINER_BIRD_KEEPER_CHAZ, FiveIsland_MemorialPillar_Text_ChazRematchIntro, FiveIsland_MemorialPillar_Text_ChazDefeat
+	trainerbattle_rematch_double TRAINER_BIRD_KEEPER_CHAZ, FiveIsland_MemorialPillar_Text_ChazRematchIntro, FiveIsland_MemorialPillar_Text_ChazDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox FiveIsland_MemorialPillar_Text_ChazPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2435,14 +2435,14 @@ SixIsland_WaterPath_EventScript_RoseRematch::
 	end
 
 SixIsland_WaterPath_EventScript_Edward::
-	trainerbattle_single TRAINER_JUGGLER_EDWARD, SixIsland_WaterPath_Text_EdwardIntro, SixIsland_WaterPath_Text_EdwardDefeat
+	trainerbattle_double TRAINER_JUGGLER_EDWARD, SixIsland_WaterPath_Text_EdwardIntro, SixIsland_WaterPath_Text_EdwardDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, SixIsland_WaterPath_EventScript_EdwardRematch
 	msgbox SixIsland_WaterPath_Text_EdwardPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 SixIsland_WaterPath_EventScript_EdwardRematch::
-	trainerbattle_rematch TRAINER_JUGGLER_EDWARD, SixIsland_WaterPath_Text_EdwardRematchIntro, SixIsland_WaterPath_Text_EdwardDefeat
+	trainerbattle_rematch_double TRAINER_JUGGLER_EDWARD, SixIsland_WaterPath_Text_EdwardRematchIntro, SixIsland_WaterPath_Text_EdwardDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SixIsland_WaterPath_Text_EdwardPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2459,14 +2459,14 @@ SixIsland_WaterPath_EventScript_SamirRematch::
 	end
 
 SixIsland_WaterPath_EventScript_Denise::
-	trainerbattle_single TRAINER_SWIMMER_FEMALE_DENISE, SixIsland_WaterPath_Text_DeniseIntro, SixIsland_WaterPath_Text_DeniseDefeat
+	trainerbattle_double TRAINER_SWIMMER_FEMALE_DENISE, SixIsland_WaterPath_Text_DeniseIntro, SixIsland_WaterPath_Text_DeniseDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, SixIsland_WaterPath_EventScript_DeniseRematch
 	msgbox SixIsland_WaterPath_Text_DenisePostBattle, MSGBOX_AUTOCLOSE
 	end
 
 SixIsland_WaterPath_EventScript_DeniseRematch::
-	trainerbattle_rematch TRAINER_SWIMMER_FEMALE_DENISE, SixIsland_WaterPath_Text_DeniseRematchIntro, SixIsland_WaterPath_Text_DeniseDefeat
+	trainerbattle_rematch_double TRAINER_SWIMMER_FEMALE_DENISE, SixIsland_WaterPath_Text_DeniseRematchIntro, SixIsland_WaterPath_Text_DeniseDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SixIsland_WaterPath_Text_DenisePostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2519,14 +2519,14 @@ SixIsland_RuinValley_EventScript_StanlyRematch::
 	end
 
 SixIsland_RuinValley_EventScript_Foster::
-	trainerbattle_single TRAINER_RUIN_MANIAC_FOSTER, SixIsland_RuinValley_Text_FosterIntro, SixIsland_RuinValley_Text_FosterDefeat
+	trainerbattle_double TRAINER_RUIN_MANIAC_FOSTER, SixIsland_RuinValley_Text_FosterIntro, SixIsland_RuinValley_Text_FosterDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, SixIsland_RuinValley_EventScript_FosterRematch
 	msgbox SixIsland_RuinValley_Text_FosterPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 SixIsland_RuinValley_EventScript_FosterRematch::
-	trainerbattle_rematch TRAINER_RUIN_MANIAC_FOSTER, SixIsland_RuinValley_Text_FosterRematchIntro, SixIsland_RuinValley_Text_FosterDefeat
+	trainerbattle_rematch_double TRAINER_RUIN_MANIAC_FOSTER, SixIsland_RuinValley_Text_FosterRematchIntro, SixIsland_RuinValley_Text_FosterDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SixIsland_RuinValley_Text_FosterPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2627,14 +2627,14 @@ SevenIsland_SevaultCanyon_Entrance_EventScript_JonRematch::
 	end
 
 SevenIsland_SevaultCanyon_Entrance_EventScript_Mason::
-	trainerbattle_single TRAINER_JUGGLER_MASON, SevenIsland_SevaultCanyon_Entrance_Text_MasonIntro, SevenIsland_SevaultCanyon_Entrance_Text_MasonDefeat
+	trainerbattle_double TRAINER_JUGGLER_MASON, SevenIsland_SevaultCanyon_Entrance_Text_MasonIntro, SevenIsland_SevaultCanyon_Entrance_Text_MasonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, SevenIsland_SevaultCanyon_Entrance_EventScript_MasonRematch
 	msgbox SevenIsland_SevaultCanyon_Entrance_Text_MasonPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 SevenIsland_SevaultCanyon_Entrance_EventScript_MasonRematch::
-	trainerbattle_rematch TRAINER_JUGGLER_MASON, SevenIsland_SevaultCanyon_Entrance_Text_MasonRematchIntro, SevenIsland_SevaultCanyon_Entrance_Text_MasonDefeat
+	trainerbattle_rematch_double TRAINER_JUGGLER_MASON, SevenIsland_SevaultCanyon_Entrance_Text_MasonRematchIntro, SevenIsland_SevaultCanyon_Entrance_Text_MasonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SevenIsland_SevaultCanyon_Entrance_Text_MasonPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2663,14 +2663,14 @@ SevenIsland_SevaultCanyon_Entrance_EventScript_MadelineRematch::
 	end
 
 SevenIsland_SevaultCanyon_EventScript_Cyndy::
-	trainerbattle_single TRAINER_CRUSH_GIRL_CYNDY, SevenIsland_SevaultCanyon_Text_CyndyIntro, SevenIsland_SevaultCanyon_Text_CyndyDefeat
+	trainerbattle_double TRAINER_CRUSH_GIRL_CYNDY, SevenIsland_SevaultCanyon_Text_CyndyIntro, SevenIsland_SevaultCanyon_Text_CyndyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, SevenIsland_SevaultCanyon_EventScript_CyndyRematch
 	msgbox SevenIsland_SevaultCanyon_Text_CyndyPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 SevenIsland_SevaultCanyon_EventScript_CyndyRematch::
-	trainerbattle_rematch TRAINER_CRUSH_GIRL_CYNDY, SevenIsland_SevaultCanyon_Text_CyndyRematchIntro, SevenIsland_SevaultCanyon_Text_CyndyDefeat
+	trainerbattle_rematch_double TRAINER_CRUSH_GIRL_CYNDY, SevenIsland_SevaultCanyon_Text_CyndyRematchIntro, SevenIsland_SevaultCanyon_Text_CyndyDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SevenIsland_SevaultCanyon_Text_CyndyPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2687,14 +2687,14 @@ SevenIsland_SevaultCanyon_EventScript_EvanRematch::
 	end
 
 SevenIsland_SevaultCanyon_EventScript_Jackson::
-	trainerbattle_single TRAINER_PKMN_RANGER_JACKSON, SevenIsland_SevaultCanyon_Text_JacksonIntro, SevenIsland_SevaultCanyon_Text_JacksonDefeat
+	trainerbattle_double TRAINER_PKMN_RANGER_JACKSON, SevenIsland_SevaultCanyon_Text_JacksonIntro, SevenIsland_SevaultCanyon_Text_JacksonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, SevenIsland_SevaultCanyon_EventScript_JacksonRematch
 	msgbox SevenIsland_SevaultCanyon_Text_JacksonPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 SevenIsland_SevaultCanyon_EventScript_JacksonRematch::
-	trainerbattle_rematch TRAINER_PKMN_RANGER_JACKSON, SevenIsland_SevaultCanyon_Text_JacksonRematchIntro, SevenIsland_SevaultCanyon_Text_JacksonDefeat
+	trainerbattle_rematch_double TRAINER_PKMN_RANGER_JACKSON, SevenIsland_SevaultCanyon_Text_JacksonRematchIntro, SevenIsland_SevaultCanyon_Text_JacksonDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SevenIsland_SevaultCanyon_Text_JacksonPostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2723,14 +2723,14 @@ SevenIsland_SevaultCanyon_EventScript_LeroyRematch::
 	end
 
 SevenIsland_SevaultCanyon_EventScript_Michelle::
-	trainerbattle_single TRAINER_COOLTRAINER_MICHELLE, SevenIsland_SevaultCanyon_Text_MichelleIntro, SevenIsland_SevaultCanyon_Text_MichelleDefeat
+	trainerbattle_double TRAINER_COOLTRAINER_MICHELLE, SevenIsland_SevaultCanyon_Text_MichelleIntro, SevenIsland_SevaultCanyon_Text_MichelleDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, SevenIsland_SevaultCanyon_EventScript_MichelleRematch
 	msgbox SevenIsland_SevaultCanyon_Text_MichellePostBattle, MSGBOX_AUTOCLOSE
 	end
 
 SevenIsland_SevaultCanyon_EventScript_MichelleRematch::
-	trainerbattle_rematch TRAINER_COOLTRAINER_MICHELLE, SevenIsland_SevaultCanyon_Text_MichelleRematchIntro, SevenIsland_SevaultCanyon_Text_MichelleDefeat
+	trainerbattle_rematch_double TRAINER_COOLTRAINER_MICHELLE, SevenIsland_SevaultCanyon_Text_MichelleRematchIntro, SevenIsland_SevaultCanyon_Text_MichelleDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SevenIsland_SevaultCanyon_Text_MichellePostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -2795,13 +2795,13 @@ SevenIsland_TanobyRuins_EventScript_EdnaRematch::
 	end
 
 SevenIsland_TanobyRuins_EventScript_Clifford::
-	trainerbattle_single TRAINER_GENTLEMAN_CLIFFORD, SevenIsland_TanobyRuins_Text_CliffordIntro, SevenIsland_TanobyRuins_Text_CliffordDefeat
+	trainerbattle_double TRAINER_GENTLEMAN_CLIFFORD, SevenIsland_TanobyRuins_Text_CliffordIntro, SevenIsland_TanobyRuins_Text_CliffordDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, SevenIsland_TanobyRuins_EventScript_CliffordRematch
 	msgbox SevenIsland_TanobyRuins_Text_CliffordPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 SevenIsland_TanobyRuins_EventScript_CliffordRematch::
-	trainerbattle_rematch TRAINER_GENTLEMAN_CLIFFORD, SevenIsland_TanobyRuins_Text_CliffordRematchIntro, SevenIsland_TanobyRuins_Text_CliffordDefeat
+	trainerbattle_rematch_double TRAINER_GENTLEMAN_CLIFFORD, SevenIsland_TanobyRuins_Text_CliffordRematchIntro, SevenIsland_TanobyRuins_Text_CliffordDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SevenIsland_TanobyRuins_Text_CliffordPostBattle, MSGBOX_AUTOCLOSE
 	end

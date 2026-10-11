@@ -118,6 +118,6 @@ MtEmber_Exterior_EventScript_Beth::
 	end
 
 MtEmber_Exterior_EventScript_Jocelyn::
-	trainerbattle_single TRAINER_CRUSH_GIRL_JOCELYN, MtEmber_Exterior_Text_JocelynIntro, MtEmber_Exterior_Text_JocelynDefeat
+	trainerbattle_double TRAINER_CRUSH_GIRL_JOCELYN, MtEmber_Exterior_Text_JocelynIntro, MtEmber_Exterior_Text_JocelynDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox MtEmber_Exterior_Text_JocelynPostBattle, MSGBOX_AUTOCLOSE
 	end

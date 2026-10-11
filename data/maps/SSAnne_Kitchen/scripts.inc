@@ -48,3 +48,40 @@ SSAnne_Kitchen_EventScript_Chef6::
 SSAnne_Kitchen_EventScript_Chef7::
 	msgbox SSAnne_Kitchen_Text_OnlyGetToPeelOnions, MSGBOX_NPC
 	end
+
+SSAnne_Kitchen_EventScript_StaticLickitung::
+	goto_if_questlog EventScript_ReleaseEnd
+	lock
+	faceplayer
+	setwildbattle SPECIES_LICKITUNG, 29, ITEM_LEFTOVERS
+	setvar VAR_0x8004, MOVE_SLAM
+	setvar VAR_0x8005, 0
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_DISABLE
+	setvar VAR_0x8005, 1
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_DEFENSE_CURL
+	setvar VAR_0x8005, 2
+	special SetEnemyEventMonMoveSlot
+	setvar VAR_0x8004, MOVE_ROLLOUT
+	setvar VAR_0x8005, 3
+	special SetEnemyEventMonMoveSlot
+	waitse
+	playmoncry SPECIES_LICKITUNG, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	dowildbattle
+	clearflag FLAG_SYS_SPECIAL_WILD_BATTLE
+	special QuestLog_CutRecording
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, SSAnne_Kitchen_EventScript_CompleteStaticLickitung
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, SSAnne_Kitchen_EventScript_CompleteStaticLickitung
+	release
+	end
+
+SSAnne_Kitchen_EventScript_CompleteStaticLickitung::
+	setflag FLAG_STATIC_SS_ANNE_LICKITUNG_COMPLETE
+	removeobject VAR_LAST_TALKED
+	release
+	end

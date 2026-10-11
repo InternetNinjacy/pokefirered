@@ -77,3 +77,51 @@ Route4_Text_PeopleLikeAndRespectBrock::
     .string "People like and respect him.\p"
     .string "I want to become a GYM LEADER\n"
     .string "like him.$"
+
+
+@ Pokémon: Sam Edition — locked shared Blue/Green Route 4 exchange.
+Route4_Text_BluePlayer::
+    .string "{PLAYER}!$"
+Route4_Text_GreenPerfect::
+    .string "Oh, perfect. You're here too.$"
+Route4_Text_BlueBattlePlayer::
+    .string "I was going to battle {PLAYER}.$"
+Route4_Text_GreenSoWasI::
+    .string "So was I.$"
+Route4_Text_BlueTakeTurns::
+    .string "...We could take turns.$"
+Route4_Text_GreenNotDoThat::
+    .string "Or we could not do that.$"
+Route4_Text_BlueTwoAgainstOne::
+    .string "Ha! Two against one?$"
+Route4_Text_GreenCanHandleIt::
+    .string "{PLAYER} can handle it.$"
+Route4_Text_BlueMoreFun::
+    .string "You're right. This'll be way more fun.$"
+Route4_Text_GreenHealFirst::
+    .string "Hold on, though. You just came\n"
+    .string "through MT. MOON. Heal up first.$"
+Route4_Text_BlueNoExcuses::
+    .string "Yeah, no excuses afterward.$"
+Route4_Text_GreenReady::
+    .string "Ready, {PLAYER}?$"
+Route4_Text_BlueGreenDefeat::
+    .string "No way! You beat both of us?$"
+Route4_Text_BlueGreenVictory::
+    .string "That was awesome!$"
+Route4_Text_GreenLoss::
+    .string "It was. But we're not leaving it there.$"
+Route4_Text_BlueRetry::
+    .string "Heal up. We're doing that again.$"
+Route4_Text_GreenWin::
+    .string "Okay, that was really good.$"
+Route4_Text_BlueRematch::
+    .string "We need a rematch sometime.$"
+Route4_Text_GreenPostBattle::
+    .string "Separately next time. I want to know\n"
+    .string "which one of us was the problem.$"
+Route4_Text_BlueHey::
+    .string "Hey!$"
+Route4_Text_NeedTwoPokemon::
+    .string "Bring at least two POKéMON that can\n"
+    .string "battle. Then we're doing this.$"

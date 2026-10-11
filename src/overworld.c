@@ -32,6 +32,7 @@
 #include "new_menu_helpers.h"
 #include "overworld.h"
 #include "play_time.h"
+#include "pokemon_storage_system.h"
 #include "quest_log.h"
 #include "quest_log_objects.h"
 #include "random.h"
@@ -45,6 +46,7 @@
 #include "start_menu.h"
 #include "tileset_anims.h"
 #include "trainer_pokemon_sprites.h"
+#include "title_screen.h"
 #include "vs_seeker.h"
 #include "wild_encounter.h"
 #include "constants/cable_club.h"
@@ -53,6 +55,7 @@
 #include "constants/region_map_sections.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
+#include "constants/vars.h"
 
 #define PLAYER_LINK_STATE_IDLE 0x80
 #define PLAYER_LINK_STATE_BUSY 0x81
@@ -126,6 +129,7 @@ static bool8 sReceivingFromLink;
 static u8 sRfuKeepAliveTimer;
 
 static u8 CountBadgesForOverworldWhiteOutLossCalculation(void);
+static void EnsureUsablePartyAfterPermanentWhiteout(void);
 static void Overworld_ResetStateAfterWhitingOut(void);
 static void Overworld_SetWhiteoutRespawnPoint(void);
 static u8 GetAdjustedInitialTransitionFlags(struct InitialPlayerAvatarState *playerStruct, u16 metatileBehavior, u8 mapType);
@@ -247,11 +251,58 @@ static const u16 sWhiteOutMoneyLossBadgeFlagIDs[] = {
     FLAG_BADGE08_GET
 };
 
+static void EnsureUsablePartyAfterPermanentWhiteout(void)
+{
+    u8 partySlot;
+    u8 boxId;
+    u8 boxPos;
+
+    if (VarGet(VAR_SAM_GAME_MODE) != 1)
+        return;
+
+    for (partySlot = 0; partySlot < PARTY_SIZE; partySlot++)
+    {
+        if (GetMonData(&gPlayerParty[partySlot], MON_DATA_SPECIES) != SPECIES_NONE
+            && GetMonData(&gPlayerParty[partySlot], MON_DATA_HP) != 0)
+            return;
+    }
+
+    for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
+    {
+        for (boxPos = 0; boxPos < IN_BOX_COUNT; boxPos++)
+        {
+            struct BoxPokemon *starter = GetBoxedMonPtr(boxId, boxPos);
+
+            if (GetBoxMonData(starter, MON_DATA_SPECIES) == SPECIES_NONE
+                || !GetBoxMonData(starter, MON_DATA_SAM_ORIGINAL_STARTER))
+                continue;
+
+            CalculatePlayerPartyCount();
+            if (gPlayerPartyCount < PARTY_SIZE)
+            {
+                BoxMonToMon(starter, &gPlayerParty[gPlayerPartyCount]);
+                ZeroBoxMonData(starter);
+            }
+            else
+            {
+                struct BoxPokemon displaced = gPlayerParty[0].box;
+
+                BoxMonToMon(starter, &gPlayerParty[0]);
+                *starter = displaced;
+            }
+
+            CalculatePlayerPartyCount();
+            return;
+        }
+    }
+}
+
 static void DoWhiteOut(void)
 {
     RunScriptImmediately(EventScript_ResetEliteFourEnd);
     RemoveMoney(&gSaveBlock1Ptr->money, ComputeWhiteOutMoneyLoss());
     HealPlayerParty();
+    EnsureUsablePartyAfterPermanentWhiteout();
     Overworld_ResetStateAfterWhitingOut();
     Overworld_SetWhiteoutRespawnPoint();
     WarpIntoMap();
@@ -1528,8 +1579,15 @@ void CB2_NewGame(void)
 {
     FieldClearVBlankHBlankCallbacks();
     StopMapMusic();
+    if (!NewGameInitData())
+    {
+        // The introduction may have changed names/options in RAM. Returning
+        // through the title reloads the completed save before Continue/NG+.
+        SetMainCallback1(NULL);
+        SetMainCallback2(CB2_InitTitleScreen);
+        return;
+    }
     ResetSafariZoneFlag_();
-    NewGameInitData();
     ResetInitialPlayerAvatarState();
     PlayTimeCounter_Start();
     ScriptContext_Init();

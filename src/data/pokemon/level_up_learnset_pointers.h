@@ -1,3 +1,8 @@
+static const u16 sSamSpeciesPlaceholderLevelUpLearnset[] =
+{
+    LEVEL_UP_END
+};
+
 const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
 {
     [SPECIES_NONE] = sBulbasaurLevelUpLearnset,
@@ -412,4 +417,9 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_JIRACHI] = sJirachiLevelUpLearnset,
     [SPECIES_DEOXYS] = sDeoxysLevelUpLearnset,
     [SPECIES_CHIMECHO] = sChimechoLevelUpLearnset,
+
+    // ARCH-004 structural placeholders only. SPEC-009 owns final learnsets.
+    [SPECIES_LEAFEON] = sSamSpeciesPlaceholderLevelUpLearnset,
+    [SPECIES_ECTOCEON] = sSamSpeciesPlaceholderLevelUpLearnset,
+    [SPECIES_RHYPERIOR] = sSamSpeciesPlaceholderLevelUpLearnset,
 };

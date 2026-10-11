@@ -18,7 +18,7 @@
     {
       "local_id": "LOCALID_SS_ANNE_RIVAL",
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_BLUE",
+      "graphics_id": "OBJ_EVENT_GFX_GREEN_NORMAL",
       "x": 30,
       "y": 2,
       "elevation": 3,
@@ -136,6 +136,33 @@
       "elevation": 3,
       "var": "VAR_MAP_SCENE_S_S_ANNE_2F_CORRIDOR",
       "var_value": "0",
+      "script": "SSAnne_2F_Corridor_EventScript_RivalTriggerRight"
+    },
+    {
+      "type": "trigger",
+      "x": 30,
+      "y": 6,
+      "elevation": 3,
+      "var": "VAR_MAP_SCENE_S_S_ANNE_2F_CORRIDOR",
+      "var_value": "2",
+      "script": "SSAnne_2F_Corridor_EventScript_RivalTriggerLeft"
+    },
+    {
+      "type": "trigger",
+      "x": 31,
+      "y": 6,
+      "elevation": 3,
+      "var": "VAR_MAP_SCENE_S_S_ANNE_2F_CORRIDOR",
+      "var_value": "2",
+      "script": "SSAnne_2F_Corridor_EventScript_RivalTriggerMid"
+    },
+    {
+      "type": "trigger",
+      "x": 32,
+      "y": 6,
+      "elevation": 3,
+      "var": "VAR_MAP_SCENE_S_S_ANNE_2F_CORRIDOR",
+      "var_value": "2",
       "script": "SSAnne_2F_Corridor_EventScript_RivalTriggerRight"
     }
   ],

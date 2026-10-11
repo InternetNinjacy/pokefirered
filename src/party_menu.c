@@ -4285,7 +4285,7 @@ static void CB2_UseItem(void)
     {
         GiveMoveToMon(&gPlayerParty[gPartyMenu.slotId], ItemIdToBattleMoveId(gSpecialVar_ItemId));
         AdjustFriendship(&gPlayerParty[gPartyMenu.slotId], FRIENDSHIP_EVENT_LEARN_TMHM);
-        if (gSpecialVar_ItemId < ITEM_HM01)
+        if (!IsItemHM(gSpecialVar_ItemId))
             RemoveBagItem(gSpecialVar_ItemId, 1);
         SetMainCallback2(gPartyMenu.exitCallback);
     }
@@ -4305,7 +4305,7 @@ static void CB2_UseTMHMAfterForgettingMove(void)
         SetMonMoveSlot(mon, ItemIdToBattleMoveId(gSpecialVar_ItemId), moveIdx);
         AdjustFriendship(mon, FRIENDSHIP_EVENT_LEARN_TMHM);
         ItemUse_SetQuestLogEvent(QL_EVENT_USED_ITEM, mon, gSpecialVar_ItemId, move);
-        if (gSpecialVar_ItemId < ITEM_HM01)
+        if (!IsItemHM(gSpecialVar_ItemId))
             RemoveBagItem(gSpecialVar_ItemId, 1);
         SetMainCallback2(gPartyMenu.exitCallback);
     }
@@ -4714,12 +4714,41 @@ void ItemUseCB_PPUp(u8 taskId, TaskFunc func)
     gTasks[taskId].func = Task_HandleRestoreWhichMoveInput;
 }
 
+s16 ItemIdToTMHMIndex(u16 item)
+{
+    u16 i;
+
+    for (i = 0; i < ARRAY_COUNT(sTMHMItemIds); i++)
+    {
+        if (sTMHMItemIds[i] == item)
+            return i;
+    }
+    return -1;
+}
+
+u16 TMHMIndexToItemId(u8 index)
+{
+    if (index >= ARRAY_COUNT(sTMHMItemIds))
+        return ITEM_NONE;
+    return sTMHMItemIds[index];
+}
+
+bool8 IsItemHM(u16 item)
+{
+    s16 index = ItemIdToTMHMIndex(item);
+    return index >= NUM_TECHNICAL_MACHINES;
+}
+
 u16 ItemIdToBattleMoveId(u16 item)
 {
-    u16 tmNumber = item - ITEM_TM01_FOCUS_PUNCH;
+    s16 index = ItemIdToTMHMIndex(item);
 
-    return sTMHMMoves[tmNumber];
+    if (index < 0)
+        return MOVE_NONE;
+    return sTMHMMoves[index];
 }
+
+
 
 bool8 IsMoveHm(u16 move)
 {
@@ -4809,7 +4838,7 @@ static void Task_LearnedMove(u8 taskId)
     if (learnMoveMethod == LEARN_VIA_TMHM)
     {
         AdjustFriendship(mon, FRIENDSHIP_EVENT_LEARN_TMHM);
-        if (item < ITEM_HM01)
+        if (!IsItemHM(item))
             RemoveBagItem(item, 1);
     }
     GetMonNickname(mon, gStringVar1);

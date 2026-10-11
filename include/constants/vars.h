@@ -191,7 +191,11 @@
 #define VAR_MAP_SCENE_MT_MOON_B2F                                              0x408B
 
 
-#define VAR_0x408C                 0x408C
+// Sam Edition central persistent-variable namespace.
+#define VAR_SAM_START                                                           0x408C
+#define VAR_SAM_END                                                             0x40A9
+#define VAR_SAM_GAME_MODE                                                       VAR_SAM_START // 0 = Standard; 1 = Permanent
+#define VAR_0x408C                                                              VAR_SAM_GAME_MODE
 #define VAR_0x408D                 0x408D
 #define VAR_0x408E                 0x408E
 #define VAR_0x408F                 0x408F
@@ -206,16 +210,32 @@
 #define VAR_0x4098                 0x4098
 #define VAR_0x4099                 0x4099
 #define VAR_0x409A                 0x409A
-#define VAR_0x409B                 0x409B
-#define VAR_0x409C                 0x409C
-#define VAR_0x409D                 0x409D
-#define VAR_0x409E                 0x409E
-#define VAR_0x409F                 0x409F
-#define VAR_0x40A0                 0x40A0
+#define VAR_SAM_HOTHOUSE_IRRIGATION  0x409B
+#define VAR_SAM_HOTHOUSE_SUNLIGHT    0x409C
+#define VAR_SAM_HOTHOUSE_TEMPERATURE 0x409D
+#define VAR_SAM_HOTHOUSE_SOIL        0x409E
+#define VAR_SAM_HOTHOUSE_STATE       0x409F
+#define VAR_0x409B                   VAR_SAM_HOTHOUSE_IRRIGATION
+#define VAR_0x409C                   VAR_SAM_HOTHOUSE_SUNLIGHT
+#define VAR_0x409D                   VAR_SAM_HOTHOUSE_TEMPERATURE
+#define VAR_0x409E                   VAR_SAM_HOTHOUSE_SOIL
+#define VAR_0x409F                   VAR_SAM_HOTHOUSE_STATE
+#define VAR_SAM_CERULEAN_GYM_FLAME_STATE                                      0x40A0
+#define VAR_0x40A0                                                             VAR_SAM_CERULEAN_GYM_FLAME_STATE
+// Selectors reset on entry; reuse map-local temps, preserving Thomas 0x40A1.
+#define VAR_GYM4_FIELD_SELECTOR_1   VAR_TEMP_4
+#define VAR_GYM4_FIELD_SELECTOR_2   VAR_TEMP_5
+#define VAR_GYM4_FIELD_SELECTOR_3   VAR_TEMP_6
+#define VAR_GYM4_LAB_SELECTOR_1     VAR_TEMP_7
+#define VAR_GYM4_LAB_SELECTOR_2     VAR_TEMP_8
+#define VAR_GYM4_LAB_SELECTOR_3     VAR_TEMP_9
 #define VAR_0x40A1                 0x40A1
-#define VAR_0x40A2                 0x40A2
-#define VAR_0x40A3                 0x40A3
-#define VAR_0x40A4                 0x40A4
+#define VAR_SAM_ROCKET_OPERATIONS  0x40A2
+#define VAR_SAM_ROCKET_EVIDENCE    0x40A3
+#define VAR_SAM_ROCKET_VIRIDIAN    0x40A4
+#define VAR_0x40A2                 VAR_SAM_ROCKET_OPERATIONS
+#define VAR_0x40A3                 VAR_SAM_ROCKET_EVIDENCE
+#define VAR_0x40A4                 VAR_SAM_ROCKET_VIRIDIAN
 #define VAR_0x40A5                 0x40A5
 #define VAR_0x40A6                 0x40A6
 #define VAR_0x40A7                 0x40A7

@@ -4,3 +4,113 @@ Route19_MapScripts::
 Route19_EventScript_RouteSign::
 	msgbox Route19_Text_RouteSign, MSGBOX_SIGN
 	end
+
+Route19_EventScript_ReeceBatch9::
+	trainerbattle_single TRAINER_SWIMMER_MALE_REECE, Route19_Text_ReeceIntro, Route19_Text_ReeceDefeat
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route19_EventScript_ReeceBatch9Rematch
+	msgbox Route19_Text_ReecePostBattle, MSGBOX_AUTOCLOSE
+	end
+Route19_EventScript_ReeceBatch9Rematch::
+	trainerbattle_rematch TRAINER_SWIMMER_MALE_REECE, Route19_Text_ReeceRematchIntro, Route19_Text_ReeceDefeat
+	msgbox Route19_Text_ReecePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route19_EventScript_RichardBatch9::
+	trainerbattle_double TRAINER_SWIMMER_MALE_RICHARD, Route19_Text_RichardIntro, Route19_Text_RichardDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route19_EventScript_RichardBatch9Rematch
+	msgbox Route19_Text_RichardPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route19_EventScript_RichardBatch9Rematch::
+	trainerbattle_rematch_double TRAINER_SWIMMER_MALE_RICHARD, Route19_Text_RichardRematchIntro, Route19_Text_RichardDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	msgbox Route19_Text_RichardPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route19_EventScript_TonyBatch9::
+	trainerbattle_single TRAINER_SWIMMER_MALE_TONY, Route19_Text_TonyIntro, Route19_Text_TonyDefeat
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route19_EventScript_TonyBatch9Rematch
+	msgbox Route19_Text_TonyPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route19_EventScript_TonyBatch9Rematch::
+	trainerbattle_rematch TRAINER_SWIMMER_MALE_TONY, Route19_Text_TonyRematchIntro, Route19_Text_TonyDefeat
+	msgbox Route19_Text_TonyPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route19_EventScript_MatthewBatch9::
+	trainerbattle_double TRAINER_SWIMMER_MALE_MATTHEW, Route19_Text_MatthewIntro, Route19_Text_MatthewDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route19_EventScript_MatthewBatch9Rematch
+	msgbox Route19_Text_MatthewPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route19_EventScript_MatthewBatch9Rematch::
+	trainerbattle_rematch_double TRAINER_SWIMMER_MALE_MATTHEW, Route19_Text_MatthewRematchIntro, Route19_Text_MatthewDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	msgbox Route19_Text_MatthewPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route19_EventScript_DouglasBatch9::
+	trainerbattle_single TRAINER_SWIMMER_MALE_DOUGLAS, Route19_Text_DouglasIntro, Route19_Text_DouglasDefeat
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route19_EventScript_DouglasBatch9Rematch
+	msgbox Route19_Text_DouglasPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route19_EventScript_DouglasBatch9Rematch::
+	trainerbattle_rematch TRAINER_SWIMMER_MALE_DOUGLAS, Route19_Text_DouglasRematchIntro, Route19_Text_DouglasDefeat
+	msgbox Route19_Text_DouglasPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route19_EventScript_DavidBatch9::
+	trainerbattle_single TRAINER_SWIMMER_MALE_DAVID, Route19_Text_DavidIntro, Route19_Text_DavidDefeat
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route19_EventScript_DavidBatch9Rematch
+	msgbox Route19_Text_DavidPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route19_EventScript_DavidBatch9Rematch::
+	trainerbattle_rematch TRAINER_SWIMMER_MALE_DAVID, Route19_Text_DavidRematchIntro, Route19_Text_DavidDefeat
+	msgbox Route19_Text_DavidPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route19_EventScript_AxleBatch9::
+	trainerbattle_double TRAINER_SWIMMER_MALE_AXLE, Route19_Text_AxleIntro, Route19_Text_AxleDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route19_EventScript_AxleBatch9Rematch
+	msgbox Route19_Text_AxlePostBattle, MSGBOX_AUTOCLOSE
+	end
+Route19_EventScript_AxleBatch9Rematch::
+	trainerbattle_rematch_double TRAINER_SWIMMER_MALE_AXLE, Route19_Text_AxleRematchIntro, Route19_Text_AxleDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	msgbox Route19_Text_AxlePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route19_EventScript_AliceBatch9::
+	trainerbattle_single TRAINER_SWIMMER_FEMALE_ALICE, Route19_Text_AliceIntro, Route19_Text_AliceDefeat
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route19_EventScript_AliceBatch9Rematch
+	msgbox Route19_Text_AlicePostBattle, MSGBOX_AUTOCLOSE
+	end
+Route19_EventScript_AliceBatch9Rematch::
+	trainerbattle_rematch TRAINER_SWIMMER_FEMALE_ALICE, Route19_Text_AliceRematchIntro, Route19_Text_AliceDefeat
+	msgbox Route19_Text_AlicePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route19_EventScript_ConnieBatch9::
+	trainerbattle_double TRAINER_SWIMMER_FEMALE_CONNIE, Route19_Text_ConnieIntro, Route19_Text_ConnieDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route19_EventScript_ConnieBatch9Rematch
+	msgbox Route19_Text_ConniePostBattle, MSGBOX_AUTOCLOSE
+	end
+Route19_EventScript_ConnieBatch9Rematch::
+	trainerbattle_rematch_double TRAINER_SWIMMER_FEMALE_CONNIE, Route19_Text_ConnieRematchIntro, Route19_Text_ConnieDefeat, MtMoon_1F_Text_KentNotEnoughMons
+	msgbox Route19_Text_ConniePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route19_EventScript_AnyaBatch9::
+	trainerbattle_single TRAINER_SWIMMER_FEMALE_ANYA, Route19_Text_AnyaIntro, Route19_Text_AnyaDefeat
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	goto_if_eq VAR_RESULT, TRUE, Route19_EventScript_AnyaBatch9Rematch
+	msgbox Route19_Text_AnyaPostBattle, MSGBOX_AUTOCLOSE
+	end
+Route19_EventScript_AnyaBatch9Rematch::
+	trainerbattle_rematch TRAINER_SWIMMER_FEMALE_ANYA, Route19_Text_AnyaRematchIntro, Route19_Text_AnyaDefeat
+	msgbox Route19_Text_AnyaPostBattle, MSGBOX_AUTOCLOSE
+	end

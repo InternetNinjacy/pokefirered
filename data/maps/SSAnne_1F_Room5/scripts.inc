@@ -2,6 +2,6 @@ SSAnne_1F_Room5_MapScripts::
 	.byte 0
 
 SSAnne_1F_Room5_EventScript_Arthur::
-	trainerbattle_single TRAINER_GENTLEMAN_ARTHUR, SSAnne_1F_Room5_Text_ArthurIntro, SSAnne_1F_Room5_Text_ArthurDefeat
+	trainerbattle_double TRAINER_GENTLEMAN_ARTHUR, SSAnne_1F_Room5_Text_ArthurIntro, SSAnne_1F_Room5_Text_ArthurDefeat, MtMoon_1F_Text_KentNotEnoughMons
 	msgbox SSAnne_1F_Room5_Text_ArthurPostBattle, MSGBOX_AUTOCLOSE
 	end

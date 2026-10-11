@@ -1,4 +1,5 @@
 #include "global.h"
+#include "new_game.h"
 #include "gflib.h"
 #include "scanline_effect.h"
 #include "task.h"
@@ -35,8 +36,9 @@ enum MainMenuWindow
     MAIN_MENU_WINDOW_COUNT
 };
 
-#define tMenuType  data[0]
-#define tCursorPos data[1]
+#define tMenuType              data[0]
+#define tCursorPos             data[1]
+#define tNewGamePlusAvailable  data[2]
 
 #define tUnused8         data[8]
 #define tMGErrorMsgState data[9]
@@ -68,8 +70,11 @@ static void SetStdFrame0OnBg(u8 bgId);
 static void MainMenu_DrawWindow(const struct WindowTemplate * template);
 static void MainMenu_EraseWindow(const struct WindowTemplate * template);
 
+EWRAM_DATA bool8 gNewGamePlusRequested = FALSE;
+
 static const u8 sString_Dummy[] = _("");
 static const u8 sString_Newline[] = _("\n");
+static const u8 sText_NewGamePlus[] = _("NEW GAME+");
 
 static const struct WindowTemplate sWindowTemplate[] = {
     [MAIN_MENU_WINDOW_NEWGAME_ONLY] = {
@@ -167,6 +172,7 @@ static bool32 MainMenuGpuInit(u8 a0)
 {
     u8 taskId;
 
+    gNewGamePlusRequested = FALSE;
     SetVBlankCallback(NULL);
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     SetGpuReg(REG_OFFSET_BG2CNT, 0);
@@ -209,6 +215,7 @@ static bool32 MainMenuGpuInit(u8 a0)
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON | DISPCNT_WIN0_ON);
     taskId = CreateTask(Task_SetWin0BldRegsAndCheckSaveFile, 0);
     gTasks[taskId].tCursorPos = 0;
+    gTasks[taskId].tNewGamePlusAvailable = FALSE;
     gTasks[taskId].tUnused8 = a0;
     return FALSE;
 }
@@ -233,6 +240,7 @@ static void Task_SetWin0BldRegsAndCheckSaveFile(u8 taskId)
         {
         case SAVE_STATUS_OK:
             LoadUserFrameToBg(0);
+            gTasks[taskId].tNewGamePlusAvailable = FlagGet(FLAG_SYS_GAME_CLEAR);
             if (IsMysteryGiftEnabled() == TRUE)
             {
                 gTasks[taskId].tMenuType = MAIN_MENU_MYSTERYGIFT;
@@ -358,7 +366,8 @@ static void Task_PrintMainMenuText(u8 taskId)
         FillWindowPixelBuffer(MAIN_MENU_WINDOW_CONTINUE, PIXEL_FILL(10));
         FillWindowPixelBuffer(MAIN_MENU_WINDOW_NEWGAME, PIXEL_FILL(10));
         AddTextPrinterParameterized3(MAIN_MENU_WINDOW_CONTINUE, FONT_NORMAL, 2, 2, sTextColor1, -1, gText_Continue);
-        AddTextPrinterParameterized3(MAIN_MENU_WINDOW_NEWGAME, FONT_NORMAL, 2, 2, sTextColor1, -1, gText_NewGame);
+        AddTextPrinterParameterized3(MAIN_MENU_WINDOW_NEWGAME, FONT_NORMAL, 2, 2, sTextColor1, -1,
+                                     gTasks[taskId].tNewGamePlusAvailable ? sText_NewGamePlus : gText_NewGame);
         PrintContinueStats();
         MainMenu_DrawWindow(&sWindowTemplate[MAIN_MENU_WINDOW_CONTINUE]);
         MainMenu_DrawWindow(&sWindowTemplate[MAIN_MENU_WINDOW_NEWGAME]);
@@ -372,7 +381,8 @@ static void Task_PrintMainMenuText(u8 taskId)
         FillWindowPixelBuffer(MAIN_MENU_WINDOW_NEWGAME, PIXEL_FILL(10));
         FillWindowPixelBuffer(MAIN_MENU_WINDOW_MYSTERYGIFT, PIXEL_FILL(10));
         AddTextPrinterParameterized3(MAIN_MENU_WINDOW_CONTINUE, FONT_NORMAL, 2, 2, sTextColor1, -1, gText_Continue);
-        AddTextPrinterParameterized3(MAIN_MENU_WINDOW_NEWGAME, FONT_NORMAL, 2, 2, sTextColor1, -1, gText_NewGame);
+        AddTextPrinterParameterized3(MAIN_MENU_WINDOW_NEWGAME, FONT_NORMAL, 2, 2, sTextColor1, -1,
+                                     gTasks[taskId].tNewGamePlusAvailable ? sText_NewGamePlus : gText_NewGame);
         gTasks[taskId].tMGErrorType = 1;
         AddTextPrinterParameterized3(MAIN_MENU_WINDOW_MYSTERYGIFT, FONT_NORMAL, 2, 2, sTextColor1, -1, gText_MysteryGift);
         PrintContinueStats();
@@ -468,12 +478,14 @@ static void Task_ExecuteMainMenuSelection(u8 taskId)
         {
         default:
         case MAIN_MENU_NEWGAME:
+            gNewGamePlusRequested = gTasks[taskId].tNewGamePlusAvailable;
             gExitStairsMovementDisabled = FALSE;
             FreeAllWindowBuffers();
             DestroyTask(taskId);
             StartNewGameScene();
             break;
         case MAIN_MENU_CONTINUE:
+            gNewGamePlusRequested = FALSE;
             gPlttBufferUnfaded[0] = RGB_BLACK;
             gPlttBufferFaded[0] = RGB_BLACK;
             gExitStairsMovementDisabled = FALSE;
@@ -481,6 +493,7 @@ static void Task_ExecuteMainMenuSelection(u8 taskId)
             TryStartQuestLogPlayback(taskId);
             break;
         case MAIN_MENU_MYSTERYGIFT:
+            gNewGamePlusRequested = FALSE;
             SetMainCallback2(CB2_InitMysteryGift);
             HelpSystem_Disable();
             FreeAllWindowBuffers();
@@ -551,7 +564,7 @@ static void MoveWindowByMenuTypeAndCursorPos(u8 menuType, u8 cursorPos)
             win0vTop = 0x00 << 8;
             win0vBot = 0x60;
             break;
-        case 1: // NEW GAME
+        case 1: // NEW GAME / NEW GAME+
             win0vTop = 0x60 << 8;
             win0vBot = 0x80;
             break;
@@ -569,6 +582,15 @@ static bool8 HandleMenuInput(u8 taskId)
 {
     if (JOY_NEW(A_BUTTON))
     {
+        // A completed save must never fall back to a destructive normal new
+        // game merely because the carried collection has reached capacity.
+        if (gTasks[taskId].tNewGamePlusAvailable
+         && gTasks[taskId].tCursorPos == 1
+         && !CanStartNewGamePlus())
+        {
+            PlaySE(SE_BOO);
+            return FALSE;
+        }
         PlaySE(SE_SELECT);
         IsWirelessAdapterConnected(); // called for its side effects only
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);

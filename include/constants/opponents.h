@@ -747,11 +747,116 @@
 #define TRAINER_CHAMPION_REMATCH_CHARMANDER      741
 #define TRAINER_CUE_BALL_PAXTON                  742
 
-// NOTE: Because each Trainer uses a flag to determine when they are defeated, there is 
-//       only space for 25 additional trainers before trainer flag space overflows.
-//       MAX_TRAINERS_COUNT can be increased but will take up additional saveblock space
+// Sam Edition League: Blue occupies Elite Four #2 / Bruno room.
+// Fire reuses legacy Bruno trainer IDs; Water/Electric use central Blue allocations 800-803.
+#define TRAINER_ELITE_FOUR_BLUE_FIRE             TRAINER_ELITE_FOUR_BRUNO
+#define TRAINER_ELITE_FOUR_BLUE_FIRE_2           TRAINER_ELITE_FOUR_BRUNO_2
+#define TRAINER_ELITE_FOUR_BLUE_WATER            800
+#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC         801
+#define TRAINER_ELITE_FOUR_BLUE_WATER_2          802
+#define TRAINER_ELITE_FOUR_BLUE_ELECTRIC_2       803
 
-#define NUM_TRAINERS                             743
-#define MAX_TRAINERS_COUNT                       768
+// Pokémon: Sam Edition — central Trainer ID registry.
+// Satoshi practice/rematch records: 743-758.
+#define TRAINER_SATOSHI_PEWTER_PRACTICE          743
+#define TRAINER_SATOSHI_CERULEAN_PRACTICE        744
+#define TRAINER_SATOSHI_VERMILION_PRACTICE       745
+#define TRAINER_SATOSHI_CELADON_PRACTICE         746
+#define TRAINER_SATOSHI_FUCHSIA_PRACTICE         747
+#define TRAINER_SATOSHI_SAFFRON_PRACTICE         748
+#define TRAINER_SATOSHI_CINNABAR_PRACTICE        749
+#define TRAINER_SATOSHI_VIRIDIAN_PRACTICE        750
+#define TRAINER_SATOSHI_PEWTER_REMATCH           751
+#define TRAINER_SATOSHI_CERULEAN_REMATCH         752
+#define TRAINER_SATOSHI_VERMILION_REMATCH        753
+#define TRAINER_SATOSHI_CELADON_REMATCH          754
+#define TRAINER_SATOSHI_FUCHSIA_REMATCH          755
+#define TRAINER_SATOSHI_SAFFRON_REMATCH          756
+#define TRAINER_SATOSHI_CINNABAR_REMATCH         757
+#define TRAINER_SATOSHI_VIRIDIAN_REMATCH         758
+
+// Cerulean Gym central allocations: 759-762.
+#define TRAINER_FIRE_DANCER_LEHUA                 759
+#define TRAINER_FIRE_DANCER_KEAHI                 760
+#define TRAINER_LEADER_LEILANI                    761
+#define TRAINER_LEADER_LEILANI_REMATCH            762
+
+// Fuchsia Gym central allocations: 763-768.
+// These replace the branch-local 743-750 assignments that collided with Satoshi.
+#define TRAINER_BUSHRANGER_MICK                   763
+#define TRAINER_BUSHRANGER_SHAZZA                 764
+#define TRAINER_BUSHRANGER_DAZZA                  765
+#define TRAINER_BUSHRANGER_NARELLE                766
+#define TRAINER_LEADER_BAZ                        767
+#define TRAINER_LEADER_BAZ_REMATCH                768
+#define TRAINER_LEADER_SABRINA_REMATCH            769
+
+// Celadon Bug Gym regular-trainer allocations: 770-773.
+#define TRAINER_BUG_CATCHER_OWEN_CELADON          770
+#define TRAINER_BUG_CATCHER_MAYA_CELADON          771
+#define TRAINER_SCIENTIST_ELIAS_CELADON            772
+#define TRAINER_SCIENTIST_NORA_CELADON             773
+
+// Celadon Bug Gym postgame rematch allocation.
+#define TRAINER_LEADER_ERIKA_REMATCH               774
+
+// Cinnabar Rock Gym postgame rematch allocation.
+#define TRAINER_LEADER_BLAINE_REMATCH              804
+
+// Green rival central allocations: 820-846. 800-819 remains rival/Blue headroom.
+#define TRAINER_GREEN_OAK_DITTO                  820
+#define TRAINER_GREEN_OAK_ESPEON                 821
+#define TRAINER_GREEN_OAK_RAICHU                 822
+#define TRAINER_GREEN_SS_ANNE_DITTO              823
+#define TRAINER_GREEN_SS_ANNE_ESPEON             824
+#define TRAINER_GREEN_SS_ANNE_RAICHU             825
+#define TRAINER_GREEN_CELADON_DITTO              826
+#define TRAINER_GREEN_CELADON_ESPEON             827
+#define TRAINER_GREEN_CELADON_RAICHU             828
+#define TRAINER_GREEN_FUCHSIA_DITTO              829
+#define TRAINER_GREEN_FUCHSIA_ESPEON             830
+#define TRAINER_GREEN_FUCHSIA_RAICHU             831
+#define TRAINER_GREEN_SAFFRON_DITTO              832
+#define TRAINER_GREEN_SAFFRON_ESPEON             833
+#define TRAINER_GREEN_SAFFRON_RAICHU             834
+#define TRAINER_GREEN_THREE_ISLAND_DITTO         835
+#define TRAINER_GREEN_THREE_ISLAND_ESPEON        836
+#define TRAINER_GREEN_THREE_ISLAND_RAICHU        837
+#define TRAINER_GREEN_VIRIDIAN_DITTO             838
+#define TRAINER_GREEN_VIRIDIAN_ESPEON            839
+#define TRAINER_GREEN_VIRIDIAN_RAICHU            840
+#define TRAINER_GREEN_CHAMPION_DITTO             841
+#define TRAINER_GREEN_CHAMPION_ESPEON            842
+#define TRAINER_GREEN_CHAMPION_RAICHU            843
+#define TRAINER_GREEN_POSTGAME_DITTO             844
+#define TRAINER_GREEN_POSTGAME_ESPEON            845
+#define TRAINER_GREEN_POSTGAME_RAICHU            846
+
+// Thomas Team Rocket rival allocations: 784-789.
+#define TRAINER_HIKER_CLIFF_PEWTER               775
+#define TRAINER_HIKER_MILES_PEWTER               776
+#define TRAINER_LEADER_BOREAL_PEWTER             777
+#define TRAINER_LEADER_BOREAL_REMATCH_PEWTER     778
+#define TRAINER_THOMAS_NUGGET_BRIDGE               784
+#define TRAINER_THOMAS_CELADON_HIDEOUT             785
+#define TRAINER_THOMAS_POKEMON_TOWER               786
+#define TRAINER_THOMAS_SILPH_CO                     787
+#define TRAINER_THOMAS_CINNABAR_MANSION            788
+#define TRAINER_THOMAS_VIRIDIAN_GYM                 789
+
+// Sam Edition expands trainer defeat-flag capacity to 1024 records.
+// NUM_TRAINERS continues to track the highest trainer record actually defined in data;
+// feature integrations must advance it as their trainer records are merged.
+
+// New Mt. Moon record; preserved six Thomas records remain 784-789.
+#define TRAINER_THOMAS_MT_MOON 847
+
+#define TRAINER_FIVE_ISLAND_SCIENTIST_1            900
+#define TRAINER_FIVE_ISLAND_SCIENTIST_2            901
+
+#define TRAINER_ROCKET_VIRIDIAN_FENCE             902
+
+#define NUM_TRAINERS                             903
+#define MAX_TRAINERS_COUNT                       1024
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H

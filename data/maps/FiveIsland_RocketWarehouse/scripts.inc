@@ -32,6 +32,7 @@ FiveIsland_RocketWarehouse_EventScript_CageUnlocked::
 	end
 
 FiveIsland_RocketWarehouse_EventScript_Computer::
+	goto_if_set FLAG_DEFEATED_ROCKETS_IN_WAREHOUSE, FiveIsland_RocketWarehouse_EventScript_ComputerClosed
 	msgbox FiveIsland_RocketWarehouse_Text_ReportWithGraphsAndText, MSGBOX_SIGN
 	end
 
@@ -82,6 +83,9 @@ FiveIsland_RocketWarehouse_EventScript_DefeatedAdmin2::
 	msgbox FiveIsland_RocketWarehouse_Text_Admin2PostBattle
 	closemessage
 	fadescreen FADE_TO_BLACK
+	removeobject LOCALID_WAREHOUSE_GRUNT1
+	removeobject LOCALID_WAREHOUSE_SCIENTIST1
+	removeobject LOCALID_WAREHOUSE_SCIENTIST2
 	removeobject LOCALID_WAREHOUSE_GRUNT2
 	removeobject LOCALID_WAREHOUSE_GRUNT3
 	removeobject LOCALID_WAREHOUSE_ADMIN2
@@ -105,7 +109,7 @@ FiveIsland_RocketWarehouse_EventScript_Grunt1::
 
 FiveIsland_RocketWarehouse_EventScript_Admin1::
 	trainerbattle_single TRAINER_TEAM_ROCKET_ADMIN, FiveIsland_RocketWarehouse_Text_Admin1Intro, FiveIsland_RocketWarehouse_Text_Admin1Defeat, FiveIsland_RocketWarehouse_EventScript_DefeatedAdmin1
-	msgbox FiveIsland_RocketWarehouse_Text_MadeItSoYouCanComeBackThrough, MSGBOX_AUTOCLOSE
+	msgbox FiveIsland_RocketWarehouse_Text_Admin1Repeat, MSGBOX_AUTOCLOSE
 	end
 
 FiveIsland_RocketWarehouse_EventScript_DefeatedAdmin1::
@@ -114,6 +118,7 @@ FiveIsland_RocketWarehouse_EventScript_DefeatedAdmin1::
 	call_if_eq VAR_RESULT, DIR_NORTH, FiveIsland_RocketWarehouse_EventScript_PlayerFaceAdmin1
 	msgbox FiveIsland_RocketWarehouse_Text_Admin1PostBattle
 	closemessage
+	call FiveIsland_RocketWarehouse_EventScript_Showcases
 	call_if_le PLAYER_X_POS, 24, FiveIsland_RocketWarehouse_EventScript_AdminWalkToSwitchFar
 	call_if_eq PLAYER_X_POS, 25, FiveIsland_RocketWarehouse_EventScript_AdminWalkToSwitch
 	call_if_eq PLAYER_X_POS, 26, FiveIsland_RocketWarehouse_EventScript_AdminFaceSwitch
@@ -171,3 +176,41 @@ FiveIsland_RocketWarehouse_Movement_AdminWalkToSwitch::
 	walk_right
 	walk_in_place_faster_up
 	step_end
+
+FiveIsland_RocketWarehouse_EventScript_ComputerClosed::
+	msgbox FiveIsland_RocketWarehouse_Text_ComputerClosed, MSGBOX_SIGN
+	end
+
+FiveIsland_RocketWarehouse_EventScript_Scientist1::
+	trainerbattle_single TRAINER_FIVE_ISLAND_SCIENTIST_1, FiveIsland_RocketWarehouse_Text_Scientist1Intro, FiveIsland_RocketWarehouse_Text_Scientist1Defeat
+	msgbox FiveIsland_RocketWarehouse_Text_Scientist1PostBattle, MSGBOX_AUTOCLOSE
+	end
+
+FiveIsland_RocketWarehouse_EventScript_Scientist2::
+	trainerbattle_single TRAINER_FIVE_ISLAND_SCIENTIST_2, FiveIsland_RocketWarehouse_Text_Scientist2Intro, FiveIsland_RocketWarehouse_Text_Scientist2Defeat
+	msgbox FiveIsland_RocketWarehouse_Text_Scientist2PostBattle, MSGBOX_AUTOCLOSE
+	end
+
+@ Presentation-only Rocket specimens. No party/storage or evolution special.
+@ Called only by Admin 1's first-victory continuation.
+FiveIsland_RocketWarehouse_EventScript_Showcases::
+	showmonpic SPECIES_MACHOKE, 10, 3
+	waitmoncry
+	msgbox FiveIsland_RocketWarehouse_Text_MachokeTest
+	closemessage
+	hidemonpic
+	showmonpic SPECIES_HORSEA, 10, 3
+	waitmoncry
+	msgbox FiveIsland_RocketWarehouse_Text_HorseaTest
+	closemessage
+	hidemonpic
+	fadescreen FADE_TO_WHITE
+	playse SE_PIN
+	waitse
+	fadescreen FADE_FROM_WHITE
+	showmonpic SPECIES_SEADRA, 10, 3
+	waitmoncry
+	msgbox FiveIsland_RocketWarehouse_Text_SeadraTest
+	closemessage
+	hidemonpic
+	return

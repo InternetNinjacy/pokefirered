@@ -72,7 +72,7 @@ SaffronCity_Text_FightingDojo::
 SaffronCity_Text_GymSign::
     .string "SAFFRON CITY POKéMON GYM\n"
     .string "LEADER: SABRINA\l"
-    .string "The Master of PSYCHIC POKéMON!$"
+    .string "THE MISTRESS OF GHOST POKéMON$"
 
 SaffronCity_Text_FullHealCuresStatus::
     .string "TRAINER TIPS\p"

@@ -25,6 +25,7 @@
 #include "constants/items.h"
 #include "constants/help_system.h"
 #include "constants/songs.h"
+#include "constants/vars.h"
 
 EWRAM_DATA struct PokemonStorageSystemData *gStorage = NULL;
 static EWRAM_DATA bool8 sInPartyMenu = 0;
@@ -152,6 +153,7 @@ enum
     MSG_ITEM_IS_HELD,
     MSG_CHANGED_TO_ITEM,
     MSG_CANT_STORE_MAIL,
+    MSG_PERMANENT_DEAD,
 };
 
 enum
@@ -272,6 +274,8 @@ static const struct SpriteTemplate sSpriteTemplate_DisplayMon = {
     .callback = SpriteCallbackDummy
 };
 
+static const u8 sText_PermanentDeadCantJoinParty[] = _("That POKéMON can no longer\nreturn to the active party.");
+
 static const struct StorageMessage sMessages[] = {
     [MSG_EXIT_BOX]             = {gText_ExitFromBox,             MSG_FMT_NONE},
     [MSG_WHAT_YOU_DO]          = {gText_WhatDoYouWantToDo,       MSG_FMT_NONE},
@@ -304,6 +308,7 @@ static const struct StorageMessage sMessages[] = {
     [MSG_ITEM_IS_HELD]         = {gText_ItemIsNowHeld,           MSG_FMT_ITEM_NAME},
     [MSG_CHANGED_TO_ITEM]      = {gText_ChangedToNewItem,        MSG_FMT_ITEM_NAME},
     [MSG_CANT_STORE_MAIL]      = {gText_MailCantBeStored,        MSG_FMT_NONE},
+    [MSG_PERMANENT_DEAD]       = {sText_PermanentDeadCantJoinParty, MSG_FMT_NONE},
 };
 
 static const struct WindowTemplate sYesNoWindowTemplate = {
@@ -410,6 +415,11 @@ static void CB2_PokeStorage(void)
 
 void EnterPokeStorage(u8 boxOption)
 {
+    // The PC script has already checked the new starter and Pokedex gate.
+    // Reopening storage exposes reserve records as visible slots become free.
+    if (IsNewGamePlusStorageActive())
+        CompactNewGamePlusStorageReserve();
+
     ResetTasks();
     sCurrentBoxOption = boxOption;
     gStorage = Alloc(sizeof(struct PokemonStorageSystemData));
@@ -1098,6 +1108,15 @@ static void Task_PlaceMon(u8 taskId)
     switch (gStorage->state)
     {
     case 0:
+        if (sInPartyMenu
+            && VarGet(VAR_SAM_GAME_MODE) == 1
+            && GetMonData(&gStorage->movingMon, MON_DATA_SAM_PERMANENT_DEAD))
+        {
+            PrintStorageMessage(MSG_PERMANENT_DEAD);
+            gStorage->state = 2;
+            break;
+        }
+
         SetPokeStorageQuestLogEvent(1);
         InitMonPlaceChange(CHANGE_PLACE);
         gStorage->state++;
@@ -1111,6 +1130,13 @@ static void Task_PlaceMon(u8 taskId)
                 SetPokeStorageTask(Task_PokeStorageMain);
         }
         break;
+    case 2:
+        if (JOY_NEW(A_BUTTON | B_BUTTON | DPAD_ANY))
+        {
+            ClearBottomWindow();
+            SetPokeStorageTask(Task_PokeStorageMain);
+        }
+        break;
     }
 }
 
@@ -1119,6 +1145,15 @@ static void Task_ShiftMon(u8 taskId)
     switch (gStorage->state)
     {
     case 0:
+        if (sInPartyMenu
+            && VarGet(VAR_SAM_GAME_MODE) == 1
+            && GetMonData(&gStorage->movingMon, MON_DATA_SAM_PERMANENT_DEAD))
+        {
+            PrintStorageMessage(MSG_PERMANENT_DEAD);
+            gStorage->state = 2;
+            break;
+        }
+
         SetPokeStorageQuestLogEvent(0);
         InitMonPlaceChange(CHANGE_SHIFT);
         gStorage->state++;
@@ -1130,6 +1165,13 @@ static void Task_ShiftMon(u8 taskId)
             SetPokeStorageTask(Task_PokeStorageMain);
         }
         break;
+    case 2:
+        if (JOY_NEW(A_BUTTON | B_BUTTON | DPAD_ANY))
+        {
+            ClearBottomWindow();
+            SetPokeStorageTask(Task_PokeStorageMain);
+        }
+        break;
     }
 }
 
@@ -1138,7 +1180,13 @@ static void Task_WithdrawMon(u8 taskId)
     switch (gStorage->state)
     {
     case 0:
-        if (CalculatePlayerPartyCount() == PARTY_SIZE)
+        if (VarGet(VAR_SAM_GAME_MODE) == 1
+            && GetCurrentBoxMonData(GetBoxCursorPosition(), MON_DATA_SAM_PERMANENT_DEAD))
+        {
+            PrintStorageMessage(MSG_PERMANENT_DEAD);
+            gStorage->state = 1;
+        }
+        else if (CalculatePlayerPartyCount() == PARTY_SIZE)
         {
             PrintStorageMessage(MSG_PARTY_FULL);
             gStorage->state = 1;

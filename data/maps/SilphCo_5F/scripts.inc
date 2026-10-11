@@ -3,9 +3,25 @@ SilphCo_5F_MapScripts::
 	.byte 0
 
 SilphCo_5F_OnLoad::
+	call EventScript_ThomasSyncVisibility
 	call_if_unset FLAG_SILPH_5F_DOOR_1, EventScript_Close5FDoor1
 	call_if_unset FLAG_SILPH_5F_DOOR_2, EventScript_Close5FDoor2
 	call_if_unset FLAG_SILPH_5F_DOOR_3, EventScript_Close5FDoor3
+	end
+
+SilphCo_5F_EventScript_Thomas::
+	lock
+	faceplayer
+	goto_if_eq VAR_THOMAS_ARC_STAGE, THOMAS_ARC_LAVENDER_CLEARED, SilphCo_5F_EventScript_ThomasBattle
+	release
+	end
+
+SilphCo_5F_EventScript_ThomasBattle::
+	call Thomas_EventScript_SilphPreBattle
+	trainerbattle_no_intro TRAINER_THOMAS_SILPH_CO, Thomas_Text_SilphDefeat
+	call EventScript_ThomasSetSilphCleared
+	removeobject VAR_LAST_TALKED
+	release
 	end
 
 SilphCo_5F_EventScript_WorkerM::

@@ -3,7 +3,10 @@
 
 #include "global.h"
 
-#define HEAP_SIZE 0x1C000
+// Reserve the final 0x800 bytes of the historical 0x1C000 heap region for
+// the persistent NG+ storage-tail mirror. The linker layout remains unchanged.
+#define HEAP_SIZE 0x1B800
+#define HEAP_RESERVED_TAIL_SIZE 0x800
 #define malloc Alloc
 #define calloc(ct, sz) AllocZeroed((ct) * (sz))
 #define free Free

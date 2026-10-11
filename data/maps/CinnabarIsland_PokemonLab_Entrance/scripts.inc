@@ -1,10 +1,76 @@
 CinnabarIsland_PokemonLab_Entrance_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, CinnabarIsland_PokemonLab_Entrance_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, CinnabarIsland_PokemonLab_Entrance_OnFrame
 	.byte 0
+
+CinnabarIsland_PokemonLab_Entrance_OnFrame::
+	map_script_2 VAR_TEMP_0, 1, CinnabarIsland_PokemonLab_Entrance_EventScript_ThomasExit
+	.2byte 0
 
 CinnabarIsland_PokemonLab_Entrance_OnTransition::
 	call_if_eq VAR_MAP_SCENE_CINNABAR_ISLAND_POKEMON_LAB_EXPERIMENT_ROOM_REVIVE_STATE, 1, CinnabarIsland_PokemonLab_Entrance_EventScript_ReadyFossil
+	setvar VAR_TEMP_0, 0
+	setflag FLAG_HIDE_THOMAS_CINNABAR_LAB
+	goto_if_set FLAG_THOMAS_CINNABAR_LAB_COMPLETE, CinnabarIsland_PokemonLab_Entrance_EventScript_End
+	goto_if_set FLAG_THOMAS_QUIT_ROCKET, CinnabarIsland_PokemonLab_Entrance_EventScript_End
+	goto_if_ne VAR_THOMAS_ARC_STAGE, THOMAS_ARC_SILPH_CLEARED, CinnabarIsland_PokemonLab_Entrance_EventScript_End
+	goto_if_eq VAR_MAP_SCENE_MT_MOON_B2F, 3, CinnabarIsland_PokemonLab_Entrance_EventScript_ShowThomas
+	goto_if_eq VAR_MAP_SCENE_MT_MOON_B2F, 4, CinnabarIsland_PokemonLab_Entrance_EventScript_ShowThomas
 	end
+
+CinnabarIsland_PokemonLab_Entrance_EventScript_ShowThomas::
+	clearflag FLAG_HIDE_THOMAS_CINNABAR_LAB
+	setvar VAR_TEMP_0, 1
+	end
+
+CinnabarIsland_PokemonLab_Entrance_EventScript_End::
+	end
+
+CinnabarIsland_PokemonLab_Entrance_EventScript_ThomasExit::
+	setvar VAR_TEMP_0, 0
+	goto_if_questlog CinnabarIsland_PokemonLab_Entrance_EventScript_End
+	lockall
+	getplayerxy VAR_0x8004, VAR_0x8005
+	goto_if_lt VAR_0x8004, 3, CinnabarIsland_PokemonLab_Entrance_EventScript_ThomasDialogue
+	goto_if_gt VAR_0x8004, 5, CinnabarIsland_PokemonLab_Entrance_EventScript_ThomasDialogue
+	call_if_eq VAR_0x8005, 9, CinnabarIsland_PokemonLab_Entrance_EventScript_ClearDoorBottom
+	call_if_eq VAR_0x8005, 8, CinnabarIsland_PokemonLab_Entrance_EventScript_ClearDoor
+
+CinnabarIsland_PokemonLab_Entrance_EventScript_ThomasDialogue::
+	applymovement LOCALID_THOMAS_LAB, Common_Movement_FacePlayer
+	waitmovement 0
+	msgbox CinnabarIsland_PokemonLab_Entrance_Text_ThomasExit, MSGBOX_DEFAULT
+	applymovement LOCALID_THOMAS_LAB, CinnabarIsland_PokemonLab_Entrance_Movement_ThomasExit
+	waitmovement 0
+	setflag FLAG_THOMAS_CINNABAR_LAB_COMPLETE
+	setflag FLAG_HIDE_THOMAS_CINNABAR_LAB
+	removeobject LOCALID_THOMAS_LAB
+	releaseall
+	end
+
+CinnabarIsland_PokemonLab_Entrance_EventScript_ClearDoorBottom::
+	applymovement OBJ_EVENT_ID_PLAYER, CinnabarIsland_PokemonLab_Entrance_Movement_ClearDoorBottom
+	waitmovement 0
+	return
+
+CinnabarIsland_PokemonLab_Entrance_EventScript_ClearDoor::
+	applymovement OBJ_EVENT_ID_PLAYER, CinnabarIsland_PokemonLab_Entrance_Movement_ClearDoor
+	waitmovement 0
+	return
+
+CinnabarIsland_PokemonLab_Entrance_Movement_ClearDoorBottom::
+	walk_up
+CinnabarIsland_PokemonLab_Entrance_Movement_ClearDoor::
+	walk_up
+	step_end
+
+CinnabarIsland_PokemonLab_Entrance_Movement_ThomasExit::
+	walk_down
+	walk_left
+	walk_down
+	step_end
+
+	.include "data/maps/CinnabarIsland_PokemonLab_Entrance/thomas_text.inc"
 
 CinnabarIsland_PokemonLab_Entrance_EventScript_ReadyFossil::
 	setvar VAR_MAP_SCENE_CINNABAR_ISLAND_POKEMON_LAB_EXPERIMENT_ROOM_REVIVE_STATE, 2

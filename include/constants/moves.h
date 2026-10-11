@@ -356,8 +356,12 @@
 #define MOVE_WATER_PULSE 352
 #define MOVE_DOOM_DESIRE 353
 #define MOVE_PSYCHO_BOOST 354
+#define MOVE_BOULDER_BASH 355
+#define MOVE_GHOSTLY_WAIL 356
+#define MOVE_SEED_STRIKE 357
+#define MOVE_NIGHT_TERROR 358
 
-#define MOVES_COUNT 355
+#define MOVES_COUNT 359
 
 // Used for checks for moves affected by Disable, Mimic, etc.
 #define MOVE_UNAVAILABLE 0xFFFF

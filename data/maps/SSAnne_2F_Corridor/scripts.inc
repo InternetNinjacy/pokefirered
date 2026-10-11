@@ -20,7 +20,7 @@ SSAnne_2F_Corridor_EventScript_RivalTriggerRight::
 	end
 
 SSAnne_2F_Corridor_EventScript_RivalTrigger::
-	textcolor NPC_TEXT_COLOR_MALE
+	textcolor NPC_TEXT_COLOR_FEMALE
 	playse SE_EXIT
 	delay 5
 	playbgm MUS_ENCOUNTER_RIVAL, 0
@@ -32,12 +32,20 @@ SSAnne_2F_Corridor_EventScript_RivalTrigger::
 	call_if_eq VAR_TEMP_1, 0, SSAnne_2F_Corridor_EventScript_RivalApproachLeft
 	call_if_eq VAR_TEMP_1, 1, SSAnne_2F_Corridor_EventScript_RivalApproachMid
 	call_if_eq VAR_TEMP_1, 2, SSAnne_2F_Corridor_EventScript_RivalApproachRight
-	msgbox SSAnne_2F_Corridor_Text_RivalIntro
+	goto_if_eq VAR_MAP_SCENE_S_S_ANNE_2F_CORRIDOR, 2, SSAnne_2F_Corridor_EventScript_GreenRetryText
+	msgbox SSAnne_2F_Corridor_Text_GreenIntro
+	goto SSAnne_2F_Corridor_EventScript_GreenBattleStart
+
+SSAnne_2F_Corridor_EventScript_GreenRetryText::
+	msgbox SSAnne_2F_Corridor_Text_GreenRetry
+
+SSAnne_2F_Corridor_EventScript_GreenBattleStart::
 	setvar VAR_LAST_TALKED, LOCALID_SS_ANNE_RIVAL
+	setvar VAR_MAP_SCENE_S_S_ANNE_2F_CORRIDOR, 2
 	call_if_eq VAR_STARTER_MON, 2, SSAnne_2F_Corridor_EventScript_RivalSquirtle
 	call_if_eq VAR_STARTER_MON, 1, SSAnne_2F_Corridor_EventScript_RivalBulbasaur
 	call_if_eq VAR_STARTER_MON, 0, SSAnne_2F_Corridor_EventScript_RivalCharmander
-	msgbox SSAnne_2F_Corridor_Text_RivalPostBattle
+	msgbox SSAnne_2F_Corridor_Text_GreenPostBattle
 	closemessage
 	delay 10
 	playbgm MUS_RIVAL_EXIT, 0
@@ -68,15 +76,15 @@ SSAnne_2F_Corridor_EventScript_RivalApproachRight::
 	return
 
 SSAnne_2F_Corridor_EventScript_RivalSquirtle::
-	trainerbattle_no_intro TRAINER_RIVAL_SS_ANNE_SQUIRTLE, SSAnne_2F_Corridor_Text_RivalDefeat
+	trainerbattle_no_intro TRAINER_GREEN_SS_ANNE_ESPEON, SSAnne_2F_Corridor_Text_GreenDefeat
 	return
 
 SSAnne_2F_Corridor_EventScript_RivalBulbasaur::
-	trainerbattle_no_intro TRAINER_RIVAL_SS_ANNE_BULBASAUR, SSAnne_2F_Corridor_Text_RivalDefeat
+	trainerbattle_no_intro TRAINER_GREEN_SS_ANNE_DITTO, SSAnne_2F_Corridor_Text_GreenDefeat
 	return
 
 SSAnne_2F_Corridor_EventScript_RivalCharmander::
-	trainerbattle_no_intro TRAINER_RIVAL_SS_ANNE_CHARMANDER, SSAnne_2F_Corridor_Text_RivalDefeat
+	trainerbattle_no_intro TRAINER_GREEN_SS_ANNE_RAICHU, SSAnne_2F_Corridor_Text_GreenDefeat
 	return
 
 SSAnne_2F_Corridor_EventScript_RivalExitLeft::
@@ -167,3 +175,35 @@ SSAnne_2F_Corridor_Movement_RivalExitRight::
 SSAnne_2F_Corridor_EventScript_Sailor::
 	msgbox SSAnne_2F_Corridor_Text_ThisShipIsLuxuryLiner, MSGBOX_NPC
 	end
+
+@ Pokémon: Sam Edition — locked Green S.S. Anne dialogue.
+SSAnne_2F_Corridor_Text_GreenIntro::
+	.string "{PLAYER}! I was wondering if you made it\n"
+	.string "onto the ship. There are TRAINERS\l"
+	.string "everywhere in here.\p"
+	.string "I've been testing different\n"
+	.string "combinations against them.\p"
+	.string "Three POKéMON feels a lot better\n"
+	.string "than two. You can actually cover\l"
+	.string "each other's bad matchups.\p"
+	.string "Come on. I want to see if I built\n"
+	.string "this right!$"
+
+SSAnne_2F_Corridor_Text_GreenDefeat::
+	.string "Huh. Okay, that exposed something.$"
+
+SSAnne_2F_Corridor_Text_GreenPostBattle::
+	.string "That was good. I thought I had\n"
+	.string "every angle covered, but you found\l"
+	.string "one I didn't.\p"
+	.string "That's the fun part, though. If a\n"
+	.string "team has a weakness, you fix it.\p"
+	.string "I'm going to change a few things\n"
+	.string "before next time.\p"
+	.string "The CAPTAIN's up ahead. Apparently\n"
+	.string "he's having a rough trip.$"
+
+SSAnne_2F_Corridor_Text_GreenRetry::
+	.string "Ready to try that again? I haven't\n"
+	.string "changed anything yet. You get\l"
+	.string "another shot at the same team.$"

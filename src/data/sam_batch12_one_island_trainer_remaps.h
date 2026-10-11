@@ -1,0 +1,18 @@
+// Pokémon: Sam Edition — ST-IMP-12 One Island party remaps.
+#include "sam_batch12_one_island_trainer_parties.h"
+#define sParty_SwimmerFemaleAmara sParty_SamB12Amara
+#define sParty_SwimmerFemaleAbigail sParty_SamB12Abigail
+#define sParty_PicnickerClaire sParty_SamB12Claire
+#define sParty_CrushGirlTanya sParty_SamB12Tanya
+#define sParty_CamperBryce sParty_SamB12Bryce
+#define sParty_SwimmerMaleGarrett sParty_SamB12Garrett
+#define sParty_CrushKinMikKia sParty_SamB12MikKia
+#define sParty_BlackBeltHugh sParty_SamB12Hugh
+#define sParty_BlackBeltShea sParty_SamB12Shea
+#define sParty_CrushGirlSharon sParty_SamB12Sharon
+#define sParty_SwimmerMaleFinn sParty_SamB12Finn
+#define sParty_SwimmerFemaleMaria sParty_SamB12Maria
+#define sParty_FishermanTommy sParty_SamB12Tommy
+#define sParty_PkmnRangerBeth sParty_SamB12Beth
+#define sParty_CrushGirlJocelyn sParty_SamB12Jocelyn
+#define sParty_PkmnRangerLogan sParty_SamB12Logan
