@@ -1,0 +1,46 @@
+name: Sam Edition Starter Acquisition GDB
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [sam-edition-dev]
+  push:
+    branches: [sam-edition-dev]
+
+jobs:
+  starter-acquisition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: pret/agbcc
+          path: agbcc
+      - name: Install compiler and mGBA
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libpng-dev mgba-qt xvfb xauth xdotool openbox
+      - name: Install agbcc
+        working-directory: agbcc
+        run: |
+          ./build.sh
+          ./install.sh ../
+      - name: Build ROM and ELF
+        env:
+          GAME_VERSION: FIRERED
+          GAME_LANGUAGE: ENGLISH
+          GAME_REVISION: '0'
+          MODERN: '0'
+          COMPARE: '0'
+        run: make -j2 all
+      - name: Three fresh-starter RAM assertions
+        run: |
+          xvfb-run -a -s '-screen 0 1024x768x24' bash -c 'openbox --sm-disable >/tmp/sam-openbox.log 2>&1 & sleep 1; python3 tests/sam_mgba_starter_acquisition.py pokefirered.gba pokefirered.elf'
+      - name: Upload hash and checkpoint evidence (no ROM or save)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sam-starter-live-assertions
+          path: sam-starter-live-assertions.json
+          if-no-files-found: ignore
